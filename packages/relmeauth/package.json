@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/relmeauth",
-  "version": "0.1.0",
+  "version": "1.0.0-canary.1",
   "description": "Useful functions for implemening [RelMeAuth](https://indieweb.org/RelMeAuth).",
   "author": {
     "name": "Giacomo Debidda",
