@@ -73,5 +73,8 @@ jobs:
       - name: 🔍 Test @jackdbd/oauth2-error-responses
         run: npx turbo run test:ci --filter ./packages/oauth2-error-responses
 
+      - name: 🔍 Test @jackdbd/oauth2
+        run: npx turbo run test:ci --filter ./packages/oauth2
+
       - name: 🔍 Test @jackdbd/fastify-webc
         run: npx turbo run test:ci --filter ./packages/fastify-webc
