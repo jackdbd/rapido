@@ -1,7 +1,7 @@
 {
-  "name": "@jackdbd/relmeauth",
-  "version": "1.0.0-canary.1",
-  "description": "Useful functions for implementing [RelMeAuth](https://indieweb.org/RelMeAuth).",
+  "name": "@jackdbd/indieauth",
+  "version": "0.1.0",
+  "description": "Schemas and functions for implementing [IndieAuth](https://indieauth.spec.indieweb.org/).",
   "author": {
     "name": "Giacomo Debidda",
     "email": "giacomo@giacomodebidda.com",
@@ -14,7 +14,8 @@
   },
   "keywords": [
     "IndieWeb",
-    "RelMeAuth"
+    "IndieAuth",
+    "Web Sign-In"
   ],
   "type": "module",
   "module": "lib/index.js",
@@ -41,7 +42,7 @@
   ],
   "scripts": {
     "build": "run-s 'build:ts' 'build:readme' --print-label",
-    "build:readme": "tsm ../scripts/readme.ts --package relmeauth",
+    "build:readme": "tsm ../scripts/readme.ts --package indieauth",
     "build:ts": "tsc -p tsconfig.json",
     "build:ts:watch": "tsc -p tsconfig.json --watch",
     "clean": "rimraf lib/ tsconfig.tsbuildinfo",
@@ -54,6 +55,9 @@
   },
   "dependencies": {
     "@jackdbd/canonical-url": "1.0.0-canary.1",
+    "@jackdbd/oauth2": "1.0.0-canary.1",
+    "@jackdbd/pkce": "1.0.0-canary.1",
+    "@sinclair/typebox": "^0.34.14",
     "posthtml-parser": "^0.12.1"
   },
   "devDependencies": {}

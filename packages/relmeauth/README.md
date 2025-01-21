@@ -5,7 +5,7 @@
 [![CodeCov badge](https://codecov.io/gh/jackdbd/rapido/graph/badge.svg?token=BpFF8tmBYS)](https://app.codecov.io/gh/jackdbd/rapido?flags%5B0%5D=relmeauth)
 [![Socket Badge](https://socket.dev/api/badge/npm/package/@jackdbd/relmeauth)](https://socket.dev/npm/package/@jackdbd/relmeauth)
 
-Useful functions for implemening [RelMeAuth](https://indieweb.org/RelMeAuth).
+Useful functions for implementing [RelMeAuth](https://indieweb.org/RelMeAuth).
 
 - [Installation](#installation)
 - [Dependencies](#dependencies)

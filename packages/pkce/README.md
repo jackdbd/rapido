@@ -5,7 +5,7 @@
 [![CodeCov badge](https://codecov.io/gh/jackdbd/rapido/graph/badge.svg?token=BpFF8tmBYS)](https://app.codecov.io/gh/jackdbd/rapido?flags%5B0%5D=pkce)
 [![Socket Badge](https://socket.dev/api/badge/npm/package/@jackdbd/pkce)](https://socket.dev/npm/package/@jackdbd/pkce)
 
-Useful functions for implemening [Proof Key for Code Exchange (PKCE)](https://datatracker.ietf.org/doc/html/rfc7636).
+Useful functions for implementing [Proof Key for Code Exchange (PKCE)](https://datatracker.ietf.org/doc/html/rfc7636).
 
 - [Installation](#installation)
 - [Dependencies](#dependencies)
