@@ -67,5 +67,8 @@ jobs:
       - name: 🔍 Test @jackdbd/pkce
         run: npx turbo run test:ci --filter ./packages/pkce
 
+      - name: 🔍 Test @jackdbd/unwrap
+        run: npx turbo run test:ci --filter ./packages/unwrap
+
       - name: 🔍 Test @jackdbd/fastify-webc
         run: npx turbo run test:ci --filter ./packages/fastify-webc
