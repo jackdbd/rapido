@@ -12,6 +12,11 @@
       "inputs": ["$TURBO_DEFAULT$", ".env*", "tpl.readme.md", "readme.ts"],
       "outputs": ["README.md"]
     },
+    "build:ts": {
+      "dependsOn": ["^build:ts"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["lib/**"]
+    },
     "check-types": {
       "dependsOn": ["^check-types"]
     },
@@ -27,6 +32,17 @@
     },
     "publint": {
       "dependsOn": ["^publint"]
+    },
+    "test": {
+      "dependsOn": ["build:ts"],
+      "outputs": ["coverage/**"]
+    },
+    "test:ci": {
+      "dependsOn": ["build:ts"],
+      "outputs": ["coverage/**"]
+    },
+    "test:watch": {
+      "dependsOn": ["^test:watch"]
     }
   }
 }

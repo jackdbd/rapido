@@ -7,6 +7,7 @@
 }: let
   cloudflare_r2 = builtins.fromJSON (builtins.readFile /run/secrets/cloudflare/r2);
   telegram = builtins.fromJSON (builtins.readFile /run/secrets/telegram/jackdbd_github_bot);
+  telegram_token_splits = builtins.split ":" telegram.token;
   turso = builtins.fromJSON (builtins.readFile /run/secrets/turso/micropub);
 in {
   enterShell = ''
@@ -21,10 +22,19 @@ in {
   env = {
     BASE_URL = "http://localhost:${config.env.PORT}";
     GITHUB_TOKEN = builtins.readFile /run/secrets/github-tokens/crud_contents_api;
+    NODE_ENV = "development";
+    NPM_TOKEN = builtins.readFile /run/secrets/npm-tokens/semantic_release_bot;
     PINO_LOG_LEVEL = "debug";
     PORT = "3001";
+    # The github token used by @semantic-release/github must allow to push to this GitHub repository
+    SEMANTIC_RELEASE_BOT_GITHUB_TOKEN = builtins.readFile /run/secrets/github-tokens/semantic_release_bot;
+    # SKIP_VALIDATION = 1;
     TELEGRAM_CHAT_ID = telegram.chat_id;
     TELEGRAM_TOKEN = telegram.token;
+    # semantic-release-telegram requires these environment variables that are
+    # the Telegram bot token split at `:`.
+    TELEGRAM_BOT_ID = builtins.head telegram_token_splits;
+    TELEGRAM_BOT_TOKEN = builtins.elemAt telegram_token_splits 2; # weirdly, the first element is an empty string
     TURSO_DATABASE_TOKEN = turso.database_token;
     TURSO_DATABASE_URL = "libsql://micropub-jackdbd.turso.io";
   };

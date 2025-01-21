@@ -26,7 +26,7 @@ export const defRender = (config: Config) => {
     transforms,
     useBundlerMode,
   } = config;
-  return async function viewWebC(
+  return async function render(
     this: FastifyReply,
     pageName: string,
     data: Record<string, any>

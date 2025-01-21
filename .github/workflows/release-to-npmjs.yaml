@@ -1,32 +1,25 @@
-name: 'CI'
+name: 'Release to npmjs.com'
+
+# https://github.com/semantic-release/semantic-release/issues/2481#issuecomment-1409780688
+permissions:
+  contents: write
 
 on:
-  pull_request:
   push:
     branches:
       - canary
       - main
 
 jobs:
-  linux-audit-build-test:
-    name: Audit, build, test all packages on ${{ matrix.os }}, Node ${{ matrix.node }}
+  audit-build-test-release:
+    name: Audit, build, test, release all packages on ${{ matrix.os }}, Node ${{ matrix.node }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest]
-        # Test all packages with these Node.js versions:
-        # 1. Maintenance LTS
-        # 2. Active LTS
-        # 3. Current (i.e. the latest Node.js version available)
+        # Use the Active LTS for this workflow
         # https://nodejs.org/en/about/previous-releases
         node: [lts/Jod]
-        # node: [lts/Iron, lts/Jod, current]
-        # Test all packages with these Fastify versions:
-        # 1. Latest
-        # 2. The most popular?
-        fastify: ['5.2.1']
-        # fastify: ['5.2.1', '4.28.1']
-        # https://www.npmjs.com/package/fastify?activeTab=versions
     steps:
       - name: 🛎️ Checkout repo
         uses: actions/checkout@v4
@@ -37,11 +30,7 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: ⬇️ Install dependencies
-        # run: npm ci
-        run: npm install
-      
-      - name: ⬇️ Install Fastify ${{ matrix.fastify }}
-        run: npm install fastify@${{ matrix.fastify }}
+        run: npm ci
 
       - name: 🛡️ Audit dependencies (audit-level high)
         # https://docs.npmjs.com/cli/v8/commands/npm-audit#audit-level
@@ -60,3 +49,15 @@ jobs:
 
       - name: 🔍 Test library @jackdbd/fastify-webc
         run: npx turbo run test:ci --filter ./packages/fastify-webc
+
+      - name: 🚀 Release to npmjs
+        env:
+          # The github token must allow to push to this GitHub repository.
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_NPM_TOKEN }}
+          TELEGRAM_BOT_ID: ${{ secrets.TELEGRAM_BOT_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ fromJSON(secrets.TELEGRAM).chat_id }}
+        run: >
+          npx multi-semantic-release
+          --ignore-private
