@@ -67,21 +67,4 @@ You can access the data available to the WebC template/component using `this.$da
 - [express-webc](https://github.com/NickColley/express-webc)
 - [koa-webc](https://github.com/sombriks/koa-webc/)
 
-## TODO
-
-In order to support [WebC bundler mode](https://www.11ty.dev/docs/languages/webc/#css-and-js-bundler-mode) I think I need to implement an `addBundle` method [like the one implemented in eleventy-plugin-bundle](https://github.com/11ty/eleventy-plugin-bundle/blob/f4b2ecf2d12e5b246eb69de12b83ac7e30003642/src/eleventy.bundleManagers.js#L16), and a `getBundle` WebC helper function [like the one implemented here](https://github.com/11ty/eleventy-plugin-bundle/blob/f4b2ecf2d12e5b246eb69de12b83ac7e30003642/src/eleventy.shortcodes.js#L27). See also the [getBundledAssets](https://github.com/11ty/webc/blob/a2f548c23490929aa8c9cd25159549eba3e869c7/src/assetManager.js#L29) method in WebC's `AssetManager` class.
-
-This would allow users to include CSS/JS bundles in their WebC templates using this syntax:
-
-```html
-<head>
-  <!-- 'default' is the name of the asset bucket -->
-  <style @raw="getBundle('css', 'default')" webc:keep></style>
-
-  <script type="module" @raw="getBundle('js', 'default')" webc:keep></script>
-</head>
-```
-
-Should I contribute this plugin as a view engine for [@fastify/view](https://github.com/fastify/point-of-view/)?
-
 {{pkg.license}}
