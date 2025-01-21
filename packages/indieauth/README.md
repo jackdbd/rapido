@@ -23,7 +23,7 @@ npm install @jackdbd/indieauth
 |---|---|
 | [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `1.0.0-canary.1` |
 | [@jackdbd/oauth2](https://www.npmjs.com/package/@jackdbd/oauth2) | `1.0.0-canary.1` |
-| [@jackdbd/pkce](https://www.npmjs.com/package/@jackdbd/pkce) | `1.0.0-canary.1` |
+| [@jackdbd/pkce](https://www.npmjs.com/package/@jackdbd/pkce) | `1.0.0-canary.2` |
 | [@sinclair/typebox](https://www.npmjs.com/package/@sinclair/typebox) | `^0.34.14` |
 | [posthtml-parser](https://www.npmjs.com/package/posthtml-parser) | `^0.12.1` |
 

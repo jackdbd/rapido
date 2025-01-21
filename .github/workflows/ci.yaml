@@ -79,5 +79,8 @@ jobs:
       - name: 🔍 Test @jackdbd/indieauth
         run: npx turbo run test:ci --filter ./packages/indieauth
 
+      - name: 🔍 Test @jackdbd/schema-validators
+        run: npx turbo run test:ci --filter ./packages/schema-validators
+
       - name: 🔍 Test @jackdbd/fastify-webc
         run: npx turbo run test:ci --filter ./packages/fastify-webc

@@ -1,0 +1,30 @@
+# @jackdbd/schema-validators
+
+[![npm version](https://badge.fury.io/js/@jackdbd%2Fschema-validators.svg)](https://badge.fury.io/js/@jackdbd%2Fschema-validators)
+[![install size](https://packagephobia.com/badge?p=@jackdbd/schema-validators)](https://packagephobia.com/result?p=@jackdbd/schema-validators)
+[![CodeCov badge](https://codecov.io/gh/jackdbd/rapido/graph/badge.svg?token=BpFF8tmBYS)](https://app.codecov.io/gh/jackdbd/rapido?flags%5B0%5D=schema-validators)
+[![Socket Badge](https://socket.dev/api/badge/npm/package/@jackdbd/schema-validators)](https://socket.dev/npm/package/@jackdbd/schema-validators)
+
+Validate data against schemas. Generate clear and detailed error messages for failed validations.
+
+- [Installation](#installation)
+- [Dependencies](#dependencies)
+- [License](#license)
+
+## Installation
+
+```sh
+npm install @jackdbd/schema-validators
+```
+
+## Dependencies
+
+| Package | Version |
+|---|---|
+| [@apideck/better-ajv-errors](https://www.npmjs.com/package/@apideck/better-ajv-errors) | `^0.3.6` |
+| [@sinclair/typebox](https://www.npmjs.com/package/@sinclair/typebox) | `^0.34.14` |
+| [ajv](https://www.npmjs.com/package/ajv) | `^8.17.1` |
+
+## License
+
+&copy; 2024 - 2025 [Giacomo Debidda](https://www.giacomodebidda.com/) // [MIT License](https://spdx.org/licenses/MIT.html)
