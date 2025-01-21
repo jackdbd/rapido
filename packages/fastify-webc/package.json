@@ -19,12 +19,25 @@
     "web-components"
   ],
   "type": "module",
+  "module": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "exports": {
     ".": {
       "types": "./lib/index.d.ts",
       "import": "./lib/index.js"
     },
+    "./helpers": {
+      "types": "./lib/helpers.d.ts",
+      "import": "./lib/helpers.js"
+    },
     "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./lib/*.d.ts"
+      ]
+    }
   },
   "files": [
     "CHANGELOG.md",
