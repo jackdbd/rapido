@@ -29,10 +29,10 @@ Register this plugin by telling it where to find your WebC components and templa
 This plugin decorates `FastifyReply` with a `render` method. This method takes two arguments: a WebC template and an optional data object.
 
 ```ts
-import webc from './plugins/webc/index.js'
+import webc from '@jackdbd/fastify-webc'
 
 fastify.register(webc, {
-  components: [path.join(__dirname, 'components')],
+  components: ['src/components/**/*.webc'],
   templates: [path.join(__dirname, 'templates')]
 })
 

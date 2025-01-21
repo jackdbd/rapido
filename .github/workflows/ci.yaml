@@ -19,7 +19,8 @@ jobs:
         # 2. Active LTS
         # 3. Current (i.e. the latest Node.js version available)
         # https://nodejs.org/en/about/previous-releases
-        node: [lts/Iron, lts/Jod, current]
+        node: [lts/Jod]
+        # node: [lts/Iron, lts/Jod, current]
         # Test all packages with these Fastify versions:
         # 1. Latest
         # 2. The most popular?
@@ -36,7 +37,8 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: ⬇️ Install dependencies
-        run: npm ci
+        # run: npm ci
+        run: npm install
       
       - name: ⬇️ Install Fastify ${{ matrix.fastify }}
         run: npm install fastify@${{ matrix.fastify }}
@@ -49,7 +51,9 @@ jobs:
         continue-on-error: true
         run: npm audit --audit-level moderate
 
-      - name: 📦 Build all libraries
-        run: npm run build:libs
+      - name: 📦 Build everything
+        run: npm run build
 
       - run: npm run publint
+      
+      - run: npm run size
