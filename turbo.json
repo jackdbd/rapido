@@ -5,17 +5,28 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**", "lib/**"]
     },
-    "lint": {
-      "dependsOn": ["^lint"]
+    "build:readme": {
+      "dependsOn": ["^build:readme"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*", "tpl.readme.md", "readme.ts"],
+      "outputs": ["README.md"]
     },
     "check-types": {
       "dependsOn": ["^check-types"]
     },
+    "clean": {
+      "dependsOn": ["^clean"]
+    },
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "publint": {
+      "dependsOn": ["^publint"]
     }
   }
 }

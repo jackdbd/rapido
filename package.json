@@ -1,23 +1,46 @@
 {
   "name": "rapido",
+  "description": "Monorepo for my Fastify plugins and support libraries.",
+  "author": {
+    "name": "Giacomo Debidda",
+    "email": "giacomo@giacomodebidda.com",
+    "url": "https://giacomodebidda.com/"
+  },
   "private": true,
-  "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
-  },
-  "devDependencies": {
-    "prettier": "^3.2.5",
-    "turbo": "^2.3.3",
-    "typescript": "5.5.4"
-  },
-  "engines": {
-    "node": ">=18"
-  },
+  "keywords": [
+    "fastify",
+    "monorepo",
+    "plugin"
+  ],
   "packageManager": "npm@10.9.0",
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "build": "turbo build",
+    "build:readme": "turbo build:readme",
+    "clean": "turbo clean",
+    "deps": "taze",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "nuke": "npm run clean && rm -rf node_modules package-lock.json",
+    "publint": "turbo publint",
+    "size": "npm run size --workspaces --if-present"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@thi.ng/transclude": "^1.0.3",
+    "npm-run-all": "^4.1.5",
+    "pkg-size": "^2.4.0",
+    "prettier": "^3.4.2",
+    "publint": "^0.3.2",
+    "rimraf": "^6.0.1",
+    "taze": "latest",
+    "tsm": "^2.3.0",
+    "turbo": "^2.3.3",
+    "typescript": "5.7.3",
+    "yargs": "^17.7.2"
+  }
 }

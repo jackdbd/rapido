@@ -1,32 +1,29 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# dependencies
+**/node_modules/
 
-# Dependencies
-node_modules
-.pnp
-.pnp.js
+# secrets
+secrets/*
+!secrets/README.md
 
-# Local env files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# test coverage
+**/coverage/*
+!**/coverage/README.md
+packages/**/lcov.info
 
-# Testing
-coverage
+# Typescript compilation output files for libraries and applications
+packages/**/lib/
+packages/**/dist/
+packages/**/_site/
+packages/**/tsconfig.tsbuildinfo
 
 # Turbo
 .turbo
-
-# Vercel
-.vercel
 
 # Build Outputs
 .next/
 out/
 build
 dist
-
 
 # Debug
 npm-debug.log*
@@ -36,6 +33,7 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
 # Devenv
 .devenv*
 devenv.local.nix

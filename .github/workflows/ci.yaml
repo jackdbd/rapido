@@ -1,0 +1,55 @@
+name: 'CI'
+
+on:
+  pull_request:
+  push:
+    branches:
+      - canary
+      - main
+
+jobs:
+  linux-audit-build-test:
+    name: Audit, build, test all packages on ${{ matrix.os }}, Node ${{ matrix.node }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        # Test all packages with these Node.js versions:
+        # 1. Maintenance LTS
+        # 2. Active LTS
+        # 3. Current (i.e. the latest Node.js version available)
+        # https://nodejs.org/en/about/previous-releases
+        node: [lts/Iron, lts/Jod, current]
+        # Test all packages with these Fastify versions:
+        # 1. Latest
+        # 2. The most popular?
+        fastify: ['5.2.1']
+        # fastify: ['5.2.1', '4.28.1']
+        # https://www.npmjs.com/package/fastify?activeTab=versions
+    steps:
+      - name: 🛎️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Set up Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: ⬇️ Install dependencies
+        run: npm ci
+      
+      - name: ⬇️ Install Fastify ${{ matrix.fastify }}
+        run: npm install fastify@${{ matrix.fastify }}
+
+      - name: 🛡️ Audit dependencies (audit-level high)
+        # https://docs.npmjs.com/cli/v8/commands/npm-audit#audit-level
+        run: npm audit --audit-level high
+
+      - name: 🛡️ Audit dependencies (audit-level moderate)
+        continue-on-error: true
+        run: npm audit --audit-level moderate
+
+      - name: 📦 Build all libraries
+        run: npm run build:libs
+
+      - run: npm run publint

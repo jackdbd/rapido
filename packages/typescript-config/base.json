@@ -2,18 +2,60 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "declaration": true,
+
     "declarationMap": true,
+
     "esModuleInterop": true,
+
+    "forceConsistentCasingInFileNames": true,
+
     "incremental": false,
+
     "isolatedModules": true,
+
+    // https://www.typescriptlang.org/tsconfig#lib
+    // Check Node.js support here:
+    // https://node.green/
     "lib": ["es2022", "DOM", "DOM.Iterable"],
+
     "module": "NodeNext",
+
     "moduleDetection": "force",
+
     "moduleResolution": "NodeNext",
+
+    "noImplicitAny": true,
+
     "noUncheckedIndexedAccess": true,
+
+    "noUnusedLocals": true,
+
+    "noUnusedParameters": true,
+
+    // As far as I understand, preserveConstEnums has no effect for non-const
+    // enums and should not affect the bundle size, but it must be set to true
+    // when isolatedModules is set to true.
+    // https://stackoverflow.com/questions/28818849/how-do-the-different-enum-variants-work-in-typescript
+    // https://www.typescriptlang.org/tsconfig#preserveConstEnums
+    // https://ncjamieson.com/dont-export-const-enums/
+    "preserveConstEnums": true,
+
     "resolveJsonModule": true,
+
+    // it would be safer to set skipLibCheck to false, but it's kind of slow.
+    // Maybe enable it from time to time to type check dependencies.
+    // https://www.typescriptlang.org/tsconfig#skipLibCheck
     "skipLibCheck": true,
+
+    // In most cases I want to generate source maps.
+    // https://m.signalvnoise.com/paying-tribute-to-the-web-with-view-source/
+    "sourceMap": true,
+
     "strict": true,
-    "target": "ES2022"
+    
+    "target": "ES2022",
+
+    // https://www.typescriptlang.org/tsconfig#typeRoots
+    "typeRoots": ["../../node_modules/@types", "../../custom-types"]
   }
 }
