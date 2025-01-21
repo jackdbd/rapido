@@ -30,7 +30,8 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: ⬇️ Install dependencies
-        run: npm ci
+        run: npm install
+        # run: npm ci
 
       - name: 🛡️ Audit dependencies (audit-level high)
         # https://docs.npmjs.com/cli/v8/commands/npm-audit#audit-level
@@ -47,7 +48,10 @@ jobs:
       
       - run: npm run size
 
-      - name: 🔍 Test library @jackdbd/fastify-webc
+      - name: 🔍 Test @jackdbd/canonical-url
+        run: npx turbo run test:ci --filter ./packages/canonical-url
+
+      - name: 🔍 Test @jackdbd/fastify-webc
         run: npx turbo run test:ci --filter ./packages/fastify-webc
 
       - name: 🚀 Release to npmjs

@@ -58,5 +58,8 @@ jobs:
       
       - run: npm run size
 
-      - name: 🔍 Test library @jackdbd/fastify-webc
+      - name: 🔍 Test @jackdbd/canonical-url
+        run: npx turbo run test:ci --filter ./packages/canonical-url
+
+      - name: 🔍 Test @jackdbd/fastify-webc
         run: npx turbo run test:ci --filter ./packages/fastify-webc

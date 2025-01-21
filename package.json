@@ -19,6 +19,7 @@
   ],
   "scripts": {
     "build": "turbo build",
+    "build:readme": "turbo build:readme",
     "clean": "turbo clean",
     "deps": "taze",
     "dev": "turbo dev",

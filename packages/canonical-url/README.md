@@ -1,0 +1,31 @@
+# @jackdbd/canonical-url
+
+[![npm version](https://badge.fury.io/js/@jackdbd%2Fcanonical-url.svg)](https://badge.fury.io/js/@jackdbd%2Fcanonical-url)
+[![install size](https://packagephobia.com/badge?p=@jackdbd/canonical-url)](https://packagephobia.com/result?p=@jackdbd/canonical-url)
+[![CodeCov badge](https://codecov.io/gh/jackdbd/rapido/graph/badge.svg?token=BpFF8tmBYS)](https://app.codecov.io/gh/jackdbd/rapido?flags%5B0%5D=canonical-url)
+[![Socket Badge](https://socket.dev/api/badge/npm/package/@jackdbd/canonical-url)](https://socket.dev/npm/package/@jackdbd/canonical-url)
+
+Canonicalizes a URL.
+
+- [Installation](#installation)
+- [Dependencies](#dependencies)
+- [References](#references)
+- [License](#license)
+
+## Installation
+
+```sh
+npm install @jackdbd/canonical-url
+```
+
+## Dependencies
+
+This package has no dependencies.
+
+## References
+
+- [URL Canonicalization - IndieAuth spec](https://indieauth.spec.indieweb.org/#x3-4-url-canonicalization)
+
+## License
+
+&copy; 2024 - 2025 [Giacomo Debidda](https://www.giacomodebidda.com/) // [MIT License](https://spdx.org/licenses/MIT.html)

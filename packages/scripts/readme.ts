@@ -90,6 +90,14 @@ const run = async () => {
       "pkg.deps": () => {
         const entries = Object.entries(pkg.dependencies);
 
+        if (entries.length === 0) {
+          return [
+            `## Dependencies`,
+            "\n\n",
+            "This package has no dependencies.",
+          ].join("");
+        }
+
         const rows = entries.map(
           ([name, version]) =>
             `| ${link(name, `https://www.npmjs.com/package/${name}`)} | \`${version}\` |`
@@ -140,6 +148,11 @@ const run = async () => {
       "pkg.peerDependencies": () => {
         if (pkg.peerDependencies) {
           const entries = Object.entries(pkg.peerDependencies);
+
+          if (entries.length === 0) {
+            return "";
+          }
+
           const what =
             entries.length === 1 ? `peer dependency` : `peer dependencies`;
 
