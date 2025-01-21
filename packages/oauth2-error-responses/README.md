@@ -1,0 +1,32 @@
+# @jackdbd/oauth2-error-responses
+
+[![npm version](https://badge.fury.io/js/@jackdbd%2Foauth2-error-responses.svg)](https://badge.fury.io/js/@jackdbd%2Foauth2-error-responses)
+[![install size](https://packagephobia.com/badge?p=@jackdbd/oauth2-error-responses)](https://packagephobia.com/result?p=@jackdbd/oauth2-error-responses)
+[![CodeCov badge](https://codecov.io/gh/jackdbd/rapido/graph/badge.svg?token=BpFF8tmBYS)](https://app.codecov.io/gh/jackdbd/rapido?flags%5B0%5D=oauth2-error-responses)
+[![Socket Badge](https://socket.dev/api/badge/npm/package/@jackdbd/oauth2-error-responses)](https://socket.dev/npm/package/@jackdbd/oauth2-error-responses)
+
+This library contains superclasses of `Error` for creating **Error Responses** that have all the properties required by these protocols:
+
+- [OAuth 2.0](https://datatracker.ietf.org/doc/html/rfc6749#section-5.2)
+- [IndieAuth](https://indieauth.spec.indieweb.org/#error-responses)
+- [Micropub](https://micropub.spec.indieweb.org/#error-response)
+
+You can use these classes when implementing an OAuth 2.0 / IndieAuth / Micropub server.
+
+- [Installation](#installation)
+- [Dependencies](#dependencies)
+- [License](#license)
+
+## Installation
+
+```sh
+npm install @jackdbd/oauth2-error-responses
+```
+
+## Dependencies
+
+This package has no dependencies.
+
+## License
+
+&copy; 2024 - 2025 [Giacomo Debidda](https://www.giacomodebidda.com/) // [MIT License](https://spdx.org/licenses/MIT.html)

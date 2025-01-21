@@ -1,0 +1,61 @@
+{
+  "name": "@jackdbd/oauth2-error-responses",
+  "version": "0.1.0",
+  "description": "Error Responses for OAuth 2.0 / IndieAuth / Micropub servers.",
+  "author": {
+    "name": "Giacomo Debidda",
+    "email": "giacomo@giacomodebidda.com",
+    "url": "https://giacomodebidda.com/"
+  },
+  "license": "MIT",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "error handling",
+    "OAuth 2.0",
+    "IndieAuth",
+    "Micropub"
+  ],
+  "type": "module",
+  "module": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./lib/*.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md",
+    "lib"
+  ],
+  "scripts": {
+    "build": "run-s 'build:ts' 'build:readme' --print-label",
+    "build:readme": "tsm ../scripts/readme.ts --package oauth2-error-responses",
+    "build:ts": "tsc -p tsconfig.json",
+    "build:ts:watch": "tsc -p tsconfig.json --watch",
+    "clean": "rimraf lib/ tsconfig.tsbuildinfo",
+    "dev": "run-p build:ts:watch test:watch",
+    "publint": "publint run .",
+    "size": "pkg-size ./lib --sort-by=brotli --ignore-files {*.d.ts,*.map}",
+    "test": "node --test --experimental-test-coverage",
+    "test:ci": "node --test --test-reporter=@reporters/github --test-reporter-destination=stdout --test-reporter=spec --test-reporter-destination=stdout",
+    "test:watch": "node --test --watch"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@fastify/error": "^4.0.0"
+  }
+}
