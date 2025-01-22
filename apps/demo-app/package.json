@@ -1,0 +1,34 @@
+{
+  "name": "@rapido/demo-app",
+  "version": "0.0.1",
+  "description": "Fastify application to test and showcase the usage of several Fastify plugins",
+  "author": {
+    "name": "Giacomo Debidda",
+    "email": "giacomo@giacomodebidda.com",
+    "url": "https://giacomodebidda.com/"
+  },
+  "private": true,
+  "keywords": [
+    "demo",
+    "fastify"
+  ],
+  "type": "module",
+  "module": "dist/server.js",
+  "exports": {
+    ".": "./dist/server.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "run-s 'build:ts' --print-label",
+    "build:ts": "tsc -p tsconfig.json",
+    "clean": "rimraf dist/ tsconfig.tsbuildinfo",
+    "dev": "tsm src/server.ts",
+    "size": "pkg-size ./dist --sort-by=brotli --ignore-files {*.d.ts,*.map}",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "@jackdbd/fastify-authorization-endpoint": "*",
+    "close-with-grace": "^2.2.0",
+    "fastify": "^5.2.1"
+  }
+}
