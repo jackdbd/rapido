@@ -21,6 +21,7 @@
     "aaa": "npm run build:readme -w ./packages/fastify-authorization-endpoint",
     "build": "turbo build",
     "build:app": "turbo build --filter @repo/demo-app",
+    "build:packages": "tsc --build --verbose",
     "build:plugins": "turbo build --filter ./packages/fastify-webc --filter ./packages/fastify-authorization-endpoint",
     "build:readme": "turbo build:readme",
     "build:stdlib": "turbo build --filter @repo/stdlib",
