@@ -1,0 +1,8 @@
+{
+  "$id": "pkce-code-challenge",
+  "description": "The PKCE code challenge. See [Client Creates the Code Challenge](https://datatracker.ietf.org/doc/html/rfc7636#section-4.2).",
+  "minLength": 43,
+  "maxLength": 128,
+  "title": "PKCE code challenge",
+  "type": "string"
+}

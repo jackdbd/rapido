@@ -1,0 +1,15 @@
+{
+  "$id": "pkce-code-challenge-method",
+  "description": "The hashing method used to calculate the code challenge in the PKCE OAuth 2.0 flow. See [Client Creates the Code Challenge](https://datatracker.ietf.org/doc/html/rfc7636#section-4.2).",
+  "title": "PKCE code challenge method",
+  "anyOf": [
+    {
+      "const": "plain",
+      "type": "string"
+    },
+    {
+      "const": "S256",
+      "type": "string"
+    }
+  ]
+}
