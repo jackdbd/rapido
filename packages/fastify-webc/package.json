@@ -47,7 +47,7 @@
   ],
   "scripts": {
     "build": "run-s 'build:ts' 'build:readme' --print-label",
-    "build:readme": "tsm ../scripts/readme.ts --package fastify-webc",
+    "build:readme": "node ../scripts/dist/readme.js --package fastify-webc",
     "build:ts": "tsc -p tsconfig.json",
     "build:ts:watch": "tsc -p tsconfig.json --watch",
     "clean": "rimraf lib/ tsconfig.tsbuildinfo",

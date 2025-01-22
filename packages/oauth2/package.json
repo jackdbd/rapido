@@ -40,7 +40,7 @@
   ],
   "scripts": {
     "build": "run-s 'build:ts' 'build:readme' --print-label",
-    "build:readme": "tsm ../scripts/readme.ts --package oauth2",
+    "build:readme": "node ../scripts/dist/readme.js --package oauth2",
     "build:ts": "tsc -p tsconfig.json",
     "build:ts:watch": "tsc -p tsconfig.json --watch",
     "clean": "rimraf lib/ tsconfig.tsbuildinfo",

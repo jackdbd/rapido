@@ -1,36 +1,41 @@
 {
-    "extends": "./packages/typescript-config/base.json",
-    "files": [],
-    // IMPORTANT: do NOT change the order
-    "references": [
-      {
-        "path": "./packages/schema-validators/tsconfig.json"
-      },
-      {
-        "path": "./packages/canonical-url/tsconfig.json"
-      },
-      {
-        "path": "./packages/pkce/tsconfig.json"
-      },
-      {
-        "path": "./packages/oauth2/tsconfig.json"
-      },
-      {
-        "path": "./packages/oauth2-error-responses/tsconfig.json"
-      },
-      {
-        "path": "./packages/relmeauth/tsconfig.json"
-      },
-      {
-        "path": "./packages/indieauth/tsconfig.json"
-      },
-      {
-        "path": "./packages/fastify-webc/tsconfig.json"
-      },
-      {
-        "path": "./packages/fastify-authorization-endpoint/tsconfig.json"
-      },
-      
-    ]
-  }
+  "extends": "./packages/typescript-config/base.json",
+  "files": [],
+  // IMPORTANT: do NOT change the order
+  "references": [
+    {
+      "path": "./packages/stdlib/tsconfig.json"
+    },
+    {
+      "path": "./packages/schema-validators/tsconfig.json"
+    },
+    {
+      "path": "./packages/canonical-url/tsconfig.json"
+    },
+    {
+      "path": "./packages/pkce/tsconfig.json"
+    },
+    {
+      "path": "./packages/oauth2/tsconfig.json"
+    },
+    {
+      "path": "./packages/oauth2-error-responses/tsconfig.json"
+    },
+    {
+      "path": "./packages/relmeauth/tsconfig.json"
+    },
+    {
+      "path": "./packages/indieauth/tsconfig.json"
+    },
+    {
+      "path": "./packages/fastify-webc/tsconfig.json"
+    },
+    {
+      "path": "./packages/fastify-authorization-endpoint/tsconfig.json"
+    },
+    {
+      "path": "./packages/scripts/tsconfig.json"
+    },
+  ]
+}
   

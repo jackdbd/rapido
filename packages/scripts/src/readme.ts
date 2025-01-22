@@ -13,15 +13,15 @@ import {
   access_token_request_body,
   authorization_request_querystring,
   plugin_options,
-} from "../fastify-authorization-endpoint/lib/index.js";
-import { code_challenge, code_challenge_method } from "../pkce/lib/index.js";
+} from "../../fastify-authorization-endpoint/lib/index.js";
+import { code_challenge, code_challenge_method } from "../../pkce/lib/index.js";
 import {
   callout,
   safeSchemaToMarkdown,
   writeJsonSchema,
   REPO_ROOT,
   SCHEMAS_ROOT as schemas_root,
-} from "../stdlib/lib/index.js";
+} from "../../stdlib/lib/index.js";
 
 const run = async () => {
   const { values } = parseArgs({

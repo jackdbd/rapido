@@ -51,7 +51,7 @@
   ],
   "scripts": {
     "build": "run-s 'build:ts' 'build:readme' 'copy:webc' --print-label",
-    "build:readme": "tsm ../scripts/readme.ts --package fastify-authorization-endpoint",
+    "build:readme": "node ../scripts/dist/readme.js --package fastify-authorization-endpoint",
     "build:ts": "tsc -p tsconfig.json",
     "build:ts:watch": "tsc -p tsconfig.json --watch",
     "clean": "rimraf lib/ tsconfig.tsbuildinfo",
