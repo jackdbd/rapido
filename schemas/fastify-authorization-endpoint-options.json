@@ -13,6 +13,7 @@
       "type": "string"
     },
     "components": {
+      "description": "Filepaths to WebC components",
       "type": "object",
       "properties": {
         "consent-form": {
@@ -382,6 +383,7 @@
       }
     },
     "templates": {
+      "description": "Filepaths to WebC templates",
       "minItems": 1,
       "type": "array",
       "items": {

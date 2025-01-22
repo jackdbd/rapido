@@ -34,18 +34,22 @@ import {
 export {
   access_token_request_body,
   authorization_code_props,
+  authorization_request_querystring,
   authorization_response_body_success,
   authorization_response_querystring,
+  options as plugin_options,
   profile_url_request_body,
   profile_url_response_body_success,
 } from "./schemas/index.js";
 export type {
   AccessTokenRequestBody,
   AuthorizationCodeProps,
+  AuthorizationRequestQuerystring,
   AuthorizationResponseBodySuccess,
   AuthorizationResponseQuerystring,
   OnAuthorizationCodeVerified,
   OnUserApprovedRequest,
+  Options as PluginOptions,
   ProfileUrlRequestBody,
   ProfileUrlResponseBodySuccess,
   RetrieveAuthorizationCode,

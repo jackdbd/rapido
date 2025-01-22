@@ -8,6 +8,7 @@
       "outputs": [".next/**", "!.next/cache/**", "dist/**", "lib/**"]
     },
     "build:readme": {
+      "cache": false,
       "dependsOn": ["^build:ts"],
       "inputs": ["$TURBO_DEFAULT$", ".env*", "tpl.readme.md", "readme.ts"],
       "outputs": ["README.md"]

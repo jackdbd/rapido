@@ -47,12 +47,15 @@ export const options = Type.Object(
     ),
 
     components: Type.Optional(
-      Type.Object({
-        "consent-form": Type.Optional(filepath),
-        "scope-list": Type.Optional(filepath),
-        "the-footer": Type.Optional(filepath),
-        "the-header": Type.Optional(filepath),
-      })
+      Type.Object(
+        {
+          "consent-form": Type.Optional(filepath),
+          "scope-list": Type.Optional(filepath),
+          "the-footer": Type.Optional(filepath),
+          "the-header": Type.Optional(filepath),
+        },
+        { description: "Filepaths to WebC components" }
+      )
     ),
 
     redirectPathOnSubmit: Type.Optional(
@@ -101,7 +104,12 @@ export const options = Type.Object(
      */
     retrieveAuthorizationCode,
 
-    templates: Type.Optional(Type.Array(filepath, { minItems: 1 })),
+    templates: Type.Optional(
+      Type.Array(filepath, {
+        description: "Filepaths to WebC templates",
+        minItems: 1,
+      })
+    ),
   },
   {
     $id: "fastify-authorization-endpoint-options",

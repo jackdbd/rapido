@@ -10,19 +10,19 @@ An IndieAuth Authorization Endpoint is responsible for obtaining authentication 
 
 {{pkg.installation}}
 
-{{pluginOptions}}
+{{authorizationEndpoint.pluginOptions}}
 
 ## Obtaining an authorization code
 
 When the end user accesses the authorization endpoint, they are presented with a [consent screen](https://indieweb.org/consent_screen). The details displayed on the consent screen are populated based on the information provided in the query string of the request.
 
-{{authorizationRequestQuerystring}}
+{{authorizationEndpoint.authorizationRequestQuerystring}}
 
 ## Verifying the authorization code
 
 To verify that the authorization code is valid, the token endpoint of the authorization server makes a POST request to the authorization endpoint.
 
-{{accessTokenRequestBody}}
+{{authorizationEndpoint.accessTokenRequestBody}}
 
 {{pkg.deps}}
 

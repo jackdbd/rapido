@@ -1,14 +1,6 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { parseArgs } from "node:util";
-import { code_challenge, code_challenge_method } from "@jackdbd/pkce";
-import {
-  callout,
-  safeSchemaToMarkdown,
-  writeJsonSchema,
-  REPO_ROOT,
-  SCHEMAS_ROOT as schemas_root,
-} from "@repo/stdlib";
 import {
   compactEmptyLines,
   image,
@@ -20,8 +12,16 @@ import {
 import {
   access_token_request_body,
   authorization_request_querystring,
-  options as plugin_options,
-} from "../../packages/fastify-authorization-endpoint/lib/schemas/index.js";
+  plugin_options,
+} from "../fastify-authorization-endpoint/lib/index.js";
+import { code_challenge, code_challenge_method } from "../pkce/lib/index.js";
+import {
+  callout,
+  safeSchemaToMarkdown,
+  writeJsonSchema,
+  REPO_ROOT,
+  SCHEMAS_ROOT as schemas_root,
+} from "../stdlib/lib/index.js";
 
 const run = async () => {
   const { values } = parseArgs({
@@ -59,37 +59,34 @@ const run = async () => {
     schemas_root,
   });
 
-  const accessTokenRequestBody = safeSchemaToMarkdown({
-    filepath: access_token_request_body_filepath,
-    level: 2,
-  });
-
   const authorization_request_querystring_filepath = await writeJsonSchema({
     schema: authorization_request_querystring,
     schemas_root,
   });
 
-  const authorizationRequestQuerystring = safeSchemaToMarkdown({
-    filepath: authorization_request_querystring_filepath,
-    level: 2,
-  });
-
-  const plugin_options_filepath = await writeJsonSchema({
+  const authorization_endpoint_plugin_options_filepath = await writeJsonSchema({
     schema: plugin_options,
     schemas_root,
-  });
-
-  const pluginOptions = safeSchemaToMarkdown({
-    filepath: plugin_options_filepath,
-    level: 1,
   });
 
   const transcluded = transcludeFile(fpath, {
     user: pkg.author,
     templates: {
-      accessTokenRequestBody,
-      authorizationRequestQuerystring,
-      pluginOptions,
+      "authorizationEndpoint.accessTokenRequestBody": safeSchemaToMarkdown({
+        filepath: access_token_request_body_filepath,
+        level: 2,
+      }),
+
+      "authorizationEndpoint.authorizationRequestQuerystring":
+        safeSchemaToMarkdown({
+          filepath: authorization_request_querystring_filepath,
+          level: 2,
+        }),
+
+      "authorizationEndpoint.pluginOptions": safeSchemaToMarkdown({
+        filepath: authorization_endpoint_plugin_options_filepath,
+        level: 1,
+      }),
 
       badges: () => {
         // https://shields.io/badges/npm-downloads
