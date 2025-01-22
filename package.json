@@ -32,7 +32,7 @@
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "nuke": "npm run clean && rm -rf node_modules package-lock.json",
-    "publint": "turbo publint",
+    "publint": "npm run publint --workspaces --if-present",
     "release:dry": "multi-semantic-release --no-ci --dry-run --debug --ignore-private",
     "size": "turbo size",
     "start:app": "npm run start -w @repo/demo-app",

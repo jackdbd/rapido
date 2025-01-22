@@ -30,9 +30,6 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
-    "publint": {
-      "dependsOn": ["build:ts"]
-    },
     "size": {
       "dependsOn": ["build:ts"]
     },
