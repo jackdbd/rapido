@@ -36,6 +36,9 @@
     {
       "path": "./packages/scripts/tsconfig.json"
     },
+    {
+      "path": "./apps/demo-app/tsconfig.json"
+    },
   ]
 }
   

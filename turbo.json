@@ -3,16 +3,16 @@
   "ui": "tui",
   "tasks": {
     "build": {
-      "dependsOn": ["build:ts", "build:readme"],
+      "dependsOn": ["build:ts"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**", "lib/**"]
     },
-    "build:readme": {
-      "cache": false,
-      "dependsOn": ["^build:ts"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*", "tpl.readme.md", "readme.ts"],
-      "outputs": ["README.md"]
-    },
+    // "build:readme": {
+    //   "cache": false,
+    //   "dependsOn": ["^build:ts"],
+    //   "inputs": ["$TURBO_DEFAULT$", ".env*", "tpl.readme.md", "readme.ts"],
+    //   "outputs": ["README.md"]
+    // },
     "build:ts": {
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": ["dist/**", "lib/**"]

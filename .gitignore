@@ -11,6 +11,8 @@ secrets/*
 packages/**/lcov.info
 
 # Typescript compilation output files for libraries and applications
+apps/**/dist/
+apps/**/tsconfig.tsbuildinfo
 packages/**/lib/
 packages/**/dist/
 packages/**/_site/
