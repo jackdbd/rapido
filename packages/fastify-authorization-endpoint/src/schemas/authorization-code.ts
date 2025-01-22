@@ -63,7 +63,14 @@ export const authorization_code_props = Type.Object(
   }
 );
 
-export type AuthorizationCodeProps = Static<typeof authorization_code_props>;
+export interface AuthorizationCodeProps
+  extends Static<typeof authorization_code_props> {
+  // Properties that reference other schemas with Type.Ref seem not to be
+  // type-inferred correctly by TypeScript. That's why we declare these types
+  // explicitly here.
+  code_challenge: string;
+  code_challenge_method: string;
+}
 
 export const authorization_code_immutable_record = Type.Object(
   {
