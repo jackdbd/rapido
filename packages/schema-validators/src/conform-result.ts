@@ -48,9 +48,7 @@ export const conformResult = <V>(config: Config<V>, options?: Options) => {
     }
   }
 
-  console.log(`before ${spec}`);
   const validate = ajv.compile(schema);
-  console.log(`after ${spec}`);
 
   validate(data);
 

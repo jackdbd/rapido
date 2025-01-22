@@ -1,5 +1,5 @@
 {
-  "name": "@rapido/demo-app",
+  "name": "@repo/demo-app",
   "version": "0.0.1",
   "description": "Fastify application to test and showcase the usage of several Fastify plugins",
   "author": {
@@ -22,9 +22,9 @@
     "build": "run-s 'build:ts' --print-label",
     "build:ts": "tsc -p tsconfig.json",
     "clean": "rimraf dist/ tsconfig.tsbuildinfo",
-    "dev": "tsm src/server.ts",
+    "dev": "tsm src/server.ts --port 3001 --print-plugins --print-routes",
     "size": "pkg-size ./dist --sort-by=brotli --ignore-files {*.d.ts,*.map}",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js --port 3001 --print-plugins --print-routes"
   },
   "dependencies": {
     "@jackdbd/fastify-authorization-endpoint": "*",

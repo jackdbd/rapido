@@ -3,17 +3,16 @@
   "ui": "tui",
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["build:ts", "build:readme"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**", "lib/**"]
     },
     "build:readme": {
-      "dependsOn": ["^build:readme"],
+      "dependsOn": ["^build:ts"],
       "inputs": ["$TURBO_DEFAULT$", ".env*", "tpl.readme.md", "readme.ts"],
       "outputs": ["README.md"]
     },
     "build:ts": {
-      "dependsOn": ["^build:ts"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": ["dist/**", "lib/**"]
     },
@@ -31,22 +30,21 @@
       "dependsOn": ["^lint"]
     },
     "publint": {
-      "dependsOn": ["^publint"]
+      "dependsOn": ["build:ts"]
     },
-    "start": {
-      "cache": false,
-      "dependsOn": ["^build"]
+    "size": {
+      "dependsOn": ["build:ts"]
     },
     "test": {
-      "dependsOn": ["build:ts"],
-      "outputs": ["coverage/**"]
+      "dependsOn": ["build:ts"]
     },
     "test:ci": {
       "dependsOn": ["build:ts"],
       "outputs": ["coverage/**"]
     },
     "test:watch": {
-      "dependsOn": ["^test:watch"]
+      "dependsOn": ["^test:watch"],
+      "persistent": true
     }
   }
 }

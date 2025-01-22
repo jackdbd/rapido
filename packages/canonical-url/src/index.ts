@@ -1,11 +1,14 @@
 /**
- * Canonicalizes a URL.
+ * Canonicalizes a URL, useful for [IndieAuth Discovery](https://indieauth.spec.indieweb.org/#discovery-by-clients)
+ * and RelMeAuth Discovery.
  *
  * @see [URL Canonicalization - IndieAuth spec](https://indieauth.spec.indieweb.org/#x3-4-url-canonicalization)
  */
 export default function canonicalUrl(str: string, base?: string) {
   // str can be a domain, a path or a url.
   // base can be a domain or a url.
+  //
+  // From the IndieAuth spec:
   // For ease of use, clients MAY allow users to enter just the host part of the
   // URL, in which case the client MUST turn that into a valid URL before
   // beginning the IndieAuth flow, by prepending either an http or https scheme

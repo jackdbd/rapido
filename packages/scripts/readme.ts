@@ -1,9 +1,14 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 import { code_challenge, code_challenge_method } from "@jackdbd/pkce";
-import { safeSchemaToMarkdown, writeJsonSchema } from "@rapido/stdlib";
+import {
+  callout,
+  safeSchemaToMarkdown,
+  writeJsonSchema,
+  REPO_ROOT,
+  SCHEMAS_ROOT as schemas_root,
+} from "@repo/stdlib";
 import {
   compactEmptyLines,
   image,
@@ -12,16 +17,11 @@ import {
   toc,
   transcludeFile,
 } from "@thi.ng/transclude";
-import { callout } from "./ui-components.js";
 import {
   access_token_request_body,
   authorization_request_querystring,
   options as plugin_options,
-} from "../fastify-authorization-endpoint/lib/schemas/index.js";
-
-export const __filename = fileURLToPath(import.meta.url);
-export const REPO_ROOT = path.join(__filename, "..", "..", "..");
-const schemas_root = path.join(REPO_ROOT, "schemas");
+} from "../../packages/fastify-authorization-endpoint/lib/schemas/index.js";
 
 const run = async () => {
   const { values } = parseArgs({
