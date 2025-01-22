@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## @jackdbd/oauth2 [1.0.0-canary.2](https://github.com/jackdbd/rapido/compare/@jackdbd/oauth2@1.0.0-canary.1...@jackdbd/oauth2@1.0.0-canary.2) (2025-01-22)
+
+
+### Features
+
+* **fastify-authorization-endpoint:** add package ([b772e0c](https://github.com/jackdbd/rapido/commit/b772e0c862c7a8cebd7f1a477d186d9102ad4882))
+
 ## @jackdbd/oauth2 1.0.0-canary.1 (2025-01-21)
 
 
