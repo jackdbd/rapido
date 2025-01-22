@@ -85,7 +85,5 @@
   "peerDependencies": {
     "fastify": ">=5.0.0"
   },
-  "devDependencies": {
-    "@repo/scripts": "*"
-  }
+  "devDependencies": {}
 }
