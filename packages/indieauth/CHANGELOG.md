@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## @jackdbd/indieauth [1.0.0-canary.3](https://github.com/jackdbd/rapido/compare/@jackdbd/indieauth@1.0.0-canary.2...@jackdbd/indieauth@1.0.0-canary.3) (2025-01-22)
+
+
+
+### Dependencies
+
+* **@jackdbd/oauth2:** upgraded to 1.0.0-canary.2
+
 ## @jackdbd/indieauth [1.0.0-canary.2](https://github.com/jackdbd/rapido/compare/@jackdbd/indieauth@1.0.0-canary.1...@jackdbd/indieauth@1.0.0-canary.2) (2025-01-21)
 
 
