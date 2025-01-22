@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" :content="description">
+
+	<title @text="tap(title)"></title>
+
+	<link rel="stylesheet" href="https://unpkg.com/mvp.css"> 
+	<link rel="stylesheet" href="/styles/layout.css">
+	<link rel="stylesheet" href="/styles/utils.css">
+
+	<!-- <style>
+	body {
+		--color-alabaster: #F2F0E6;
+	}
+	</style> -->
+  </head>
+
+  <body>
+	<div id="wrapper-for-sticky-footer">
+	  <the-header></the-header>
+	  <main class="wrapper">
+		<div class="flow region">
+	      <div>
+			<consent-form 
+			  :action="{{ redirect_path_on_submit }}"
+			  :authorization_code_expiration="{{ authorization_code_expiration }}"
+			  :client_id="{{ client_id }}"
+			  :client_name="{{ client_name }}"
+			  :client_uri="{{ client_uri }}"
+			  :code_challenge="{{ code_challenge }}"
+			  :code_challenge_method="{{ code_challenge_method }}"
+			  :logo_uri="{{ logo_uri }}"
+			  :me="{{ me }}"
+			  :redirect_path_on_submit="{{ redirect_path_on_submit }}"
+			  :redirect_uri="{{ redirect_uri }}"
+			  :redirect_uri_on_deny="{{ redirect_uri_on_deny }}"
+			  :scopes="{{ scopes }}"
+			  :state="{{ state }}"
+			>
+			</consent-form>
+			<!-- <my-counter @name="first" @value="3"></my-counter> -->
+		  </div>
+		</div>
+	  </main>
+	  <the-footer></the-footer>
+    </div>
+	<!-- <script>console.log("hello from authorize.webc")</script> -->
+  </body>
+</html>

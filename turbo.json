@@ -5,7 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", "lib/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**", "lib/**"]
     },
     "build:readme": {
       "dependsOn": ["^build:readme"],
@@ -15,7 +15,7 @@
     "build:ts": {
       "dependsOn": ["^build:ts"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": ["lib/**"]
+      "outputs": ["dist/**", "lib/**"]
     },
     "check-types": {
       "dependsOn": ["^check-types"]
@@ -32,6 +32,10 @@
     },
     "publint": {
       "dependsOn": ["^publint"]
+    },
+    "start": {
+      "cache": false,
+      "dependsOn": ["^build"]
     },
     "test": {
       "dependsOn": ["build:ts"],

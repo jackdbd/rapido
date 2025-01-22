@@ -1,0 +1,10 @@
+{
+    "extends": "../../packages/typescript-config/base.json",
+    "compilerOptions": { 
+      // "allowSyntheticDefaultImports": true,
+      "outDir": "./lib",
+      "rootDir": "./src",
+    },
+    "include": ["./src/**/*.ts"]
+  }
+  

@@ -12,6 +12,7 @@ export {
   error_uri,
   errorResponseFromJSONResponse,
 } from "./error-response.js";
+
 export type {
   ErrorDescription,
   ErrorResponse,
@@ -32,4 +33,5 @@ export {
   scope,
   state,
 } from "./schemas.js";
+
 export type { ResponseMode, ResponseType } from "./schemas.js";

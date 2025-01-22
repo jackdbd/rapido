@@ -1,0 +1,116 @@
+<form id="consent-form-no-js" :action="action" method="get"></form>
+
+<template>
+  <form id="consent-form" :action="action" method="get">
+    <p>
+      <span webc:if="true" class="icon">
+        <img :src="logo_uri" :alt="client_name + ' logo'">
+      </span>
+
+      <!-- <code>this.webc</code> -->
+	    <!-- <pre @text="JSON.stringify(this.webc, null, 2)"></pre> -->
+      <!-- TODO: how to access this.webc.attributes.uid in connectedCallback? -->
+      <!-- <p @text="this.webc.attributes.uid"></p> -->
+	
+	    <!-- <code>this.$data</code> -->
+	    <!-- <pre @text="JSON.stringify(this.$data, null, 2)"></pre> -->
+      
+      <a :href="client_uri" @text="client_name" target="_blank" rel="noopener noreferrer"></a> 
+      (client ID <a :href="client_id" @text="client_id" target="_blank" rel="noopener noreferrer"></a>) 
+      is requesting the following <a href="https://indieweb.org/scope" target="_blank" rel="noopener noreferrer">scopes</a> 
+      to access resources on behalf of <a :href="me" @text="me" target="_blank" rel="noopener noreferrer"></a>.
+
+      You can uncheck the scopes you do not want to grant to the application.
+    </p>
+
+    <scope-list :scopes="scopes"></scope-list>
+
+    <p webc:if="code_challenge_method === 'plain'">
+      No PKCE
+    </p>
+
+    <p webc:if="code_challenge_method === 'S256'">
+      <a :href="client_uri" @text="client_name" 
+        target="_blank" rel="noopener noreferrer"></a> 
+      supports PKCE (code challenge with method 
+      <code @text="code_challenge_method"></code>).
+    </p>
+
+    <p>If you <strong>deny</strong> this request, you will redirect you to 
+      <a :href="redirect_uri_on_deny" @text="redirect_uri_on_deny"
+        target="_blank" rel="noopener noreferrer"></a>.
+    </p>
+
+    <p>If you <strong>approve</strong> this request:</p>
+    <ul>
+      <li @text="'this authorization server will generate an authorization code that will be valid for ' + authorization_code_expiration"></li>
+      <li>you will be redirected to <a @text="redirect_uri" :href="redirect_uri" target="_blank" rel="noopener noreferrer"></a></li>
+    </ul>
+
+    <input type="hidden" name="client_id" :value="client_id" />
+    <input type="hidden" name="code_challenge" :value="code_challenge" />
+    <input type="hidden" name="code_challenge_method" :value="code_challenge_method" />
+    <input type="hidden" name="me" :value="me" />
+    <input type="hidden" name="redirect_uri" :value="redirect_uri" />
+    <input type="hidden" name="redirect_uri_on_deny" :value="redirect_uri_on_deny" />
+    <input type="hidden" name="state" :value="state" />
+
+    <button class="deny" type="submit" name="action" value="deny">Deny</button>
+    <button class="approve" type="submit" name="action" value="approve">Approve</button>
+  </form>
+</template>
+
+<style webc:scoped>
+  /* :host a {
+    color: rebeccapurple;
+  } */
+  
+:host:defined #consent-form-no-js {
+  display: none;
+}
+</style>
+  
+<script>
+window.customElements.define("consent-form", class extends HTMLElement {
+  connectedCallback() {
+    let tmpl = this.querySelector("template");
+    tmpl.replaceWith(tmpl.content);
+
+    // This would be a way to select the ID assigned by WebC. But there must be a better way...
+    // let forms = Array.from(this.querySelectorAll("form")).filter((el) => getComputedStyle(el).display !== "none");
+    // const consent_form_id = forms[0].id
+    // console.log("consent form id", consent_form_id)
+
+    const id = "consent-form"
+    const form = this.querySelector(`#${id}`);
+
+    if (!form) {
+    alert(`id ${id} not found on this page`)
+    return
+    }
+
+    form.addEventListener("submit", (event) => {
+    event.preventDefault()
+
+    const scope = Array.from(
+        form.querySelectorAll('input[name="scope"]:checked')
+    ).map((elem) => elem.value).join('+')
+
+    const hiddens = Array.from(
+        form.querySelectorAll('input[type="hidden"]')
+    ).map((elem) => {
+        return { name: elem.name, value: elem.value }
+    })
+
+    const qs = hiddens.reduce((acc, cv) => {
+        return `${acc}&${cv.name}=${encodeURIComponent(cv.value)}`
+    }, `action=${event.submitter.value}&scope=${scope}`)
+
+    // const url = event.target.action
+    const url = event.target.attributes.action.value
+    // alert(JSON.stringify({ url, qs }, null, 2))
+    window.location.href = `${url}?${qs}`
+    }, { once: true, passive: false })
+  }
+})
+</script>

@@ -1,0 +1,6 @@
+<ul class="cluster list-style:none scopes" data-align="start">
+  <li webc:for="scope of scopes.sort()">
+    <input type="checkbox" :id="'scope-' + scope" name="scope" :value="scope" checked />
+    <label :for="'scope-' + scope" @text="scope"></label>
+  </li>
+</ul>

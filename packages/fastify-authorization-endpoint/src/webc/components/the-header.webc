@@ -1,0 +1,6 @@
+<header>
+  <ul class="cluster list-style:none" data-align="start">
+    <li><a href="/">Home</a></li>
+    <li><a href="/id">Id</a></li>
+  </ul>
+</header>
