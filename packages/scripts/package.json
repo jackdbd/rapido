@@ -1,9 +1,12 @@
 {
-  "name": "@repo/scripts",
+  "name": "@rapido/scripts",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@rapido/stdlib": "*"
   }
 }
