@@ -21,6 +21,9 @@ const config = {
   plugins: [...base_config.plugins, git],
 };
 
-// console.log("=== semantic-release (fastify-authorization-endpoint) ===", config);
+// console.log(
+//   "=== semantic-release (fastify-authorization-endpoint) ===",
+//   config
+// );
 
 module.exports = config;

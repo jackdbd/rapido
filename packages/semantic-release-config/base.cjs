@@ -21,7 +21,7 @@ const config = {
   // https://semantic-release.gitbook.io/semantic-release/usage/configuration#branches
   branches: ["main", { name: "canary", prerelease: true }],
 
-  ci: true,
+  // ci: true,
 
   // each package in this monorepo extends this `plugins` array
   // The git plugin must be called AFTER the npm plugin. See here:
