@@ -9,11 +9,13 @@ import {
   toc,
   transcludeFile,
 } from "@thi.ng/transclude";
+import { tokens_plus_info } from "../../oauth2-tokens/lib/index.js";
 import {
   access_token_request_body,
   authorization_request_querystring,
-  plugin_options,
+  plugin_options as authorization_endpoint_plugin_options,
 } from "../../fastify-authorization-endpoint/lib/index.js";
+import { plugin_options as token_endpoint_plugin_options } from "../../fastify-token-endpoint/lib/index.js";
 import { code_challenge, code_challenge_method } from "../../pkce/lib/index.js";
 import {
   callout,
@@ -65,13 +67,28 @@ const run = async () => {
   });
 
   const authorization_endpoint_plugin_options_filepath = await writeJsonSchema({
-    schema: plugin_options,
+    schema: authorization_endpoint_plugin_options,
+    schemas_root,
+  });
+
+  const token_endpoint_plugin_options_filepath = await writeJsonSchema({
+    schema: token_endpoint_plugin_options,
+    schemas_root,
+  });
+
+  const tokens_plus_info_filepath = await writeJsonSchema({
+    schema: tokens_plus_info,
     schemas_root,
   });
 
   const transcluded = transcludeFile(fpath, {
     user: pkg.author,
     templates: {
+      "authorizationEndpoint.pluginOptions": safeSchemaToMarkdown({
+        filepath: authorization_endpoint_plugin_options_filepath,
+        level: 1,
+      }),
+
       "authorizationEndpoint.accessTokenRequestBody": safeSchemaToMarkdown({
         filepath: access_token_request_body_filepath,
         level: 2,
@@ -83,9 +100,14 @@ const run = async () => {
           level: 2,
         }),
 
-      "authorizationEndpoint.pluginOptions": safeSchemaToMarkdown({
-        filepath: authorization_endpoint_plugin_options_filepath,
+      "tokenEndpoint.pluginOptions": safeSchemaToMarkdown({
+        filepath: token_endpoint_plugin_options_filepath,
         level: 1,
+      }),
+
+      "tokenEndpoint.tokensPlusInfo": safeSchemaToMarkdown({
+        filepath: tokens_plus_info_filepath,
+        level: 4,
       }),
 
       badges: () => {

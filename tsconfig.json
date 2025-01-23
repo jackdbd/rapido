@@ -40,6 +40,9 @@
       "path": "./packages/fastify-authorization-endpoint/tsconfig.json"
     },
     {
+      "path": "./packages/fastify-token-endpoint/tsconfig.json"
+    },
+    {
       "path": "./packages/scripts/tsconfig.json"
     },
     {

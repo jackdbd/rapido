@@ -1,6 +1,7 @@
 import { parseArgs } from "node:util";
 import closeWithGrace from "close-with-grace";
 import { defFastify } from "./app.js";
+import { defConfig } from "./config.js";
 
 const { values } = parseArgs({
   allowPositionals: false,
@@ -14,20 +15,7 @@ const { values } = parseArgs({
 const { "print-plugins": print_plugins, "print-routes": print_routes } = values;
 const port = parseInt(values.port);
 
-const base_url = process.env.BASE_URL || `http://localhost:${port}`;
-
-const config = {
-  authorization_endpoint: `${base_url}/auth`,
-  // client_id: "https://micropub.fly.dev/id",
-  host: process.env.HOST || "0.0.0.0",
-  includeErrorDescription: true,
-  issuer: base_url,
-  log_level: process.env.PINO_LOG_LEVEL || "info",
-  me: "https://giacomodebidda.com/",
-  port,
-  reportAllAjvErrors: true,
-  token_endpoint: `${base_url}/token`,
-};
+const config = defConfig(port);
 
 const fastify = defFastify(config);
 

@@ -18,11 +18,12 @@
     "packages/*"
   ],
   "scripts": {
-    "aaa": "npm run build:readme -w ./packages/fastify-authorization-endpoint",
+    "aaa": "npm run build:readme -w ./packages/fastify-token-endpoint",
     "build": "turbo build",
     "build:app": "turbo build --filter @repo/demo-app",
     "build:plugins": "turbo build --filter ./packages/fastify-webc --filter ./packages/fastify-authorization-endpoint",
     "build:readme": "npm run build:readme --workspaces --if-present",
+    "build:scripts": "npm run build -w @repo/scripts",
     "build:ts": "tsc --build --verbose",
     "clean": "turbo clean",
     "copy:webc": "npm run copy:webc --workspaces --if-present",

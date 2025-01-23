@@ -1,0 +1,78 @@
+{
+  "$id": "tokens-plus-info",
+  "additionalProperties": false,
+  "title": "Tokens Plus Info",
+  "description": "Access token, refresh token, and some additional information about the issuer, the client, and the end-user.",
+  "type": "object",
+  "properties": {
+    "access_token": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "access_token_expires_in": {
+      "minimum": 1,
+      "type": "number"
+    },
+    "client_id": {
+      "description": "The ID of the application that asks for authorization. An IndieAuth client ID is a URL.",
+      "format": "uri",
+      "type": "string"
+    },
+    "issuer": {
+      "description": "The authorization server's issuer identifier. It's a URL that uses the \"https\" scheme and has no query or fragment components. It MUST also be a prefix of the indieauth-metadata URL.",
+      "format": "uri",
+      "title": "Issuer",
+      "type": "string"
+    },
+    "jti": {
+      "description": "Unique identifier for the JWT",
+      "minLength": 1,
+      "title": "\"jti\" (JWT ID) Claim",
+      "type": "string"
+    },
+    "kid": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "me": {
+      "description": "Profile URL (after URL Canonicalization)",
+      "format": "uri",
+      "title": "me (canonicalized)",
+      "type": "string"
+    },
+    "redirect_uri": {
+      "description": "Holds a URL. A successful response from this endpoint results in a redirect to this URL.",
+      "format": "uri",
+      "type": "string"
+    },
+    "refresh_token": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "refresh_token_expires_at": {
+      "description": "UNIX timestamp when the JWT expires",
+      "minimum": 0,
+      "title": "\"exp\" (Expiration Time) Claim",
+      "type": "number"
+    },
+    "scope": {
+      "description": "Scope values. See [RFC8693 scope claim](https://www.rfc-editor.org/rfc/rfc8693.html#name-scope-scopes-claim)",
+      "minLength": 1,
+      "title": "OAuth 2.0 scope (scopes) claim",
+      "type": "string"
+    }
+  },
+  "required": [
+    "access_token",
+    "access_token_expires_in",
+    "client_id",
+    "issuer",
+    "jti",
+    "kid",
+    "me",
+    "redirect_uri",
+    "refresh_token",
+    "refresh_token_expires_at",
+    "scope"
+  ]
+}

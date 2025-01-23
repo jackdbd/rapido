@@ -8,6 +8,8 @@ export const include_error_description = Type.Boolean({
   default: DEFAULT.INCLUDE_ERROR_DESCRIPTION,
 });
 
+export const log_prefix = Type.String({ default: DEFAULT.LOG_PREFIX });
+
 export const report_all_ajv_errors = Type.Boolean({
   description: "Whether to report all AJV validation errors.",
   title: "report all AJV errors",

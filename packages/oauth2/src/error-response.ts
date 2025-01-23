@@ -94,12 +94,26 @@ export interface PayloadOptions {
   include_error_description?: boolean;
 }
 
-export const errorResponseFromJSONResponse = async (response: Response) => {
+export type PayloadFunction = (options?: PayloadOptions) => {
+  error: string;
+  error_description?: string;
+  error_uri?: string;
+  state?: string;
+};
+
+export interface ErrorResponseFromJSON {
+  statusCode: number;
+  payload: PayloadFunction;
+}
+
+export const errorResponseFromJSONResponse = async (
+  response: Response
+): Promise<ErrorResponseFromJSON> => {
   const body: ErrorResponseBody = await response.json();
 
   return {
     statusCode: response.status,
-    payload: (options?: PayloadOptions) => {
+    payload: (options) => {
       const opt = options || {};
       const include_error_description = opt.include_error_description ?? false;
 

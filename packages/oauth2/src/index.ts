@@ -16,8 +16,11 @@ export {
 export type {
   ErrorDescription,
   ErrorResponse,
+  ErrorResponseFromJSON,
   ErrorType,
   ErrorUri,
+  PayloadFunction,
+  PayloadOptions,
 } from "./error-response.js";
 
 export { grant_type, type GrantType } from "./grant-type.js";

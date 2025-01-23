@@ -32,8 +32,11 @@ export const jwks_public = Type.Object({
 
 export type JWKSPublic = Static<typeof jwks_public>;
 
-export const jwks_private = Type.Object({
-  keys: Type.Array(jwk_private),
-});
+export const jwks_private = Type.Object(
+  {
+    keys: Type.Array(jwk_private),
+  },
+  { description: "Private JSON Web Key Set" }
+);
 
 export type JWKSPrivate = Static<typeof jwks_private>;
