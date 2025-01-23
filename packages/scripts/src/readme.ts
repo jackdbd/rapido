@@ -16,6 +16,7 @@ import {
   plugin_options as authorization_endpoint_plugin_options,
 } from "../../fastify-authorization-endpoint/lib/index.js";
 import { plugin_options as token_endpoint_plugin_options } from "../../fastify-token-endpoint/lib/index.js";
+import { plugin_options as introspection_endpoint_plugin_options } from "../../fastify-introspection-endpoint/lib/index.js";
 import { code_challenge, code_challenge_method } from "../../pkce/lib/index.js";
 import {
   callout,
@@ -71,6 +72,11 @@ const run = async () => {
     schemas_root,
   });
 
+  const introspection_endpoint_plugin_options_filepath = await writeJsonSchema({
+    schema: introspection_endpoint_plugin_options,
+    schemas_root,
+  });
+
   const token_endpoint_plugin_options_filepath = await writeJsonSchema({
     schema: token_endpoint_plugin_options,
     schemas_root,
@@ -99,6 +105,11 @@ const run = async () => {
           filepath: authorization_request_querystring_filepath,
           level: 2,
         }),
+
+      "introspectionEndpoint.pluginOptions": safeSchemaToMarkdown({
+        filepath: introspection_endpoint_plugin_options_filepath,
+        level: 1,
+      }),
 
       "tokenEndpoint.pluginOptions": safeSchemaToMarkdown({
         filepath: token_endpoint_plugin_options_filepath,

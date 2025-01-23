@@ -1,0 +1,80 @@
+{
+  "name": "@jackdbd/fastify-introspection-endpoint",
+  "version": "0.1.0",
+  "description": "Fastify plugin that adds an [IndieAuth Token Introspection Endpoint](https://indieauth.spec.indieweb.org/#access-token-verification) to a Fastify server.",
+  "author": {
+    "name": "Giacomo Debidda",
+    "email": "giacomo@giacomodebidda.com",
+    "url": "https://giacomodebidda.com/"
+  },
+  "license": "MIT",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "fastify",
+    "IndieAuth",
+    "OAuth 2.0",
+    "plugin",
+    "token introspection"
+  ],
+  "type": "module",
+  "module": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js"
+    },
+    "./schemas": {
+      "types": "./lib/schemas/index.d.ts",
+      "import": "./lib/schemas/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./lib/*.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md",
+    "lib"
+  ],
+  "scripts": {
+    "build": "run-s 'build:ts' 'build:readme' --print-label",
+    "build:readme": "node ../scripts/dist/readme.js --package fastify-introspection-endpoint",
+    "build:ts": "tsc -p tsconfig.json",
+    "build:ts:watch": "tsc -p tsconfig.json --watch",
+    "clean": "rimraf lib/ tsconfig.tsbuildinfo",
+    "dev": "run-p build:ts:watch test:watch",
+    "publint": "publint run .",
+    "release": "semantic-release --no-ci --debug",
+    "size": "pkg-size ./lib --sort-by=brotli --ignore-files {*.d.ts,*.map}",
+    "test": "node --test --experimental-test-coverage",
+    "test:ci": "node --test --test-reporter=@reporters/github --test-reporter-destination=stdout --test-reporter=spec --test-reporter-destination=stdout",
+    "test:watch": "node --test --watch"
+  },
+  "dependencies": {
+    "@fastify/formbody": "^8.0.2",
+    "@fastify/response-validation": "^3.0.3",
+    "@jackdbd/indieauth": "1.0.0-canary.4",
+    "@jackdbd/oauth2": "1.0.0-canary.1",
+    "@jackdbd/oauth2-error-responses": "1.0.0-canary.1",
+    "@jackdbd/oauth2-tokens": "1.0.0-canary.2",
+    "@jackdbd/schema-validators": "1.0.0-canary.1",
+    "@sinclair/typebox": "^0.34.14",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "fastify-plugin": "^5.0.1"
+  },
+  "peerDependencies": {
+    "fastify": ">=5.0.0"
+  },
+  "devDependencies": {}
+}

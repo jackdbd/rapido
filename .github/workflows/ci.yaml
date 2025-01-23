@@ -96,3 +96,6 @@ jobs:
 
       - name: 🔍 Test @jackdbd/fastify-token-endpoint
         run: npm run test:ci -w ./packages/fastify-token-endpoint
+
+      - name: 🔍 Test @jackdbd/fastify-introspection-endpoint
+        run: npm run test:ci -w ./packages/fastify-introspection-endpoint

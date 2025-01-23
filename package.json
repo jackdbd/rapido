@@ -18,7 +18,7 @@
     "packages/*"
   ],
   "scripts": {
-    "aaa": "npm run build:readme -w ./packages/fastify-token-endpoint",
+    "aaa": "npm run build:readme -w ./packages/fastify-introspection-endpoint",
     "build": "turbo build",
     "build:app": "turbo build --filter @repo/demo-app",
     "build:plugins": "turbo build --filter ./packages/fastify-webc --filter ./packages/fastify-authorization-endpoint",

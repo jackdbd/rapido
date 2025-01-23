@@ -43,6 +43,9 @@
       "path": "./packages/fastify-token-endpoint/tsconfig.json"
     },
     {
+      "path": "./packages/fastify-introspection-endpoint/tsconfig.json"
+    },
+    {
       "path": "./packages/scripts/tsconfig.json"
     },
     {
