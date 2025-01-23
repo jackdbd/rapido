@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## @jackdbd/oauth2-tokens [1.0.0-canary.4](https://github.com/jackdbd/rapido/compare/@jackdbd/oauth2-tokens@1.0.0-canary.3...@jackdbd/oauth2-tokens@1.0.0-canary.4) (2025-01-23)
+
+
+### Features
+
+* **oauth2-tokens:** forgot to export some date functions ([9a9c187](https://github.com/jackdbd/rapido/commit/9a9c187b62eac9b3ca7fd5941f17bf8b7bb14355))
+
 ## @jackdbd/oauth2-tokens [1.0.0-canary.3](https://github.com/jackdbd/rapido/compare/@jackdbd/oauth2-tokens@1.0.0-canary.2...@jackdbd/oauth2-tokens@1.0.0-canary.3) (2025-01-23)
 
 

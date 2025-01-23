@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/oauth2-tokens",
-  "version": "1.0.0-canary.3",
+  "version": "1.0.0-canary.4",
   "description": "Useful functions when working with OAuth 2.0 tokens.",
   "author": {
     "name": "Giacomo Debidda",
