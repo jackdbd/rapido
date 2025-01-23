@@ -84,10 +84,12 @@ jobs:
         run: npx turbo run test:ci --filter ./packages/schema-validators
 
       - name: 🔍 Test @jackdbd/oauth2-tokens
-        run: npx turbo run test:ci --filter ./packages/oauth2-tokens
+        env:
+          JWKS: ${{ secrets.JWKS }}
+        run: npm run test:ci -w ./packages/oauth2-tokens
 
       - name: 🔍 Test @jackdbd/fastify-webc
-        run: npx turbo run test:ci --filter ./packages/fastify-webc
+        run: npm run test:ci -w ./packages/fastify-webc
       
       - name: 🔍 Test @jackdbd/fastify-authorization-endpoint
-        run: npx turbo run test:ci --filter ./packages/fastify-authorization-endpoint
+        run: npm run test:ci -w ./packages/fastify-authorization-endpoint
