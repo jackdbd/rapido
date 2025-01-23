@@ -46,6 +46,9 @@
       "path": "./packages/fastify-introspection-endpoint/tsconfig.json"
     },
     {
+      "path": "./packages/fastify-revocation-endpoint/tsconfig.json"
+    },
+    {
       "path": "./packages/scripts/tsconfig.json"
     },
     {

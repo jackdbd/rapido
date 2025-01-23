@@ -99,3 +99,6 @@ jobs:
 
       - name: 🔍 Test @jackdbd/fastify-introspection-endpoint
         run: npm run test:ci -w ./packages/fastify-introspection-endpoint
+
+      - name: 🔍 Test @jackdbd/fastify-revocation-endpoint
+        run: npm run test:ci -w ./packages/fastify-revocation-endpoint
