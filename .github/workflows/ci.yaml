@@ -83,6 +83,9 @@ jobs:
       - name: 🔍 Test @jackdbd/schema-validators
         run: npx turbo run test:ci --filter ./packages/schema-validators
 
+      - name: 🔍 Test @jackdbd/oauth2-tokens
+        run: npx turbo run test:ci --filter ./packages/oauth2-tokens
+
       - name: 🔍 Test @jackdbd/fastify-webc
         run: npx turbo run test:ci --filter ./packages/fastify-webc
       
