@@ -53,6 +53,7 @@
     "clean": "rimraf lib/ tsconfig.tsbuildinfo",
     "dev": "run-p build:ts:watch test:watch",
     "publint": "publint run .",
+    "release": "semantic-release --no-ci --debug",
     "size": "pkg-size ./lib --sort-by=brotli --ignore-files {*.d.ts,*.map}",
     "test": "node --test --experimental-test-coverage",
     "test:ci": "node --test --test-reporter=@reporters/github --test-reporter-destination=stdout --test-reporter=spec --test-reporter-destination=stdout",
