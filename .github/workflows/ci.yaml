@@ -60,28 +60,28 @@ jobs:
       - run: npm run size
 
       - name: 🔍 Test @jackdbd/canonical-url
-        run: npm run test:ci -w --filter ./packages/canonical-url
+        run: npm run test:ci -w ./packages/canonical-url
       
       - name: 🔍 Test @jackdbd/relmeauth
-        run: npm run test:ci -w --filter ./packages/relmeauth
+        run: npm run test:ci -w ./packages/relmeauth
 
       - name: 🔍 Test @jackdbd/pkce
-        run: npm run test:ci -w --filter ./packages/pkce
+        run: npm run test:ci -w ./packages/pkce
 
       - name: 🔍 Test @jackdbd/unwrap
-        run: npm run test:ci -w --filter ./packages/unwrap
+        run: npm run test:ci -w ./packages/unwrap
 
       - name: 🔍 Test @jackdbd/oauth2-error-responses
-        run: npm run test:ci -w --filter ./packages/oauth2-error-responses
+        run: npm run test:ci -w ./packages/oauth2-error-responses
 
       - name: 🔍 Test @jackdbd/oauth2
-        run: npm run test:ci -w --filter ./packages/oauth2
+        run: npm run test:ci -w ./packages/oauth2
 
       - name: 🔍 Test @jackdbd/indieauth
-        run: npm run test:ci -w --filter ./packages/indieauth
+        run: npm run test:ci -w ./packages/indieauth
 
       - name: 🔍 Test @jackdbd/schema-validators
-        run: npm run test:ci -w --filter ./packages/schema-validators
+        run: npm run test:ci -w ./packages/schema-validators
 
       - name: 🔍 Test @jackdbd/oauth2-tokens
         env:
