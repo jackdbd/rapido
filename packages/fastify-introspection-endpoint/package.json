@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/fastify-introspection-endpoint",
-  "version": "0.1.0",
+  "version": "1.0.0-canary.4",
   "description": "Fastify plugin that adds an [IndieAuth Token Introspection Endpoint](https://indieauth.spec.indieweb.org/#access-token-verification) to a Fastify server.",
   "author": {
     "name": "Giacomo Debidda",
