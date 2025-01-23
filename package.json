@@ -39,6 +39,7 @@
     "release:fastify-introspection-endpoint": "npm run release -w packages/fastify-introspection-endpoint",
     "release:fastify-revocation-endpoint": "npm run release -w packages/fastify-revocation-endpoint",
     "release:fastify-token-endpoint": "npm run release -w packages/fastify-token-endpoint",
+    "release:fastify-webc": "npm run release -w packages/fastify-webc",
     "size": "turbo size",
     "start:app": "npm run start -w @repo/demo-app",
     "test": "turbo test",
