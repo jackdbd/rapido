@@ -1,7 +1,14 @@
 export { accessToken } from "./access-token.js";
 export type { ReturnValue as AccessTokenPlusInfo } from "./access-token.js";
 
-export { unixTimestampInMs, unixTimestampInSeconds } from "./date.js";
+export {
+  iso8601,
+  msToUTCString,
+  rfc3339,
+  secondsToUTCString,
+  unixTimestampInMs,
+  unixTimestampInSeconds,
+} from "./date.js";
 
 export type { AccessTokenClaims } from "./jwt-claims.js";
 
