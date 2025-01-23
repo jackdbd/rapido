@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/oauth2-tokens",
-  "version": "1.0.0-canary.2",
+  "version": "1.0.0-canary.3",
   "description": "Useful functions when working with OAuth 2.0 tokens.",
   "author": {
     "name": "Giacomo Debidda",
@@ -53,8 +53,8 @@
     "test:watch": "node --test --watch"
   },
   "dependencies": {
-    "@jackdbd/indieauth": "1.0.0-canary.3",
-    "@jackdbd/oauth2": "1.0.0-canary.2",
+    "@jackdbd/indieauth": "1.0.0-canary.4",
+    "@jackdbd/oauth2": "1.0.0-canary.3",
     "@jackdbd/schema-validators": "1.0.0-canary.2",
     "@sinclair/typebox": "^0.34.14",
     "ajv": "^8.17.1",
