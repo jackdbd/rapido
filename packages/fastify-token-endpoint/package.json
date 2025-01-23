@@ -62,6 +62,7 @@
   "dependencies": {
     "@fastify/formbody": "^8.0.2",
     "@fastify/response-validation": "^3.0.3",
+    "@jackdbd/indieauth": "1.0.0-canary.4",
     "@jackdbd/oauth2": "1.0.0-canary.1",
     "@jackdbd/oauth2-error-responses": "1.0.0-canary.1",
     "@jackdbd/oauth2-tokens": "1.0.0-canary.2",

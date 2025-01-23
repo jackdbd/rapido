@@ -10,6 +10,18 @@ export interface PayloadOptions {
   include_error_description?: boolean;
 }
 
+export type PayloadFunction = (options?: PayloadOptions) => {
+  error: string;
+  error_description?: string;
+  error_uri?: string;
+  state?: string;
+};
+
+export interface ErrorResponseFromJSON {
+  statusCode: number;
+  payload: PayloadFunction;
+}
+
 /**
  * Base class for creating an error response that has all the properties
  * required by these protocols:
