@@ -22,7 +22,7 @@ in {
 
   env = {
     BASE_URL = "http://localhost:${config.env.PORT}";
-    GITHUB_TOKEN = semantic_release_bot_github_token;
+    # GITHUB_TOKEN = semantic_release_bot_github_token;
     # GITHUB_TOKEN = builtins.readFile /run/secrets/github-tokens/crud_contents_api;
     JWKS = builtins.readFile /home/jack/repos/micropub/secrets/jwks.txt;
     NODE_ENV = "development";
@@ -30,7 +30,7 @@ in {
     PINO_LOG_LEVEL = "debug";
     PORT = "3001";
     # The github token used by @semantic-release/github must allow to push to this GitHub repository
-    SEMANTIC_RELEASE_BOT_GITHUB_TOKEN = semantic_release_bot_github_token;
+    # SEMANTIC_RELEASE_BOT_GITHUB_TOKEN = semantic_release_bot_github_token;
     # SKIP_VALIDATION = 1;
     TELEGRAM_CHAT_ID = telegram.chat_id;
     TELEGRAM_TOKEN = telegram.token;
@@ -50,7 +50,6 @@ in {
     entr # run arbitrary commands when files change
     git
     nodejs
-    yarn # monopub uses yarn
   ];
 
   pre-commit.hooks = {
@@ -62,42 +61,6 @@ in {
   };
 
   scripts = {
-    monopub.exec = ''
-      ./monopub/bin/monopub
-    '';
-    monopub-changelog.exec = ''
-      ./monopub/bin/monopub changelog \
-      --repo-path . --repo-url https://github.com/jackdbd/rapido \
-      --root packages --scope @jackdbd \
-      --since 2025-01-15
-    '';
-    monopub-changelog-dry-run.exec = ''
-      ./monopub/bin/monopub changelog \
-      --repo-path . --repo-url https://github.com/jackdbd/rapido \
-      --root packages --scope @jackdbd \
-      --since 2025-01-15 \
-      --dry-run
-    '';
-    monopub-release.exec = ''
-      ./monopub/bin/monopub release \
-      --publish-script pub \
-      --repo-path . --repo-url https://github.com/jackdbd/rapido \
-      --root packages --scope @jackdbd \
-      --release-branch canary \
-      --since 2025-01-15 \
-      --throttle 1500
-    '';
-    monopub-version.exec = ''
-      ./monopub/bin/monopub version \
-      --repo-path . --repo-url https://github.com/jackdbd/rapido \
-      --root packages --scope @jackdbd
-    '';
-    monopub-version-dry-run.exec = ''
-      ./monopub/bin/monopub version \
-      --repo-path . --repo-url https://github.com/jackdbd/rapido \
-      --root packages --scope @jackdbd \
-      --dry-run
-    '';
     versions.exec = ''
       echo "=== Versions ==="
       git --version
