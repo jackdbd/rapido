@@ -1,6 +1,6 @@
 {
 	"name": "@jackdbd/oauth2-tokens",
-	"version": "1.1.4",
+	"version": "1.1.5",
 	"description": "Useful functions when working with OAuth 2.0 tokens.",
 	"author": {
 		"name": "Giacomo Debidda",
@@ -54,7 +54,7 @@
 		"test:watch": "node --test --watch"
 	},
 	"dependencies": {
-		"@jackdbd/indieauth": "^1.1.4",
+		"@jackdbd/indieauth": "^1.1.5",
 		"@jackdbd/oauth2": "^1.1.2",
 		"@jackdbd/schema-validators": "^1.1.1",
 		"@sinclair/typebox": "^0.34.14",
