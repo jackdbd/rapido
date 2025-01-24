@@ -1,70 +1,70 @@
 {
-  "name": "@jackdbd/fastify-webc",
-  "version": "1.1.0",
-  "description": "Fastify plugin to render WebC templates and components.",
-  "author": {
-    "name": "Giacomo Debidda",
-    "email": "giacomo@giacomodebidda.com",
-    "url": "https://giacomodebidda.com/"
-  },
-  "license": "MIT",
-  "private": false,
-  "publishConfig": {
-    "access": "public"
-  },
-  "keywords": [
-    "fastify",
-    "plugin",
-    "webc",
-    "web-components"
-  ],
-  "type": "module",
-  "module": "lib/index.js",
-  "typings": "lib/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./lib/index.d.ts",
-      "import": "./lib/index.js"
-    },
-    "./helpers": {
-      "types": "./lib/helpers.d.ts",
-      "import": "./lib/helpers.js"
-    },
-    "./package.json": "./package.json"
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./lib/*.d.ts"
-      ]
-    }
-  },
-  "files": [
-    "CHANGELOG.md",
-    "LICENSE",
-    "README.md",
-    "lib"
-  ],
-  "scripts": {
-    "build": "run-s 'build:ts' 'build:readme' --print-label",
-    "build:readme": "node ../scripts/dist/readme.js --package fastify-webc",
-    "build:ts": "tsc -p tsconfig.json",
-    "build:ts:watch": "tsc -p tsconfig.json --watch",
-    "clean": "rimraf lib/ tsconfig.tsbuildinfo",
-    "dev": "run-p build:ts:watch test:watch",
-    "pub": "npm publish --access public",
-    "publint": "publint run .",
-    "size": "pkg-size ./lib --sort-by=brotli --ignore-files {*.d.ts,*.map}",
-    "test": "node --test --experimental-test-coverage",
-    "test:ci": "node --test --test-reporter=@reporters/github --test-reporter-destination=stdout --test-reporter=spec --test-reporter-destination=stdout",
-    "test:watch": "node --test --watch"
-  },
-  "dependencies": {
-    "@11ty/webc": "^0.11.4",
-    "fastify-plugin": "^5.0.1"
-  },
-  "peerDependencies": {
-    "fastify": ">=5.0.0"
-  },
-  "devDependencies": {}
+	"name": "@jackdbd/fastify-webc",
+	"version": "1.1.1",
+	"description": "Fastify plugin to render WebC templates and components.",
+	"author": {
+		"name": "Giacomo Debidda",
+		"email": "giacomo@giacomodebidda.com",
+		"url": "https://giacomodebidda.com/"
+	},
+	"license": "MIT",
+	"private": false,
+	"publishConfig": {
+		"access": "public"
+	},
+	"keywords": [
+		"fastify",
+		"plugin",
+		"webc",
+		"web-components"
+	],
+	"type": "module",
+	"module": "lib/index.js",
+	"typings": "lib/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./lib/index.d.ts",
+			"import": "./lib/index.js"
+		},
+		"./helpers": {
+			"types": "./lib/helpers.d.ts",
+			"import": "./lib/helpers.js"
+		},
+		"./package.json": "./package.json"
+	},
+	"typesVersions": {
+		"*": {
+			"*": [
+				"./lib/*.d.ts"
+			]
+		}
+	},
+	"files": [
+		"CHANGELOG.md",
+		"LICENSE",
+		"README.md",
+		"lib"
+	],
+	"scripts": {
+		"build": "run-s 'build:ts' 'build:readme' --print-label",
+		"build:readme": "node ../scripts/dist/readme.js --package fastify-webc",
+		"build:ts": "tsc -p tsconfig.json",
+		"build:ts:watch": "tsc -p tsconfig.json --watch",
+		"clean": "rimraf lib/ tsconfig.tsbuildinfo",
+		"dev": "run-p build:ts:watch test:watch",
+		"pub": "npm publish --access public",
+		"publint": "publint run .",
+		"size": "pkg-size ./lib --sort-by=brotli --ignore-files {*.d.ts,*.map}",
+		"test": "node --test --experimental-test-coverage",
+		"test:ci": "node --test --test-reporter=@reporters/github --test-reporter-destination=stdout --test-reporter=spec --test-reporter-destination=stdout",
+		"test:watch": "node --test --watch"
+	},
+	"dependencies": {
+		"@11ty/webc": "^0.11.4",
+		"fastify-plugin": "^5.0.1"
+	},
+	"peerDependencies": {
+		"fastify": ">=5.0.0"
+	},
+	"devDependencies": {}
 }

@@ -1,12 +1,12 @@
 {
-  "name": "@repo/semantic-release-config",
-  "version": "0.1.0",
-  "private": true,
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
-  "scripts": {
-    "pub": "echo '@repo/semantic-release-config is a private package. Skip publishing it.'"
-  }
+	"name": "@repo/semantic-release-config",
+	"version": "0.1.1",
+	"private": true,
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"pub": "echo '@repo/semantic-release-config is a private package. Skip publishing it.'"
+	}
 }

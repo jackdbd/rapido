@@ -1,12 +1,12 @@
 {
 	"name": "@repo/typescript-config",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"private": true,
 	"license": "MIT",
 	"publishConfig": {
 		"access": "public"
 	},
 	"scripts": {
-	   "pub": "echo '@repo/typescript-config is a private package. Skip publishing it.'"
+		"pub": "echo '@repo/typescript-config is a private package. Skip publishing it.'"
 	}
 }
