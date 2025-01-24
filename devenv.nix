@@ -69,15 +69,17 @@ in {
       ./monopub/bin/monopub changelog \
       --repo-path . --repo-url https://github.com/jackdbd/rapido \
       --root packages --scope @jackdbd \
-      --all --since 2025-01-15
+      --since 2025-01-15 \
+      --all
     '';
     monopub-release.exec = ''
       ./monopub/bin/monopub release \
+      --publish-script pub \
       --repo-path . --repo-url https://github.com/jackdbd/rapido \
       --root packages --scope @jackdbd \
       --release-branch canary \
       --since 2025-01-15 \
-      --throttle 3000
+      --throttle 1500
     '';
     monopub-version.exec = ''
       ./monopub/bin/monopub version \
