@@ -15,12 +15,16 @@ export {
   options as plugin_options,
   retrieveUserProfile,
   userinfo_get_config,
+  user_profile_immutable_record,
+  user_profile_mutable_record,
 } from "./schemas/index.js";
 export type {
   IsAccessTokenRevoked,
   Options as PluginOptions,
   RetrieveUserProfile,
   UserinfoGetConfig,
+  UserProfileImmutableRecord,
+  UserProfileMutableRecord,
 } from "./schemas/index.js";
 
 const defaults = {
