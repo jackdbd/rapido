@@ -6,10 +6,9 @@ permissions:
 
 on:
   push:
-    # For now, we just publish pre-release on the canary branch. See semantic relase config (base.cjs)
     branches:
       - canary
-      # - main
+      - main
 
 jobs:
   audit-build-test-release:
@@ -97,6 +96,10 @@ jobs:
       - name: 🔍 Test @jackdbd/fastify-userinfo-endpoint
         run: npm run test:ci -w ./packages/fastify-userinfo-endpoint
 
+      - name: Create canary versions (pre-release)
+        if: github.ref == 'refs/heads/canary'
+        run: npm run changeset:canary
+
       - name: 🚀 Create Release Pull Request or Publish to npm.js
         # https://github.com/changesets/action
         id: changesets
@@ -106,16 +109,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_NPM_TOKEN }}
-
-      # - name: 🚀 Release to npmjs
-      #   env:
-      #     # The github token must allow to push to this GitHub repository.
-      #     GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_GITHUB_TOKEN }}
-      #     NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_NPM_TOKEN }}
-      #     TELEGRAM_BOT_ID: ${{ secrets.TELEGRAM_BOT_ID }}
-      #     TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      #     TELEGRAM_CHAT_ID: ${{ fromJSON(secrets.TELEGRAM).chat_id }}
-      #   run: >
-      #     npx multi-semantic-release
-      #     --ignore-private
-      #     --ignore-packages=packages/fastify-authorization-endpoint,packages/fastify-introspection-endpoint,packages/fastify-token-endpoint,packages/fastify-revocation-endpoint,packages/fastify-userinfo-endpoint
+      
+      - run: npm run changeset:exit-pre-release-mode
