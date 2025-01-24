@@ -39,8 +39,7 @@ export const refresh_token_props = Type.Object(
   {
     $id: "refresh-token-props",
     additionalProperties: false,
-    description:
-      "Properties of a refresh token (a storage implementation may have addition properties)",
+    description: "Properties of a refresh token",
     title: "Refresh Token Props",
   }
 );
@@ -55,9 +54,7 @@ export const refresh_token_immutable_record = Type.Object(
   {
     $id: "refresh-token-immutable-record",
     additionalProperties: false,
-    description: `Represents a record of a refresh token. The values of this
-    record should never change. Any updates to the underlying entity should 
-    create a new record.`,
+    description: `Represents a record of a refresh token. The values of this record should never change. Any updates to the underlying entity should create a new record.`,
     title: "Refresh Token Immutable Record",
   }
 );
@@ -73,11 +70,8 @@ export const refresh_token_mutable_record = Type.Object(
   },
   {
     $id: "refresh-token-mutable-record",
-    // $schema: 'https://json-schema.org/draft/2020-12/schema',
     additionalProperties: false,
-    description: `Represents a record of a refresh token with a predefined set 
-    of properties (columns). While the structure of the record remains 
-    consistent, the values of these properties may change over time.`,
+    description: `Represents a record of a refresh token with a predefined set of properties (columns). While the structure of the record remains consistent, the values of these properties may change over time.`,
     title: "Refresh Token Mutable Record",
   }
 );

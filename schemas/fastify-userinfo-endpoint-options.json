@@ -1,0 +1,198 @@
+{
+  "$id": "fastify-userinfo-endpoint-options",
+  "description": "Options for the Fastify userinfo-endpoint plugin",
+  "title": "Userinfo Endpoint Options",
+  "type": "object",
+  "properties": {
+    "ajv": {
+      "description": "Instance of Ajv"
+    },
+    "includeErrorDescription": {
+      "description": "Whether to include an `error_description` property in all error responses. This is meant to assist the client developer in understanding the error. This is NOT meant to be shown to the end user.",
+      "default": false,
+      "type": "boolean"
+    },
+    "isAccessTokenRevoked": {
+      "description": "Predicate function that returns true if a jti (JSON Web Token ID) is revoked.",
+      "title": "isAccessTokenRevoked",
+      "type": "Function",
+      "parameters": [
+        {
+          "description": "Unique identifier for the JWT",
+          "minLength": 1,
+          "title": "\"jti\" (JWT ID) Claim",
+          "type": "string"
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "item": {
+          "type": "boolean"
+        }
+      }
+    },
+    "logPrefix": {
+      "default": "userinfo-endpoint ",
+      "type": "string"
+    },
+    "reportAllAjvErrors": {
+      "description": "Whether to report all AJV validation errors.",
+      "title": "report all AJV errors",
+      "default": false,
+      "type": "boolean"
+    },
+    "retrieveUserProfile": {
+      "$id": "retrieve-user-profile",
+      "description": "Function that retrieves a user's profile from a storage backend.",
+      "title": "retrieveUserProfile",
+      "type": "Function",
+      "parameters": [
+        {
+          "description": "Profile URL (after URL Canonicalization)",
+          "format": "uri",
+          "title": "me (canonicalized)",
+          "type": "string"
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "item": {
+          "anyOf": [
+            {
+              "$id": "user-profile-immutable-record",
+              "additionalProperties": false,
+              "description": "Represents a record of a user's profile. The values of this record should never change. Any updates to the underlying entity should create a new record.",
+              "title": "User Profile Immutable Record",
+              "type": "object",
+              "properties": {
+                "created_at": {
+                  "minimum": 1,
+                  "description": "Timestamp in milliseconds since UNIX epoch",
+                  "type": "number"
+                },
+                "id": {
+                  "anyOf": [
+                    {
+                      "minimum": 1,
+                      "type": "number"
+                    },
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  ]
+                },
+                "name": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "url": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "photo": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "email": {
+                  "format": "email",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "created_at",
+                "id",
+                "name",
+                "url",
+                "photo"
+              ]
+            },
+            {
+              "$id": "user-profile-mutable-record",
+              "additionalProperties": false,
+              "description": "Represents a record of a user's profile with a predefined set of properties (columns). While the structure of the record remains consistent, the values of these properties may change over time.",
+              "title": "User Profile Mutable Record",
+              "type": "object",
+              "properties": {
+                "created_at": {
+                  "anyOf": [
+                    {
+                      "minimum": 1,
+                      "description": "Timestamp in milliseconds since UNIX epoch",
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "deleted_at": {
+                  "anyOf": [
+                    {
+                      "minimum": 1,
+                      "description": "Timestamp in milliseconds since UNIX epoch",
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "undeleted_at": {
+                  "anyOf": [
+                    {
+                      "minimum": 1,
+                      "description": "Timestamp in milliseconds since UNIX epoch",
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "updated_at": {
+                  "anyOf": [
+                    {
+                      "minimum": 1,
+                      "description": "Timestamp in milliseconds since UNIX epoch",
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "name": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "url": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "photo": {
+                  "format": "uri",
+                  "type": "string"
+                },
+                "email": {
+                  "format": "email",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "created_at",
+                "name",
+                "url",
+                "photo"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "required": [
+    "isAccessTokenRevoked",
+    "retrieveUserProfile"
+  ]
+}

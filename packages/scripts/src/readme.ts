@@ -18,6 +18,7 @@ import {
 import { plugin_options as introspection_endpoint_plugin_options } from "../../fastify-introspection-endpoint/lib/index.js";
 import { plugin_options as revocation_endpoint_plugin_options } from "../../fastify-revocation-endpoint/lib/index.js";
 import { plugin_options as token_endpoint_plugin_options } from "../../fastify-token-endpoint/lib/index.js";
+import { plugin_options as userinfo_endpoint_plugin_options } from "../../fastify-userinfo-endpoint/lib/index.js";
 import { code_challenge, code_challenge_method } from "../../pkce/lib/index.js";
 import {
   callout,
@@ -93,6 +94,11 @@ const run = async () => {
     schemas_root,
   });
 
+  const userinfo_endpoint_plugin_options_filepath = await writeJsonSchema({
+    schema: userinfo_endpoint_plugin_options,
+    schemas_root,
+  });
+
   const transcluded = transcludeFile(fpath, {
     user: pkg.author,
     templates: {
@@ -130,6 +136,11 @@ const run = async () => {
       "tokenEndpoint.tokensPlusInfo": safeSchemaToMarkdown({
         filepath: tokens_plus_info_filepath,
         level: 4,
+      }),
+
+      "userinfoEndpoint.pluginOptions": safeSchemaToMarkdown({
+        filepath: userinfo_endpoint_plugin_options_filepath,
+        level: 1,
       }),
 
       badges: () => {

@@ -18,7 +18,7 @@
     "packages/*"
   ],
   "scripts": {
-    "aaa": "npm run build:readme -w ./packages/fastify-revocation-endpoint",
+    "aaa": "npm run build:readme -w ./packages/fastify-userinfo-endpoint",
     "build": "turbo build",
     "build:app": "turbo build --filter @repo/demo-app",
     "build:plugins": "turbo build --filter ./packages/fastify-webc --filter ./packages/fastify-authorization-endpoint",
@@ -39,6 +39,7 @@
     "release:fastify-introspection-endpoint": "npm run release -w packages/fastify-introspection-endpoint",
     "release:fastify-revocation-endpoint": "npm run release -w packages/fastify-revocation-endpoint",
     "release:fastify-token-endpoint": "npm run release -w packages/fastify-token-endpoint",
+    "release:fastify-userinfo-endpoint": "npm run release -w packages/fastify-userinfo-endpoint",
     "release:fastify-webc": "npm run release -w packages/fastify-webc",
     "size": "turbo size",
     "start:app": "npm run start -w @repo/demo-app",
