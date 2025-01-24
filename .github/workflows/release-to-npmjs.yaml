@@ -97,6 +97,16 @@ jobs:
       - name: 🔍 Test @jackdbd/fastify-userinfo-endpoint
         run: npm run test:ci -w ./packages/fastify-userinfo-endpoint
 
+      - name: 🚀 Create Release Pull Request or Publish to npm.js
+        # https://github.com/changesets/action
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: npm run publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_NPM_TOKEN }}
+
       # - name: 🚀 Release to npmjs
       #   env:
       #     # The github token must allow to push to this GitHub repository.

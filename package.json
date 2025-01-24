@@ -34,6 +34,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "nuke": "npm run clean && rm -rf node_modules package-lock.json",
     "publint": "npm run publint --workspaces --if-present",
+    "publish": "npx changeset publish",
     "release:dry": "multi-semantic-release --no-ci --dry-run --debug --ignore-private",
     "release:fastify-authorization-endpoint": "npm run release -w packages/fastify-authorization-endpoint",
     "release:fastify-introspection-endpoint": "npm run release -w packages/fastify-introspection-endpoint",
