@@ -50,6 +50,7 @@ in {
     entr # run arbitrary commands when files change
     git
     nodejs
+    yarn # monopub uses yarn
   ];
 
   pre-commit.hooks = {
@@ -61,6 +62,35 @@ in {
   };
 
   scripts = {
+    monopub.exec = ''
+      ./monopub/bin/monopub
+    '';
+    monopub-changelog.exec = ''
+      ./monopub/bin/monopub changelog \
+      --repo-path . --repo-url https://github.com/jackdbd/rapido \
+      --root packages --scope @jackdbd \
+      --all --since 2025-01-15
+    '';
+    monopub-release.exec = ''
+      ./monopub/bin/monopub release \
+      --repo-path . --repo-url https://github.com/jackdbd/rapido \
+      --root packages --scope @jackdbd \
+      --release-branch canary \
+      --since 2025-01-15 \
+      --throttle 3000
+    '';
+    monopub-version.exec = ''
+      ./monopub/bin/monopub version \
+      --repo-path . --repo-url https://github.com/jackdbd/rapido \
+      --root packages --scope @jackdbd \
+      --all
+    '';
+    monopub-version-dry-run.exec = ''
+      ./monopub/bin/monopub version \
+      --repo-path . --repo-url https://github.com/jackdbd/rapido \
+      --root packages --scope @jackdbd \
+      --dry-run
+    '';
     versions.exec = ''
       echo "=== Versions ==="
       git --version

@@ -45,3 +45,7 @@ devenv.local.nix
 
 # pre-commit
 .pre-commit-config.yaml
+
+# TODO: use a git submodule for this tool
+# https://github.com/thi-ng/monopub
+monopub/
