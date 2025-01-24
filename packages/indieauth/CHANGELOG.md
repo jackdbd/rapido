@@ -1,37 +1,19 @@
-# CHANGELOG
+# Change Log
 
-## @jackdbd/indieauth [1.0.0-canary.4](https://github.com/jackdbd/rapido/compare/@jackdbd/indieauth@1.0.0-canary.3...@jackdbd/indieauth@1.0.0-canary.4) (2025-01-23)
+- **Last updated**: 2025-01-24T11:47:07Z
+- **Generator**: [thi.ng/monopub](https://thi.ng/monopub)
 
+All notable changes to this project will be documented in this file.
+Only versions published since **2025-01-15** are listed here.
+Please consult the Git history for older version information.
+See [Conventional Commits](https://conventionalcommits.org/) for commit guidelines.
 
+**Note:** Unlisted _patch_ versions only involve non-code or otherwise excluded changes
+and/or version bumps of transitive dependencies.
 
-### Dependencies
+## [1.1.0](https://github.com/jackdbd/rapido/tree/@jackdbd/indieauth@1.1.0) (2025-01-24)
 
-* **@jackdbd/oauth2:** upgraded to 1.0.0-canary.3
+#### 🚀 Features
 
-## @jackdbd/indieauth [1.0.0-canary.3](https://github.com/jackdbd/rapido/compare/@jackdbd/indieauth@1.0.0-canary.2...@jackdbd/indieauth@1.0.0-canary.3) (2025-01-22)
-
-
-
-### Dependencies
-
-* **@jackdbd/oauth2:** upgraded to 1.0.0-canary.2
-
-## @jackdbd/indieauth [1.0.0-canary.2](https://github.com/jackdbd/rapido/compare/@jackdbd/indieauth@1.0.0-canary.1...@jackdbd/indieauth@1.0.0-canary.2) (2025-01-21)
-
-
-### Features
-
-* **schema-validators:** add package ([74b1685](https://github.com/jackdbd/rapido/commit/74b16851abff11fb186a3518dd1019a7219276f2))
-
-## @jackdbd/indieauth 1.0.0-canary.1 (2025-01-21)
-
-
-### Features
-
-* **indieauth:** add package ([37d19d6](https://github.com/jackdbd/rapido/commit/37d19d6d21b362e147c0dc68e8991e33e19ccf53))
-
-
-
-### Dependencies
-
-* **@jackdbd/pkce:** upgraded to 1.0.0-canary.2
+- add package ([37d19d6](https://github.com/jackdbd/rapido/commit/37d19d6))
+- add package ([74b1685](https://github.com/jackdbd/rapido/commit/74b1685))

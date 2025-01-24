@@ -1,15 +1,19 @@
-# CHANGELOG
+# Change Log
 
-## @jackdbd/pkce [1.0.0-canary.2](https://github.com/jackdbd/rapido/compare/@jackdbd/pkce@1.0.0-canary.1...@jackdbd/pkce@1.0.0-canary.2) (2025-01-21)
+- **Last updated**: 2025-01-24T11:47:07Z
+- **Generator**: [thi.ng/monopub](https://thi.ng/monopub)
 
+All notable changes to this project will be documented in this file.
+Only versions published since **2025-01-15** are listed here.
+Please consult the Git history for older version information.
+See [Conventional Commits](https://conventionalcommits.org/) for commit guidelines.
 
-### Features
+**Note:** Unlisted _patch_ versions only involve non-code or otherwise excluded changes
+and/or version bumps of transitive dependencies.
 
-* **indieauth:** add package ([37d19d6](https://github.com/jackdbd/rapido/commit/37d19d6d21b362e147c0dc68e8991e33e19ccf53))
+## [1.1.0](https://github.com/jackdbd/rapido/tree/@jackdbd/pkce@1.1.0) (2025-01-24)
 
-## @jackdbd/pkce 1.0.0-canary.1 (2025-01-21)
+#### 🚀 Features
 
-
-### Features
-
-* **pkce:** add package ([c63a554](https://github.com/jackdbd/rapido/commit/c63a5543ab7d1d321126d1ddd62befaff66e85ff))
+- add package ([c63a554](https://github.com/jackdbd/rapido/commit/c63a554))
+- add package ([37d19d6](https://github.com/jackdbd/rapido/commit/37d19d6))

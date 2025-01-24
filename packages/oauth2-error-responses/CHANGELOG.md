@@ -1,15 +1,22 @@
-# CHANGELOG
+# Change Log
 
-## @jackdbd/oauth2-error-responses [1.0.0-canary.2](https://github.com/jackdbd/rapido/compare/@jackdbd/oauth2-error-responses@1.0.0-canary.1...@jackdbd/oauth2-error-responses@1.0.0-canary.2) (2025-01-23)
+- **Last updated**: 2025-01-24T11:47:07Z
+- **Generator**: [thi.ng/monopub](https://thi.ng/monopub)
 
+All notable changes to this project will be documented in this file.
+Only versions published since **2025-01-15** are listed here.
+Please consult the Git history for older version information.
+See [Conventional Commits](https://conventionalcommits.org/) for commit guidelines.
 
-### Bug Fixes
+**Note:** Unlisted _patch_ versions only involve non-code or otherwise excluded changes
+and/or version bumps of transitive dependencies.
 
-* **oauth2-error-responses:** add types ([3fc2980](https://github.com/jackdbd/rapido/commit/3fc2980e6c6ac91eefd42730b087612d1767d0af))
+## [1.1.0](https://github.com/jackdbd/rapido/tree/@jackdbd/oauth2-error-responses@1.1.0) (2025-01-24)
 
-## @jackdbd/oauth2-error-responses 1.0.0-canary.1 (2025-01-21)
+#### 🚀 Features
 
+- add package ([2ea6fc2](https://github.com/jackdbd/rapido/commit/2ea6fc2))
 
-### Features
+#### 🩹 Bug fixes
 
-* **oauth2-error-responses:** add package ([2ea6fc2](https://github.com/jackdbd/rapido/commit/2ea6fc2c229e4f132ab155d355b9d5bf267912eb))
+- add types ([3fc2980](https://github.com/jackdbd/rapido/commit/3fc2980))

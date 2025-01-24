@@ -1,63 +1,63 @@
 {
-  "name": "@jackdbd/schema-validators",
-  "version": "1.0.0-canary.2",
-  "description": "Validate data against schemas. Generate clear and detailed error messages for failed validations.",
-  "author": {
-    "name": "Giacomo Debidda",
-    "email": "giacomo@giacomodebidda.com",
-    "url": "https://giacomodebidda.com/"
-  },
-  "license": "MIT",
-  "private": false,
-  "publishConfig": {
-    "access": "public"
-  },
-  "keywords": [
-    "schema",
-    "validation"
-  ],
-  "type": "module",
-  "module": "lib/index.js",
-  "typings": "lib/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./lib/index.d.ts",
-      "import": "./lib/index.js"
-    },
-    "./package.json": "./package.json"
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./lib/*.d.ts"
-      ]
-    }
-  },
-  "files": [
-    "CHANGELOG.md",
-    "LICENSE",
-    "README.md",
-    "lib"
-  ],
-  "scripts": {
-    "build": "run-s 'build:ts' 'build:readme' --print-label",
-    "build:readme": "node ../scripts/dist/readme.js --package schema-validators",
-    "build:ts": "tsc -p tsconfig.json",
-    "build:ts:watch": "tsc -p tsconfig.json --watch",
-    "clean": "rimraf lib/ tsconfig.tsbuildinfo",
-    "dev": "run-p build:ts:watch test:watch",
-    "publint": "publint run .",
-    "size": "pkg-size ./lib --sort-by=brotli --ignore-files {*.d.ts,*.map}",
-    "test": "node --test --experimental-test-coverage",
-    "test:ci": "node --test --test-reporter=@reporters/github --test-reporter-destination=stdout --test-reporter=spec --test-reporter-destination=stdout",
-    "test:watch": "node --test --watch"
-  },
-  "dependencies": {
-    "@apideck/better-ajv-errors": "^0.3.6",
-    "@sinclair/typebox": "^0.34.14",
-    "ajv": "^8.17.1"
-  },
-  "devDependencies": {
-    "@types/seedrandom": "^3.0.8"
-  }
+	"name": "@jackdbd/schema-validators",
+	"version": "1.1.0",
+	"description": "Validate data against schemas. Generate clear and detailed error messages for failed validations.",
+	"author": {
+		"name": "Giacomo Debidda",
+		"email": "giacomo@giacomodebidda.com",
+		"url": "https://giacomodebidda.com/"
+	},
+	"license": "MIT",
+	"private": false,
+	"publishConfig": {
+		"access": "public"
+	},
+	"keywords": [
+		"schema",
+		"validation"
+	],
+	"type": "module",
+	"module": "lib/index.js",
+	"typings": "lib/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./lib/index.d.ts",
+			"import": "./lib/index.js"
+		},
+		"./package.json": "./package.json"
+	},
+	"typesVersions": {
+		"*": {
+			"*": [
+				"./lib/*.d.ts"
+			]
+		}
+	},
+	"files": [
+		"CHANGELOG.md",
+		"LICENSE",
+		"README.md",
+		"lib"
+	],
+	"scripts": {
+		"build": "run-s 'build:ts' 'build:readme' --print-label",
+		"build:readme": "node ../scripts/dist/readme.js --package schema-validators",
+		"build:ts": "tsc -p tsconfig.json",
+		"build:ts:watch": "tsc -p tsconfig.json --watch",
+		"clean": "rimraf lib/ tsconfig.tsbuildinfo",
+		"dev": "run-p build:ts:watch test:watch",
+		"publint": "publint run .",
+		"size": "pkg-size ./lib --sort-by=brotli --ignore-files {*.d.ts,*.map}",
+		"test": "node --test --experimental-test-coverage",
+		"test:ci": "node --test --test-reporter=@reporters/github --test-reporter-destination=stdout --test-reporter=spec --test-reporter-destination=stdout",
+		"test:watch": "node --test --watch"
+	},
+	"dependencies": {
+		"@apideck/better-ajv-errors": "^0.3.6",
+		"@sinclair/typebox": "^0.34.14",
+		"ajv": "^8.17.1"
+	},
+	"devDependencies": {
+		"@types/seedrandom": "^3.0.8"
+	}
 }

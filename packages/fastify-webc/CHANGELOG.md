@@ -1,15 +1,22 @@
-# CHANGELOG
+# Change Log
 
-## @jackdbd/fastify-webc [1.0.0-canary.2](https://github.com/jackdbd/rapido/compare/@jackdbd/fastify-webc@1.0.0-canary.1...@jackdbd/fastify-webc@1.0.0-canary.2) (2025-01-21)
+- **Last updated**: 2025-01-24T11:47:07Z
+- **Generator**: [thi.ng/monopub](https://thi.ng/monopub)
 
+All notable changes to this project will be documented in this file.
+Only versions published since **2025-01-15** are listed here.
+Please consult the Git history for older version information.
+See [Conventional Commits](https://conventionalcommits.org/) for commit guidelines.
 
-### Bug Fixes
+**Note:** Unlisted _patch_ versions only involve non-code or otherwise excluded changes
+and/or version bumps of transitive dependencies.
 
-* **fastify-webc:** update package entry points ([3ae2754](https://github.com/jackdbd/rapido/commit/3ae2754b76671045faf36a3963121d73917e4685))
+## [1.1.0](https://github.com/jackdbd/rapido/tree/@jackdbd/fastify-webc@1.1.0) (2025-01-24)
 
-## @jackdbd/fastify-webc 1.0.0-canary.1 (2025-01-21)
+#### 🚀 Features
 
+- add package ([79de51f](https://github.com/jackdbd/rapido/commit/79de51f))
 
-### Features
+#### 🩹 Bug fixes
 
-* **fastify-webc:** add package ([79de51f](https://github.com/jackdbd/rapido/commit/79de51fb6f3149224db6adc93230ac6decc7f35d))
+- update package entry points ([3ae2754](https://github.com/jackdbd/rapido/commit/3ae2754))

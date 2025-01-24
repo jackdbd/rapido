@@ -1,22 +1,20 @@
-# CHANGELOG
+# Change Log
 
-## @jackdbd/oauth2 [1.0.0-canary.3](https://github.com/jackdbd/rapido/compare/@jackdbd/oauth2@1.0.0-canary.2...@jackdbd/oauth2@1.0.0-canary.3) (2025-01-23)
+- **Last updated**: 2025-01-24T11:47:07Z
+- **Generator**: [thi.ng/monopub](https://thi.ng/monopub)
 
+All notable changes to this project will be documented in this file.
+Only versions published since **2025-01-15** are listed here.
+Please consult the Git history for older version information.
+See [Conventional Commits](https://conventionalcommits.org/) for commit guidelines.
 
-### Features
+**Note:** Unlisted _patch_ versions only involve non-code or otherwise excluded changes
+and/or version bumps of transitive dependencies.
 
-* **fastify-token-endpoint:** add package ([680b62c](https://github.com/jackdbd/rapido/commit/680b62c3f80780462f187922264103fd95728b12))
+## [1.1.0](https://github.com/jackdbd/rapido/tree/@jackdbd/oauth2@1.1.0) (2025-01-24)
 
-## @jackdbd/oauth2 [1.0.0-canary.2](https://github.com/jackdbd/rapido/compare/@jackdbd/oauth2@1.0.0-canary.1...@jackdbd/oauth2@1.0.0-canary.2) (2025-01-22)
+#### 🚀 Features
 
-
-### Features
-
-* **fastify-authorization-endpoint:** add package ([b772e0c](https://github.com/jackdbd/rapido/commit/b772e0c862c7a8cebd7f1a477d186d9102ad4882))
-
-## @jackdbd/oauth2 1.0.0-canary.1 (2025-01-21)
-
-
-### Features
-
-* **oauth2:** add package ([2b8638f](https://github.com/jackdbd/rapido/commit/2b8638ffc9e4d445b4725ea2d0cd0eaaaba157cc))
+- add package ([2b8638f](https://github.com/jackdbd/rapido/commit/2b8638f))
+- add package ([b772e0c](https://github.com/jackdbd/rapido/commit/b772e0c))
+- add package ([680b62c](https://github.com/jackdbd/rapido/commit/680b62c))
