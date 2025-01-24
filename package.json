@@ -27,6 +27,7 @@
     "build:ts": "tsc --build --verbose",
     "changeset:canary": "changeset pre enter canary && changeset version && npm install",
     "changeset:exit-pre-release-mode": "changeset pre exit",
+    "changeset:cleanup": "rm -f .changeset/pre.json && find .changeset -type f -name \"*.md\" ! -name \"README.md\" -delete",
     "clean": "turbo clean",
     "copy:webc": "npm run copy:webc --workspaces --if-present",
     "deps": "taze",

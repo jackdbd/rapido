@@ -1,5 +1,7 @@
 name: 'Release to npmjs.com'
 
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
 # https://github.com/semantic-release/semantic-release/issues/2481#issuecomment-1409780688
 permissions:
   contents: write
