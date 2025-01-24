@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.0-canary-20250124161903
+
+### Patch Changes
+
+- Bump schema validators for snapshot release (canary)
+
 ## 0.0.0-canary-20250124153852
 
 ### Patch Changes
