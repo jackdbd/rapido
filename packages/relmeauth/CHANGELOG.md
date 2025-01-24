@@ -1,5 +1,30 @@
 # Change Log
 
+## 0.0.0-canary-20250124153852
+
+### Patch Changes
+
+- Bump patch version in libraries to test snapshot releases.
+- Updated dependencies
+  - @jackdbd/canonical-url@0.0.0-canary-20250124153852
+
+## 0.0.0-20250124153458
+
+### Patch Changes
+
+- Bump libraries for snapshot release.
+- Updated dependencies
+  - @jackdbd/canonical-url@0.0.0-20250124153458
+
+## 1.1.2
+
+### Patch Changes
+
+- Publish all libraries using [changesets](https://github.com/changesets/changesets) instead of [multi-semantic-release](https://github.com/qiwi/multi-semantic-release) or [monopub](https://github.com/thi-ng/monopub/).
+- Updated dependencies
+
+  - @jackdbd/canonical-url@1.1.2
+
 - **Last updated**: 2025-01-24T12:39:18Z
 - **Generator**: [thi.ng/monopub](https://thi.ng/monopub)
 

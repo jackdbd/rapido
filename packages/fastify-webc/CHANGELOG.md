@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.0-20250124153458
+
+### Patch Changes
+
+- Bump libraries for snapshot release.
+
 - **Last updated**: 2025-01-24T12:39:18Z
 - **Generator**: [thi.ng/monopub](https://thi.ng/monopub)
 
