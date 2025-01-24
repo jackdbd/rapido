@@ -13,5 +13,11 @@
     "build:ts:watch": "tsc -p tsconfig.json --watch",
     "clean": "rimraf lib/ tsconfig.tsbuildinfo"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@apideck/better-ajv-errors": "^0.3.6",
+    "@sinclair/typebox": "^0.34.14",
+    "@thi.ng/transclude": "^1.1.1",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  }
 }

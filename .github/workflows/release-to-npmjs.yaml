@@ -83,15 +83,18 @@ jobs:
 
       - name: 🔍 Test @jackdbd/fastify-authorization-endpoint
         run: npm run test:ci -w ./packages/fastify-authorization-endpoint
+        
+      - name: 🔍 Test @jackdbd/fastify-introspection-endpoint
+        run: npm run test:ci -w ./packages/fastify-introspection-endpoint
+        
+      - name: 🔍 Test @jackdbd/fastify-revocation-endpoint
+        run: npm run test:ci -w ./packages/fastify-revocation-endpoint
       
       - name: 🔍 Test @jackdbd/fastify-token-endpoint
         run: npm run test:ci -w ./packages/fastify-token-endpoint
-      
-      - name: 🔍 Test @jackdbd/fastify-introspection-endpoint
-        run: npm run test:ci -w ./packages/fastify-introspection-endpoint
 
-      - name: 🔍 Test @jackdbd/fastify-revocation-endpoint
-        run: npm run test:ci -w ./packages/fastify-revocation-endpoint
+      - name: 🔍 Test @jackdbd/fastify-userinfo-endpoint
+        run: npm run test:ci -w ./packages/fastify-userinfo-endpoint
 
       - name: 🚀 Release to npmjs
         env:
@@ -104,4 +107,4 @@ jobs:
         run: >
           npx multi-semantic-release
           --ignore-private
-          --ignore-packages=packages/fastify-authorization-endpoint
+          --ignore-packages=packages/fastify-authorization-endpoint,packages/fastify-introspection-endpoint,packages/fastify-token-endpoint,packages/fastify-revocation-endpoint
