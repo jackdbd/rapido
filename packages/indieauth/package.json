@@ -1,65 +1,65 @@
 {
-	"name": "@jackdbd/indieauth",
-	"version": "1.1.6",
-	"description": "Schemas and functions for implementing [IndieAuth](https://indieauth.spec.indieweb.org/).",
-	"author": {
-		"name": "Giacomo Debidda",
-		"email": "giacomo@giacomodebidda.com",
-		"url": "https://giacomodebidda.com/"
-	},
-	"license": "MIT",
-	"private": false,
-	"publishConfig": {
-		"access": "public"
-	},
-	"keywords": [
-		"IndieWeb",
-		"IndieAuth",
-		"Web Sign-In"
-	],
-	"type": "module",
-	"module": "lib/index.js",
-	"typings": "lib/index.d.ts",
-	"exports": {
-		".": {
-			"types": "./lib/index.d.ts",
-			"import": "./lib/index.js"
-		},
-		"./package.json": "./package.json"
-	},
-	"typesVersions": {
-		"*": {
-			"*": [
-				"./lib/*.d.ts"
-			]
-		}
-	},
-	"files": [
-		"CHANGELOG.md",
-		"LICENSE",
-		"README.md",
-		"lib"
-	],
-	"scripts": {
-		"build": "run-s 'build:ts' 'build:readme' --print-label",
-		"build:readme": "node ../scripts/dist/readme.js --package indieauth",
-		"build:ts": "tsc -p tsconfig.json",
-		"build:ts:watch": "tsc -p tsconfig.json --watch",
-		"clean": "rimraf lib/ tsconfig.tsbuildinfo",
-		"dev": "run-p build:ts:watch test:watch",
-		"pub": "npm --userconfig=../../.npmrc publish --access public",
-		"publint": "publint run .",
-		"size": "pkg-size ./lib --sort-by=brotli --ignore-files {*.d.ts,*.map}",
-		"test": "node --test --experimental-test-coverage",
-		"test:ci": "node --test --test-reporter=@reporters/github --test-reporter-destination=stdout --test-reporter=spec --test-reporter-destination=stdout",
-		"test:watch": "node --test --watch"
-	},
-	"dependencies": {
-		"@jackdbd/canonical-url": "^1.1.1",
-		"@jackdbd/oauth2": "^1.1.2",
-		"@jackdbd/pkce": "^1.1.6",
-		"@sinclair/typebox": "^0.34.14",
-		"posthtml-parser": "^0.12.1"
-	},
-	"devDependencies": {}
+  "name": "@jackdbd/indieauth",
+  "version": "1.1.6",
+  "description": "Schemas and functions for implementing [IndieAuth](https://indieauth.spec.indieweb.org/).",
+  "author": {
+    "name": "Giacomo Debidda",
+    "email": "giacomo@giacomodebidda.com",
+    "url": "https://giacomodebidda.com/"
+  },
+  "license": "MIT",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "IndieWeb",
+    "IndieAuth",
+    "Web Sign-In"
+  ],
+  "type": "module",
+  "module": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./lib/*.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md",
+    "lib"
+  ],
+  "scripts": {
+    "build": "run-s 'build:ts' 'build:readme' --print-label",
+    "build:readme": "node ../scripts/dist/readme.js --package indieauth",
+    "build:ts": "tsc -p tsconfig.json",
+    "build:ts:watch": "tsc -p tsconfig.json --watch",
+    "clean": "rimraf lib/ tsconfig.tsbuildinfo",
+    "dev": "run-p build:ts:watch test:watch",
+    "pub": "npm publish --access public",
+    "publint": "publint run .",
+    "size": "pkg-size ./lib --sort-by=brotli --ignore-files {*.d.ts,*.map}",
+    "test": "node --test --experimental-test-coverage",
+    "test:ci": "node --test --test-reporter=@reporters/github --test-reporter-destination=stdout --test-reporter=spec --test-reporter-destination=stdout",
+    "test:watch": "node --test --watch"
+  },
+  "dependencies": {
+    "@jackdbd/canonical-url": "^1.1.1",
+    "@jackdbd/oauth2": "^1.1.2",
+    "@jackdbd/pkce": "^1.1.6",
+    "@sinclair/typebox": "^0.34.14",
+    "posthtml-parser": "^0.12.1"
+  },
+  "devDependencies": {}
 }

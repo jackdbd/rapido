@@ -69,8 +69,14 @@ in {
       ./monopub/bin/monopub changelog \
       --repo-path . --repo-url https://github.com/jackdbd/rapido \
       --root packages --scope @jackdbd \
+      --since 2025-01-15
+    '';
+    monopub-changelog-dry-run.exec = ''
+      ./monopub/bin/monopub changelog \
+      --repo-path . --repo-url https://github.com/jackdbd/rapido \
+      --root packages --scope @jackdbd \
       --since 2025-01-15 \
-      --all
+      --dry-run
     '';
     monopub-release.exec = ''
       ./monopub/bin/monopub release \
@@ -84,8 +90,7 @@ in {
     monopub-version.exec = ''
       ./monopub/bin/monopub version \
       --repo-path . --repo-url https://github.com/jackdbd/rapido \
-      --root packages --scope @jackdbd \
-      --all
+      --root packages --scope @jackdbd
     '';
     monopub-version-dry-run.exec = ''
       ./monopub/bin/monopub version \
