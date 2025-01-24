@@ -1,6 +1,6 @@
 {
 	"name": "@jackdbd/fastify-authorization-endpoint",
-	"version": "1.1.2",
+	"version": "1.1.3",
 	"description": "Fastify plugin that adds an [IndieAuth Authorization Endpoint](https://indieauth.spec.indieweb.org/#authorization-endpoint) to a Fastify server.",
 	"author": {
 		"name": "Giacomo Debidda",
@@ -73,10 +73,10 @@
 		"@hapi/hoek": "^11.0.7",
 		"@jackdbd/canonical-url": "^1.1.1",
 		"@jackdbd/fastify-webc": "^1.1.1",
-		"@jackdbd/indieauth": "^1.1.2",
+		"@jackdbd/indieauth": "^1.1.3",
 		"@jackdbd/oauth2": "^1.1.2",
 		"@jackdbd/oauth2-error-responses": "^1.1.2",
-		"@jackdbd/pkce": "^1.1.2",
+		"@jackdbd/pkce": "^1.1.3",
 		"@jackdbd/schema-validators": "^1.1.1",
 		"@sinclair/typebox": "^0.34.14",
 		"ajv": "^8.17.1",
