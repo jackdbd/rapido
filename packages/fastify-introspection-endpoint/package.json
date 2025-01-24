@@ -1,6 +1,6 @@
 {
 	"name": "@jackdbd/fastify-introspection-endpoint",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "Fastify plugin that adds an [IndieAuth Token Introspection Endpoint](https://indieauth.spec.indieweb.org/#access-token-verification) to a Fastify server.",
 	"author": {
 		"name": "Giacomo Debidda",
@@ -63,10 +63,10 @@
 	"dependencies": {
 		"@fastify/formbody": "^8.0.2",
 		"@fastify/response-validation": "^3.0.3",
-		"@jackdbd/indieauth": "^1.1.0",
-		"@jackdbd/oauth2": "^1.1.0",
-		"@jackdbd/oauth2-error-responses": "^1.1.0",
-		"@jackdbd/oauth2-tokens": "^1.1.0",
+		"@jackdbd/indieauth": "^1.1.1",
+		"@jackdbd/oauth2": "^1.1.1",
+		"@jackdbd/oauth2-error-responses": "^1.1.1",
+		"@jackdbd/oauth2-tokens": "^1.1.1",
 		"@jackdbd/schema-validators": "^1.1.0",
 		"@sinclair/typebox": "^0.34.14",
 		"ajv": "^8.17.1",
