@@ -6,9 +6,10 @@ permissions:
 
 on:
   push:
+    # For now, we just publish pre-release on the canary branch. See semantic relase config (base.cjs)
     branches:
       - canary
-      - main
+      # - main
 
 jobs:
   audit-build-test-release:
@@ -107,4 +108,4 @@ jobs:
         run: >
           npx multi-semantic-release
           --ignore-private
-          --ignore-packages=packages/fastify-authorization-endpoint,packages/fastify-introspection-endpoint,packages/fastify-token-endpoint,packages/fastify-revocation-endpoint
+          --ignore-packages=packages/fastify-authorization-endpoint,packages/fastify-introspection-endpoint,packages/fastify-token-endpoint,packages/fastify-revocation-endpoint,packages/fastify-userinfo-endpoint
