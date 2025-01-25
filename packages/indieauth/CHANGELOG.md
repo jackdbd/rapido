@@ -1,5 +1,12 @@
 # @jackdbd/indieauth
 
+## 0.1.1-canary.0
+
+### Patch Changes
+
+- Updated dependencies [4869d65]
+  - @jackdbd/canonical-url@0.1.1-canary.0
+
 ## 0.1.0
 
 ### Minor Changes

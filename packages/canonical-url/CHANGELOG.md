@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.1.1-canary.0
+
+### Patch Changes
+
+- 4869d65: Bump patch version to test release workflow.
+
 ## 0.1.0
 
 ### Minor Changes

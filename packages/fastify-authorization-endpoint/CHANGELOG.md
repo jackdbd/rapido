@@ -1,5 +1,13 @@
 # @jackdbd/fastify-authorization-endpoint
 
+## 1.2.1-canary.2
+
+### Patch Changes
+
+- Updated dependencies [4869d65]
+  - @jackdbd/canonical-url@0.1.1-canary.0
+  - @jackdbd/indieauth@0.1.1-canary.0
+
 ## 1.2.1-canary.1
 
 ### Patch Changes
