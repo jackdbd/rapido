@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/fastify-authorization-endpoint",
-  "version": "1.2.1-canary.0",
+  "version": "1.2.1-canary.1",
   "description": "Fastify plugin that adds an [IndieAuth Authorization Endpoint](https://indieauth.spec.indieweb.org/#authorization-endpoint) to a Fastify server.",
   "author": {
     "name": "Giacomo Debidda",
@@ -77,7 +77,7 @@
     "@jackdbd/fastify-webc": "^0.1.0",
     "@jackdbd/indieauth": "^0.1.0",
     "@jackdbd/oauth2": "^0.1.0",
-    "@jackdbd/oauth2-error-responses": "^0.1.0",
+    "@jackdbd/oauth2-error-responses": "^0.1.1-canary.0",
     "@jackdbd/pkce": "^0.1.0",
     "@jackdbd/schema-validators": "^0.1.1-canary.0",
     "@sinclair/typebox": "^0.34.14",
