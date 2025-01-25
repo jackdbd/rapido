@@ -1,4 +1,9 @@
-export { authorization_code_props, code } from "./authorization-code.js";
+export {
+  authorization_code_props,
+  code,
+  authorization_code_immutable_record,
+  authorization_code_mutable_record,
+} from "./authorization-code.js";
 export type {
   AuthorizationCodeProps,
   AuthorizationCodeImmutableRecord,
@@ -7,9 +12,6 @@ export type {
 } from "./authorization-code.js";
 
 export { options, type Options } from "./plugin-options.js";
-
-// export {} from './record.js'
-// export type {} from './record.js'
 
 export {
   access_token_request_body,

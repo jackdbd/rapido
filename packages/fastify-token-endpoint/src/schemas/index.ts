@@ -1,4 +1,8 @@
-export { access_token_props } from "./access-token.js";
+export {
+  access_token_props,
+  access_token_immutable_record,
+  access_token_mutable_record,
+} from "./access-token.js";
 export type {
   AccessTokenProps,
   AccessTokenImmutableRecord,
@@ -7,10 +11,11 @@ export type {
 
 export { options, type Options } from "./plugin-options.js";
 
-// export {} from "./record.js";
-// export type {} from "./record.js";
-
-export { refresh_token_props } from "./refresh-token.js";
+export {
+  refresh_token_props,
+  refresh_token_immutable_record,
+  refresh_token_mutable_record,
+} from "./refresh-token.js";
 export type {
   RefreshTokenProps,
   RefreshTokenImmutableRecord,
