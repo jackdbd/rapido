@@ -42,9 +42,9 @@ The [refresh tokens](https://indieauth.spec.indieweb.org/#refresh-tokens) issued
 
 | Package | Version |
 |---|---|
-| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `1.0.0-canary.4` |
-| [@jackdbd/oauth2](https://www.npmjs.com/package/@jackdbd/oauth2) | `1.0.0-canary.3` |
-| [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `1.0.0-canary.2` |
+| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `0.0.0-canary.1` |
+| [@jackdbd/oauth2](https://www.npmjs.com/package/@jackdbd/oauth2) | `0.0.0-canary.1` |
+| [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `0.0.0-canary.1` |
 | [@sinclair/typebox](https://www.npmjs.com/package/@sinclair/typebox) | `^0.34.14` |
 | [ajv](https://www.npmjs.com/package/ajv) | `^8.17.1` |
 | [ajv-formats](https://www.npmjs.com/package/ajv-formats) | `^3.0.1` |
