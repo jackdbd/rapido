@@ -15,6 +15,7 @@ export {
   options as plugin_options,
   retrieveUserProfile,
   userinfo_get_config,
+  user_profile_props,
   user_profile_immutable_record,
   user_profile_mutable_record,
 } from "./schemas/index.js";
@@ -23,6 +24,7 @@ export type {
   Options as PluginOptions,
   RetrieveUserProfile,
   UserinfoGetConfig,
+  UserProfileProps,
   UserProfileImmutableRecord,
   UserProfileMutableRecord,
 } from "./schemas/index.js";
