@@ -18,17 +18,13 @@
     "packages/*"
   ],
   "scripts": {
-    "aaa": "npm run build:readme -w ./packages/fastify-userinfo-endpoint",
     "build": "turbo build",
     "build:app": "turbo build --filter @repo/demo-app",
     "build:plugins": "turbo build --filter ./packages/fastify-webc --filter ./packages/fastify-authorization-endpoint",
     "build:readme": "npm run build:readme --workspaces --if-present",
     "build:scripts": "npm run build -w @repo/scripts",
     "build:ts": "tsc --build --verbose",
-    "precanary": "changeset pre enter canary",
-    "canary": "changeset version && npm install && git add . && git commit -m 'version packages [canary]'",
-    "postcanary": "changeset pre exit",
-    "changeset:cleanup": "rm -f .changeset/pre.json && find .changeset -type f -name \"*.md\" ! -name \"README.md\" -delete",
+    "changeset:reset": "rm -f .changeset/pre.json && find .changeset -type f -name \"*.md\" ! -name \"README.md\" -delete",
     "clean": "npm run clean --workspaces --if-present",
     "copy:webc": "npm run copy:webc --workspaces --if-present",
     "deps": "taze",
