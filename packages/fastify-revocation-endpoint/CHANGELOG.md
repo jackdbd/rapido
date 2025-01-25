@@ -1,5 +1,12 @@
 # @jackdbd/fastify-revocation-endpoint
 
+## 1.2.1-canary.2
+
+### Patch Changes
+
+- @jackdbd/indieauth@0.1.1-canary.0
+- @jackdbd/oauth2-tokens@0.1.1-canary.4
+
 ## 1.2.1-canary.1
 
 ### Patch Changes
