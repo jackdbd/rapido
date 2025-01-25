@@ -60,28 +60,30 @@ jobs:
       - run: npm run size
 
       - name: 🔍 Test @jackdbd/canonical-url
-        run: npm run test:ci -w ./packages/canonical-url
+        run: npx turbo test:ci --filter @jackdbd/canonical-url
       
       - name: 🔍 Test @jackdbd/relmeauth
-        run: npm run test:ci -w ./packages/relmeauth
+        run: npx turbo test:ci --filter @jackdbd/relmeauth
 
       - name: 🔍 Test @jackdbd/pkce
-        run: npm run test:ci -w ./packages/pkce
+        run: npx turbo test:ci --filter @jackdbd/pkce
 
       - name: 🔍 Test @jackdbd/unwrap
-        run: npm run test:ci -w ./packages/unwrap
+        run: npx turbo test:ci --filter @jackdbd/unwrap
 
       - name: 🔍 Test @jackdbd/oauth2-error-responses
-        run: npm run test:ci -w ./packages/oauth2-error-responses
+        run: npx turbo test:ci --filter @jackdbd/oauth2-error-responses
 
       - name: 🔍 Test @jackdbd/oauth2
-        run: npm run test:ci -w ./packages/oauth2
+        run: npx turbo test:ci --filter @jackdbd/oauth2
 
       - name: 🔍 Test @jackdbd/indieauth
-        run: npm run test:ci -w ./packages/indieauth
+        run: npx turbo test:ci --filter @jackdbd/indieauth
 
       - name: 🔍 Test @jackdbd/schema-validators
-        run: npm run test:ci -w ./packages/schema-validators
+        env:
+          JWKS: ${{ secrets.JWKS }}
+        run: npx turbo test:ci --filter @jackdbd/schema-validators
 
       - name: 🔍 Test @jackdbd/oauth2-tokens
         env:
