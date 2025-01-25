@@ -56,15 +56,6 @@ jobs:
           JWKS: ${{ secrets.JWKS }}
         run: npx turbo test:ci
 
-      # - run: npx changeset status
-
-      # - name: Create canary versions (pre-release)
-      #   # https://github.com/changesets/changesets/blob/main/docs/prereleases.md
-      #   if: github.ref == 'refs/heads/canary'
-      #   run: >
-      #     npx changeset pre enter canary &&
-      #     npx changeset version
-
       - name: 🚀 Create Release Pull Request or Publish to npm.js
         # https://github.com/changesets/action
         # https://github.com/changesets/action/issues/69
@@ -75,3 +66,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_NPM_TOKEN }}
+
+      - name: 💬 Notify Telegram if a publish happens
+        # https://github.com/changesets/action?tab=readme-ov-file#outputs
+        if: steps.changesets.outputs.published == 'true'
+        uses: appleboy/telegram-action@v1.0.1
+        with:
+          to: ${{ fromJSON(secrets.TELEGRAM).chat_id }}
+          token: ${{ fromJSON(secrets.TELEGRAM).token }}
+          format: html
+          disable_web_page_preview: true
+          message: |
+            <b>🚀 Published to npm.js 💖</b>
+
+            <a href="${{ github.event.repository.html_url }}/pull/${{ steps.changesets.outputs.pullRequestNumber }}">PR ${{ steps.changesets.outputs.pullRequestNumber }}</a> in repository <a href="${{ github.event.repository.html_url }}">${{ github.event.repository.full_name }}</a>
+
+            <pre>${{ steps.changesets.outputs.publishedPackages }}</pre>
