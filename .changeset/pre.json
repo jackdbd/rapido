@@ -24,6 +24,7 @@
     "@jackdbd/unwrap": "0.1.0"
   },
   "changesets": [
+    "big-lobsters-stare",
     "fast-geese-peel"
   ]
 }
