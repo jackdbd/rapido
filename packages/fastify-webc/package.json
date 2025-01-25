@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/fastify-webc",
-  "version": "0.0.0-canary.0",
+  "version": "0.0.0-canary.1",
   "description": "Fastify plugin to render WebC templates and components.",
   "author": {
     "name": "Giacomo Debidda",
