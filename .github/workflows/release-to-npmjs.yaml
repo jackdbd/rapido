@@ -10,7 +10,7 @@ on:
   push:
     branches:
       - canary
-      - main
+      # - main
 
 jobs:
   audit-build-test-release:
@@ -98,7 +98,7 @@ jobs:
       - name: 🔍 Test @jackdbd/fastify-userinfo-endpoint
         run: npm run test:ci -w ./packages/fastify-userinfo-endpoint
 
-      - run: npx changeset status
+      # - run: npx changeset status
 
       # - name: Create canary versions (pre-release)
       #   # https://github.com/changesets/changesets/blob/main/docs/prereleases.md
