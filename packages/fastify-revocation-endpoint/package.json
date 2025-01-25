@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/fastify-revocation-endpoint",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "Fastify plugin that adds an [IndieAuth Token Revocation endpoint](https://indieauth.spec.indieweb.org/#token-revocation) to a Fastify server.",
   "author": {
     "name": "Giacomo Debidda",

@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.1.7
+
+### Patch Changes
+
+- Bump fastify plugins.
+- b317e4b: Export some schemas and types.
+
 - **Last updated**: 2025-01-24T12:39:18Z
 - **Generator**: [thi.ng/monopub](https://thi.ng/monopub)
 
