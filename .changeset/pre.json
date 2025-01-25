@@ -14,17 +14,14 @@
     "@jackdbd/indieauth": "0.1.0",
     "@jackdbd/oauth2": "0.1.0",
     "@jackdbd/oauth2-error-responses": "0.1.0",
-    "@jackdbd/oauth2-tokens": "0.1.1-canary.1",
+    "@jackdbd/oauth2-tokens": "0.1.1-canary.3",
     "@jackdbd/pkce": "0.1.0",
     "@jackdbd/relmeauth": "0.1.0",
-    "@jackdbd/schema-validators": "0.1.1-canary.1",
+    "@jackdbd/schema-validators": "0.1.1-canary.3",
     "@repo/scripts": "0.1.1",
     "@repo/stdlib": "0.1.1",
     "@repo/typescript-config": "0.1.1",
     "@jackdbd/unwrap": "0.1.0"
   },
-  "changesets": [
-    "proud-birds-glow",
-    "serious-donuts-behave"
-  ]
+  "changesets": []
 }
