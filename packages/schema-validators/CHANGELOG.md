@@ -1,5 +1,11 @@
 # @jackdbd/schema-validators
 
+## 0.1.1-canary.2
+
+### Patch Changes
+
+- 4fc1e2b: Add some tests.
+
 ## 0.1.1-canary.1
 
 ### Patch Changes

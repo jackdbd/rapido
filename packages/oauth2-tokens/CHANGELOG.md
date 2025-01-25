@@ -1,5 +1,12 @@
 # @jackdbd/oauth2-tokens
 
+## 0.1.1-canary.2
+
+### Patch Changes
+
+- Updated dependencies [4fc1e2b]
+  - @jackdbd/schema-validators@0.1.1-canary.2
+
 ## 0.1.1-canary.1
 
 ### Patch Changes
