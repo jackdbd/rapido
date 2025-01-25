@@ -10,7 +10,7 @@ on:
   push:
     branches:
       - canary
-      # - main
+      - main
 
 jobs:
   audit-build-test-release:
@@ -58,7 +58,6 @@ jobs:
 
       - name: 🚀 Create Release Pull Request or Publish to npm.js
         # https://github.com/changesets/action
-        # https://github.com/changesets/action/issues/69
         id: changesets
         uses: changesets/action@v1
         with:
@@ -66,7 +65,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_NPM_TOKEN }}
-
+      
       - name: 💬 Notify Telegram if a publish happens
         # https://github.com/changesets/action?tab=readme-ov-file#outputs
         if: steps.changesets.outputs.published == 'true'
@@ -79,6 +78,6 @@ jobs:
           message: |
             <b>🚀 Published to npm.js 💖</b>
 
-            <a href="${{ github.event.repository.html_url }}/pull/${{ steps.changesets.outputs.pullRequestNumber }}">PR ${{ steps.changesets.outputs.pullRequestNumber }}</a> in repository <a href="${{ github.event.repository.html_url }}">${{ github.event.repository.full_name }}</a>
+            <a href="${{ github.event.repository.html_url }}/pulls/">Pull Requests</a> of repo <a href="${{ github.event.repository.html_url }}">${{ github.event.repository.full_name }}</a>
 
             <pre>${{ steps.changesets.outputs.publishedPackages }}</pre>
