@@ -98,8 +98,16 @@ jobs:
       - name: 🔍 Test @jackdbd/fastify-userinfo-endpoint
         run: npm run test:ci -w ./packages/fastify-userinfo-endpoint
 
+      - name: Create canary versions (pre-release)
+        # https://github.com/changesets/changesets/blob/main/docs/prereleases.md
+        if: github.ref == 'refs/heads/canary'
+        run: >
+          npx changeset pre enter canary &&
+          npx changeset version
+
       - name: 🚀 Create Release Pull Request or Publish to npm.js
         # https://github.com/changesets/action
+        # https://github.com/changesets/action/issues/69
         id: changesets
         uses: changesets/action@v1
         with:
@@ -107,5 +115,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_NPM_TOKEN }}
-      
-      - run: npx changeset pre exit
