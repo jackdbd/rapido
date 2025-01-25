@@ -17,6 +17,9 @@
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": ["dist/**", "lib/**"]
     },
+    "build:ts:watch": {
+      "inputs": ["$TURBO_DEFAULT$", ".env*"]
+    },
     "check-types": {
       "dependsOn": ["^check-types"]
     },

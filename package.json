@@ -24,6 +24,7 @@
     "build:readme": "npm run build:readme --workspaces --if-present",
     "build:scripts": "npm run build -w @repo/scripts",
     "build:ts": "tsc --build --verbose",
+    "build:ts:watch": "tsc --build --watch",
     "changeset:reset": "rm -f .changeset/pre.json && find .changeset -type f -name \"*.md\" ! -name \"README.md\" -delete",
     "clean": "npm run clean --workspaces --if-present",
     "copy:webc": "npm run copy:webc --workspaces --if-present",
