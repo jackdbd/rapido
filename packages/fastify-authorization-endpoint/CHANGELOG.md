@@ -1,5 +1,12 @@
 # @jackdbd/fastify-authorization-endpoint
 
+## 1.2.1-canary.0
+
+### Patch Changes
+
+- Updated dependencies
+  - @jackdbd/schema-validators@0.1.1-canary.0
+
 ## 1.2.0
 
 ### Minor Changes

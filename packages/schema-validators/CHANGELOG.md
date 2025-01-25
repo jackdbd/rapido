@@ -1,5 +1,11 @@
 # @jackdbd/schema-validators
 
+## 0.1.1-canary.0
+
+### Patch Changes
+
+- Bump patch to test pre-release [canary] with changesets.
+
 ## 0.1.0
 
 ### Minor Changes
