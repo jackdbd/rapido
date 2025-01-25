@@ -34,14 +34,17 @@
       "dependsOn": ["build:ts"]
     },
     "test": {
-      "dependsOn": ["build:ts"]
+      "dependsOn": ["build:ts"],
+      "env": ["JWKS"]
     },
     "test:ci": {
       "dependsOn": ["build:ts"],
+      "env": ["JWKS"],
       "outputs": ["coverage/**"]
     },
     "test:watch": {
       "dependsOn": ["^test:watch"],
+      "env": ["JWKS"],
       "persistent": true
     }
   }
