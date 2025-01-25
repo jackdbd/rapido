@@ -1,6 +1,7 @@
 import { betterAjvErrors } from "@apideck/better-ajv-errors";
 import { Type } from "@sinclair/typebox";
-import type { Ajv, Schema } from "ajv";
+import type { TSchema } from "@sinclair/typebox";
+import type { Ajv, Schema, ValidateFunction } from "ajv";
 
 // used to replace a function in the schema (read the comment below)
 const any_value = Type.Any();
@@ -17,6 +18,11 @@ export interface Options {
 }
 
 // TODO: create factory that accepts ajv and schema, and compile the schema (to avoid recompiling the schema every single time)
+
+// TODO: I think the caller has to dereference all $ref pointers in the schema
+// passed to this function. I don't think this function can resolve $refs that
+// might be available only on the caller's filesystem.
+// https://github.com/APIDevTools/json-schema-ref-parser
 
 /**
  * Validates that a value conforms to a schema. Returns a result object.
@@ -48,7 +54,30 @@ export const conformResult = <V>(config: Config<V>, options?: Options) => {
     }
   }
 
-  const validate = ajv.compile(schema);
+  const suggestions: string[] = [];
+  if (typeof schema !== "boolean") {
+    if (schema.properties) {
+      for (const [key, skema] of Object.entries(schema.properties)) {
+        const sk = skema as TSchema;
+        if (sk.$ref) {
+          suggestions.push(
+            `property ${key} refers schema ID ${sk.$ref}. Either pass a schema that has all $ref pointers dereferenced, or pass those schemas when you instantiate Ajv, or call ajv.addSchema() for each $ref schema.`
+          );
+        }
+      }
+    }
+  }
+
+  // This try/catch serves two purposes:
+  // 1. Keep returning a result object
+  // 2. Build a clearer error message
+  let validate: ValidateFunction;
+  try {
+    validate = ajv.compile(schema);
+  } catch (ex: any) {
+    const message = `${ex.message}. Suggestions: ${suggestions.join("; ")}`;
+    return { error: new Error(message) };
+  }
 
   validate(data);
 
