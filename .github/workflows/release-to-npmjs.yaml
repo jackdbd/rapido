@@ -43,12 +43,12 @@ jobs:
         continue-on-error: true
         run: npm audit --audit-level moderate
 
+      - run: npm run clean
       - run: npm run build:ts
       - run: npm run build:readme
       - run: npm run copy:webc
 
-      - run: npm run publint
-      
+      - run: npm run publint      
       - run: npm run size
 
       - name: 🔍 Test @jackdbd/canonical-url
@@ -99,8 +99,15 @@ jobs:
         run: npm run test:ci -w ./packages/fastify-userinfo-endpoint
 
       - name: Create canary versions (pre-release)
+        # https://github.com/changesets/changesets/blob/main/docs/prereleases.md
         if: github.ref == 'refs/heads/canary'
-        run: npm run changeset:canary
+        run: >
+          npx changeset pre enter canary &&
+          npx changeset version &&
+          git add . &&
+          git commit -m "enter prerelease mode [canary] and version packages" &&
+          npx changeset publish &&
+          git push --follow-tags
 
       - name: 🚀 Create Release Pull Request or Publish to npm.js
         # https://github.com/changesets/action
