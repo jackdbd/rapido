@@ -1,5 +1,11 @@
 # @jackdbd/oauth2-tokens
 
+## 0.1.1-canary.4
+
+### Patch Changes
+
+- @jackdbd/indieauth@0.1.1-canary.0
+
 ## 0.1.1-canary.3
 
 ### Patch Changes
