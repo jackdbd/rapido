@@ -1,5 +1,22 @@
 # @jackdbd/relmeauth
 
+## 0.1.0
+
+### Minor Changes
+
+- Bump minor version of all packages.
+
+### Patch Changes
+
+- Updated dependencies
+  - @jackdbd/canonical-url@0.1.0
+
+## 0.0.0
+
+### Patch Changes
+
+- @jackdbd/canonical-url@0.0.0
+
 ## 0.0.0-canary.1
 
 ### Patch Changes

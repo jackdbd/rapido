@@ -1,5 +1,26 @@
 # @jackdbd/oauth2-tokens
 
+## 0.1.0
+
+### Minor Changes
+
+- Bump minor version of all packages.
+
+### Patch Changes
+
+- Updated dependencies
+  - @jackdbd/schema-validators@0.1.0
+  - @jackdbd/indieauth@0.1.0
+  - @jackdbd/oauth2@0.1.0
+
+## 0.0.0
+
+### Patch Changes
+
+- @jackdbd/indieauth@0.0.0
+- @jackdbd/oauth2@0.0.0
+- @jackdbd/schema-validators@0.0.0
+
 ## 0.0.0-canary.1
 
 ### Patch Changes

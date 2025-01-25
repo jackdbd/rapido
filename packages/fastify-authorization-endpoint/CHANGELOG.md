@@ -1,5 +1,34 @@
 # @jackdbd/fastify-authorization-endpoint
 
+## 1.2.0
+
+### Minor Changes
+
+- Bump minor version of all packages.
+
+### Patch Changes
+
+- Updated dependencies
+  - @jackdbd/oauth2-error-responses@0.1.0
+  - @jackdbd/schema-validators@0.1.0
+  - @jackdbd/canonical-url@0.1.0
+  - @jackdbd/fastify-webc@0.1.0
+  - @jackdbd/indieauth@0.1.0
+  - @jackdbd/oauth2@0.1.0
+  - @jackdbd/pkce@0.1.0
+
+## 1.1.8
+
+### Patch Changes
+
+- @jackdbd/canonical-url@0.0.0
+- @jackdbd/fastify-webc@0.0.0
+- @jackdbd/indieauth@0.0.0
+- @jackdbd/oauth2@0.0.0
+- @jackdbd/oauth2-error-responses@0.0.0
+- @jackdbd/pkce@0.0.0
+- @jackdbd/schema-validators@0.0.0
+
 ## 1.1.8-canary.1
 
 ### Patch Changes

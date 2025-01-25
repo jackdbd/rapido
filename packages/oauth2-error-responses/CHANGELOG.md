@@ -1,5 +1,13 @@
 # @jackdbd/oauth2-error-responses
 
+## 0.1.0
+
+### Minor Changes
+
+- Bump minor version of all packages.
+
+## 0.0.0
+
 ## 0.0.0-canary.1
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/indieauth",
-  "version": "0.0.0-canary.1",
+  "version": "0.1.0",
   "description": "Schemas and functions for implementing [IndieAuth](https://indieauth.spec.indieweb.org/).",
   "author": {
     "name": "Giacomo Debidda",
@@ -54,9 +54,9 @@
     "test:watch": "node --test --watch"
   },
   "dependencies": {
-    "@jackdbd/canonical-url": "0.0.0-canary.1",
-    "@jackdbd/oauth2": "0.0.0-canary.1",
-    "@jackdbd/pkce": "0.0.0-canary.1",
+    "@jackdbd/canonical-url": "0.1.0",
+    "@jackdbd/oauth2": "0.1.0",
+    "@jackdbd/pkce": "0.1.0",
     "@sinclair/typebox": "^0.34.14",
     "posthtml-parser": "^0.12.1"
   },

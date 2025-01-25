@@ -105,9 +105,7 @@ jobs:
           npx changeset pre enter canary &&
           npx changeset version &&
           git add . &&
-          git commit -m "enter prerelease mode [canary] and version packages" &&
-          npx changeset publish &&
-          git push --follow-tags
+          git commit -m "enter prerelease mode [canary] and version packages"
 
       - name: 🚀 Create Release Pull Request or Publish to npm.js
         # https://github.com/changesets/action
