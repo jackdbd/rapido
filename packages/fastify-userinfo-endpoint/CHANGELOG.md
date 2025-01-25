@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.2.1-canary.1
+
+### Patch Changes
+
+- Updated dependencies [b2b3d62]
+  - @jackdbd/oauth2-error-responses@0.1.1-canary.0
+
 ## 1.2.1-canary.0
 
 ### Patch Changes
