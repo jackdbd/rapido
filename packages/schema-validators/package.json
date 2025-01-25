@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/schema-validators",
-  "version": "0.0.0-canary-20250124161903",
+  "version": "0.0.0-canary.0",
   "description": "Validate data against schemas. Generate clear and detailed error messages for failed validations.",
   "author": {
     "name": "Giacomo Debidda",

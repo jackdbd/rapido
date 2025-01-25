@@ -1,4 +1,4 @@
-# Change Log
+# @jackdbd/fastify-authorization-endpoint
 
 ## 1.1.8-canary.0
 
@@ -8,6 +8,8 @@
 - Updated dependencies
   - @jackdbd/oauth2-error-responses@0.0.0-canary.0
   - @jackdbd/schema-validators@0.0.0-canary.0
-  - @jackdbd/oauth2-tokens@0.0.0-canary.0
+  - @jackdbd/canonical-url@0.0.0-canary.0
+  - @jackdbd/fastify-webc@0.0.0-canary.0
   - @jackdbd/indieauth@0.0.0-canary.0
   - @jackdbd/oauth2@0.0.0-canary.0
+  - @jackdbd/pkce@0.0.0-canary.0

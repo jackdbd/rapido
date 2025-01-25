@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/unwrap",
-  "version": "0.0.0-canary-20250124153852",
+  "version": "0.0.0-canary.0",
   "description": "Unwrap a result object.",
   "author": {
     "name": "Giacomo Debidda",

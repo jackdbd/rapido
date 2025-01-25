@@ -1,4 +1,4 @@
-# Change Log
+# @jackdbd/fastify-token-endpoint
 
 ## 1.1.8-canary.0
 
