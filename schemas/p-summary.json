@@ -1,0 +1,7 @@
+{
+  "$id": "p-summary",
+  "title": "Summary",
+  "description": "Summary to use in h-entry, h-recipe, h-resume.",
+  "minLength": 1,
+  "type": "string"
+}

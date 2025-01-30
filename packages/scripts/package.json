@@ -1,24 +1,25 @@
 {
-	"name": "@repo/scripts",
-	"version": "0.1.1",
-	"private": true,
-	"license": "MIT",
-	"publishConfig": {
-		"access": "public"
-	},
-	"type": "module",
-	"scripts": {
-		"build": "run-s 'build:ts' --print-label",
-		"build:ts": "tsc -p tsconfig.json",
-		"build:ts:watch": "tsc -p tsconfig.json --watch",
-		"clean": "rimraf lib/ tsconfig.tsbuildinfo",
-		"pub": "echo '@repo/scripts is a private package. Skip publishing it.'"
-	},
-	"dependencies": {
-		"@apideck/better-ajv-errors": "^0.3.6",
-		"@sinclair/typebox": "^0.34.14",
-		"@thi.ng/transclude": "^1.1.1",
-		"ajv": "^8.17.1",
-		"ajv-formats": "^3.0.1"
-	}
+  "name": "@repo/scripts",
+  "version": "0.1.1",
+  "private": true,
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "run-s 'build:ts' --print-label",
+    "build:ts": "tsc -p tsconfig.json",
+    "build:ts:watch": "tsc -p tsconfig.json --watch",
+    "clean": "rimraf lib/ tsconfig.tsbuildinfo",
+    "dev": "tsc -p tsconfig.json --watch",
+    "pub": "echo '@repo/scripts is a private package. Skip publishing it.'"
+  },
+  "dependencies": {
+    "@apideck/better-ajv-errors": "^0.3.6",
+    "@sinclair/typebox": "^0.34.14",
+    "@thi.ng/transclude": "^1.1.1",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  }
 }

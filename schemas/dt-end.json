@@ -1,0 +1,17 @@
+{
+  "$id": "dt-end",
+  "title": "End at",
+  "description": "Date or date-time when something ends (e.g. an h-event)",
+  "anyOf": [
+    {
+      "format": "date",
+      "description": "Date formatted according to RFC3339",
+      "type": "string"
+    },
+    {
+      "format": "date-time",
+      "description": "Date-time formatted according to RFC3339 (time-zone is mandatory)",
+      "type": "string"
+    }
+  ]
+}

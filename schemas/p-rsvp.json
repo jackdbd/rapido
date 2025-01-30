@@ -1,0 +1,23 @@
+{
+  "$id": "p-rsvp",
+  "title": "RSVP",
+  "description": "An RSVP is a reply to an event that says whether the sender is attending, is not attending, might attend, or is merely interested.",
+  "anyOf": [
+    {
+      "const": "yes",
+      "type": "string"
+    },
+    {
+      "const": "no",
+      "type": "string"
+    },
+    {
+      "const": "maybe",
+      "type": "string"
+    },
+    {
+      "const": "interested",
+      "type": "string"
+    }
+  ]
+}

@@ -1,0 +1,243 @@
+{
+  "$id": "h-entry",
+  "title": "microformats2 h-entry",
+  "description": "h-entry is the microformats2 vocabulary for marking up blog posts on web sites. It can also be used to mark-up any other episodic or time series based content.",
+  "examples": [
+    {
+      "content": "A plain text note"
+    },
+    {
+      "content": {
+        "text": "this is a note",
+        "html": "<p>This <b>is</b> a note</p>"
+      },
+      "published": "2024-11-12T23:20:50.52Z",
+      "updated": "2024-11-29T23:20:50.52Z"
+    },
+    {
+      "bookmark-of": "https://mxb.dev/blog/make-free-stuff/",
+      "content": "Nice article!"
+    },
+    {
+      "like-of": "http://othersite.example.com/permalink47"
+    },
+    {
+      "repost-of": "https://example.com/post",
+      "content": {
+        "html": "<p>You should read this <strong>awesome</strong> article</p>"
+      }
+    },
+    {
+      "in-reply-to": "https://aaronparecki.com/2014/09/13/7/indieweb-xoxo-breakfast",
+      "rsvp": "maybe"
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "author": {
+      "anyOf": [
+        {
+          "$ref": "p-author"
+        },
+        {
+          "$ref": "h-card"
+        }
+      ]
+    },
+    "bookmark-of": {
+      "$id": "u-url",
+      "title": "URL of the card, entry, event, etc.",
+      "description": "URL to use in h-card, h-entry, h-event, etc.",
+      "format": "uri",
+      "type": "string"
+    },
+    "category": {
+      "$id": "p-category",
+      "description": "category/categories",
+      "title": "category",
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "content": {
+      "anyOf": [
+        {
+          "$ref": "p-content"
+        },
+        {
+          "$ref": "e-content"
+        }
+      ]
+    },
+    "in-reply-to": {
+      "$id": "u-url",
+      "title": "URL of the card, entry, event, etc.",
+      "description": "URL to use in h-card, h-entry, h-event, etc.",
+      "format": "uri",
+      "type": "string"
+    },
+    "like-of": {
+      "$id": "u-url",
+      "title": "URL of the card, entry, event, etc.",
+      "description": "URL to use in h-card, h-entry, h-event, etc.",
+      "format": "uri",
+      "type": "string"
+    },
+    "location": {
+      "$id": "entry-location",
+      "title": "location",
+      "description": "Location of the entry.",
+      "anyOf": [
+        {
+          "$ref": "p-location"
+        },
+        {
+          "$ref": "p-geo"
+        },
+        {
+          "$ref": "u-url"
+        },
+        {
+          "$ref": "h-adr"
+        }
+      ]
+    },
+    "name": {
+      "$id": "p-name",
+      "title": "Name of the entry, event, item, product, etc.",
+      "description": "Name to use in h-entry, h-event, h-item, h-product, h-recipe, h-review, h-review-aggregate.",
+      "minLength": 1,
+      "type": "string"
+    },
+    "published": {
+      "$id": "dt-published",
+      "title": "Published at",
+      "description": "Date or date-time of when something was published or will be published (e.g. h-entry, h-recipe)",
+      "anyOf": [
+        {
+          "format": "date",
+          "description": "Date formatted according to RFC3339",
+          "type": "string"
+        },
+        {
+          "format": "date-time",
+          "description": "Date-time formatted according to RFC3339 (time-zone is mandatory)",
+          "type": "string"
+        }
+      ]
+    },
+    "read-of": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "h-cite"
+        }
+      ]
+    },
+    "repost-of": {
+      "$id": "u-url",
+      "title": "URL of the card, entry, event, etc.",
+      "description": "URL to use in h-card, h-entry, h-event, etc.",
+      "format": "uri",
+      "type": "string"
+    },
+    "rsvp": {
+      "$id": "p-rsvp",
+      "title": "RSVP",
+      "description": "An RSVP is a reply to an event that says whether the sender is attending, is not attending, might attend, or is merely interested.",
+      "anyOf": [
+        {
+          "const": "yes",
+          "type": "string"
+        },
+        {
+          "const": "no",
+          "type": "string"
+        },
+        {
+          "const": "maybe",
+          "type": "string"
+        },
+        {
+          "const": "interested",
+          "type": "string"
+        }
+      ]
+    },
+    "summary": {
+      "$id": "p-summary",
+      "title": "Summary",
+      "description": "Summary to use in h-entry, h-recipe, h-resume.",
+      "minLength": 1,
+      "type": "string"
+    },
+    "syndication": {
+      "$id": "u-syndication",
+      "title": "Syndication",
+      "description": "URL(s) of syndicated copies of this post. The property equivalent of rel-syndication.",
+      "anyOf": [
+        {
+          "description": "syndication target",
+          "format": "uri",
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "description": "syndication target",
+            "format": "uri",
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "type": {
+      "default": "entry",
+      "const": "entry",
+      "type": "string"
+    },
+    "updated": {
+      "$id": "dt-updated",
+      "title": "Updated at",
+      "description": "Date or date-time of when something was updated or will be updated (e.g. h-entry)",
+      "anyOf": [
+        {
+          "format": "date",
+          "description": "Date formatted according to RFC3339",
+          "type": "string"
+        },
+        {
+          "format": "date-time",
+          "description": "Date-time formatted according to RFC3339 (time-zone is mandatory)",
+          "type": "string"
+        }
+      ]
+    },
+    "uri": {
+      "$id": "u-uid",
+      "title": "UID",
+      "description": "URL/URI that uniquely/canonically identifies the object)",
+      "format": "uri",
+      "type": "string"
+    },
+    "url": {
+      "$id": "u-url",
+      "title": "URL of the card, entry, event, etc.",
+      "description": "URL to use in h-card, h-entry, h-event, etc.",
+      "format": "uri",
+      "type": "string"
+    }
+  }
+}

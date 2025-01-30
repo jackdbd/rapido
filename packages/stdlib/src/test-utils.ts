@@ -1,15 +1,31 @@
+// import path from "node:path";
 import Ajv from "ajv";
-import type { Plugin } from "ajv";
+import type { Options, Plugin } from "ajv";
 import addFormats from "ajv-formats";
+// TODO: do I actually need this library?
+// import RefResolver from "json-schema-resolver";
+// import { SCHEMAS_ROOT } from "./constants.js";
 
-export const defAjv = () => {
+// export const ref = RefResolver({
+//   clone: true, // Clone the input schema without changing it. Default: false,
+//   buildLocalReference(json, baseUri, fragment, i) {
+//     // const filepath = path.join(SCHEMAS_ROOT, `${json.$id}.json`);
+//     return `def-${i}`; // default value
+//     // return filepath;
+//     // return json.$id;
+//   },
+// });
+
+export const defAjv = (options?: Options) => {
+  const opt = Object.assign({ allErrors: true }, options);
   // I have no idea why I have to do this to make TypeScript happy.
   // In JavaScript, Ajv and addFormats can be imported without any of this mess.
   const addFormatsPlugin = addFormats as any as Plugin<string[]>;
 
-  const ajv_with_formats = addFormatsPlugin(new Ajv.Ajv({ allErrors: true }), [
+  const ajv_with_formats = addFormatsPlugin(new Ajv.Ajv(opt), [
     "date",
     "date-time",
+    "duration",
     "email",
     "hostname",
     "ipv4",

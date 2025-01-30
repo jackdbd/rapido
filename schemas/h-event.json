@@ -1,0 +1,140 @@
+{
+  "$id": "h-event",
+  "title": "microformats2 h-event",
+  "description": "h-event is the microformats2 vocabulary for marking up an event post on web sites. h-event is often used with both event listings and individual event pages.",
+  "examples": [
+    {
+      "name": "Microformats Meetup",
+      "start": "2013-06-30 12:00:00-07:00",
+      "end": "2013-06-30 18:00:00-07:00",
+      "location": "Some bar in SF",
+      "summary": "Get together and discuss all things microformats-related."
+    }
+  ],
+  "type": "object",
+  "properties": {
+    "category": {
+      "$id": "p-category",
+      "description": "category/categories",
+      "title": "category",
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "content": {
+      "anyOf": [
+        {
+          "$ref": "p-content"
+        },
+        {
+          "$ref": "e-content"
+        }
+      ]
+    },
+    "description": {
+      "$id": "p-description",
+      "description": "The description (use in h-event, h-product)",
+      "title": "description",
+      "minLength": 1,
+      "type": "string"
+    },
+    "duration": {
+      "$id": "dt-duration",
+      "title": "Duration",
+      "description": "Duration formatted according to RFC3339",
+      "format": "duration",
+      "type": "string"
+    },
+    "end": {
+      "$id": "dt-end",
+      "title": "End at",
+      "description": "Date or date-time when something ends (e.g. an h-event)",
+      "anyOf": [
+        {
+          "format": "date",
+          "description": "Date formatted according to RFC3339",
+          "type": "string"
+        },
+        {
+          "format": "date-time",
+          "description": "Date-time formatted according to RFC3339 (time-zone is mandatory)",
+          "type": "string"
+        }
+      ]
+    },
+    "location": {
+      "$id": "event-location",
+      "title": "location",
+      "description": "Location of the event.",
+      "anyOf": [
+        {
+          "$ref": "p-location"
+        },
+        {
+          "$ref": "p-geo"
+        },
+        {
+          "$ref": "u-url"
+        },
+        {
+          "$ref": "h-adr"
+        }
+      ]
+    },
+    "name": {
+      "$id": "p-name",
+      "title": "Name of the entry, event, item, product, etc.",
+      "description": "Name to use in h-entry, h-event, h-item, h-product, h-recipe, h-review, h-review-aggregate.",
+      "minLength": 1,
+      "type": "string"
+    },
+    "start": {
+      "$id": "dt-start",
+      "title": "Start at",
+      "description": "Date or date-time when something starts (e.g. an h-event)",
+      "anyOf": [
+        {
+          "format": "date",
+          "description": "Date formatted according to RFC3339",
+          "type": "string"
+        },
+        {
+          "format": "date-time",
+          "description": "Date-time formatted according to RFC3339 (time-zone is mandatory)",
+          "type": "string"
+        }
+      ]
+    },
+    "summary": {
+      "$id": "p-summary",
+      "title": "Summary",
+      "description": "Summary to use in h-entry, h-recipe, h-resume.",
+      "minLength": 1,
+      "type": "string"
+    },
+    "type": {
+      "const": "event",
+      "type": "string"
+    },
+    "url": {
+      "$id": "u-url",
+      "title": "URL of the card, entry, event, etc.",
+      "description": "URL to use in h-card, h-entry, h-event, etc.",
+      "format": "uri",
+      "type": "string"
+    }
+  },
+  "required": [
+    "type"
+  ]
+}

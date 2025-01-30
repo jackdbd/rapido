@@ -85,6 +85,11 @@ jobs:
           JWKS: ${{ secrets.JWKS }}
         run: npx turbo test:ci --filter @jackdbd/schema-validators
 
+      - name: 🔍 Test @jackdbd/microformats2
+        env:
+          JWKS: ${{ secrets.JWKS }}
+        run: npx turbo test:ci --filter @jackdbd/microformats2
+
       - name: 🔍 Test @jackdbd/oauth2-tokens
         env:
           JWKS: ${{ secrets.JWKS }}

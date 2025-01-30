@@ -1,0 +1,7 @@
+{
+  "$id": "u-uid",
+  "title": "UID",
+  "description": "URL/URI that uniquely/canonically identifies the object)",
+  "format": "uri",
+  "type": "string"
+}
