@@ -21,10 +21,12 @@
     "@repo/scripts": "0.1.1",
     "@repo/stdlib": "0.1.1",
     "@repo/typescript-config": "0.1.1",
-    "@jackdbd/unwrap": "0.1.0"
+    "@jackdbd/unwrap": "0.1.0",
+    "@jackdbd/microformats2": "0.1.0"
   },
   "changesets": [
     "lazy-items-nail",
-    "new-mirrors-train"
+    "new-mirrors-train",
+    "smart-snakes-punch"
   ]
 }
