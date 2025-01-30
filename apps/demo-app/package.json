@@ -22,14 +22,17 @@
     "build": "run-s 'build:ts' --print-label",
     "build:ts": "tsc -p tsconfig.json",
     "clean": "rimraf dist/ tsconfig.tsbuildinfo",
-    "dev": "tsm src/server.ts --port 3001 --print-plugins --print-routes",
+    "dev": "NODE_ENV=development tsm src/server.ts --port 3001 --print-plugins --print-routes | pino-pretty",
     "size": "pkg-size ./dist --sort-by=brotli --ignore-files {*.d.ts,*.map}",
-    "start": "node dist/server.js --port 3001 --print-plugins --print-routes"
+    "start": "node dist/server.js --port 3001 --print-plugins --print-routes | pino-pretty"
   },
   "dependencies": {
-    "@jackdbd/fastify-authorization-endpoint": "1.2.1-canary.2",
-    "@jackdbd/fastify-token-endpoint": "1.2.1-canary.2",
+    "@fastify/view": "^10.0.2",
+    "@jackdbd/fastify-authorization-endpoint": "*",
+    "@jackdbd/fastify-micropub-endpoint": "*",
+    "@jackdbd/fastify-token-endpoint": "*",
     "close-with-grace": "^2.2.0",
-    "fastify": "^5.2.1"
+    "fastify": "^5.2.1",
+    "nunjucks": "^3.2.4"
   }
 }

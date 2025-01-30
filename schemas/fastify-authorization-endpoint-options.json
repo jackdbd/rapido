@@ -51,7 +51,7 @@
       "type": "string"
     },
     "logPrefix": {
-      "default": "authorization-endpoint ",
+      "default": "[authorization-endpoint] ",
       "type": "string"
     },
     "onAuthorizationCodeVerified": {

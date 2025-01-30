@@ -113,6 +113,7 @@ const introspectionEndpoint: FastifyPluginCallback<Options> = (
   // const validateClaimJti = defValidateClaim({ claim: "jti" }, { ajv });
 
   // TODO: re-read RFC7662 and decide which scope to check
+  // https://www.rfc-editor.org/rfc/rfc7662
   // const validateScopeMedia = defValidateScope({ scope: 'introspect' })
 
   // const validateAccessTokenNotRevoked = defValidateAccessTokenNotRevoked({

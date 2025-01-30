@@ -65,6 +65,8 @@ in {
       echo "build package $1"
       npm run build -w @repo/stdlib -w @repo/scripts -w @jackdbd/$1
       # npx turbo build -F @repo/stdlib -F @repo/scripts -F ./packages/$1
+      npm run publint -w @jackdbd/$1
+      npm run size -w @jackdbd/$1
     '';
     changeset.exec = ''
       npx changeset add

@@ -44,7 +44,7 @@ Options for the Fastify token-endpoint plugin
 |**isAccessTokenRevoked**|`Function`|Predicate function that returns true if a jti (JSON Web Token ID) is revoked.<br/>|yes|
 |**issuer**|`string`|The authorization server's issuer identifier. It's a URL that uses the "https" scheme and has no query or fragment components. It MUST also be a prefix of the indieauth-metadata URL.<br/>Format: `"uri"`<br/>|yes|
 |[**jwks**](#jwks)|`object`|Private JSON Web Key Set (JWKS). The access token issued by this token endpoint will be signed using a JWK randomly chosen from this set.<br/>|yes|
-|**logPrefix**|`string`|Default: `"token-endpoint "`<br/>|no|
+|**logPrefix**|`string`|Default: `"[token-endpoint] "`<br/>|no|
 |**onIssuedTokens**|`Function`|Handler invoked when the token endpoint has issued an access token and a refresh token. You should use this handler to persist the tokens to some storage (e.g. a database).<br/>|yes|
 |**refreshTokenExpiration**<br/>(Token expiration)|`string`|Human-readable expiration time for the token issued by the token endpoint.<br/>Default: `"30 days"`<br/>Minimal Length: `1`<br/>|no|
 |**reportAllAjvErrors**<br/>(report all AJV errors)|`boolean`|Whether to report all AJV validation errors.<br/>Default: `false`<br/>|no|
@@ -63,7 +63,7 @@ Options for the Fastify token-endpoint plugin
             {}
         ]
     },
-    "logPrefix": "token-endpoint ",
+    "logPrefix": "[token-endpoint] ",
     "refreshTokenExpiration": "60 seconds",
     "reportAllAjvErrors": false
 }
@@ -187,11 +187,11 @@ Function that retrieves a refresh token from a storage backend.
 |---|---|
 | [@fastify/formbody](https://www.npmjs.com/package/@fastify/formbody) | `^8.0.2` |
 | [@fastify/response-validation](https://www.npmjs.com/package/@fastify/response-validation) | `^3.0.3` |
-| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `^0.0.0-canary.1` |
-| [@jackdbd/oauth2](https://www.npmjs.com/package/@jackdbd/oauth2) | `^0.0.0-canary.1` |
-| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `^0.0.0-canary.1` |
-| [@jackdbd/oauth2-tokens](https://www.npmjs.com/package/@jackdbd/oauth2-tokens) | `^0.0.0-canary.1` |
-| [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `^0.0.0-canary.1` |
+| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `^0.1.1-canary.0` |
+| [@jackdbd/oauth2](https://www.npmjs.com/package/@jackdbd/oauth2) | `^0.1.0` |
+| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `^0.1.1-canary.0` |
+| [@jackdbd/oauth2-tokens](https://www.npmjs.com/package/@jackdbd/oauth2-tokens) | `^0.1.1-canary.4` |
+| [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `^0.1.1-canary.0` |
 | [@sinclair/typebox](https://www.npmjs.com/package/@sinclair/typebox) | `^0.34.14` |
 | [ajv](https://www.npmjs.com/package/ajv) | `^8.17.1` |
 | [ajv-formats](https://www.npmjs.com/package/ajv-formats) | `^3.0.1` |

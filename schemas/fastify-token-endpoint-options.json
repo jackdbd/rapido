@@ -121,7 +121,7 @@
       ]
     },
     "logPrefix": {
-      "default": "token-endpoint ",
+      "default": "[token-endpoint] ",
       "type": "string"
     },
     "onIssuedTokens": {
