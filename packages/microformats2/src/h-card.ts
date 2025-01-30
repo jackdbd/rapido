@@ -28,7 +28,12 @@ export const h_card = Type.Object(
     ),
 
     // postal address, optionally embed an h-adr
-    adr: Type.Optional(Type.Union([Type.String(), Type.Ref(h_adr)])),
+    adr: Type.Optional(
+      Type.Union([
+        Type.String(),
+        Type.Unsafe<Static<typeof h_adr>>(Type.Ref(h_adr.$id!)),
+      ])
+    ),
 
     altitude: Type.Optional(p_altitude),
 
