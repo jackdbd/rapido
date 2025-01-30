@@ -1,15 +1,24 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import Fastify from "fastify";
+import view from "@fastify/view";
 import authorizationEndpoint from "@jackdbd/fastify-authorization-endpoint";
+import micropubEndpoint from "@jackdbd/fastify-micropub-endpoint";
 import tokenEndpoint from "@jackdbd/fastify-token-endpoint";
+import Fastify from "fastify";
+import nunjucks from "nunjucks";
+import type { Environment } from "nunjucks";
+import { tap } from "./nunjucks/filters.js";
 import {
+  create,
+  deleteContentOrMedia,
   isAccessTokenRevoked,
   onAuthorizationCodeVerified,
   onIssuedTokens,
   onUserApprovedRequest,
   retrieveAuthorizationCode,
   retrieveRefreshToken,
+  undelete,
+  update,
 } from "./user-provided-functions.js";
 import { jwks } from "../../../packages/stdlib/lib/test-utils.js";
 import type { Config } from "./config.js";
@@ -23,8 +32,11 @@ export const defFastify = (config: Config) => {
     includeErrorDescription,
     issuer,
     log_level,
+    media_endpoint,
+    micropub_endpoint,
     reportAllAjvErrors,
     revocation_endpoint,
+    syndicate_to,
     userinfo_endpoint,
   } = config;
 
@@ -61,7 +73,19 @@ export const defFastify = (config: Config) => {
     onUserApprovedRequest,
     reportAllAjvErrors,
     retrieveAuthorizationCode,
-  } as any);
+  });
+
+  fastify.register(micropubEndpoint, {
+    create,
+    delete: deleteContentOrMedia,
+    includeErrorDescription,
+    isAccessTokenRevoked,
+    mediaEndpoint: media_endpoint,
+    micropubEndpoint: micropub_endpoint,
+    syndicateTo: syndicate_to,
+    undelete,
+    update,
+  });
 
   fastify.register(tokenEndpoint, {
     authorizationEndpoint: authorization_endpoint,
@@ -74,6 +98,27 @@ export const defFastify = (config: Config) => {
     userinfoEndpoint: userinfo_endpoint,
   });
 
+  // https://github.com/fastify/point-of-view?tab=readme-ov-file#migrating-from-view-to-viewasync
+  fastify.register(view, {
+    engine: { nunjucks },
+    templates: [path.join(__dirname, "..", "templates")],
+    options: {
+      onConfigure: (env: Environment) => {
+        const xs = [{ name: "tap", fn: tap }];
+        xs.forEach(({ name, fn }) => env.addFilter(name, fn));
+        const filters = xs.map(({ name }) => name).join(", ");
+
+        // const gg = [{ name: 'foo', value: foo }]
+        // gg.forEach(({ name, value }) => env.addGlobal(name, value))
+        // const globals = gg.map(({ name }) => name).join(', ')
+
+        fastify.log.debug(
+          `configured nunjucks environment. Filters: ${filters}`
+        );
+      },
+    },
+  });
+
   // === DECORATORS ========================================================= //
 
   // === HOOKS ============================================================== //
@@ -84,6 +129,28 @@ export const defFastify = (config: Config) => {
       message: "auth callback done",
       headers: request.headers,
       query: request.query,
+    });
+  });
+
+  fastify.get("/", async (_request, reply) => {
+    return reply.viewAsync("home.njk", { name: "User" });
+  });
+
+  // https://micropub.spec.indieweb.org/#querying
+  fastify.get("/micropub/config", async (request, reply) => {
+    const response = await fetch(`${micropub_endpoint}?q=config`, {
+      method: "GET",
+      headers: {},
+    });
+
+    const payload = await response.json();
+    request.log.debug(payload, `Micropub endpoint configuration`);
+
+    return reply.viewAsync("success.njk", {
+      title: "Micropub config",
+      description: "Configuration for the Micropub endpoint",
+      summary: "Micropub endpoint configuration",
+      payload,
     });
   });
 

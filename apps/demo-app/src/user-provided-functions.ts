@@ -4,6 +4,12 @@ import type {
   RetrieveAuthorizationCode,
 } from "@jackdbd/fastify-authorization-endpoint";
 import type {
+  Create,
+  DeleteContentOrMedia,
+  Undelete,
+  Update,
+} from "@jackdbd/fastify-micropub-endpoint";
+import type {
   IsAccessTokenRevoked,
   OnIssuedTokens,
   RetrieveRefreshToken,
@@ -13,6 +19,17 @@ import { defConfig } from "./config.js";
 
 const PREFIX = "user-fx "; // user-provided side effect
 const { client_id, me, issuer, redirect_uri } = defConfig(3001);
+
+export const create: Create = async (jf2) => {
+  console.log(`[${PREFIX}Create] jf2`, jf2);
+  throw new Error("create not implemented");
+};
+
+export const deleteContentOrMedia: DeleteContentOrMedia = async (str) => {
+  console.log(`[${PREFIX}DeleteContentOrMedia] str: ${str}`);
+  // return { error: new Error("Not implemented") };
+  throw new Error("Not implemented");
+};
 
 export const isAccessTokenRevoked: IsAccessTokenRevoked = async (jti) => {
   console.log(
@@ -76,4 +93,15 @@ export const retrieveRefreshToken: RetrieveRefreshToken = async (
     refresh_token,
     scope: SCOPE,
   };
+};
+
+export const undelete: Undelete = async (str) => {
+  console.log(`[${PREFIX}Undelete] str: ${str}`);
+  // return { error: new Error("Not implemented") };
+  throw new Error("Not implemented");
+};
+
+export const update: Update = async (url, patch) => {
+  console.log(`[${PREFIX}Update] url: ${url}`, patch);
+  throw new Error("Not implemented");
 };
