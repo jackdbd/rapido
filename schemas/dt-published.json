@@ -1,0 +1,17 @@
+{
+  "$id": "dt-published",
+  "title": "Published at",
+  "description": "Date or date-time of when something was published or will be published (e.g. h-entry, h-recipe)",
+  "anyOf": [
+    {
+      "format": "date",
+      "description": "Date formatted according to RFC3339",
+      "type": "string"
+    },
+    {
+      "format": "date-time",
+      "description": "Date-time formatted according to RFC3339 (time-zone is mandatory)",
+      "type": "string"
+    }
+  ]
+}

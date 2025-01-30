@@ -61,6 +61,19 @@ in {
   };
 
   scripts = {
+    build.exec = ''
+      echo "build package $1"
+      npm run build -w @repo/stdlib -w @repo/scripts -w @jackdbd/$1
+      # npx turbo build -F @repo/stdlib -F @repo/scripts -F ./packages/$1
+    '';
+    changeset.exec = ''
+      npx changeset add
+    '';
+    dev.exec = ''
+      echo "develop package $1"
+      # npm run dev -w @repo/stdlib -w @repo/scripts -w @jackdbd/$1
+      npx turbo dev -F @repo/stdlib -F @repo/scripts -F ./packages/$1
+    '';
     versions.exec = ''
       echo "=== Versions ==="
       git --version

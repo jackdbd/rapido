@@ -1,0 +1,7 @@
+{
+  "$id": "dt-duration",
+  "title": "Duration",
+  "description": "Duration formatted according to RFC3339",
+  "format": "duration",
+  "type": "string"
+}

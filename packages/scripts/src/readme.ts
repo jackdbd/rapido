@@ -9,6 +9,27 @@ import {
   toc,
   transcludeFile,
 } from "@thi.ng/transclude";
+import {
+  dt_duration,
+  dt_end,
+  dt_start,
+  dt_published,
+  h_adr,
+  h_entry,
+  h_event,
+  p_altitude,
+  p_category,
+  p_description,
+  p_latitude,
+  p_longitude,
+  p_name,
+  p_rsvp,
+  p_summary,
+  u_url,
+  u_syndication,
+  dt_updated,
+  u_uid,
+} from "../../microformats2/lib/index.js";
 import { tokens_plus_info } from "../../oauth2-tokens/lib/index.js";
 import {
   access_token_request_body,
@@ -58,6 +79,22 @@ const run = async () => {
 
   await writeJsonSchema({ schema: code_challenge, schemas_root });
   await writeJsonSchema({ schema: code_challenge_method, schemas_root });
+  await writeJsonSchema({ schema: dt_duration, schemas_root });
+  await writeJsonSchema({ schema: dt_end, schemas_root });
+  await writeJsonSchema({ schema: dt_published, schemas_root });
+  await writeJsonSchema({ schema: dt_start, schemas_root });
+  await writeJsonSchema({ schema: dt_updated, schemas_root });
+  await writeJsonSchema({ schema: p_altitude, schemas_root });
+  await writeJsonSchema({ schema: p_category, schemas_root });
+  await writeJsonSchema({ schema: p_description, schemas_root });
+  await writeJsonSchema({ schema: p_latitude, schemas_root });
+  await writeJsonSchema({ schema: p_longitude, schemas_root });
+  await writeJsonSchema({ schema: p_name, schemas_root });
+  await writeJsonSchema({ schema: p_rsvp, schemas_root });
+  await writeJsonSchema({ schema: p_summary, schemas_root });
+  await writeJsonSchema({ schema: u_syndication, schemas_root });
+  await writeJsonSchema({ schema: u_uid, schemas_root });
+  await writeJsonSchema({ schema: u_url, schemas_root });
 
   const access_token_request_body_filepath = await writeJsonSchema({
     schema: access_token_request_body,
@@ -71,6 +108,21 @@ const run = async () => {
 
   const authorization_endpoint_plugin_options_filepath = await writeJsonSchema({
     schema: authorization_endpoint_plugin_options,
+    schemas_root,
+  });
+
+  const h_adr_filepath = await writeJsonSchema({
+    schema: h_adr,
+    schemas_root,
+  });
+
+  const h_entry_filepath = await writeJsonSchema({
+    schema: h_entry,
+    schemas_root,
+  });
+
+  const h_event_filepath = await writeJsonSchema({
+    schema: h_event,
     schemas_root,
   });
 
@@ -121,6 +173,21 @@ const run = async () => {
       "introspectionEndpoint.pluginOptions": safeSchemaToMarkdown({
         filepath: introspection_endpoint_plugin_options_filepath,
         level: 1,
+      }),
+
+      "microformats2.hAdr": safeSchemaToMarkdown({
+        filepath: h_adr_filepath,
+        level: 2,
+      }),
+
+      "microformats2.hEntry": safeSchemaToMarkdown({
+        filepath: h_entry_filepath,
+        level: 2,
+      }),
+
+      "microformats2.hEvent": safeSchemaToMarkdown({
+        filepath: h_event_filepath,
+        level: 2,
       }),
 
       "revocationEndpoint.pluginOptions": safeSchemaToMarkdown({

@@ -1,0 +1,17 @@
+{
+  "$id": "dt-updated",
+  "title": "Updated at",
+  "description": "Date or date-time of when something was updated or will be updated (e.g. h-entry)",
+  "anyOf": [
+    {
+      "format": "date",
+      "description": "Date formatted according to RFC3339",
+      "type": "string"
+    },
+    {
+      "format": "date-time",
+      "description": "Date-time formatted according to RFC3339 (time-zone is mandatory)",
+      "type": "string"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "$id": "p-altitude",
+  "description": "Distance in metres from the nominal sea level along the tangent of the earth’s curve, i.e. the geoid height.",
+  "title": "Altitude",
+  "type": "number"
+}

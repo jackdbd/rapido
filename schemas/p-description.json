@@ -1,0 +1,7 @@
+{
+  "$id": "p-description",
+  "description": "The description (use in h-event, h-product)",
+  "title": "description",
+  "minLength": 1,
+  "type": "string"
+}
