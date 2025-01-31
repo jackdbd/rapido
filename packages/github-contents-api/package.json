@@ -24,6 +24,10 @@
       "types": "./lib/index.d.ts",
       "import": "./lib/index.js"
     },
+    "./defaults": {
+      "types": "./lib/defaults.d.ts",
+      "import": "./lib/defaults.js"
+    },
     "./package.json": "./package.json"
   },
   "typesVersions": {
