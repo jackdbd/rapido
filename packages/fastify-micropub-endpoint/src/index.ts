@@ -43,6 +43,7 @@ export {
   retrieveContent,
   undelete,
   update,
+  update_patch,
 } from "./schemas/index.js";
 export type {
   Create,
@@ -53,6 +54,7 @@ export type {
   RetrieveContent,
   Undelete,
   Update,
+  UpdatePatch,
 } from "./schemas/index.js";
 
 declare module "@fastify/request-context" {
