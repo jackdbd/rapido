@@ -40,6 +40,7 @@ export {
   micropub_get_request_querystring,
   micropub_post_request_body_jf2,
   options as plugin_options,
+  retrieveContent,
   undelete,
   update,
 } from "./schemas/index.js";
@@ -49,6 +50,7 @@ export type {
   IsAccessTokenRevoked,
   MicropubGetConfig,
   Options as PluginOptions,
+  RetrieveContent,
   Undelete,
   Update,
 } from "./schemas/index.js";

@@ -29,6 +29,7 @@ export {
   create,
   deleteContentOrMedia,
   isAccessTokenRevoked,
+  retrieveContent,
   undelete,
   update,
 } from "./user-provided-functions.js";
@@ -36,6 +37,7 @@ export type {
   Create,
   DeleteContentOrMedia,
   IsAccessTokenRevoked,
+  RetrieveContent,
   Undelete,
   Update,
 } from "./user-provided-functions.js";
