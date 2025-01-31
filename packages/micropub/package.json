@@ -36,6 +36,10 @@
       "types": "./lib/schemas/*.d.ts",
       "import": "./lib/schemas/*.js"
     },
+    "./website-predicates": {
+      "types": "./lib/website-predicates.d.ts",
+      "import": "./lib/website-predicates.js"
+    },
     "./package.json": "./package.json"
   },
   "typesVersions": {
