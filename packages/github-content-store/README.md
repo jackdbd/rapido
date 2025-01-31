@@ -1,0 +1,35 @@
+# @jackdbd/github-content-store
+
+[![npm version](https://badge.fury.io/js/@jackdbd%2Fgithub-content-store.svg)](https://badge.fury.io/js/@jackdbd%2Fgithub-content-store)
+[![install size](https://packagephobia.com/badge?p=@jackdbd/github-content-store)](https://packagephobia.com/result?p=@jackdbd/github-content-store)
+[![CodeCov badge](https://codecov.io/gh/jackdbd/rapido/graph/badge.svg?token=BpFF8tmBYS)](https://app.codecov.io/gh/jackdbd/rapido?flags%5B0%5D=github-content-store)
+[![Socket Badge](https://socket.dev/api/badge/npm/package/@jackdbd/github-content-store)](https://socket.dev/npm/package/@jackdbd/github-content-store)
+
+Store Micropub posts in a GitHub repository.
+
+- [Installation](#installation)
+- [Dependencies](#dependencies)
+- [License](#license)
+
+## Installation
+
+```sh
+npm install @jackdbd/github-content-store
+```
+
+## Dependencies
+
+| Package | Version |
+|---|---|
+| [@jackdbd/github-contents-api](https://www.npmjs.com/package/@jackdbd/github-contents-api) | `*` |
+| [@jackdbd/micropub](https://www.npmjs.com/package/@jackdbd/micropub) | `*` |
+| [@paulrobertlloyd/mf2tojf2](https://www.npmjs.com/package/@paulrobertlloyd/mf2tojf2) | `^2.4.0` |
+| [dayjs](https://www.npmjs.com/package/dayjs) | `^1.11.13` |
+| [dayjs-plugin-utc](https://www.npmjs.com/package/dayjs-plugin-utc) | `^0.1.2` |
+| [gray-matter](https://www.npmjs.com/package/gray-matter) | `^4.0.3` |
+| [html-to-text](https://www.npmjs.com/package/html-to-text) | `^9.0.5` |
+| [markdown-it](https://www.npmjs.com/package/markdown-it) | `^14.1.0` |
+
+## License
+
+&copy; 2024 - 2025 [Giacomo Debidda](https://www.giacomodebidda.com/) // [MIT License](https://spdx.org/licenses/MIT.html)

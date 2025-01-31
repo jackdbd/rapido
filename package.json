@@ -50,6 +50,8 @@
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
     "@reporters/github": "^1.7.2",
+    "@types/html-to-text": "^9.0.4",
+    "@types/markdown-it": "^14.1.2",
     "@types/nunjucks": "^3.2.6",
     "@types/sanitize-html": "^2.13.0",
     "fastify": "^5.2.1",

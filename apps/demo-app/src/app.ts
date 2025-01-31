@@ -86,6 +86,7 @@ export const defFastify = (config: Config) => {
     me,
     mediaEndpoint: media_endpoint,
     micropubEndpoint: micropub_endpoint,
+    reportAllAjvErrors,
     syndicateTo: syndicate_to,
     undelete,
     update,
