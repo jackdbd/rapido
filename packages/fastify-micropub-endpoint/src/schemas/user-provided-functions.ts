@@ -1,6 +1,7 @@
+import { location } from "@jackdbd/micropub";
 import { jti } from "@jackdbd/oauth2-tokens";
 import { Static, Type } from "@sinclair/typebox";
-import { url } from "./common.js";
+import { sha, url } from "./common.js";
 import { jf2 } from "./jf2.js";
 import { update_patch } from "./update-patch.js";
 
@@ -25,16 +26,26 @@ export const isAccessTokenRevoked = Type.Function(
  */
 export type IsAccessTokenRevoked = Static<typeof isAccessTokenRevoked>;
 
-// const success = Type.Object({
-//   error: Type.Optional(Type.Undefined()),
-//   value: Type.Any(),
-// });
-
-// const result_promise = Type.Promise(Type.Union([failure, success]));
-
 // These functions are provided by the user, so I don't think we can draw any
 // conclusions about their return type. We can only say that they return a
 // promise.
+
+// TODO: decide the name, either "retrieveContent" or "retrievePost"
+export const retrieveContent = Type.Function(
+  [location],
+  Type.Promise(
+    Type.Object({
+      jf2,
+      sha: Type.Optional(sha),
+    })
+  ),
+  {
+    title: "retrieveContent",
+    description: "Function that retrieves a post from the Micropub server.",
+  }
+);
+
+export type RetrieveContent = Static<typeof retrieveContent>;
 
 export const create = Type.Function([jf2], Type.Promise(Type.Any()), {
   title: "create",
