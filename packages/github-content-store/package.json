@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/github-content-store",
-  "version": "0.1.0",
+  "version": "0.2.0-canary.0",
   "description": "Store Micropub posts in a GitHub repository.",
   "author": {
     "name": "Giacomo Debidda",
@@ -53,8 +53,8 @@
     "test:watch": "node --test --watch"
   },
   "dependencies": {
-    "@jackdbd/github-contents-api": "*",
-    "@jackdbd/micropub": "*",
+    "@jackdbd/github-contents-api": "0.2.0-canary.1",
+    "@jackdbd/micropub": "0.2.0-canary.1",
     "@paulrobertlloyd/mf2tojf2": "^2.4.0",
     "dayjs": "^1.11.13",
     "dayjs-plugin-utc": "^0.1.2",
