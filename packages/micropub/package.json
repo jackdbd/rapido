@@ -24,6 +24,10 @@
       "types": "./lib/index.d.ts",
       "import": "./lib/index.js"
     },
+    "./jf2-predicates": {
+      "types": "./lib/jf2-predicates.d.ts",
+      "import": "./lib/jf2-predicates.js"
+    },
     "./schemas": {
       "types": "./lib/schemas/index.d.ts",
       "import": "./lib/schemas/index.js"
