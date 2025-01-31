@@ -10,6 +10,8 @@ export { mp_entry, type MP_Entry } from "./entry.js";
 
 export { mp_event, type MP_Event } from "./event.js";
 
+export { location, type Location } from "./location.js";
+
 export {
   access_token,
   action,
