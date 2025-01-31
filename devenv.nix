@@ -68,8 +68,13 @@ in {
       npm run publint -w @jackdbd/$1
       npm run size -w @jackdbd/$1
     '';
-    changeset.exec = ''
+    changeset-add.exec = ''
       npx changeset add
+    '';
+    changeset-reset-canary.exec = ''
+      rm -f .changeset/pre.json
+      find .changeset -type f -name "*.md" ! -name "README.md" -delete
+      npx changeset pre enter canary
     '';
     dev.exec = ''
       echo "develop package $1"
