@@ -81,6 +81,11 @@ in {
       # npm run dev -w @repo/stdlib -w @repo/scripts -w @jackdbd/$1
       npx turbo dev -F @repo/stdlib -F @repo/scripts -F ./packages/$1
     '';
+    "test:ci".exec = ''
+      echo "test package $1"
+      npm run build:ts -w @jackdbd/$1
+      npm run test:ci -w @jackdbd/$1
+    '';
     versions.exec = ''
       echo "=== Versions ==="
       git --version
