@@ -1,0 +1,26 @@
+# @jackdbd/github-contents-api
+
+[![npm version](https://badge.fury.io/js/@jackdbd%2Fgithub-contents-api.svg)](https://badge.fury.io/js/@jackdbd%2Fgithub-contents-api)
+[![install size](https://packagephobia.com/badge?p=@jackdbd/github-contents-api)](https://packagephobia.com/result?p=@jackdbd/github-contents-api)
+[![CodeCov badge](https://codecov.io/gh/jackdbd/rapido/graph/badge.svg?token=BpFF8tmBYS)](https://app.codecov.io/gh/jackdbd/rapido?flags%5B0%5D=github-contents-api)
+[![Socket Badge](https://socket.dev/api/badge/npm/package/@jackdbd/github-contents-api)](https://socket.dev/npm/package/@jackdbd/github-contents-api)
+
+Minimal client for the [GitHub Contents API](https://docs.github.com/en/rest/repos/contents).
+
+- [Installation](#installation)
+- [Dependencies](#dependencies)
+- [License](#license)
+
+## Installation
+
+```sh
+npm install @jackdbd/github-contents-api
+```
+
+## Dependencies
+
+This package has no dependencies.
+
+## License
+
+&copy; 2024 - 2025 [Giacomo Debidda](https://www.giacomodebidda.com/) // [MIT License](https://spdx.org/licenses/MIT.html)
