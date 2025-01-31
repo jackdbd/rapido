@@ -25,9 +25,13 @@
     "@repo/scripts": "0.1.1",
     "@repo/stdlib": "0.1.1",
     "@repo/typescript-config": "0.1.1",
-    "@jackdbd/unwrap": "0.1.0"
+    "@jackdbd/unwrap": "0.1.0",
+    "@jackdbd/github-content-store": "0.1.0"
   },
   "changesets": [
-    "twenty-birds-unite"
+    "dry-files-shave",
+    "twenty-birds-unite",
+    "wet-ducks-tap",
+    "young-zebras-wait"
   ]
 }
