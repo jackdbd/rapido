@@ -1,13 +1,8 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
-import {
-  isBookmark,
-  isLike,
-  isNote,
-  isRepost,
-  isRsvp,
-  jf2ToSlug,
-} from "../lib/index.js";
+import { jf2_predicates, jf2ToSlug } from "../lib/index.js";
+
+const { isBookmark, isLike, isNote, isRepost, isRsvp } = jf2_predicates;
 
 describe("jf2ToSlug", () => {
   it("uses `content` in a plain text note", () => {
