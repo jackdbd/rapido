@@ -24,6 +24,10 @@
       "types": "./lib/index.d.ts",
       "import": "./lib/index.js"
     },
+    "./mime-types": {
+      "types": "./lib/mime-types.d.ts",
+      "import": "./lib/mime-types.js"
+    },
     "./package.json": "./package.json"
   },
   "typesVersions": {

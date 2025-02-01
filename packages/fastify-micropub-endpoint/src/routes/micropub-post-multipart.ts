@@ -1,8 +1,7 @@
 import assert from "node:assert";
+import { isAudio, isVideo } from "@jackdbd/fastify-utils";
 import { FastifyRequest } from "fastify";
 import formAutoContent from "form-auto-content";
-// import type { FormMethodResult } from "form-auto-content";
-import { isAudio, isVideo } from "../mime-types.js";
 import type { PostRequestBody } from "../schemas/index.js";
 
 // Regarding formAutoContent of form-auto-content, I get "This expression is not
