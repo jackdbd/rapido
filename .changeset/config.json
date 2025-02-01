@@ -6,7 +6,6 @@
   "commit": false,
   "fixed": [],
   "ignore": [
-    "@jackdbd/fastify-hooks",
     "@repo/demo-app",
     "@repo/eslint-config",
     "@repo/scripts",
