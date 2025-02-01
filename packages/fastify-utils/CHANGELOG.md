@@ -1,5 +1,11 @@
 # @jackdbd/fastify-utils
 
+## 0.2.0-canary.2
+
+### Minor Changes
+
+- Bump all packages.
+
 ## 0.2.0-canary.1
 
 ### Minor Changes

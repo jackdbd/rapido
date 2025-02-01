@@ -1,5 +1,22 @@
 # @jackdbd/fastify-authorization-endpoint
 
+## 1.3.0-canary.3
+
+### Minor Changes
+
+- Bump all packages.
+
+### Patch Changes
+
+- Updated dependencies
+  - @jackdbd/oauth2-error-responses@0.2.0-canary.1
+  - @jackdbd/schema-validators@0.2.0-canary.4
+  - @jackdbd/canonical-url@0.2.0-canary.1
+  - @jackdbd/fastify-webc@0.2.0-canary.0
+  - @jackdbd/indieauth@0.2.0-canary.1
+  - @jackdbd/oauth2@0.2.0-canary.0
+  - @jackdbd/pkce@0.2.0-canary.0
+
 ## 1.2.1-canary.2
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @jackdbd/indieauth
 
+## 0.2.0-canary.1
+
+### Minor Changes
+
+- Bump all packages.
+
+### Patch Changes
+
+- Updated dependencies
+  - @jackdbd/canonical-url@0.2.0-canary.1
+  - @jackdbd/oauth2@0.2.0-canary.0
+  - @jackdbd/pkce@0.2.0-canary.0
+
 ## 0.1.1-canary.0
 
 ### Patch Changes

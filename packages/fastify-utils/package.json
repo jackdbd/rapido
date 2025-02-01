@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/fastify-utils",
-  "version": "0.2.0-canary.1",
+  "version": "0.2.0-canary.2",
   "description": "Miscellaneous utilities for Fastify servers.",
   "author": {
     "name": "Giacomo Debidda",

@@ -1,5 +1,11 @@
 # @jackdbd/schema-validators
 
+## 0.2.0-canary.4
+
+### Minor Changes
+
+- Bump all packages.
+
 ## 0.1.1-canary.3
 
 ### Patch Changes
