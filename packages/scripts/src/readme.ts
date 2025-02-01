@@ -37,6 +37,7 @@ import {
   plugin_options as authorization_endpoint_plugin_options,
 } from "../../fastify-authorization-endpoint/lib/index.js";
 import { plugin_options as introspection_endpoint_plugin_options } from "../../fastify-introspection-endpoint/lib/index.js";
+import { plugin_options as media_endpoint_plugin_options } from "../../fastify-media-endpoint/lib/index.js";
 import { plugin_options as revocation_endpoint_plugin_options } from "../../fastify-revocation-endpoint/lib/index.js";
 import { plugin_options as token_endpoint_plugin_options } from "../../fastify-token-endpoint/lib/index.js";
 import { plugin_options as userinfo_endpoint_plugin_options } from "../../fastify-userinfo-endpoint/lib/index.js";
@@ -131,6 +132,11 @@ const run = async () => {
     schemas_root,
   });
 
+  const media_endpoint_plugin_options_filepath = await writeJsonSchema({
+    schema: media_endpoint_plugin_options,
+    schemas_root,
+  });
+
   const revocation_endpoint_plugin_options_filepath = await writeJsonSchema({
     schema: revocation_endpoint_plugin_options,
     schemas_root,
@@ -172,6 +178,11 @@ const run = async () => {
 
       "introspectionEndpoint.pluginOptions": safeSchemaToMarkdown({
         filepath: introspection_endpoint_plugin_options_filepath,
+        level: 1,
+      }),
+
+      "mediaEndpoint.pluginOptions": safeSchemaToMarkdown({
+        filepath: media_endpoint_plugin_options_filepath,
         level: 1,
       }),
 

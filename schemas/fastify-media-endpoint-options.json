@@ -1,0 +1,134 @@
+{
+  "$id": "fastify-media-endpoint-options",
+  "title": "Fastify plugin media-endpoint options",
+  "description": "Options for the Fastify media-endpoint plugin",
+  "type": "object",
+  "properties": {
+    "ajv": {
+      "description": "Instance of Ajv"
+    },
+    "delete": {
+      "title": "delete",
+      "description": "[Deletes](https://micropub.spec.indieweb.org/#delete) a file from the Micropub server.",
+      "type": "Function",
+      "parameters": [
+        {
+          "description": "A URL",
+          "format": "uri",
+          "type": "string"
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "item": {}
+      }
+    },
+    "includeErrorDescription": {
+      "description": "Whether to include an `error_description` property in all error responses. This is meant to assist the client developer in understanding the error. This is NOT meant to be shown to the end user.",
+      "default": false,
+      "type": "boolean"
+    },
+    "isAccessTokenRevoked": {
+      "title": "isAccessTokenRevoked",
+      "description": "Predicate function that returns true if a jti (JSON Web Token ID) is revoked.",
+      "type": "Function",
+      "parameters": [
+        {
+          "description": "Unique identifier for the JWT",
+          "minLength": 1,
+          "title": "\"jti\" (JWT ID) Claim",
+          "type": "string"
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "item": {
+          "type": "boolean"
+        }
+      }
+    },
+    "logPrefix": {
+      "default": "[media-endpoint] ",
+      "type": "string"
+    },
+    "me": {
+      "anyOf": [
+        {
+          "description": "Profile URL (before URL Canonicalization)",
+          "minLength": 1,
+          "title": "me (not canonicalized)",
+          "type": "string"
+        },
+        {
+          "description": "Profile URL (after URL Canonicalization)",
+          "format": "uri",
+          "title": "me (canonicalized)",
+          "type": "string"
+        }
+      ]
+    },
+    "multipartFormDataMaxFileSize": {
+      "title": "multipart/form-data max file size",
+      "description": "Max file size (in bytes) for multipart/form-data requests.",
+      "default": 10000000,
+      "minimum": 0,
+      "type": "number"
+    },
+    "reportAllAjvErrors": {
+      "description": "Whether to report all AJV validation errors.",
+      "title": "report all AJV errors",
+      "default": false,
+      "type": "boolean"
+    },
+    "upload": {
+      "title": "upload",
+      "description": "[Uploads a file](https://micropub.spec.indieweb.org/#uploading-files) to the Micropub server.",
+      "type": "Function",
+      "parameters": [
+        {
+          "type": "object",
+          "properties": {
+            "body": {
+              "description": "The file to upload."
+            },
+            "contentType": {
+              "description": "Content-Type of the file being uploaded to the Media endpoint.",
+              "type": "string"
+            },
+            "filename": {
+              "description": "Name of the file being uploaded to the Media endpoint. The Media Endpoint MAY ignore the suggested filename that the client sends.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "body",
+            "contentType",
+            "filename"
+          ]
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "item": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "description": "URL of the uploaded file.",
+              "format": "uri",
+              "type": "string"
+            }
+          },
+          "required": [
+            "url"
+          ]
+        }
+      }
+    }
+  },
+  "required": [
+    "delete",
+    "isAccessTokenRevoked",
+    "me",
+    "upload"
+  ]
+}
