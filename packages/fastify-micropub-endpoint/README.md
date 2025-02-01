@@ -29,6 +29,7 @@ npm install @jackdbd/fastify-micropub-endpoint
 | [@fastify/request-context](https://www.npmjs.com/package/@fastify/request-context) | `^6.0.2` |
 | [@fastify/response-validation](https://www.npmjs.com/package/@fastify/response-validation) | `^3.0.3` |
 | [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.1.1-canary.0` |
+| [@jackdbd/fastify-utils](https://www.npmjs.com/package/@jackdbd/fastify-utils) | `*` |
 | [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `0.1.1-canary.0` |
 | [@jackdbd/microformats2](https://www.npmjs.com/package/@jackdbd/microformats2) | `0.1.1-canary.0` |
 | [@jackdbd/micropub](https://www.npmjs.com/package/@jackdbd/micropub) | `0.2.0-canary.1` |
