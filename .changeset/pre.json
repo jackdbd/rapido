@@ -26,10 +26,15 @@
     "@repo/stdlib": "0.1.1",
     "@repo/typescript-config": "0.1.1",
     "@jackdbd/unwrap": "0.1.0",
-    "@jackdbd/github-content-store": "0.1.0"
+    "@jackdbd/github-content-store": "0.1.0",
+    "@jackdbd/fastify-media-endpoint": "0.1.0",
+    "@jackdbd/fastify-utils": "0.1.0",
+    "@jackdbd/r2-media-store": "0.1.0"
   },
   "changesets": [
     "dry-files-shave",
+    "red-masks-tease",
+    "slimy-pianos-push",
     "twenty-birds-unite",
     "wet-ducks-tap",
     "young-zebras-wait"
