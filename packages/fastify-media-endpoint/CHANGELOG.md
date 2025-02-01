@@ -1,5 +1,24 @@
 # @jackdbd/fastify-media-endpoint
 
+## 0.2.0-canary.4
+
+### Minor Changes
+
+- caebe78: Bump packages.
+
+### Patch Changes
+
+- Updated dependencies [caebe78]
+  - @jackdbd/oauth2-error-responses@0.2.0-canary.2
+  - @jackdbd/schema-validators@0.2.0-canary.5
+  - @jackdbd/canonical-url@0.2.0-canary.2
+  - @jackdbd/fastify-hooks@0.2.0-canary.3
+  - @jackdbd/fastify-utils@0.2.0-canary.3
+  - @jackdbd/oauth2-tokens@0.2.0-canary.6
+  - @jackdbd/indieauth@0.2.0-canary.2
+  - @jackdbd/micropub@0.2.0-canary.3
+  - @jackdbd/oauth2@0.2.0-canary.1
+
 ## 0.2.0-canary.3
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/canonical-url",
-  "version": "0.2.0-canary.1",
+  "version": "0.2.0-canary.2",
   "description": "Canonicalizes a URL.",
   "author": {
     "name": "Giacomo Debidda",
