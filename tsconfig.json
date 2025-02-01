@@ -73,6 +73,9 @@
       "path": "./packages/github-content-store/tsconfig.json"
     },
     {
+      "path": "./packages/r2-media-store/tsconfig.json"
+    },
+    {
       "path": "./packages/scripts/tsconfig.json"
     },
     {
