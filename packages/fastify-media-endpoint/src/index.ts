@@ -1,9 +1,7 @@
-import formbody from "@fastify/formbody";
 import multipart from "@fastify/multipart";
 import fastifyRequestContext from "@fastify/request-context";
 import responseValidation from "@fastify/response-validation";
 import canonicalUrl from "@jackdbd/canonical-url";
-import * as jf2 from "@jackdbd/microformats2";
 import { error_response } from "@jackdbd/oauth2";
 import {
   InvalidRequestError,
@@ -14,7 +12,6 @@ import {
   type AccessTokenClaims,
 } from "@jackdbd/oauth2-tokens";
 import { conformResult } from "@jackdbd/schema-validators";
-import type { Jf2 } from "@paulrobertlloyd/mf2tojf2";
 import { Ajv, type Plugin as AjvPlugin } from "ajv";
 import addFormats from "ajv-formats";
 import type { FastifyPluginCallback } from "fastify";
@@ -24,66 +21,42 @@ import { DEFAULT, NAME } from "./constants.js";
 import { decodeAccessToken } from "./hooks/decode-access-token.js";
 import { defValidateClaim } from "./hooks/validate-claim.js";
 import { defValidateNotRevoked } from "./hooks/validate-not-revoked.js";
-import { defMicropubGet } from "./routes/micropub-get.js";
-import { defMicropubPost } from "./routes/micropub-post.js";
-import {
-  micropub_get_request_querystring,
-  micropub_post_request_body_jf2,
-  options as options_schema,
-} from "./schemas/index.js";
-import type { Options } from "./schemas/index.js";
+import { defMediaPost } from "./routes/media-post.js";
+import { options as options_schema, type Options } from "./schemas/index.js";
 
 export {
-  create,
   deleteContentOrMedia,
   isAccessTokenRevoked,
-  micropub_get_request_querystring,
-  micropub_post_request_body_jf2,
   options as plugin_options,
-  retrieveContent,
-  undelete,
-  update,
-  update_patch,
+  uploadMedia,
 } from "./schemas/index.js";
 export type {
-  Create,
   DeleteContentOrMedia,
   IsAccessTokenRevoked,
-  MicropubGetConfig,
   Options as PluginOptions,
-  RetrieveContent,
-  Undelete,
-  Update,
-  UpdatePatch,
+  UploadMedia,
 } from "./schemas/index.js";
 
 declare module "@fastify/request-context" {
   interface RequestContextData {
     access_token_claims?: AccessTokenClaims;
-    jf2?: Jf2;
+    // jf2?: Jf2;
   }
 }
 
-const defaults = {
+const defaults: Partial<Options> = {
   includeErrorDescription: DEFAULT.INCLUDE_ERROR_DESCRIPTION,
   logPrefix: DEFAULT.LOG_PREFIX,
   multipartFormDataMaxFileSize: DEFAULT.MULTIPART_FORMDATA_MAX_FILE_SIZE,
   reportAllAjvErrors: DEFAULT.REPORT_ALL_AJV_ERRORS,
-  syndicateTo: DEFAULT.SYNDICATE_TO,
 };
 
-const micropubEndpoint: FastifyPluginCallback<Options> = (
+const mediaEndpoint: FastifyPluginCallback<Options> = (
   fastify,
   options,
   done
 ) => {
   const config = Object.assign(defaults, options);
-
-  // console.log(`=== process.env.BASE_URL ===`, process.env.BASE_URL);
-  // console.log(`=== process.env.HOST ===`, process.env.HOST);
-  // console.log(`=== process.env.PORT ===`, process.env.PORT);
-  // const default_media_endpoint = `${process.env.BASE_URL}/media`
-  // const default_micropub_endpoint = `${process.env.BASE_URL}/micropub`
 
   let ajv: Ajv;
   if (config.ajv) {
@@ -94,36 +67,13 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
     const addFormatsPlugin = addFormats as any as AjvPlugin<string[]>;
     ajv = addFormatsPlugin(
       new Ajv({ allErrors: config.reportAllAjvErrors, schemas: [] }),
-      ["date", "date-time", "duration", "email", "uri"]
+      ["uri"]
     );
   }
 
-  fastify.addSchema(jf2.dt_accessed);
-  fastify.addSchema(jf2.dt_duration);
-  fastify.addSchema(jf2.dt_end);
-  fastify.addSchema(jf2.dt_published);
-  fastify.addSchema(jf2.dt_start);
-  fastify.addSchema(jf2.dt_updated);
-  fastify.addSchema(jf2.e_content);
-  fastify.addSchema(jf2.h_adr);
-  fastify.addSchema(jf2.h_card);
-  fastify.addSchema(jf2.h_cite);
-  fastify.addSchema(jf2.h_entry);
-  fastify.addSchema(jf2.h_event);
-  fastify.addSchema(jf2.h_geo);
-  fastify.addSchema(jf2.p_author);
-  fastify.addSchema(jf2.p_description);
-  fastify.addSchema(jf2.p_geo);
-  fastify.addSchema(jf2.p_location);
-  fastify.addSchema(jf2.p_publication);
-  fastify.addSchema(jf2.p_rsvp);
-  fastify.addSchema(jf2.p_summary);
-  fastify.addSchema(jf2.u_syndication);
-  fastify.addSchema(jf2.u_url);
-
   const { error, value } = conformResult(
     { ajv, schema: options_schema, data: config },
-    { basePath: "micropub-endpoint-options" }
+    { basePath: "media-endpoint-options" }
   );
 
   if (error) {
@@ -131,26 +81,16 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
   }
 
   const {
-    create,
-    delete: deleteContent,
+    delete: deleteMedia,
     includeErrorDescription: include_error_description,
     isAccessTokenRevoked,
     logPrefix,
     me,
-    mediaEndpoint,
-    micropubEndpoint,
     multipartFormDataMaxFileSize,
-    syndicateTo,
-    undelete,
-    update,
+    upload,
   } = value.validated as Required<Options>;
 
   // === PLUGINS ============================================================ //
-  fastify.register(formbody);
-  fastify.log.debug(
-    `${logPrefix}registered plugin: @fastify/formbody (for parsing application/x-www-form-urlencoded)`
-  );
-
   fastify.register(multipart, {
     limits: {
       fileSize: multipartFormDataMaxFileSize,
@@ -165,9 +105,7 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
 
   if (process.env.NODE_ENV === "development") {
     fastify.register(responseValidation);
-    fastify.log.debug(
-      `${logPrefix}registered plugin: @fastify/response-validation`
-    );
+    fastify.log.debug(`${logPrefix}registered plugin: response-validation`);
   }
 
   // === DECORATORS ========================================================= //
@@ -178,10 +116,6 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
       `${logPrefix}registered route ${routeOptions.method} ${routeOptions.url}`
     );
   });
-
-  // TODO: re-read RFC7662 and decide which scope to check
-  // https://www.rfc-editor.org/rfc/rfc7662
-  // const validateScopeMedia = defValidateScope({ scope: 'introspect' })
 
   const validateClaimExp = defValidateClaim(
     {
@@ -208,26 +142,8 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
   });
 
   // === ROUTES ============================================================= //
-  fastify.get(
-    "/micropub",
-    {
-      schema: {
-        querystring: micropub_get_request_querystring,
-        response: {
-          "4xx": error_response,
-          "5xx": error_response,
-        },
-      },
-    },
-    defMicropubGet({
-      includeErrorDescription: include_error_description,
-      mediaEndpoint,
-      syndicateTo,
-    })
-  );
-
   fastify.post(
-    "/micropub",
+    "/media",
     {
       preHandler: [
         decodeAccessToken,
@@ -236,24 +152,18 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
         validateAccessTokenNotRevoked,
       ],
       schema: {
-        body: micropub_post_request_body_jf2,
+        // body: media_post_request_body,
         response: {
-          // 200: micropub_response_body_success,
+          // 200: media_response_body_success,
           "4xx": error_response,
           "5xx": error_response,
         },
       },
     },
-    defMicropubPost({
-      create,
-      delete: deleteContent,
-      includeErrorDescription: include_error_description,
-      isAccessTokenRevoked,
-      logPrefix,
-      mediaEndpoint,
-      micropubEndpoint,
-      undelete,
-      update,
+    defMediaPost({
+      delete: deleteMedia,
+      include_error_description,
+      upload,
     })
   );
 
@@ -306,7 +216,7 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
   done();
 };
 
-export default fp(micropubEndpoint, {
+export default fp(mediaEndpoint, {
   fastify: "5.x",
   name: NAME,
   encapsulate: true,

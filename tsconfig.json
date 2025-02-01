@@ -64,6 +64,9 @@
       "path": "./packages/fastify-micropub-endpoint/tsconfig.json"
     },
     {
+      "path": "./packages/fastify-media-endpoint/tsconfig.json"
+    },
+    {
       "path": "./packages/github-content-store/tsconfig.json"
     },
     {
