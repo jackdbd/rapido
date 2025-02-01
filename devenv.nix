@@ -68,6 +68,9 @@ in {
       npm run publint -w @jackdbd/$1
       npm run size -w @jackdbd/$1
     '';
+    "build:ts".exec = ''
+      npm run build:ts
+    '';
     changeset-add.exec = ''
       npx changeset add
     '';

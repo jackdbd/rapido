@@ -1,0 +1,34 @@
+# @jackdbd/fastify-utils
+
+[![npm version](https://badge.fury.io/js/@jackdbd%2Ffastify-utils.svg)](https://badge.fury.io/js/@jackdbd%2Ffastify-utils)
+[![install size](https://packagephobia.com/badge?p=@jackdbd/fastify-utils)](https://packagephobia.com/result?p=@jackdbd/fastify-utils)
+[![CodeCov badge](https://codecov.io/gh/jackdbd/rapido/graph/badge.svg?token=BpFF8tmBYS)](https://app.codecov.io/gh/jackdbd/rapido?flags%5B0%5D=fastify-utils)
+[![Socket Badge](https://socket.dev/api/badge/npm/package/@jackdbd/fastify-utils)](https://socket.dev/npm/package/@jackdbd/fastify-utils)
+
+Miscellaneous utilities for Fastify servers.
+
+- [Installation](#installation)
+- [Dependencies](#dependencies)
+- [License](#license)
+
+## Installation
+
+```sh
+npm install @jackdbd/fastify-utils
+```
+
+## Dependencies
+
+This package has no dependencies.
+
+> ⚠️ **Peer Dependencies**
+>
+> This package defines 1 peer dependency.
+
+| Peer | Version range |
+|---|---|
+| `fastify` | `>=5.0.0` |
+
+## License
+
+&copy; 2024 - 2025 [Giacomo Debidda](https://www.giacomodebidda.com/) // [MIT License](https://spdx.org/licenses/MIT.html)
