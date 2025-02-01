@@ -1,5 +1,16 @@
 # @jackdbd/micropub
 
+## 0.2.0-canary.2
+
+### Minor Changes
+
+- Bump all packages.
+
+### Patch Changes
+
+- Updated dependencies
+  - @jackdbd/microformats2@0.2.0-canary.1
+
 ## 0.2.0-canary.1
 
 ### Minor Changes

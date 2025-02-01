@@ -1,5 +1,17 @@
 # @jackdbd/github-content-store
 
+## 0.2.0-canary.1
+
+### Minor Changes
+
+- Bump all packages.
+
+### Patch Changes
+
+- Updated dependencies
+  - @jackdbd/github-contents-api@0.2.0-canary.2
+  - @jackdbd/micropub@0.2.0-canary.2
+
 ## 0.2.0-canary.0
 
 ### Minor Changes
