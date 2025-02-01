@@ -31,6 +31,7 @@ Options for the Fastify userinfo-endpoint plugin
 |**includeErrorDescription**|`boolean`|Whether to include an `error_description` property in all error responses. This is meant to assist the client developer in understanding the error. This is NOT meant to be shown to the end user.<br/>Default: `false`<br/>|no|
 |**isAccessTokenRevoked**|`Function`|Predicate function that returns true if a jti (JSON Web Token ID) is revoked.<br/>|yes|
 |**logPrefix**|`string`|Default: `"userinfo-endpoint "`<br/>|no|
+|**me**|||yes|
 |**reportAllAjvErrors**<br/>(report all AJV errors)|`boolean`|Whether to report all AJV validation errors.<br/>Default: `false`<br/>|no|
 |**retrieveUserProfile**|`Function`|Function that retrieves a user's profile from a storage backend.<br/>|yes|
 
@@ -49,6 +50,8 @@ Options for the Fastify userinfo-endpoint plugin
 | Package | Version |
 |---|---|
 | [@fastify/response-validation](https://www.npmjs.com/package/@fastify/response-validation) | `^3.0.3` |
+| [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.1.1-canary.0` |
+| [@jackdbd/fastify-hooks](https://www.npmjs.com/package/@jackdbd/fastify-hooks) | `*` |
 | [@jackdbd/fastify-utils](https://www.npmjs.com/package/@jackdbd/fastify-utils) | `0.2.0-canary.0` |
 | [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `^0.1.1-canary.0` |
 | [@jackdbd/oauth2](https://www.npmjs.com/package/@jackdbd/oauth2) | `^0.1.0` |

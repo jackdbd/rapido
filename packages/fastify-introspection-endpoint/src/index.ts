@@ -1,18 +1,21 @@
 import formbody from "@fastify/formbody";
 import responseValidation from "@fastify/response-validation";
+import canonicalUrl from "@jackdbd/canonical-url";
+import {
+  decodeAccessToken,
+  defValidateClaim,
+  defValidateNotRevoked,
+} from "@jackdbd/fastify-hooks";
+import { error_response } from "@jackdbd/oauth2";
+import { unixTimestampInSeconds } from "@jackdbd/oauth2-tokens";
+import { throwWhenNotConform } from "@jackdbd/schema-validators";
 import { Ajv, type Plugin as AjvPlugin } from "ajv";
 import addFormats from "ajv-formats";
 import type { FastifyPluginCallback } from "fastify";
 import fp from "fastify-plugin";
-import { error_response } from "@jackdbd/oauth2";
-import { throwWhenNotConform } from "@jackdbd/schema-validators";
-// import {
-//   defDecodeJwtAndSetClaims,
-//   defValidateAccessTokenNotRevoked,
-//   defValidateClaim
-// } from '../../lib/fastify-hooks/index.js'
-import { defIntrospectPost } from "./routes/introspect-post.js";
+
 import { DEFAULT, NAME } from "./constants.js";
+import { defIntrospectPost } from "./routes/introspect-post.js";
 import {
   introspection_request_body,
   introspection_response_body_success,
@@ -50,6 +53,7 @@ const introspectionEndpoint: FastifyPluginCallback<Options> = (
   const {
     includeErrorDescription,
     logPrefix: log_prefix,
+    me,
     reportAllAjvErrors,
   } = config;
 
@@ -90,46 +94,44 @@ const introspectionEndpoint: FastifyPluginCallback<Options> = (
     );
   });
 
-  // const decodeJwtAndSetClaims = defDecodeJwtAndSetClaims({ ajv });
+  const validateClaimExp = defValidateClaim(
+    {
+      claim: "exp",
+      op: ">",
+      value: unixTimestampInSeconds,
+    },
+    { includeErrorDescription }
+  );
+  console.log("=== TODO: re-add validateClaimExp ===", validateClaimExp);
 
-  // Should I check whether the token from the Authorization header matches an
-  // expected a `me` claim?
-  // const validateClaimMe = defValidateClaim(
-  //   { claim: 'me', op: '==', value: me },
-  //   { ajv }
-  // )
-
-  // The access token provided in the Authorization header (which may differ
-  // from the token in the request body) must not be expired.
-  // const validateClaimExp = defValidateClaim(
-  //   {
-  //     claim: "exp",
-  //     op: ">",
-  //     value: unixTimestampInSeconds,
-  //   },
-  //   { ajv }
-  // );
-
-  // const validateClaimJti = defValidateClaim({ claim: "jti" }, { ajv });
+  const validateClaimMe = defValidateClaim(
+    {
+      claim: "me",
+      op: "==",
+      value: canonicalUrl(me),
+    },
+    { includeErrorDescription }
+  );
 
   // TODO: re-read RFC7662 and decide which scope to check
   // https://www.rfc-editor.org/rfc/rfc7662
-  // const validateScopeMedia = defValidateScope({ scope: 'introspect' })
+  // const validateScopeIntrospect = defValidateScope({ scope: 'introspect' })
 
-  // const validateAccessTokenNotRevoked = defValidateAccessTokenNotRevoked({
-  //   ajv,
-  //   isAccessTokenRevoked,
-  // });
+  const validateAccessTokenNotRevoked = defValidateNotRevoked({
+    includeErrorDescription,
+    isAccessTokenRevoked,
+  });
 
   // === ROUTES ============================================================= //
   fastify.post(
     "/introspect",
     {
-      onRequest: [
-        // decodeJwtAndSetClaims,
+      preHandler: [
+        decodeAccessToken,
         // validateClaimExp,
+        validateClaimMe,
         // validateClaimJti,
-        // validateAccessTokenNotBlacklisted
+        validateAccessTokenNotRevoked,
       ],
       schema: {
         body: introspection_request_body,

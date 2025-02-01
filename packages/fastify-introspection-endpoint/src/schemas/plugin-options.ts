@@ -1,4 +1,8 @@
-import { issuer } from "@jackdbd/indieauth";
+import {
+  issuer,
+  me_after_url_canonicalization,
+  me_before_url_canonicalization,
+} from "@jackdbd/indieauth";
 import { jwks_url } from "@jackdbd/oauth2-tokens";
 import { Static, Type } from "@sinclair/typebox";
 import type { Ajv } from "ajv";
@@ -26,6 +30,11 @@ export const options = Type.Object(
     logPrefix: Type.Optional(log_prefix),
 
     // maxAccessTokenAge: Type.Optional(Type.String({ minLength: 1 })),
+
+    me: Type.Union([
+      me_before_url_canonicalization,
+      me_after_url_canonicalization,
+    ]),
 
     reportAllAjvErrors: Type.Optional(report_all_ajv_errors),
   },

@@ -36,6 +36,7 @@ Options for the Fastify introspection-endpoint plugin
 |**issuer**|`string`|The authorization server's issuer identifier. It's a URL that uses the "https" scheme and has no query or fragment components. It MUST also be a prefix of the indieauth-metadata URL.<br/>Format: `"uri"`<br/>|yes|
 |[**jwksUrl**](#jwksurl)<br/>(JWKS public URL)|`object`|URL where the public JSON Web Key Set is hosted.<br/>|yes|
 |**logPrefix**|`string`|Default: `"introspection-endpoint "`<br/>|no|
+|**me**|||yes|
 |**reportAllAjvErrors**<br/>(report all AJV errors)|`boolean`|Whether to report all AJV validation errors.<br/>Default: `false`<br/>|no|
 
 **Example**
@@ -80,6 +81,8 @@ URL where the public JSON Web Key Set is hosted.
 |---|---|
 | [@fastify/formbody](https://www.npmjs.com/package/@fastify/formbody) | `^8.0.2` |
 | [@fastify/response-validation](https://www.npmjs.com/package/@fastify/response-validation) | `^3.0.3` |
+| [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.1.1-canary.0` |
+| [@jackdbd/fastify-hooks](https://www.npmjs.com/package/@jackdbd/fastify-hooks) | `*` |
 | [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `^0.1.1-canary.0` |
 | [@jackdbd/oauth2](https://www.npmjs.com/package/@jackdbd/oauth2) | `^0.1.0` |
 | [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `^0.1.1-canary.0` |
