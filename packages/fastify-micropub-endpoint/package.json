@@ -16,7 +16,8 @@
     "fastify",
     "IndieWeb",
     "Micropub",
-    "plugin"
+    "plugin",
+    "POSSE"
   ],
   "type": "module",
   "module": "lib/index.js",

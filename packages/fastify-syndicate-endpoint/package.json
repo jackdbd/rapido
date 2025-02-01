@@ -1,7 +1,7 @@
 {
-  "name": "@jackdbd/micropub",
-  "version": "0.2.0-canary.1",
-  "description": "Schemas and functions for implementing [Micropub](https://micropub.spec.indieweb.org/).",
+  "name": "@jackdbd/fastify-syndicate-endpoint",
+  "version": "0.1.0",
+  "description": "Fastify plugin that adds a `syndicate` endpoint to a Fastify server.",
   "author": {
     "name": "Giacomo Debidda",
     "email": "giacomo@giacomodebidda.com",
@@ -13,8 +13,12 @@
     "access": "public"
   },
   "keywords": [
+    "fastify",
     "IndieWeb",
-    "Micropub"
+    "Micropub",
+    "plugin",
+    "POSSE",
+    "syndication"
   ],
   "type": "module",
   "module": "lib/index.js",
@@ -24,10 +28,6 @@
       "types": "./lib/index.d.ts",
       "import": "./lib/index.js"
     },
-    "./jf2-predicates": {
-      "types": "./lib/jf2-predicates.d.ts",
-      "import": "./lib/jf2-predicates.js"
-    },
     "./schemas": {
       "types": "./lib/schemas/index.d.ts",
       "import": "./lib/schemas/index.js"
@@ -35,18 +35,6 @@
     "./schemas/*": {
       "types": "./lib/schemas/*.d.ts",
       "import": "./lib/schemas/*.js"
-    },
-    "./syndicate-to": {
-      "types": "./lib/syndicate-to.d.ts",
-      "import": "./lib/syndicate-to.js"
-    },
-    "./syndicator": {
-      "types": "./lib/syndicator.d.ts",
-      "import": "./lib/syndicator.js"
-    },
-    "./website-predicates": {
-      "types": "./lib/website-predicates.d.ts",
-      "import": "./lib/website-predicates.js"
     },
     "./package.json": "./package.json"
   },
@@ -65,7 +53,7 @@
   ],
   "scripts": {
     "build": "run-s 'build:ts' 'build:readme' --print-label",
-    "build:readme": "node ../scripts/dist/readme.js --package micropub",
+    "build:readme": "node ../scripts/dist/readme.js --package fastify-syndicate-endpoint",
     "build:ts": "tsc -p tsconfig.json",
     "build:ts:watch": "tsc -p tsconfig.json --watch",
     "clean": "rimraf lib/ tsconfig.tsbuildinfo",
@@ -77,12 +65,24 @@
     "test:watch": "node --test --watch"
   },
   "dependencies": {
-    "@jackdbd/microformats2": "0.1.1-canary.0",
+    "@fastify/formbody": "^8.0.2",
+    "@fastify/request-context": "^6.0.2",
+    "@fastify/response-validation": "^3.0.3",
+    "@jackdbd/canonical-url": "0.1.1-canary.0",
+    "@jackdbd/fastify-hooks": "0.2.0-canary.0",
+    "@jackdbd/indieauth": "0.1.1-canary.0",
+    "@jackdbd/micropub": "0.2.0-canary.1",
+    "@jackdbd/oauth2": "^0.1.0",
+    "@jackdbd/oauth2-error-responses": "0.1.1-canary.0",
     "@paulrobertlloyd/mf2tojf2": "^2.4.0",
-    "@sinclair/typebox": "^0.34.14",
-    "sanitize-html": "^2.14.0",
-    "slugify": "^1.6.6",
-    "yaml": "^2.7.0"
+    "@sinclair/typebox": "^0.34.15",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "fast-xml-parser": "^4.5.1",
+    "fastify-plugin": "^5.0.1"
+  },
+  "peerDependencies": {
+    "fastify": ">=5.0.0"
   },
   "devDependencies": {}
 }

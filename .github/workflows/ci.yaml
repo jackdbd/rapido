@@ -99,6 +99,11 @@ jobs:
         env:
           JWKS: ${{ secrets.JWKS }}
         run: npm run test:ci -w ./packages/oauth2-tokens
+      
+      - name: 🔍 Test @jackdbd/fastify-hooks
+        env:
+          JWKS: ${{ secrets.JWKS }}
+        run: npx turbo test:ci --filter @jackdbd/fastify-hooks
 
       - name: 🔍 Test @jackdbd/micropub
         env:
@@ -130,6 +135,12 @@ jobs:
 
       - name: 🔍 Test @jackdbd/fastify-micropub-endpoint
         run: npm run test:ci -w ./packages/fastify-micropub-endpoint
+
+      - name: 🔍 Test @jackdbd/fastify-media-endpoint
+        run: npm run test:ci -w ./packages/fastify-media-endpoint
+
+      - name: 🔍 Test @jackdbd/fastify-syndicate-endpoint
+        run: npm run test:ci -w ./packages/fastify-syndicate-endpoint
 
       - name: 🔍 Test @jackdbd/github-content-store
         env:

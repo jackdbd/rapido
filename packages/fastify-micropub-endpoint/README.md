@@ -8,6 +8,10 @@
 Fastify plugin that adds a [Micropub endpoint](https://www.w3.org/TR/micropub/) to a Fastify server.
 
 - [Installation](#installation)
+- [Micropub Endpoint Options](#micropub-endpoint-options)
+  - [syndicateTo\[\]: array](#syndicateto-array)
+    - [syndicateTo\[\]\.service: object](#syndicatetoservice-object)
+    - [syndicateTo\[\]\.user: object](#syndicatetouser-object)
 - [Dependencies](#dependencies)
 - [References](#references)
 - [License](#license)
@@ -18,7 +22,76 @@ Fastify plugin that adds a [Micropub endpoint](https://www.w3.org/TR/micropub/) 
 npm install @jackdbd/fastify-micropub-endpoint
 ```
 
-{{micropubEndpoint.pluginOptions}}
+## Micropub Endpoint Options
+
+Options for the Fastify micropub-endpoint plugin
+
+**Properties**
+
+|Name|Type|Description|Required|
+|----|----|-----------|--------|
+|**ajv**||Instance of Ajv<br/>|no|
+|**create**|`Function`|[Creates](https://micropub.spec.indieweb.org/#create) a post on the Micropub server.<br/>|yes|
+|**delete**|`Function`|[Deletes](https://micropub.spec.indieweb.org/#delete) a post or media from the Micropub server.<br/>|yes|
+|**includeErrorDescription**|`boolean`|Default: `false`<br/>|no|
+|**isAccessTokenRevoked**|`Function`|Predicate function that returns true if a jti (JSON Web Token ID) is revoked.<br/>|yes|
+|**logPrefix**|`string`|Default: `"[micropub-endpoint] "`<br/>|no|
+|**me**|||yes|
+|**mediaEndpoint**<br/>(Media endpoint)|`string`|Format: `"uri"`<br/>|no|
+|**micropubEndpoint**<br/>(Micropub endpoint)|`string`|Format: `"uri"`<br/>|no|
+|**multipartFormDataMaxFileSize**<br/>(multipart/form\-data max file size)|`number`|Max file size (in bytes) for multipart/form-data requests.<br/>Default: `10000000`<br/>Minimum: `0`<br/>|no|
+|**reportAllAjvErrors**<br/>(report all AJV errors)|`boolean`|Whether to report all AJV validation errors.<br/>Default: `false`<br/>|no|
+|[**syndicateTo**](#syndicateto)|`object[]`|Default: <br/>|no|
+|**undelete**|`Function`|[Undeletes](https://micropub.spec.indieweb.org/#delete) a post or media from the Micropub server.<br/>|no|
+|**update**|`Function`|[Updates](https://micropub.spec.indieweb.org/#update) a post on the Micropub server.<br/>|yes|
+
+**Example**
+
+```json
+{
+    "includeErrorDescription": false,
+    "logPrefix": "[micropub-endpoint] ",
+    "multipartFormDataMaxFileSize": 10000000,
+    "reportAllAjvErrors": false,
+    "syndicateTo": []
+}
+```
+
+<a name="syndicateto"></a>
+### syndicateTo\[\]: array
+
+**Items**
+
+**Item Properties**
+
+|Name|Type|Description|Required|
+|----|----|-----------|--------|
+|**uid**|`string`||yes|
+|**name**|`string`||yes|
+|[**service**](#syndicatetoservice)|`object`||yes|
+|[**user**](#syndicatetouser)|`object`||yes|
+
+<a name="syndicatetoservice"></a>
+#### syndicateTo\[\]\.service: object
+
+**Properties**
+
+|Name|Type|Description|Required|
+|----|----|-----------|--------|
+|**name**|`string`||yes|
+|**url**|`string`||yes|
+|**photo**|`string`||no|
+
+<a name="syndicatetouser"></a>
+#### syndicateTo\[\]\.user: object
+
+**Properties**
+
+|Name|Type|Description|Required|
+|----|----|-----------|--------|
+|**name**|`string`||yes|
+|**url**|`string`||yes|
+|**photo**|`string`||no|
 
 ## Dependencies
 
@@ -29,8 +102,8 @@ npm install @jackdbd/fastify-micropub-endpoint
 | [@fastify/request-context](https://www.npmjs.com/package/@fastify/request-context) | `^6.0.2` |
 | [@fastify/response-validation](https://www.npmjs.com/package/@fastify/response-validation) | `^3.0.3` |
 | [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.1.1-canary.0` |
-| [@jackdbd/fastify-hooks](https://www.npmjs.com/package/@jackdbd/fastify-hooks) | `*` |
-| [@jackdbd/fastify-utils](https://www.npmjs.com/package/@jackdbd/fastify-utils) | `0.2.0-canary.0` |
+| [@jackdbd/fastify-hooks](https://www.npmjs.com/package/@jackdbd/fastify-hooks) | `0.2.0-canary.0` |
+| [@jackdbd/fastify-utils](https://www.npmjs.com/package/@jackdbd/fastify-utils) | `0.2.0-canary.1` |
 | [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `0.1.1-canary.0` |
 | [@jackdbd/microformats2](https://www.npmjs.com/package/@jackdbd/microformats2) | `0.1.1-canary.0` |
 | [@jackdbd/micropub](https://www.npmjs.com/package/@jackdbd/micropub) | `0.2.0-canary.1` |

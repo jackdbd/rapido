@@ -38,4 +38,8 @@ export type {
   Video,
 } from "./schemas/index.js";
 
+export type { SyndicateToItem } from "./syndicate-to.js";
+
+export type { BaseValueSyndicate, Syndicator } from "./syndicator.js";
+
 export * as website_predicates from "./website-predicates.js";
