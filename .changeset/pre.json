@@ -30,10 +30,12 @@
     "@repo/stdlib": "0.1.1",
     "@repo/typescript-config": "0.1.1",
     "@jackdbd/unwrap": "0.1.0",
-    "@jackdbd/fastify-hooks": "0.1.0"
+    "@jackdbd/fastify-hooks": "0.1.0",
+    "@jackdbd/fastify-syndicate-endpoint": "0.1.0"
   },
   "changesets": [
     "friendly-beds-relax",
+    "nervous-coats-crash",
     "witty-pillows-tie"
   ]
 }

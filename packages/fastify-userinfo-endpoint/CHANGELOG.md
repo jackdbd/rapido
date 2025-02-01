@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.0-canary.5
+
+### Minor Changes
+
+- efb63e2: Use hooks from fastify-hooks (internal package).
+
 ## 1.2.1-canary.4
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @jackdbd/fastify-micropub-endpoint
 
+## 0.2.0-canary.4
+
+### Minor Changes
+
+- efb63e2: Use hooks from fastify-hooks (internal package).
+
 ## 0.2.0-canary.3
 
 ### Patch Changes
