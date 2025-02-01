@@ -1,5 +1,12 @@
 # @jackdbd/fastify-introspection-endpoint
 
+## 1.2.1-canary.3
+
+### Patch Changes
+
+- Updated dependencies [708218a]
+  - @jackdbd/fastify-hooks@0.2.0-canary.0
+
 ## 1.2.1-canary.2
 
 ### Patch Changes
