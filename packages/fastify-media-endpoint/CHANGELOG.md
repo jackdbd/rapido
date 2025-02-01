@@ -1,5 +1,11 @@
 # @jackdbd/fastify-media-endpoint
 
+## 0.2.0-canary.2
+
+### Minor Changes
+
+- efb63e2: Use hooks from fastify-hooks (internal package).
+
 ## 0.1.1-canary.1
 
 ### Patch Changes
