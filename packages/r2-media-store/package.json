@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/r2-media-store",
-  "version": "0.2.0-canary.3",
+  "version": "0.2.0-canary.4",
   "description": "Store Micropub media in a Cloudflare R2 bucket.",
   "author": {
     "name": "Giacomo Debidda",
@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.740.0",
-    "@jackdbd/fastify-media-endpoint": "0.2.0-canary.3",
+    "@jackdbd/fastify-media-endpoint": "0.2.0-canary.4",
     "mime": "^4.0.6",
     "nanoid": "^5.0.9"
   },
