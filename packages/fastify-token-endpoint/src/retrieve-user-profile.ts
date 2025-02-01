@@ -1,7 +1,6 @@
 import type { Profile } from "@jackdbd/indieauth";
 import { errorResponseFromJSONResponse } from "@jackdbd/oauth2";
 import { ServerError } from "@jackdbd/oauth2-error-responses";
-import type { ErrorResponseFromJSON } from "./utils.js";
 
 export interface Config {
   access_token: string;
@@ -28,7 +27,7 @@ export const retrieveUserProfile = async (config: Config) => {
 
   if (!response.ok) {
     const error = await errorResponseFromJSONResponse(response);
-    return { error: error as ErrorResponseFromJSON };
+    return { error };
   }
 
   let profile: Profile;
