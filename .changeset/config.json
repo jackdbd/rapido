@@ -3,7 +3,7 @@
   "access": "restricted",
   "baseBranch": "main",
   "changelog": "@changesets/cli/changelog",
-  "commit": false,
+  "commit": true,
   "fixed": [],
   "ignore": [
     "@repo/demo-app",
