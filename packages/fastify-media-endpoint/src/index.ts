@@ -2,6 +2,11 @@ import multipart from "@fastify/multipart";
 import fastifyRequestContext from "@fastify/request-context";
 import responseValidation from "@fastify/response-validation";
 import canonicalUrl from "@jackdbd/canonical-url";
+import {
+  decodeAccessToken,
+  defValidateClaim,
+  defValidateNotRevoked,
+} from "@jackdbd/fastify-hooks";
 import { error_response } from "@jackdbd/oauth2";
 import {
   InvalidRequestError,
@@ -18,9 +23,6 @@ import type { FastifyPluginCallback } from "fastify";
 import fp from "fastify-plugin";
 
 import { DEFAULT, NAME } from "./constants.js";
-import { decodeAccessToken } from "./hooks/decode-access-token.js";
-import { defValidateClaim } from "./hooks/validate-claim.js";
-import { defValidateNotRevoked } from "./hooks/validate-not-revoked.js";
 import { defMediaPost } from "./routes/media-post.js";
 import { options as options_schema, type Options } from "./schemas/index.js";
 

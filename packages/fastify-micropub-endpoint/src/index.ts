@@ -3,6 +3,11 @@ import multipart from "@fastify/multipart";
 import fastifyRequestContext from "@fastify/request-context";
 import responseValidation from "@fastify/response-validation";
 import canonicalUrl from "@jackdbd/canonical-url";
+import {
+  decodeAccessToken,
+  defValidateClaim,
+  defValidateNotRevoked,
+} from "@jackdbd/fastify-hooks";
 import * as jf2 from "@jackdbd/microformats2";
 import { error_response } from "@jackdbd/oauth2";
 import {
@@ -21,9 +26,6 @@ import type { FastifyPluginCallback } from "fastify";
 import fp from "fastify-plugin";
 
 import { DEFAULT, NAME } from "./constants.js";
-import { decodeAccessToken } from "./hooks/decode-access-token.js";
-import { defValidateClaim } from "./hooks/validate-claim.js";
-import { defValidateNotRevoked } from "./hooks/validate-not-revoked.js";
 import { defMicropubGet } from "./routes/micropub-get.js";
 import { defMicropubPost } from "./routes/micropub-post.js";
 import {
