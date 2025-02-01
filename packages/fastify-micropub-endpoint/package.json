@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/fastify-micropub-endpoint",
-  "version": "0.2.0-canary.3",
+  "version": "0.2.0-canary.4",
   "description": "Fastify plugin that adds a [Micropub endpoint](https://www.w3.org/TR/micropub/) to a Fastify server.",
   "author": {
     "name": "Giacomo Debidda",
