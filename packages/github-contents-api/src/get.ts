@@ -46,7 +46,7 @@ const defaults: Partial<GetOptions> = {
  * @see https://docs.github.com/en/rest/repos/contents?apiVersion=2022-11-28#get-repository-content
  */
 export const get = async (options: GetOptions) => {
-  const config = Object.assign(defaults, options) as Required<GetOptions>;
+  const config = Object.assign({}, defaults, options) as Required<GetOptions>;
 
   const { base_url, owner, path, ref, repo, token } = config;
 

@@ -40,7 +40,7 @@ const userinfoEndpoint: FastifyPluginCallback<Options> = (
   options,
   done
 ) => {
-  const config = Object.assign(defaults, options);
+  const config = Object.assign({}, defaults, options);
 
   const {
     includeErrorDescription,

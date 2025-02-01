@@ -45,7 +45,7 @@ const defaults: Partial<Config> = {
 };
 
 export const defGitHub = (config: Config) => {
-  const store_cfg = Object.assign(defaults, config) as Required<Config>;
+  const store_cfg = Object.assign({}, defaults, config) as Required<Config>;
 
   const {
     branch,

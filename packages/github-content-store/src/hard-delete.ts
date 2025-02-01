@@ -32,7 +32,7 @@ const defaults: Partial<Options> = {
 };
 
 export const defHardDelete = (options?: Options) => {
-  const config = Object.assign(defaults, options) as Required<Options>;
+  const config = Object.assign({}, defaults, options) as Required<Options>;
 
   const { base_url, branch, committer, log, owner, publication, repo, token } =
     config;

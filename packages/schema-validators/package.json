@@ -57,7 +57,5 @@
     "@sinclair/typebox": "^0.34.14",
     "ajv": "^8.17.1"
   },
-  "devDependencies": {
-    "@types/seedrandom": "^3.0.8"
-  }
+  "devDependencies": {}
 }

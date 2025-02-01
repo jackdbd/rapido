@@ -17,7 +17,7 @@ import addFormats from "ajv-formats";
 // });
 
 export const defAjv = (options?: Options) => {
-  const opt = Object.assign({ allErrors: true }, options);
+  const opt = Object.assign({}, { allErrors: true }, options);
   // I have no idea why I have to do this to make TypeScript happy.
   // In JavaScript, Ajv and addFormats can be imported without any of this mess.
   const addFormatsPlugin = addFormats as any as Plugin<string[]>;

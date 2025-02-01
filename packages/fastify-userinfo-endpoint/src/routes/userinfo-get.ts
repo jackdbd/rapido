@@ -1,4 +1,5 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import { accessTokenFromRequest } from "@jackdbd/fastify-utils";
 import { Profile } from "@jackdbd/indieauth";
 import {
   InsufficientScopeError,
@@ -17,7 +18,6 @@ import type {
   UserProfileImmutableRecord,
   UserProfileMutableRecord,
 } from "../schemas/index.js";
-import { accessTokenFromRequestHeader } from "../utils.js";
 
 // TODO: how to understand that we need to fetch user's info from one
 // authentication provider vs another one? Maybe specify the provider in the
@@ -61,7 +61,7 @@ export const defUserinfoGet = (config: UserinfoGetConfig) => {
         .send(err.payload({ include_error_description }));
     }
 
-    const { value: access_token } = accessTokenFromRequestHeader(request);
+    const { value: access_token } = accessTokenFromRequest(request);
 
     if (!access_token) {
       const error_description = `Cannot retrieve profile info: no access token in Authorization header.`;

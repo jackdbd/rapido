@@ -24,7 +24,11 @@ const defaults: Partial<DeleteOptions> = {
  * @see: https://docs.github.com/en/rest/repos/contents?apiVersion=2022-11-28#delete-a-file
  */
 export const hardDelete = async (options: DeleteOptions) => {
-  const config = Object.assign(defaults, options) as Required<DeleteOptions>;
+  const config = Object.assign(
+    {},
+    defaults,
+    options
+  ) as Required<DeleteOptions>;
 
   const { base_url, branch, committer, owner, path, repo, token } = config;
   const author = config.author || committer;

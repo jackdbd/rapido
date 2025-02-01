@@ -18,7 +18,7 @@ const defaults: Partial<Options> = {
 };
 
 export const defRetrieveContent = (options?: Options) => {
-  const config = Object.assign(defaults, options) as Required<Options>;
+  const config = Object.assign({}, defaults, options) as Required<Options>;
 
   const { base_url, owner, ref, repo, token } = config;
 

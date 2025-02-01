@@ -18,7 +18,7 @@ const defaults: Partial<MoveOptions> = {
 };
 
 export const move = async (options: MoveOptions) => {
-  const config = Object.assign(defaults, options) as Required<MoveOptions>;
+  const config = Object.assign({}, defaults, options) as Required<MoveOptions>;
 
   const {
     base_url,

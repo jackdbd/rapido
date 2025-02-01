@@ -1,12 +1,12 @@
+import { accessTokenFromRequest } from "@jackdbd/fastify-utils";
 import { safeDecode, type AccessTokenClaims } from "@jackdbd/oauth2-tokens";
 import type { preHandlerAsyncHookHandler } from "fastify";
-import { accessTokenFromRequestHeader } from "../utils.js";
 
 export const decodeAccessToken: preHandlerAsyncHookHandler = async (
   request,
   _reply
 ) => {
-  const { error, value } = accessTokenFromRequestHeader(request);
+  const { error, value } = accessTokenFromRequest(request);
 
   if (error) {
     throw error;

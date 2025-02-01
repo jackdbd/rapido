@@ -56,7 +56,5 @@
     "@sinclair/typebox": "^0.34.14",
     "seedrandom": "^3.0.5"
   },
-  "devDependencies": {
-    "@types/seedrandom": "^3.0.8"
-  }
+  "devDependencies": {}
 }
