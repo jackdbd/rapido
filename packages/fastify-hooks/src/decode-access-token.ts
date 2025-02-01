@@ -2,6 +2,12 @@ import { accessTokenFromRequest } from "@jackdbd/fastify-utils";
 import { safeDecode, type AccessTokenClaims } from "@jackdbd/oauth2-tokens";
 import type { preHandlerAsyncHookHandler } from "fastify";
 
+declare module "@fastify/request-context" {
+  interface RequestContextData {
+    access_token_claims?: AccessTokenClaims;
+  }
+}
+
 export const decodeAccessToken: preHandlerAsyncHookHandler = async (
   request,
   _reply

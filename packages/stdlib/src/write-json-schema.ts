@@ -36,7 +36,9 @@ export const writeJsonSchema = async (config: Config) => {
   if (isTObject(schema)) {
     for (const [key, skema] of Object.entries(schema.properties)) {
       if (skema.$ref) {
-        console.log(`key ${key} refers schema ID ${skema.$ref}`);
+        console.log(
+          `[${schema.$id}] property ${key} is a $ref to ${skema.$ref}`
+        );
         const fname = `${skema.$ref}.json`;
         const fpath = path.join(schemas_root, fname);
         const str = await readFile(fpath, "utf8");

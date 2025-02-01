@@ -40,6 +40,9 @@
       "path": "./packages/oauth2-tokens/tsconfig.json"
     },
     {
+      "path": "./packages/fastify-hooks/tsconfig.json"
+    },
+    {
       "path": "./packages/micropub/tsconfig.json"
     },
     {

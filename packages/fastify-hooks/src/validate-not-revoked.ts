@@ -4,10 +4,10 @@ import {
 } from "@jackdbd/oauth2-error-responses";
 import type { AccessTokenClaims } from "@jackdbd/oauth2-tokens";
 import type { RequestContextData } from "@fastify/request-context";
-import { preHandlerAsyncHookHandler } from "fastify";
-import type { IsAccessTokenRevoked } from "../schemas/index.js";
+import type { preHandlerAsyncHookHandler } from "fastify";
+import type { IsAccessTokenRevoked } from "./schemas/index.js";
 
-interface Options {
+export interface Options {
   includeErrorDescription?: boolean;
   isAccessTokenRevoked: IsAccessTokenRevoked;
   logPrefix?: string;

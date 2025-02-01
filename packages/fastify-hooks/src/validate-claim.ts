@@ -5,10 +5,10 @@ import {
 } from "@jackdbd/oauth2-error-responses";
 import type { AccessTokenClaims } from "@jackdbd/oauth2-tokens";
 import type { RequestContextData } from "@fastify/request-context";
-import { preHandlerHookHandler } from "fastify";
-import type { Assertion, Value } from "../schemas/assertion.js";
+import type { preHandlerHookHandler } from "fastify";
+import type { Assertion, Value } from "./schemas/assertion.js";
 
-interface Options {
+export interface Options {
   includeErrorDescription?: boolean;
   logPrefix?: string;
   requestContextKey?: string;
@@ -74,7 +74,7 @@ export const defValidateClaim = (assertion: Assertion, options?: Options) => {
       given = assertion.value;
     }
     request.log.debug(
-      `${logPrefix}validate assertion on claim '${key}': ${actual} ${op} ${given}`
+      `${logPrefix}assert claim '${key}': ${actual} ${op} ${given}`
     );
 
     if (given === undefined) {
