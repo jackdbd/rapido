@@ -99,6 +99,22 @@
       "default": "introspection-endpoint ",
       "type": "string"
     },
+    "me": {
+      "anyOf": [
+        {
+          "description": "Profile URL (before URL Canonicalization)",
+          "minLength": 1,
+          "title": "me (not canonicalized)",
+          "type": "string"
+        },
+        {
+          "description": "Profile URL (after URL Canonicalization)",
+          "format": "uri",
+          "title": "me (canonicalized)",
+          "type": "string"
+        }
+      ]
+    },
     "reportAllAjvErrors": {
       "description": "Whether to report all AJV validation errors.",
       "title": "report all AJV errors",
@@ -109,6 +125,7 @@
   "required": [
     "isAccessTokenRevoked",
     "issuer",
-    "jwksUrl"
+    "jwksUrl",
+    "me"
   ]
 }
