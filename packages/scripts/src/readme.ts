@@ -38,7 +38,9 @@ import {
 } from "../../fastify-authorization-endpoint/lib/index.js";
 import { plugin_options as introspection_endpoint_plugin_options } from "../../fastify-introspection-endpoint/lib/index.js";
 import { plugin_options as media_endpoint_plugin_options } from "../../fastify-media-endpoint/lib/index.js";
+import { plugin_options as micropub_endpoint_plugin_options } from "../../fastify-micropub-endpoint/lib/index.js";
 import { plugin_options as revocation_endpoint_plugin_options } from "../../fastify-revocation-endpoint/lib/index.js";
+import { plugin_options as syndicate_endpoint_plugin_options } from "../../fastify-syndicate-endpoint/lib/index.js";
 import { plugin_options as token_endpoint_plugin_options } from "../../fastify-token-endpoint/lib/index.js";
 import { plugin_options as userinfo_endpoint_plugin_options } from "../../fastify-userinfo-endpoint/lib/index.js";
 import { code_challenge, code_challenge_method } from "../../pkce/lib/index.js";
@@ -137,8 +139,18 @@ const run = async () => {
     schemas_root,
   });
 
+  const micropub_endpoint_plugin_options_filepath = await writeJsonSchema({
+    schema: micropub_endpoint_plugin_options,
+    schemas_root,
+  });
+
   const revocation_endpoint_plugin_options_filepath = await writeJsonSchema({
     schema: revocation_endpoint_plugin_options,
+    schemas_root,
+  });
+
+  const syndicate_endpoint_plugin_options_filepath = await writeJsonSchema({
+    schema: syndicate_endpoint_plugin_options,
     schemas_root,
   });
 
@@ -201,8 +213,18 @@ const run = async () => {
         level: 2,
       }),
 
+      "micropubEndpoint.pluginOptions": safeSchemaToMarkdown({
+        filepath: micropub_endpoint_plugin_options_filepath,
+        level: 1,
+      }),
+
       "revocationEndpoint.pluginOptions": safeSchemaToMarkdown({
         filepath: revocation_endpoint_plugin_options_filepath,
+        level: 1,
+      }),
+
+      "syndicateEndpoint.pluginOptions": safeSchemaToMarkdown({
+        filepath: syndicate_endpoint_plugin_options_filepath,
         level: 1,
       }),
 

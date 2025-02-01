@@ -1,0 +1,215 @@
+{
+  "$id": "fastify-syndicate-endpoint-options",
+  "description": "Options for the Fastify syndicate-endpoint plugin",
+  "title": "Syndicate Endpoint Options",
+  "type": "object",
+  "properties": {
+    "ajv": {
+      "description": "Instance of Ajv"
+    },
+    "get": {
+      "title": "retrieveContent",
+      "description": "Function that retrieves a post from the Micropub server.",
+      "type": "Function",
+      "parameters": [
+        {
+          "type": "object",
+          "properties": {
+            "store": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "store_deleted": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "website": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "website"
+          ]
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "item": {
+          "type": "object",
+          "properties": {
+            "jf2": {
+              "additionalProperties": true,
+              "type": "object",
+              "properties": {
+                "action": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string"
+                },
+                "h": {
+                  "default": "entry",
+                  "anyOf": [
+                    {
+                      "const": "card",
+                      "type": "string"
+                    },
+                    {
+                      "const": "cite",
+                      "type": "string"
+                    },
+                    {
+                      "const": "entry",
+                      "type": "string"
+                    },
+                    {
+                      "const": "event",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "mp-syndicate-to": {},
+                "syndication": {},
+                "updated": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              }
+            },
+            "sha": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "jf2"
+          ]
+        }
+      }
+    },
+    "includeErrorDescription": {
+      "description": "Whether to include an `error_description` property in all error responses. This is meant to assist the client developer in understanding the error. This is NOT meant to be shown to the end user.",
+      "default": false,
+      "type": "boolean"
+    },
+    "isAccessTokenRevoked": {
+      "title": "isAccessTokenRevoked",
+      "description": "Predicate function that returns true if a jti (JSON Web Token ID) is revoked.",
+      "type": "Function",
+      "parameters": [
+        {
+          "description": "Unique identifier for the JWT",
+          "minLength": 1,
+          "title": "\"jti\" (JWT ID) Claim",
+          "type": "string"
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "item": {
+          "type": "boolean"
+        }
+      }
+    },
+    "logPrefix": {
+      "default": "[syndicate-endpoint] ",
+      "type": "string"
+    },
+    "me": {
+      "anyOf": [
+        {
+          "description": "Profile URL (before URL Canonicalization)",
+          "minLength": 1,
+          "title": "me (not canonicalized)",
+          "type": "string"
+        },
+        {
+          "description": "Profile URL (after URL Canonicalization)",
+          "format": "uri",
+          "title": "me (canonicalized)",
+          "type": "string"
+        }
+      ]
+    },
+    "publishedUrlToStorageLocation": {
+      "title": "websiteUrlToStoreLocation",
+      "description": "Function that maps a URL published on the user's website, to a location on the user's store (e.g. a table in a database, a path in a git repository, a URL in a public bucket of an object storage service like AWS S3).",
+      "type": "Function",
+      "parameters": [
+        {
+          "description": "A URL",
+          "format": "uri",
+          "type": "string"
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "item": {
+          "type": "object",
+          "properties": {
+            "store": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "store_deleted": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "website": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "website"
+          ]
+        }
+      }
+    },
+    "reportAllAjvErrors": {
+      "description": "Whether to report all AJV validation errors.",
+      "title": "report all AJV errors",
+      "default": false,
+      "type": "boolean"
+    },
+    "syndicators": {},
+    "update": {
+      "title": "update",
+      "description": "[Updates](https://micropub.spec.indieweb.org/#update) a post on the Micropub server.",
+      "type": "Function",
+      "parameters": [
+        {
+          "description": "A URL",
+          "format": "uri",
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "add": {},
+            "delete": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "replace": {}
+          }
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "item": {}
+      }
+    }
+  },
+  "required": [
+    "get",
+    "isAccessTokenRevoked",
+    "me",
+    "publishedUrlToStorageLocation",
+    "syndicators",
+    "update"
+  ]
+}

@@ -1,0 +1,248 @@
+{
+  "$id": "fastify-micropub-endpoint-options",
+  "description": "Options for the Fastify micropub-endpoint plugin",
+  "title": "Micropub Endpoint Options",
+  "type": "object",
+  "properties": {
+    "ajv": {
+      "description": "Instance of Ajv"
+    },
+    "create": {
+      "title": "create",
+      "description": "[Creates](https://micropub.spec.indieweb.org/#create) a post on the Micropub server.",
+      "type": "Function",
+      "parameters": [
+        {
+          "additionalProperties": true,
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string"
+            },
+            "date": {
+              "type": "string"
+            },
+            "h": {
+              "default": "entry",
+              "anyOf": [
+                {
+                  "const": "card",
+                  "type": "string"
+                },
+                {
+                  "const": "cite",
+                  "type": "string"
+                },
+                {
+                  "const": "entry",
+                  "type": "string"
+                },
+                {
+                  "const": "event",
+                  "type": "string"
+                }
+              ]
+            },
+            "mp-syndicate-to": {},
+            "syndication": {},
+            "updated": {
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "item": {}
+      }
+    },
+    "delete": {
+      "title": "delete",
+      "description": "[Deletes](https://micropub.spec.indieweb.org/#delete) a post or media from the Micropub server.",
+      "type": "Function",
+      "parameters": [
+        {
+          "description": "A URL",
+          "format": "uri",
+          "type": "string"
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "item": {}
+      }
+    },
+    "includeErrorDescription": {
+      "default": false,
+      "type": "boolean"
+    },
+    "isAccessTokenRevoked": {
+      "title": "isAccessTokenRevoked",
+      "description": "Predicate function that returns true if a jti (JSON Web Token ID) is revoked.",
+      "type": "Function",
+      "parameters": [
+        {
+          "description": "Unique identifier for the JWT",
+          "minLength": 1,
+          "title": "\"jti\" (JWT ID) Claim",
+          "type": "string"
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "item": {
+          "type": "boolean"
+        }
+      }
+    },
+    "logPrefix": {
+      "default": "[micropub-endpoint] ",
+      "type": "string"
+    },
+    "me": {
+      "anyOf": [
+        {
+          "description": "Profile URL (before URL Canonicalization)",
+          "minLength": 1,
+          "title": "me (not canonicalized)",
+          "type": "string"
+        },
+        {
+          "description": "Profile URL (after URL Canonicalization)",
+          "format": "uri",
+          "title": "me (canonicalized)",
+          "type": "string"
+        }
+      ]
+    },
+    "mediaEndpoint": {
+      "format": "uri",
+      "title": "Media endpoint",
+      "type": "string"
+    },
+    "micropubEndpoint": {
+      "format": "uri",
+      "title": "Micropub endpoint",
+      "type": "string"
+    },
+    "multipartFormDataMaxFileSize": {
+      "title": "multipart/form-data max file size",
+      "description": "Max file size (in bytes) for multipart/form-data requests.",
+      "default": 10000000,
+      "minimum": 0,
+      "type": "number"
+    },
+    "reportAllAjvErrors": {
+      "description": "Whether to report all AJV validation errors.",
+      "title": "report all AJV errors",
+      "default": false,
+      "type": "boolean"
+    },
+    "syndicateTo": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "service": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "photo": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "url"
+            ]
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "photo": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "url"
+            ]
+          }
+        },
+        "required": [
+          "uid",
+          "name"
+        ]
+      }
+    },
+    "undelete": {
+      "title": "undelete",
+      "description": "[Undeletes](https://micropub.spec.indieweb.org/#delete) a post or media from the Micropub server.",
+      "type": "Function",
+      "parameters": [
+        {
+          "description": "A URL",
+          "format": "uri",
+          "type": "string"
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "item": {}
+      }
+    },
+    "update": {
+      "title": "update",
+      "description": "[Updates](https://micropub.spec.indieweb.org/#update) a post on the Micropub server.",
+      "type": "Function",
+      "parameters": [
+        {
+          "description": "A URL",
+          "format": "uri",
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "add": {},
+            "delete": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "replace": {}
+          }
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "item": {}
+      }
+    }
+  },
+  "required": [
+    "create",
+    "delete",
+    "isAccessTokenRevoked",
+    "me",
+    "update"
+  ]
+}
