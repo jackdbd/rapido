@@ -1,7 +1,6 @@
 import { Static, Type } from "@sinclair/typebox";
 import { ServerError } from "@jackdbd/oauth2-error-responses";
 import { errorResponseFromJSONResponse } from "@jackdbd/oauth2";
-import type { ErrorResponseFromJSON } from "./utils.js";
 
 export const revocation_response_body_success = Type.Object({
   message: Type.Optional(Type.String({ minLength: 1 })),
@@ -47,7 +46,7 @@ export const revokeToken = async (config: Config) => {
 
   if (!response.ok) {
     const error = await errorResponseFromJSONResponse(response);
-    return { error: error as ErrorResponseFromJSON };
+    return { error };
   }
 
   let res_body: RevocationResponseBodySuccess;

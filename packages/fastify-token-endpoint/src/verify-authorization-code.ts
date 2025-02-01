@@ -1,7 +1,6 @@
 import { errorResponseFromJSONResponse } from "@jackdbd/oauth2";
 import { ServerError } from "@jackdbd/oauth2-error-responses";
 import { AuthorizationResponseBodySuccess } from "./schemas/index.js";
-import type { ErrorResponseFromJSON } from "./utils.js";
 
 export interface Config {
   authorization_endpoint: string;
@@ -44,7 +43,7 @@ export const verifyAuthorizationCode = async (config: Config) => {
 
   if (!response.ok) {
     const error = await errorResponseFromJSONResponse(response);
-    return { error: error as ErrorResponseFromJSON };
+    return { error };
   }
 
   let res_body: AuthorizationResponseBodySuccess;
