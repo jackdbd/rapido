@@ -64,6 +64,8 @@
   },
   "dependencies": {
     "@fastify/response-validation": "^3.0.3",
+    "@jackdbd/canonical-url": "0.1.1-canary.0",
+    "@jackdbd/fastify-hooks": "*",
     "@jackdbd/fastify-utils": "0.2.0-canary.0",
     "@jackdbd/indieauth": "^0.1.1-canary.0",
     "@jackdbd/oauth2": "^0.1.0",

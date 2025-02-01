@@ -1,11 +1,18 @@
 import responseValidation from "@fastify/response-validation";
+import canonicalUrl from "@jackdbd/canonical-url";
+import {
+  decodeAccessToken,
+  defValidateClaim,
+  defValidateNotRevoked,
+  defValidateScope,
+} from "@jackdbd/fastify-hooks";
+import { profile } from "@jackdbd/indieauth";
+import { error_response } from "@jackdbd/oauth2";
+import { throwWhenNotConform } from "@jackdbd/schema-validators";
 import { Ajv, type Plugin as AjvPlugin } from "ajv";
 import addFormats from "ajv-formats";
 import type { FastifyPluginCallback } from "fastify";
 import fp from "fastify-plugin";
-import { profile } from "@jackdbd/indieauth";
-import { error_response } from "@jackdbd/oauth2";
-import { throwWhenNotConform } from "@jackdbd/schema-validators";
 import { DEFAULT, NAME } from "./constants.js";
 import { defUserinfoGet } from "./routes/userinfo-get.js";
 import { options as options_schema, type Options } from "./schemas/index.js";
@@ -46,6 +53,7 @@ const userinfoEndpoint: FastifyPluginCallback<Options> = (
     includeErrorDescription,
     isAccessTokenRevoked,
     logPrefix,
+    me,
     reportAllAjvErrors,
     retrieveUserProfile,
   } = config;
@@ -80,30 +88,23 @@ const userinfoEndpoint: FastifyPluginCallback<Options> = (
     );
   });
 
-  // const decodeJwtAndSetClaims = defDecodeJwtAndSetClaims({ ajv })
+  const validateClaimMe = defValidateClaim(
+    {
+      claim: "me",
+      op: "==",
+      value: canonicalUrl(me),
+    },
+    { includeErrorDescription }
+  );
 
-  // const validateClaimMe = defValidateClaim(
-  //   { claim: 'me', op: '==', value: me },
-  //   { ajv }
-  // )
+  const validateScopeEmail = defValidateScope({ scope: "email" });
 
-  // const validateClaimExp = defValidateClaim(
-  //   {
-  //     claim: 'exp',
-  //     op: '>',
-  //     value: unixTimestampInSeconds
-  //   },
-  //   { ajv }
-  // )
+  const validateScopeProfile = defValidateScope({ scope: "profile" });
 
-  // const validateClaimJti = defValidateClaim({ claim: 'jti' }, { ajv })
-
-  // const validateAccessTokenNotRevoked =
-  //   defValidateAccessTokenNotRevoked({ ajv, isAccessTokenRevoked })
-
-  // const validateScopeEmail = defValidateScope({ ajv, scope: 'email' })
-
-  // const validateScopeProfile = defValidateScope({ ajv, scope: 'profile' })
+  const validateAccessTokenNotRevoked = defValidateNotRevoked({
+    includeErrorDescription,
+    isAccessTokenRevoked,
+  });
 
   // === ROUTES ============================================================= //
   // To fetch the user's profile information, the client makes a GET request to
@@ -114,14 +115,14 @@ const userinfoEndpoint: FastifyPluginCallback<Options> = (
   fastify.get(
     "/userinfo",
     {
-      onRequest: [
-        // decodeJwtAndSetClaims,
+      preHandler: [
+        decodeAccessToken,
         // validateClaimExp,
-        // validateClaimMe,
+        validateClaimMe,
         // validateClaimJti,
-        // validateScopeEmail,
-        // validateScopeProfile,
-        // validateAccessTokenNotRevoked
+        validateScopeEmail,
+        validateScopeProfile,
+        validateAccessTokenNotRevoked,
       ],
       schema: {
         // it seems, by reading the IndieAuth spec, that a GET request to the

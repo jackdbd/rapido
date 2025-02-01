@@ -5,6 +5,7 @@ import responseValidation from "@fastify/response-validation";
 import canonicalUrl from "@jackdbd/canonical-url";
 import {
   decodeAccessToken,
+  defLogClaims,
   defValidateClaim,
   defValidateNotRevoked,
 } from "@jackdbd/fastify-hooks";
@@ -80,12 +81,6 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
   done
 ) => {
   const config = Object.assign({}, defaults, options);
-
-  // console.log(`=== process.env.BASE_URL ===`, process.env.BASE_URL);
-  // console.log(`=== process.env.HOST ===`, process.env.HOST);
-  // console.log(`=== process.env.PORT ===`, process.env.PORT);
-  // const default_media_endpoint = `${process.env.BASE_URL}/media`
-  // const default_micropub_endpoint = `${process.env.BASE_URL}/micropub`
 
   let ajv: Ajv;
   if (config.ajv) {
@@ -181,9 +176,9 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
     );
   });
 
-  // TODO: re-read RFC7662 and decide which scope to check
-  // https://www.rfc-editor.org/rfc/rfc7662
-  // const validateScopeMedia = defValidateScope({ scope: 'introspect' })
+  const logClaims = defLogClaims({
+    logPrefix: "[micropub-endpoint/log-claims] ",
+  });
 
   const validateClaimExp = defValidateClaim(
     {
@@ -233,6 +228,7 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
     {
       preHandler: [
         decodeAccessToken,
+        logClaims,
         // validateClaimExp,
         validateClaimMe,
         validateAccessTokenNotRevoked,

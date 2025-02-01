@@ -52,7 +52,7 @@ const accessTokenResult = async (config: AccessTokenConfig) => {
 
   // if (error_decode) {
   //   const message = `Nothing to revoke, since the token is invalid.`
-  //   request.log.debug(`${log_prefix}${message} ${error_decode.message}`)
+  //   request.log.debug(`${logPrefix}${message} ${error_decode.message}`)
   //   return reply.code(200).send({ message })
   // }
 
@@ -108,11 +108,11 @@ export const defRevocationPost = (config: RevokePostConfig) => {
   );
 
   const {
-    include_error_description,
+    includeErrorDescription: include_error_description,
     issuer,
-    jwks_url,
-    log_prefix,
-    max_access_token_age,
+    jwksUrl: jwks_url,
+    logPrefix,
+    maxAccessTokenAge,
     me,
     retrieveAccessToken,
     retrieveRefreshToken,
@@ -127,7 +127,7 @@ export const defRevocationPost = (config: RevokePostConfig) => {
     // includes an expired token, should return HTTP 200.
     if (!token) {
       const message = `Nothing to revoke, since request body includes no token.`;
-      request.log.debug(`${log_prefix}${message}`);
+      request.log.debug(`${logPrefix}${message}`);
       return reply.code(200).send({ message });
     }
 
@@ -149,7 +149,7 @@ export const defRevocationPost = (config: RevokePostConfig) => {
 
     if (token_type_hint === "refresh_token") {
       request.log.debug(
-        `${log_prefix}search among refresh tokens given that token_type_hint=${token_type_hint}`
+        `${logPrefix}search among refresh tokens given that token_type_hint=${token_type_hint}`
       );
 
       let record:
@@ -161,38 +161,38 @@ export const defRevocationPost = (config: RevokePostConfig) => {
         record = await retrieveRefreshToken(token);
       } catch (ex: any) {
         request.log.warn(
-          `${log_prefix}token not found among refresh tokens. User-provided retrieveRefreshToken threw an exception: ${ex.message}`
+          `${logPrefix}token not found among refresh tokens. User-provided retrieveRefreshToken threw an exception: ${ex.message}`
         );
       }
 
       if (record) {
-        request.log.debug(`${log_prefix}token found among refresh tokens`);
+        request.log.debug(`${logPrefix}token found among refresh tokens`);
         found.refresh_token_record = record;
       } else {
         request.log.debug(
-          `${log_prefix}token not found among refresh tokens. Searching among access tokens`
+          `${logPrefix}token not found among refresh tokens. Searching among access tokens`
         );
 
         const { value } = await accessTokenResult({
           issuer,
           jwks_url,
           token,
-          max_token_age: max_access_token_age,
+          max_token_age: maxAccessTokenAge,
           retrieveAccessToken,
         });
 
         if (value) {
-          request.log.debug(`${log_prefix}token found among access tokens`);
+          request.log.debug(`${logPrefix}token found among access tokens`);
           found.access_token_value = value;
         }
       }
     } else {
-      request.log.debug(`${log_prefix}search among access tokens`);
+      request.log.debug(`${logPrefix}search among access tokens`);
 
       const { value } = await accessTokenResult({
         issuer,
         jwks_url,
-        max_token_age: max_access_token_age,
+        max_token_age: maxAccessTokenAge,
         retrieveAccessToken,
         token,
       });
@@ -203,32 +203,32 @@ export const defRevocationPost = (config: RevokePostConfig) => {
         | undefined;
 
       if (value) {
-        request.log.debug(`${log_prefix}token found among access tokens`);
+        request.log.debug(`${logPrefix}token found among access tokens`);
         found.access_token_value = value;
       } else {
-        request.log.debug(`${log_prefix}search among refresh tokens`);
+        request.log.debug(`${logPrefix}search among refresh tokens`);
         try {
           record = await retrieveRefreshToken(token);
         } catch (ex: any) {
           request.log.warn(
-            `${log_prefix}token not found among stored refresh tokens. User-provided retrieveRefreshToken threw an exception: ${ex.message}`
+            `${logPrefix}token not found among stored refresh tokens. User-provided retrieveRefreshToken threw an exception: ${ex.message}`
           );
         }
 
         if (record) {
-          request.log.debug(`${log_prefix}token found among refresh tokens`);
+          request.log.debug(`${logPrefix}token found among refresh tokens`);
           found.refresh_token_record = record;
         }
       }
     }
 
     if (found.access_token_value) {
-      request.log.debug(`${log_prefix}token found among access tokens`);
+      request.log.debug(`${logPrefix}token found among access tokens`);
       const { claims } = found.access_token_value;
 
       if (!claims.me) {
         const message = "Cannot revoke token because it has no `me` claim.";
-        request.log.debug(`${log_prefix}${message}`);
+        request.log.debug(`${logPrefix}${message}`);
         return reply.code(200).send({ message });
       }
 
@@ -247,20 +247,20 @@ export const defRevocationPost = (config: RevokePostConfig) => {
 
       if (!claims.jti) {
         const message = "Cannot revoke token because it has no `jti` claim.";
-        request.log.debug(`${log_prefix}${message}`);
+        request.log.debug(`${logPrefix}${message}`);
         return reply.code(200).send({ message });
       }
       const jti = claims.jti;
 
       if (!claims.scope) {
         const message = "Cannot revoke token because it has no `scope` claim.";
-        request.log.debug(`${log_prefix}${message}`);
+        request.log.debug(`${logPrefix}${message}`);
         return reply.code(200).send({ message });
       }
 
       if (!claims.exp) {
         const message = "Cannot revoke token because it has no `exp` claim.";
-        request.log.debug(`${log_prefix}${message}`);
+        request.log.debug(`${logPrefix}${message}`);
         return reply.code(200).send({ message });
       }
 
@@ -269,7 +269,7 @@ export const defRevocationPost = (config: RevokePostConfig) => {
         const exp = secondsToUTCString(claims.exp);
         const now = secondsToUTCString(unix_now);
         const message = `Nothing to revoke, since the access token expired at ${exp} (now is ${now}).`;
-        request.log.debug(`${log_prefix}${message}`);
+        request.log.debug(`${logPrefix}${message}`);
         return reply.code(200).send({ message });
       }
 
@@ -277,7 +277,7 @@ export const defRevocationPost = (config: RevokePostConfig) => {
         await revokeAccessToken({ jti, revocation_reason });
       } catch (ex: any) {
         const error_description = `The provided onAccessTokenRevocation threw an exception: ${ex.message}`;
-        request.log.warn(`${log_prefix}${error_description}`);
+        request.log.warn(`${logPrefix}${error_description}`);
         const err = new ServerError({ error_description });
         return reply
           .code(err.statusCode)
@@ -286,7 +286,7 @@ export const defRevocationPost = (config: RevokePostConfig) => {
 
       return reply.code(200).send({ message: `Access token ${jti} revoked` });
     } else if (found.refresh_token_record) {
-      request.log.debug(`${log_prefix}token found among refresh tokens`);
+      request.log.debug(`${logPrefix}token found among refresh tokens`);
       const record = found.refresh_token_record;
       // The authorization server verifies whether the token was issued to the
       // client making the revocation request.
@@ -304,7 +304,7 @@ export const defRevocationPost = (config: RevokePostConfig) => {
         const exp = secondsToUTCString(record.exp);
         const now = secondsToUTCString(unix_now);
         const message = `Nothing to revoke, since the refresh token expired at ${exp} (now is ${now}).`;
-        request.log.debug(`${log_prefix}${message}`);
+        request.log.debug(`${logPrefix}${message}`);
         return reply.code(200).send({ message });
       }
 
@@ -312,7 +312,7 @@ export const defRevocationPost = (config: RevokePostConfig) => {
         await revokeRefreshToken({ refresh_token: token, revocation_reason });
       } catch (ex: any) {
         const error_description = `The provided onAccessTokenRevocation threw an exception: ${ex.message}`;
-        request.log.warn(`${log_prefix}${error_description}`);
+        request.log.warn(`${logPrefix}${error_description}`);
         const err = new ServerError({ error_description });
         return reply
           .code(err.statusCode)
@@ -324,7 +324,7 @@ export const defRevocationPost = (config: RevokePostConfig) => {
         .send({ message: `Refresh token ${token} revoked` });
     } else {
       const message = `Nothing to revoke, since token ${token} cannot be found, neither among the access tokens, nor among the refresh tokens.`;
-      request.log.debug(`${log_prefix}${message}`);
+      request.log.debug(`${logPrefix}${message}`);
       return reply.code(200).send({ message });
     }
   };
