@@ -77,7 +77,7 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
   options,
   done
 ) => {
-  const config = Object.assign(defaults, options);
+  const config = Object.assign({}, defaults, options);
 
   // console.log(`=== process.env.BASE_URL ===`, process.env.BASE_URL);
   // console.log(`=== process.env.HOST ===`, process.env.HOST);

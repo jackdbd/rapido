@@ -1,4 +1,5 @@
 import type { RouteGenericInterface, RouteHandler } from "fastify";
+import { accessTokenFromRequest } from "@jackdbd/fastify-utils";
 import type { Profile } from "@jackdbd/indieauth";
 import {
   InvalidRequestError,
@@ -20,7 +21,6 @@ import type {
   RefreshTokenMutableRecord,
   TokenPostConfig,
 } from "../schemas/index.js";
-import { accessTokenFromRequestHeader } from "../utils.js";
 import { verifyAuthorizationCode } from "../verify-authorization-code.js";
 
 interface RouteGeneric extends RouteGenericInterface {
@@ -165,7 +165,7 @@ export const defTokenPost = (config: TokenPostConfig) => {
           .send(err.payload({ include_error_description }));
       }
 
-      const { value: access_token } = accessTokenFromRequestHeader(request);
+      const { value: access_token } = accessTokenFromRequest(request);
 
       if (!access_token) {
         const error_description = `Cannot revoke refresh token ${refresh_token}: no access token in Authorization header.`;
@@ -301,6 +301,10 @@ export const defTokenPost = (config: TokenPostConfig) => {
           `${log_prefix}cannot verify authorization code ${code}: ${payload.error_description}`
         );
         return reply.code(verify_error.statusCode).send(payload);
+      }
+
+      if (!verify_value) {
+        throw new Error(`cannot verify authorization code ${code}`);
       }
 
       const { me, scope } = verify_value;

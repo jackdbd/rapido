@@ -64,7 +64,7 @@ export const defaults = {
 };
 
 const webC: FastifyPluginAsync<Options> = async (fastify, options = {}) => {
-  const config = Object.assign(defaults, options);
+  const config = Object.assign({}, defaults, options);
 
   const { components, logPrefix, templates, useBundlerMode } = config;
 

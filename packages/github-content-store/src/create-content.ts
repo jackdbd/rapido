@@ -30,7 +30,7 @@ const defaults: Partial<Options> = {
 };
 
 export const defCreate = (options?: Options) => {
-  const config = Object.assign(defaults, options) as Required<Options>;
+  const config = Object.assign({}, defaults, options) as Required<Options>;
 
   const {
     author,

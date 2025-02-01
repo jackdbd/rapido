@@ -25,6 +25,7 @@ const defaults: Partial<CreateOrUpdateOptions> = {
  */
 export const createOrUpdate = async (options: CreateOrUpdateOptions) => {
   const config = Object.assign(
+    {},
     defaults,
     options
   ) as Required<CreateOrUpdateOptions>;
