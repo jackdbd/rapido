@@ -1,5 +1,12 @@
 # @jackdbd/fastify-token-endpoint
 
+## 1.2.1-canary.4
+
+### Patch Changes
+
+- Updated dependencies [708218a]
+  - @jackdbd/fastify-utils@0.2.0-canary.1
+
 ## 1.2.1-canary.3
 
 ### Patch Changes

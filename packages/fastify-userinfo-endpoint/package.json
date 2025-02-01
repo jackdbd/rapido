@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/fastify-userinfo-endpoint",
-  "version": "1.2.1-canary.3",
+  "version": "1.2.1-canary.4",
   "description": "Fastify plugin that adds a [IndieAuth Userinfo Endpoint](https://indieauth.spec.indieweb.org/#user-information) to a Fastify server.",
   "author": {
     "name": "Giacomo Debidda",
@@ -65,8 +65,8 @@
   "dependencies": {
     "@fastify/response-validation": "^3.0.3",
     "@jackdbd/canonical-url": "0.1.1-canary.0",
-    "@jackdbd/fastify-hooks": "*",
-    "@jackdbd/fastify-utils": "0.2.0-canary.0",
+    "@jackdbd/fastify-hooks": "0.2.0-canary.0",
+    "@jackdbd/fastify-utils": "0.2.0-canary.1",
     "@jackdbd/indieauth": "^0.1.1-canary.0",
     "@jackdbd/oauth2": "^0.1.0",
     "@jackdbd/oauth2-error-responses": "^0.1.1-canary.0",
