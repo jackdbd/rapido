@@ -85,6 +85,11 @@ jobs:
           JWKS: ${{ secrets.JWKS }}
         run: npx turbo test:ci --filter @jackdbd/schema-validators
 
+      - name: 🔍 Test @jackdbd/fastify-utils
+        env:
+          JWKS: ${{ secrets.JWKS }}
+        run: npx turbo test:ci --filter @jackdbd/fastify-utils
+
       - name: 🔍 Test @jackdbd/microformats2
         env:
           JWKS: ${{ secrets.JWKS }}
@@ -130,3 +135,8 @@ jobs:
         env:
           JWKS: ${{ secrets.JWKS }}
         run: npx turbo test:ci --filter @jackdbd/github-content-store
+
+      - name: 🔍 Test @jackdbd/r2-media-store
+        env:
+          JWKS: ${{ secrets.JWKS }}
+        run: npx turbo test:ci --filter @jackdbd/r2-media-store
