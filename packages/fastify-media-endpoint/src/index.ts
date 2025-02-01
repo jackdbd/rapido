@@ -4,8 +4,10 @@ import responseValidation from "@fastify/response-validation";
 import canonicalUrl from "@jackdbd/canonical-url";
 import {
   decodeAccessToken,
+  defLogClaims,
   defValidateClaim,
   defValidateNotRevoked,
+  defValidateScope,
 } from "@jackdbd/fastify-hooks";
 import { error_response } from "@jackdbd/oauth2";
 import {
@@ -119,6 +121,8 @@ const mediaEndpoint: FastifyPluginCallback<Options> = (
     );
   });
 
+  const logClaims = defLogClaims({ logPrefix: "[media-endpoint/log-claims] " });
+
   const validateClaimExp = defValidateClaim(
     {
       claim: "exp",
@@ -138,6 +142,8 @@ const mediaEndpoint: FastifyPluginCallback<Options> = (
     { includeErrorDescription: include_error_description }
   );
 
+  const validateScopeMedia = defValidateScope({ scope: "media" });
+
   const validateAccessTokenNotRevoked = defValidateNotRevoked({
     includeErrorDescription: include_error_description,
     isAccessTokenRevoked,
@@ -149,8 +155,10 @@ const mediaEndpoint: FastifyPluginCallback<Options> = (
     {
       preHandler: [
         decodeAccessToken,
+        logClaims,
         // validateClaimExp,
         validateClaimMe,
+        validateScopeMedia,
         validateAccessTokenNotRevoked,
       ],
       schema: {

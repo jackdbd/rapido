@@ -19,25 +19,15 @@ import type {
 export const revoke_post_config = Type.Object(
   {
     ajv,
-
-    include_error_description,
-
+    includeErrorDescription: include_error_description,
     issuer,
-
-    jwks_url,
-
-    log_prefix,
-
-    max_access_token_age: Type.Optional(Type.String({ minLength: 1 })),
-
+    jwksUrl: jwks_url,
+    logPrefix: log_prefix,
+    maxAccessTokenAge: Type.Optional(Type.String({ minLength: 1 })),
     me: me_after_url_canonicalization,
-
     retrieveAccessToken,
-
     retrieveRefreshToken,
-
     revokeAccessToken,
-
     revokeRefreshToken,
   },
   { additionalProperties: false, $id: "revocation-endpoint-post-method-config" }

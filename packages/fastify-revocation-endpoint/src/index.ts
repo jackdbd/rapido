@@ -1,17 +1,17 @@
+import {
+  decodeAccessToken,
+  defValidateClaim,
+  defValidateNotRevoked,
+} from "@jackdbd/fastify-hooks";
+import canonicalUrl from "@jackdbd/canonical-url";
+import { error_response } from "@jackdbd/oauth2";
+import { throwWhenNotConform } from "@jackdbd/schema-validators";
 import formbody from "@fastify/formbody";
 import responseValidation from "@fastify/response-validation";
 import { Ajv, type Plugin as AjvPlugin } from "ajv";
 import addFormats from "ajv-formats";
 import type { FastifyPluginCallback } from "fastify";
 import fp from "fastify-plugin";
-import { error_response } from "@jackdbd/oauth2";
-// import { unixTimestampInSeconds } from "@jackdbd/oauth2-tokens";
-import { throwWhenNotConform } from "@jackdbd/schema-validators";
-// import {
-//   defDecodeJwtAndSetClaims,
-//   defValidateAccessTokenNotRevoked,
-//   defValidateClaim
-// } from '../../lib/fastify-hooks/index.js'
 import { DEFAULT, NAME } from "./constants.js";
 import { defRevocationPost } from "./routes/revocation-post.js";
 import {
@@ -77,12 +77,12 @@ const revocationEndpoint: FastifyPluginCallback<Options> = (
   );
 
   const {
-    includeErrorDescription: include_error_description,
-    // isAccessTokenRevoked,
+    includeErrorDescription,
+    isAccessTokenRevoked,
     issuer,
-    jwksUrl: jwks_url,
-    logPrefix: log_prefix,
-    maxAccessTokenAge: max_access_token_age,
+    jwksUrl,
+    logPrefix,
+    maxAccessTokenAge,
     me,
     retrieveAccessToken,
     retrieveRefreshToken,
@@ -93,12 +93,12 @@ const revocationEndpoint: FastifyPluginCallback<Options> = (
   // === PLUGINS ============================================================ //
   fastify.register(formbody);
   fastify.log.debug(
-    `${log_prefix}registered plugin: formbody (for parsing application/x-www-form-urlencoded)`
+    `${logPrefix}registered plugin: formbody (for parsing application/x-www-form-urlencoded)`
   );
 
   if (process.env.NODE_ENV === "development") {
     fastify.register(responseValidation);
-    fastify.log.debug(`${log_prefix}registered plugin: response-validation`);
+    fastify.log.debug(`${logPrefix}registered plugin: response-validation`);
   }
 
   // === DECORATORS ========================================================= //
@@ -106,50 +106,34 @@ const revocationEndpoint: FastifyPluginCallback<Options> = (
   // === HOOKS ============================================================== //
   fastify.addHook("onRoute", (routeOptions) => {
     fastify.log.debug(
-      `${log_prefix}registered route ${routeOptions.method} ${routeOptions.url}`
+      `${logPrefix}registered route ${routeOptions.method} ${routeOptions.url}`
     );
   });
 
-  // const decodeJwtAndSetClaims = defDecodeJwtAndSetClaims({ ajv });
+  const validateClaimMe = defValidateClaim(
+    {
+      claim: "me",
+      op: "==",
+      value: canonicalUrl(me),
+    },
+    { includeErrorDescription }
+  );
 
-  // Should I check whether the token from the Authorization header matches an
-  // expected a `me` claim?
-  // const validateClaimMe = defValidateClaim(
-  //   { claim: 'me', op: '==', value: me },
-  //   { ajv }
-  // )
-
-  // The access token provided in the Authorization header (which may differ
-  // from the token in the request body) must not be expired.
-  // const validateClaimExp = defValidateClaim(
-  //   {
-  //     claim: "exp",
-  //     op: ">",
-  //     value: unixTimestampInSeconds,
-  //   },
-  //   { ajv }
-  // );
-
-  // const validateClaimJti = defValidateClaim({ claim: "jti" }, { ajv });
-
-  // TODO: re-read RFC7662 and decide which scope to check
-  // const validateScopeMedia = defValidateScope({ scope: 'introspect' })
-
-  // const validateAccessTokenNotRevoked = defValidateAccessTokenNotRevoked({
-  //   ajv,
-  //   isAccessTokenRevoked,
-  // });
+  const validateAccessTokenNotRevoked = defValidateNotRevoked({
+    includeErrorDescription,
+    isAccessTokenRevoked,
+  });
 
   // === ROUTES ============================================================= //
   fastify.post(
     "/revoke",
     {
-      onRequest: [
-        // decodeJwtAndSetClaims,
+      preHandler: [
+        decodeAccessToken,
         // validateClaimExp,
-        // validateClaimMe,
+        validateClaimMe,
         // validateClaimJti,
-        // validateAccessTokenNotRevoked,
+        validateAccessTokenNotRevoked,
       ],
       schema: {
         body: revocation_request_body,
@@ -162,11 +146,11 @@ const revocationEndpoint: FastifyPluginCallback<Options> = (
     },
     defRevocationPost({
       ajv,
-      include_error_description,
+      includeErrorDescription,
       issuer,
-      jwks_url,
-      log_prefix,
-      max_access_token_age,
+      jwksUrl,
+      logPrefix,
+      maxAccessTokenAge,
       me,
       retrieveAccessToken,
       retrieveRefreshToken,
