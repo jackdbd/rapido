@@ -1,5 +1,11 @@
 # @jackdbd/oauth2
 
+## 0.2.0-canary.1
+
+### Minor Changes
+
+- caebe78: Bump packages.
+
 ## 0.2.0-canary.0
 
 ### Minor Changes

@@ -1,5 +1,16 @@
 # @jackdbd/micropub
 
+## 0.2.0-canary.3
+
+### Minor Changes
+
+- caebe78: Bump packages.
+
+### Patch Changes
+
+- Updated dependencies [caebe78]
+  - @jackdbd/microformats2@0.2.0-canary.2
+
 ## 0.2.0-canary.2
 
 ### Minor Changes

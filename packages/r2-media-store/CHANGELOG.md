@@ -1,5 +1,16 @@
 # @jackdbd/r2-media-store
 
+## 0.2.0-canary.4
+
+### Minor Changes
+
+- caebe78: Bump packages.
+
+### Patch Changes
+
+- Updated dependencies [caebe78]
+  - @jackdbd/fastify-media-endpoint@0.2.0-canary.4
+
 ## 0.2.0-canary.3
 
 ### Minor Changes

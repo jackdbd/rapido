@@ -1,5 +1,11 @@
 # @jackdbd/schema-validators
 
+## 0.2.0-canary.5
+
+### Minor Changes
+
+- caebe78: Bump packages.
+
 ## 0.2.0-canary.4
 
 ### Minor Changes
