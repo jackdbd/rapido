@@ -2,4 +2,4 @@
 "@jackdbd/fastify-hooks": minor
 ---
 
-Add package.
+Make fastify-hooks a public package.

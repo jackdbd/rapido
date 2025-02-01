@@ -6,13 +6,15 @@
     "@jackdbd/canonical-url": "0.1.1-canary.0",
     "@repo/eslint-config": "0.1.1",
     "@jackdbd/fastify-authorization-endpoint": "1.2.1-canary.2",
-    "@jackdbd/fastify-introspection-endpoint": "1.2.1-canary.2",
-    "@jackdbd/fastify-media-endpoint": "0.1.1-canary.0",
-    "@jackdbd/fastify-micropub-endpoint": "0.2.0-canary.2",
-    "@jackdbd/fastify-revocation-endpoint": "1.2.1-canary.2",
-    "@jackdbd/fastify-token-endpoint": "1.2.1-canary.3",
-    "@jackdbd/fastify-userinfo-endpoint": "1.2.1-canary.3",
-    "@jackdbd/fastify-utils": "0.2.0-canary.0",
+    "@jackdbd/fastify-hooks": "0.2.0-canary.0",
+    "@jackdbd/fastify-introspection-endpoint": "1.3.0-canary.4",
+    "@jackdbd/fastify-media-endpoint": "0.2.0-canary.2",
+    "@jackdbd/fastify-micropub-endpoint": "0.2.0-canary.4",
+    "@jackdbd/fastify-revocation-endpoint": "1.3.0-canary.4",
+    "@jackdbd/fastify-syndicate-endpoint": "0.2.0-canary.0",
+    "@jackdbd/fastify-token-endpoint": "1.2.1-canary.4",
+    "@jackdbd/fastify-userinfo-endpoint": "1.3.0-canary.5",
+    "@jackdbd/fastify-utils": "0.2.0-canary.1",
     "@jackdbd/fastify-webc": "0.1.0",
     "@jackdbd/github-content-store": "0.2.0-canary.0",
     "@jackdbd/github-contents-api": "0.2.0-canary.1",
@@ -23,19 +25,13 @@
     "@jackdbd/oauth2-error-responses": "0.1.1-canary.0",
     "@jackdbd/oauth2-tokens": "0.1.1-canary.4",
     "@jackdbd/pkce": "0.1.0",
-    "@jackdbd/r2-media-store": "0.2.0-canary.0",
+    "@jackdbd/r2-media-store": "0.2.0-canary.2",
     "@jackdbd/relmeauth": "0.1.1-canary.0",
     "@jackdbd/schema-validators": "0.1.1-canary.3",
     "@repo/scripts": "0.1.1",
     "@repo/stdlib": "0.1.1",
     "@repo/typescript-config": "0.1.1",
-    "@jackdbd/unwrap": "0.1.0",
-    "@jackdbd/fastify-hooks": "0.1.0",
-    "@jackdbd/fastify-syndicate-endpoint": "0.1.0"
+    "@jackdbd/unwrap": "0.1.0"
   },
-  "changesets": [
-    "friendly-beds-relax",
-    "nervous-coats-crash",
-    "witty-pillows-tie"
-  ]
+  "changesets": []
 }
