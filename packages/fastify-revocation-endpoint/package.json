@@ -67,7 +67,7 @@
     "@fastify/formbody": "^8.0.2",
     "@fastify/response-validation": "^3.0.3",
     "@jackdbd/canonical-url": "0.1.1-canary.0",
-    "@jackdbd/fastify-hooks": "0.2.0-canary.0",
+    "@jackdbd/fastify-hooks": "*",
     "@jackdbd/indieauth": "^0.1.1-canary.0",
     "@jackdbd/oauth2": "^0.1.0",
     "@jackdbd/oauth2-error-responses": "^0.1.1-canary.0",
