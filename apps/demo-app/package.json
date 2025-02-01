@@ -29,8 +29,8 @@
   "dependencies": {
     "@fastify/view": "^10.0.2",
     "@jackdbd/fastify-authorization-endpoint": "*",
-    "@jackdbd/fastify-micropub-endpoint": "0.2.0-canary.1",
-    "@jackdbd/fastify-token-endpoint": "*",
+    "@jackdbd/fastify-micropub-endpoint": "0.2.0-canary.2",
+    "@jackdbd/fastify-token-endpoint": "1.2.1-canary.3",
     "close-with-grace": "^2.2.0",
     "fastify": "^5.2.1",
     "nunjucks": "^3.2.4"
