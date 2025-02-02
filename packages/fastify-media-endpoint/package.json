@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/fastify-media-endpoint",
-  "version": "0.2.0-canary.5",
+  "version": "0.2.0-canary.6",
   "description": "Fastify plugin that adds a [Micropub Media endpoint](https://www.w3.org/TR/micropub/#media-endpoint) to a Fastify server.",
   "author": {
     "name": "Giacomo Debidda",
@@ -68,7 +68,7 @@
     "@fastify/multipart": "^9.0.3",
     "@fastify/response-validation": "^3.0.3",
     "@jackdbd/canonical-url": "0.2.0-canary.3",
-    "@jackdbd/fastify-hooks": "0.2.0-canary.5",
+    "@jackdbd/fastify-hooks": "0.2.0-canary.6",
     "@jackdbd/fastify-utils": "0.2.0-canary.5",
     "@jackdbd/indieauth": "0.2.0-canary.3",
     "@jackdbd/micropub": "0.2.0-canary.4",
