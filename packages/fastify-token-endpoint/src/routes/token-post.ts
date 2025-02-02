@@ -28,7 +28,7 @@ interface RouteGeneric extends RouteGenericInterface {
 }
 
 /**
- * Returns a route handler that issues access tokens and refresh tokens.
+ * Issues an access token and a refresh token.
  *
  * In order to be able to [revoke](https://datatracker.ietf.org/doc/html/rfc7009)
  * tokens or [introspect](https://www.rfc-editor.org/rfc/rfc7662) tokens, an

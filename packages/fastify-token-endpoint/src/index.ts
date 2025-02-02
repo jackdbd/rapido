@@ -1,15 +1,20 @@
 import formbody from "@fastify/formbody";
 import responseValidation from "@fastify/response-validation";
+import { error_response } from "@jackdbd/oauth2";
+import {
+  InvalidRequestError,
+  ServerError,
+} from "@jackdbd/oauth2-error-responses";
+import { conformResult } from "@jackdbd/schema-validators";
 import { Type } from "@sinclair/typebox";
 import { Ajv, type Plugin as AjvPlugin } from "ajv";
 import addFormats from "ajv-formats";
 import type { FastifyPluginCallback } from "fastify";
 import fp from "fastify-plugin";
+
 // import { defRedirectWhenNotAuthenticated } from '../../lib/fastify-hooks/index.js'
-import { error_response } from "@jackdbd/oauth2";
-import { throwWhenNotConform } from "@jackdbd/schema-validators";
-import { defTokenPost } from "./routes/token-post.js";
 import { DEFAULT, NAME } from "./constants.js";
+import { defTokenPost } from "./routes/token-post.js";
 import {
   access_token_request_body,
   access_token_response_body_success,
@@ -67,22 +72,6 @@ const tokenEndpoint: FastifyPluginCallback<Options> = (
 ) => {
   const config = Object.assign({}, defaults, options);
 
-  const {
-    accessTokenExpiration,
-    authorizationEndpoint,
-    includeErrorDescription,
-    // isAccessTokenRevoked,
-    issuer,
-    jwks,
-    logPrefix: log_prefix,
-    onIssuedTokens,
-    refreshTokenExpiration,
-    reportAllAjvErrors,
-    retrieveRefreshToken,
-    revocationEndpoint,
-    userinfoEndpoint,
-  } = config;
-
   let ajv: Ajv;
   if (config.ajv) {
     ajv = config.ajv;
@@ -90,32 +79,52 @@ const tokenEndpoint: FastifyPluginCallback<Options> = (
     // I have no idea why I have to do this to make TypeScript happy.
     // In JavaScript, Ajv and addFormats can be imported without any of this mess.
     const addFormatsPlugin = addFormats as any as AjvPlugin<string[]>;
-    ajv = addFormatsPlugin(new Ajv({ allErrors: reportAllAjvErrors }), [
-      "email",
-      "uri",
-    ]);
+    ajv = addFormatsPlugin(
+      new Ajv({ allErrors: config.reportAllAjvErrors, schemas: [] }),
+      ["email", "uri"]
+    );
   }
 
-  throwWhenNotConform(
+  const { error, value } = conformResult(
     { ajv, schema: options_schema, data: config },
     { basePath: "token-endpoint-options" }
   );
 
+  if (error) {
+    return done(error);
+  }
+
+  const {
+    accessTokenExpiration,
+    authorizationEndpoint,
+    includeErrorDescription: include_error_description,
+    // isAccessTokenRevoked,
+    issuer,
+    jwks,
+    logPrefix,
+    onIssuedTokens,
+    refreshTokenExpiration,
+    retrieveRefreshToken,
+    revocationEndpoint,
+    userinfoEndpoint,
+  } = value.validated as Required<Options>;
+
   fastify.log.debug(
-    `${log_prefix}access token expiration: ${accessTokenExpiration}`
+    `${logPrefix}access token expiration: ${accessTokenExpiration}`
   );
   fastify.log.debug(
-    `${log_prefix}refresh token expiration: ${refreshTokenExpiration}`
+    `${logPrefix}refresh token expiration: ${refreshTokenExpiration}`
   );
 
   // === PLUGINS ============================================================ //
-  // Parse application/x-www-form-urlencoded requests
   fastify.register(formbody);
-  fastify.log.debug(`${log_prefix}registered plugin: formbody`);
+  fastify.log.debug(
+    `${logPrefix}registered plugin: formbody (for parsing application/x-www-form-urlencoded)`
+  );
 
   if (process.env.NODE_ENV === "development") {
     fastify.register(responseValidation);
-    fastify.log.debug(`${log_prefix}registered plugin: response-validation`);
+    fastify.log.debug(`${logPrefix}registered plugin: response-validation`);
   }
 
   // === DECORATORS ========================================================= //
@@ -123,7 +132,7 @@ const tokenEndpoint: FastifyPluginCallback<Options> = (
   // === HOOKS ============================================================== //
   fastify.addHook("onRoute", (routeOptions) => {
     fastify.log.debug(
-      `${log_prefix}registered route ${routeOptions.method} ${routeOptions.url}`
+      `${logPrefix}registered route ${routeOptions.method} ${routeOptions.url}`
     );
   });
 
@@ -138,7 +147,7 @@ const tokenEndpoint: FastifyPluginCallback<Options> = (
         // https://datatracker.ietf.org/doc/html/rfc6749#section-3.2.1
         // if (grant_type === 'refresh_token') {
         // request.log.warn(
-        //   `${log_prefix}require authentication for refresh token requests`
+        //   `${logPrefix}require authentication for refresh token requests`
         // )
         // TODO: do NOT redirect here. This is an API endpoint! A redirect
         // might be ok for browser clients, but not for API clients (e.g. Bruno).
@@ -158,10 +167,10 @@ const tokenEndpoint: FastifyPluginCallback<Options> = (
       accessTokenExpiration,
       ajv,
       authorizationEndpoint,
-      includeErrorDescription,
+      includeErrorDescription: include_error_description,
       issuer,
       jwks,
-      logPrefix: log_prefix,
+      logPrefix,
       onIssuedTokens,
       refreshTokenExpiration,
       retrieveRefreshToken,
@@ -169,6 +178,52 @@ const tokenEndpoint: FastifyPluginCallback<Options> = (
       userinfoEndpoint,
     })
   );
+
+  fastify.setErrorHandler((error, request, reply) => {
+    const code = error.statusCode;
+
+    // Think about including these data error_description:
+    // - some JWT claims (e.g. me, scope)
+    // - jf2 (e.g. action, content, h, url)
+    // const claims = request.requestContext.get("access_token_claims");
+    // const jf2 = request.requestContext.get("jf2");
+    // console.log("=== claims ===", claims);
+    // console.log("=== jf2 ===", jf2);
+
+    if (code && code >= 400 && code < 500) {
+      request.log.warn(
+        `${logPrefix}client error catched by error handler: ${error.message}`
+      );
+    } else {
+      request.log.error(
+        `${logPrefix}server error catched by error handler: ${error.message}`
+      );
+    }
+
+    if (error.validation && error.validationContext) {
+      if (code && code >= 400 && code < 500) {
+        const messages = error.validation.map((ve) => {
+          return `${error.validationContext}${ve.instancePath} ${ve.message}`;
+        });
+        const error_description = messages.join("; ");
+        const err = new InvalidRequestError({ error_description });
+        return reply
+          .code(err.statusCode)
+          .send(err.payload({ include_error_description }));
+      }
+    }
+
+    // If it's not a client error, is it always a generic Internal Server Error?
+    // Probably we can return a HTTP 503 Service Unavailable (maybe use
+    // @fastify/under-pressure).
+    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses
+
+    const error_description = error.message;
+    const err = new ServerError({ error_description });
+    return reply
+      .code(err.statusCode)
+      .send(err.payload({ include_error_description }));
+  });
 
   done();
 };
