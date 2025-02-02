@@ -1,5 +1,15 @@
 # @jackdbd/oauth2-tokens
 
+## 0.2.0-canary.7
+
+### Patch Changes
+
+- 75a494b: Update README.
+- Updated dependencies [75a494b]
+  - @jackdbd/schema-validators@0.2.0-canary.6
+  - @jackdbd/indieauth@0.2.0-canary.3
+  - @jackdbd/oauth2@0.2.0-canary.2
+
 ## 0.2.0-canary.6
 
 ### Minor Changes

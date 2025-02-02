@@ -1,5 +1,11 @@
 # @jackdbd/fastify-utils
 
+## 0.2.0-canary.5
+
+### Patch Changes
+
+- 75a494b: Update README.
+
 ## 0.2.0-canary.4
 
 ### Minor Changes

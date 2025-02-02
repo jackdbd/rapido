@@ -1,5 +1,22 @@
 # @jackdbd/fastify-syndicate-endpoint
 
+## 0.2.0-canary.3
+
+### Minor Changes
+
+- f18a27c: Bump plugin versions.
+
+### Patch Changes
+
+- 75a494b: Update README.
+- Updated dependencies [75a494b]
+  - @jackdbd/oauth2-error-responses@0.2.0-canary.3
+  - @jackdbd/canonical-url@0.2.0-canary.3
+  - @jackdbd/fastify-hooks@0.2.0-canary.5
+  - @jackdbd/indieauth@0.2.0-canary.3
+  - @jackdbd/micropub@0.2.0-canary.4
+  - @jackdbd/oauth2@0.2.0-canary.2
+
 ## 0.2.0-canary.2
 
 ### Minor Changes

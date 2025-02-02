@@ -1,5 +1,11 @@
 # @jackdbd/schema-validators
 
+## 0.2.0-canary.6
+
+### Patch Changes
+
+- 75a494b: Update README.
+
 ## 0.2.0-canary.5
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @jackdbd/github-contents-api
 
+## 0.2.0-canary.4
+
+### Patch Changes
+
+- 75a494b: Update README.
+
 ## 0.2.0-canary.3
 
 ### Minor Changes
