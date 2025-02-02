@@ -22,7 +22,7 @@ npm install @jackdbd/r2-media-store
 | Package | Version |
 |---|---|
 | [@aws-sdk/client-s3](https://www.npmjs.com/package/@aws-sdk/client-s3) | `^3.740.0` |
-| [@jackdbd/fastify-media-endpoint](https://www.npmjs.com/package/@jackdbd/fastify-media-endpoint) | `0.1.1-canary.1` |
+| [@jackdbd/fastify-media-endpoint](https://www.npmjs.com/package/@jackdbd/fastify-media-endpoint) | `0.2.0-canary.4` |
 | [mime](https://www.npmjs.com/package/mime) | `^4.0.6` |
 | [nanoid](https://www.npmjs.com/package/nanoid) | `^5.0.9` |
 

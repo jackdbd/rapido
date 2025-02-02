@@ -21,8 +21,8 @@ npm install @jackdbd/github-content-store
 
 | Package | Version |
 |---|---|
-| [@jackdbd/github-contents-api](https://www.npmjs.com/package/@jackdbd/github-contents-api) | `0.2.0-canary.1` |
-| [@jackdbd/micropub](https://www.npmjs.com/package/@jackdbd/micropub) | `0.2.0-canary.1` |
+| [@jackdbd/github-contents-api](https://www.npmjs.com/package/@jackdbd/github-contents-api) | `0.2.0-canary.3` |
+| [@jackdbd/micropub](https://www.npmjs.com/package/@jackdbd/micropub) | `0.2.0-canary.3` |
 | [@paulrobertlloyd/mf2tojf2](https://www.npmjs.com/package/@paulrobertlloyd/mf2tojf2) | `^2.4.0` |
 | [dayjs](https://www.npmjs.com/package/dayjs) | `^1.11.13` |
 | [dayjs-plugin-utc](https://www.npmjs.com/package/dayjs-plugin-utc) | `^0.1.2` |

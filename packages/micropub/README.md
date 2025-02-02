@@ -21,7 +21,7 @@ npm install @jackdbd/micropub
 
 | Package | Version |
 |---|---|
-| [@jackdbd/microformats2](https://www.npmjs.com/package/@jackdbd/microformats2) | `0.1.1-canary.0` |
+| [@jackdbd/microformats2](https://www.npmjs.com/package/@jackdbd/microformats2) | `0.2.0-canary.2` |
 | [@paulrobertlloyd/mf2tojf2](https://www.npmjs.com/package/@paulrobertlloyd/mf2tojf2) | `^2.4.0` |
 | [@sinclair/typebox](https://www.npmjs.com/package/@sinclair/typebox) | `^0.34.14` |
 | [sanitize-html](https://www.npmjs.com/package/sanitize-html) | `^2.14.0` |
