@@ -1,5 +1,23 @@
 # @jackdbd/fastify-authorization-endpoint
 
+## 1.3.0-canary.5
+
+### Minor Changes
+
+- f18a27c: Bump plugin versions.
+
+### Patch Changes
+
+- 75a494b: Update README.
+- Updated dependencies [75a494b]
+  - @jackdbd/oauth2-error-responses@0.2.0-canary.3
+  - @jackdbd/schema-validators@0.2.0-canary.6
+  - @jackdbd/canonical-url@0.2.0-canary.3
+  - @jackdbd/fastify-webc@0.2.0-canary.2
+  - @jackdbd/indieauth@0.2.0-canary.3
+  - @jackdbd/oauth2@0.2.0-canary.2
+  - @jackdbd/pkce@0.2.0-canary.2
+
 ## 1.3.0-canary.4
 
 ### Minor Changes

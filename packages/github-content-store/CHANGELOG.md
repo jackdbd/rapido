@@ -1,5 +1,14 @@
 # @jackdbd/github-content-store
 
+## 0.2.0-canary.3
+
+### Patch Changes
+
+- 75a494b: Update README.
+- Updated dependencies [75a494b]
+  - @jackdbd/github-contents-api@0.2.0-canary.4
+  - @jackdbd/micropub@0.2.0-canary.4
+
 ## 0.2.0-canary.2
 
 ### Minor Changes

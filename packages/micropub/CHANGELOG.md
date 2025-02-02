@@ -1,5 +1,13 @@
 # @jackdbd/micropub
 
+## 0.2.0-canary.4
+
+### Patch Changes
+
+- 75a494b: Update README.
+- Updated dependencies [75a494b]
+  - @jackdbd/microformats2@0.2.0-canary.3
+
 ## 0.2.0-canary.3
 
 ### Minor Changes

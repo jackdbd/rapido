@@ -34,9 +34,11 @@
     "@jackdbd/unwrap": "0.1.0"
   },
   "changesets": [
+    "eleven-actors-speak",
     "four-vans-drive",
     "giant-terms-scream",
     "pink-candles-eat",
-    "poor-chicken-jump"
+    "poor-chicken-jump",
+    "weak-timers-work"
   ]
 }

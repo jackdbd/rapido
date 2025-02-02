@@ -1,5 +1,13 @@
 # @jackdbd/relmeauth
 
+## 0.2.0-canary.3
+
+### Patch Changes
+
+- 75a494b: Update README.
+- Updated dependencies [75a494b]
+  - @jackdbd/canonical-url@0.2.0-canary.3
+
 ## 0.2.0-canary.2
 
 ### Minor Changes

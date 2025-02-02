@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.2.0-canary.3
+
+### Patch Changes
+
+- 75a494b: Update README.
+
 ## 0.2.0-canary.2
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @jackdbd/pkce
 
+## 0.2.0-canary.2
+
+### Patch Changes
+
+- 75a494b: Update README.
+
 ## 0.2.0-canary.1
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/micropub",
-  "version": "0.2.0-canary.3",
+  "version": "0.2.0-canary.4",
   "description": "Schemas and functions for implementing [Micropub](https://micropub.spec.indieweb.org/).",
   "author": {
     "name": "Giacomo Debidda",
@@ -77,7 +77,7 @@
     "test:watch": "node --test --watch"
   },
   "dependencies": {
-    "@jackdbd/microformats2": "0.2.0-canary.2",
+    "@jackdbd/microformats2": "0.2.0-canary.3",
     "@paulrobertlloyd/mf2tojf2": "^2.4.0",
     "@sinclair/typebox": "^0.34.14",
     "sanitize-html": "^2.14.0",
