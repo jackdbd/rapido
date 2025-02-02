@@ -13,6 +13,8 @@ import {
   introspection_response_body_success,
 } from "../schemas/index.js";
 import type {
+  AccessTokenImmutableRecord,
+  AccessTokenMutableRecord,
   IntrospectionRequestBody,
   IntrospectPostConfig,
 } from "../schemas/index.js";
@@ -24,7 +26,20 @@ interface RouteGeneric extends RouteGenericInterface {
 /**
  * Introspects a token.
  *
+ * This endpoint returns this information about the token:
+ *
+ * - `active`: Boolean indicator of whether or not the presented token is
+ *   currently active
+ * - `me`: The profile URL of the user corresponding to this token
+ * - `client_id`: The client ID associated with this token
+ * - `scope`: A space-separated list of scopes associated with this token
+ * - `exp`: Integer timestamp, measured in the number of seconds since January 1
+ *   1970 UTC, indicating when this token will expire
+ * - `iat`: Integer timestamp, measured in the number of seconds since January 1
+ *   1970 UTC, indicating when this token was originally issued
+ *
  * @see [OAuth 2.0 Token Introspection (RFC 7662)](https://www.rfc-editor.org/rfc/rfc7662)
+ * @see [Access Token Verification Response - IndieAuth](https://indieauth.spec.indieweb.org/#access-token-verification-response)
  */
 export const defIntrospectPost = (config: IntrospectPostConfig) => {
   const ajv = config.ajv;
@@ -40,7 +55,9 @@ export const defIntrospectPost = (config: IntrospectPostConfig) => {
     issuer,
     jwks_url,
     logPrefix: log_prefix,
-    // max_access_token_age: max_token_age
+    // max_access_token_age: max_token_age,
+    retrieveAccessToken,
+    // retrieveRefreshToken,
   } = config;
 
   const introspectPost: RouteHandler<RouteGeneric> = async (request, reply) => {
@@ -109,6 +126,28 @@ export const defIntrospectPost = (config: IntrospectPostConfig) => {
 
     const { exp, jti } = claims;
 
+    let record:
+      | AccessTokenImmutableRecord
+      | AccessTokenMutableRecord
+      | undefined;
+    try {
+      record = await retrieveAccessToken(jti);
+    } catch (ex: any) {
+      const error_description = `The provided retrieveAccessToken threw an exception: ${ex.message}`;
+      const err = new ServerError({ error_description });
+      return reply
+        .code(err.statusCode)
+        .send(err.payload({ include_error_description }));
+    }
+
+    if (!record) {
+      const error_description = `The provided retrieveAccessToken could not find an access token that has jti=${jti}`;
+      const err = new ServerError({ error_description });
+      return reply
+        .code(err.statusCode)
+        .send(err.payload({ include_error_description }));
+    }
+
     // RFC 7662 says that if the token can expire, the authorization server MUST
     // determine whether or not the token has expired.
     let expired = false;
@@ -136,8 +175,9 @@ export const defIntrospectPost = (config: IntrospectPostConfig) => {
     }
 
     const active = !expired && !revoked ? true : false;
+    const client_id = record.client_id;
 
-    const response_body = { ...claims, active };
+    const response_body = { ...claims, active, client_id };
 
     const { error: conform_error } = conformResult(
       {

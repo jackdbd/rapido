@@ -1,21 +1,20 @@
 import { Static, Type } from "@sinclair/typebox";
 import type { Ajv } from "ajv";
-import { ajv, include_error_description, log_prefix } from "./common.js";
 import {
-  isAccessTokenRevoked,
-  retrieveUserProfile,
-} from "./user-provided-functions.js";
-import type {
-  IsAccessTokenRevoked,
-  RetrieveUserProfile,
-} from "./user-provided-functions.js";
+  ajv,
+  include_error_description,
+  log_prefix,
+  request_context_key,
+} from "./common.js";
+import { retrieveUserProfile } from "./user-provided-functions.js";
+import type { RetrieveUserProfile } from "./user-provided-functions.js";
 
 export const userinfo_get_config = Type.Object(
   {
     ajv,
     includeErrorDescription: include_error_description,
-    isAccessTokenRevoked,
     logPrefix: log_prefix,
+    requestContextKey: Type.Optional(request_context_key),
     retrieveUserProfile,
   },
   {
@@ -26,6 +25,5 @@ export const userinfo_get_config = Type.Object(
 
 export interface UserinfoGetConfig extends Static<typeof userinfo_get_config> {
   ajv: Ajv;
-  isAccessTokenRevoked: IsAccessTokenRevoked;
   retrieveUserProfile: RetrieveUserProfile;
 }

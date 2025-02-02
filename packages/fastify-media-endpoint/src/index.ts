@@ -3,7 +3,7 @@ import fastifyRequestContext from "@fastify/request-context";
 import responseValidation from "@fastify/response-validation";
 import canonicalUrl from "@jackdbd/canonical-url";
 import {
-  decodeAccessToken,
+  defDecodeAccessToken,
   defLogClaims,
   defValidateClaim,
   defValidateNotRevoked,
@@ -121,6 +121,10 @@ const mediaEndpoint: FastifyPluginCallback<Options> = (
     );
   });
 
+  const decodeAccessToken = defDecodeAccessToken({
+    includeErrorDescription: include_error_description,
+  });
+
   const logClaims = defLogClaims({ logPrefix: "[media-endpoint/log-claims] " });
 
   const validateClaimExp = defValidateClaim(
@@ -131,7 +135,6 @@ const mediaEndpoint: FastifyPluginCallback<Options> = (
     },
     { includeErrorDescription: include_error_description }
   );
-  console.log("=== TODO: re-add validateClaimExp ===", validateClaimExp);
 
   const validateClaimMe = defValidateClaim(
     {
@@ -156,7 +159,7 @@ const mediaEndpoint: FastifyPluginCallback<Options> = (
       preHandler: [
         decodeAccessToken,
         logClaims,
-        // validateClaimExp,
+        validateClaimExp,
         validateClaimMe,
         validateScopeMedia,
         validateAccessTokenNotRevoked,

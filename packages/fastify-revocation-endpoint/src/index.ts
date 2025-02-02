@@ -1,11 +1,16 @@
 import {
-  decodeAccessToken,
+  defDecodeAccessToken,
   defValidateClaim,
   defValidateNotRevoked,
 } from "@jackdbd/fastify-hooks";
 import canonicalUrl from "@jackdbd/canonical-url";
 import { error_response } from "@jackdbd/oauth2";
-import { throwWhenNotConform } from "@jackdbd/schema-validators";
+import {
+  InvalidRequestError,
+  ServerError,
+} from "@jackdbd/oauth2-error-responses";
+import { unixTimestampInSeconds } from "@jackdbd/oauth2-tokens";
+import { conformResult } from "@jackdbd/schema-validators";
 import formbody from "@fastify/formbody";
 import responseValidation from "@fastify/response-validation";
 import { Ajv, type Plugin as AjvPlugin } from "ajv";
@@ -59,8 +64,6 @@ const revocationEndpoint: FastifyPluginCallback<Options> = (
 ) => {
   const config = Object.assign({}, defaults, options);
 
-  const { reportAllAjvErrors } = config;
-
   let ajv: Ajv;
   if (config.ajv) {
     ajv = config.ajv;
@@ -68,16 +71,23 @@ const revocationEndpoint: FastifyPluginCallback<Options> = (
     // I have no idea why I have to do this to make TypeScript happy.
     // In JavaScript, Ajv and addFormats can be imported without any of this mess.
     const addFormatsPlugin = addFormats as any as AjvPlugin<string[]>;
-    ajv = addFormatsPlugin(new Ajv({ allErrors: reportAllAjvErrors }), ["uri"]);
+    ajv = addFormatsPlugin(
+      new Ajv({ allErrors: config.reportAllAjvErrors, schemas: [] }),
+      ["uri"]
+    );
   }
 
-  throwWhenNotConform(
+  const { error, value } = conformResult(
     { ajv, schema: options_schema, data: config },
-    { basePath: "introspection-endpoint-options" }
+    { basePath: "revocation-endpoint-options" }
   );
 
+  if (error) {
+    return done(error);
+  }
+
   const {
-    includeErrorDescription,
+    includeErrorDescription: include_error_description,
     isAccessTokenRevoked,
     issuer,
     jwksUrl,
@@ -88,7 +98,7 @@ const revocationEndpoint: FastifyPluginCallback<Options> = (
     retrieveRefreshToken,
     revokeAccessToken,
     revokeRefreshToken,
-  } = config;
+  } = value.validated as Required<Options>;
 
   // === PLUGINS ============================================================ //
   fastify.register(formbody);
@@ -110,17 +120,30 @@ const revocationEndpoint: FastifyPluginCallback<Options> = (
     );
   });
 
+  const decodeAccessToken = defDecodeAccessToken({
+    includeErrorDescription: include_error_description,
+  });
+
+  const validateClaimExp = defValidateClaim(
+    {
+      claim: "exp",
+      op: ">",
+      value: unixTimestampInSeconds,
+    },
+    { includeErrorDescription: include_error_description }
+  );
+
   const validateClaimMe = defValidateClaim(
     {
       claim: "me",
       op: "==",
       value: canonicalUrl(me),
     },
-    { includeErrorDescription }
+    { includeErrorDescription: include_error_description }
   );
 
   const validateAccessTokenNotRevoked = defValidateNotRevoked({
-    includeErrorDescription,
+    includeErrorDescription: include_error_description,
     isAccessTokenRevoked,
   });
 
@@ -130,7 +153,7 @@ const revocationEndpoint: FastifyPluginCallback<Options> = (
     {
       preHandler: [
         decodeAccessToken,
-        // validateClaimExp,
+        validateClaimExp,
         validateClaimMe,
         // validateClaimJti,
         validateAccessTokenNotRevoked,
@@ -146,7 +169,7 @@ const revocationEndpoint: FastifyPluginCallback<Options> = (
     },
     defRevocationPost({
       ajv,
-      includeErrorDescription,
+      includeErrorDescription: include_error_description,
       issuer,
       jwksUrl,
       logPrefix,
@@ -158,6 +181,52 @@ const revocationEndpoint: FastifyPluginCallback<Options> = (
       revokeRefreshToken,
     })
   );
+
+  fastify.setErrorHandler((error, request, reply) => {
+    const code = error.statusCode;
+
+    // Think about including these data error_description:
+    // - some JWT claims (e.g. me, scope)
+    // - jf2 (e.g. action, content, h, url)
+    // const claims = request.requestContext.get("access_token_claims");
+    // const jf2 = request.requestContext.get("jf2");
+    // console.log("=== claims ===", claims);
+    // console.log("=== jf2 ===", jf2);
+
+    if (code && code >= 400 && code < 500) {
+      request.log.warn(
+        `${logPrefix}client error catched by error handler: ${error.message}`
+      );
+    } else {
+      request.log.error(
+        `${logPrefix}server error catched by error handler: ${error.message}`
+      );
+    }
+
+    if (error.validation && error.validationContext) {
+      if (code && code >= 400 && code < 500) {
+        const messages = error.validation.map((ve) => {
+          return `${error.validationContext}${ve.instancePath} ${ve.message}`;
+        });
+        const error_description = messages.join("; ");
+        const err = new InvalidRequestError({ error_description });
+        return reply
+          .code(err.statusCode)
+          .send(err.payload({ include_error_description }));
+      }
+    }
+
+    // If it's not a client error, is it always a generic Internal Server Error?
+    // Probably we can return a HTTP 503 Service Unavailable (maybe use
+    // @fastify/under-pressure).
+    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses
+
+    const error_description = error.message;
+    const err = new ServerError({ error_description });
+    return reply
+      .code(err.statusCode)
+      .send(err.payload({ include_error_description }));
+  });
 
   done();
 };

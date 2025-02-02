@@ -15,3 +15,10 @@ export const report_all_ajv_errors = Type.Boolean({
   title: "report all AJV errors",
   default: DEFAULT.REPORT_ALL_AJV_ERRORS,
 });
+
+export const request_context_key = Type.String({
+  minLength: 1,
+  default: DEFAULT.REQUEST_CONTEXT_KEY,
+  description:
+    "The key under which the access token claims are stored in the request context.",
+});

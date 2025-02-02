@@ -1,4 +1,4 @@
-export { decodeAccessToken } from "./decode-access-token.js";
+export { defDecodeAccessToken } from "./decode-access-token.js";
 
 export {
   defLogClaims,

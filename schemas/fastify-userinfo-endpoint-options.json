@@ -32,30 +32,20 @@
       }
     },
     "logPrefix": {
-      "default": "userinfo-endpoint ",
+      "default": "[userinfo-endpoint] ",
       "type": "string"
-    },
-    "me": {
-      "anyOf": [
-        {
-          "description": "Profile URL (before URL Canonicalization)",
-          "minLength": 1,
-          "title": "me (not canonicalized)",
-          "type": "string"
-        },
-        {
-          "description": "Profile URL (after URL Canonicalization)",
-          "format": "uri",
-          "title": "me (canonicalized)",
-          "type": "string"
-        }
-      ]
     },
     "reportAllAjvErrors": {
       "description": "Whether to report all AJV validation errors.",
       "title": "report all AJV errors",
       "default": false,
       "type": "boolean"
+    },
+    "requestContextKey": {
+      "minLength": 1,
+      "default": "access_token_claims",
+      "description": "The key under which the access token claims are stored in the request context.",
+      "type": "string"
     },
     "retrieveUserProfile": {
       "$id": "retrieve-user-profile",
@@ -209,7 +199,6 @@
   },
   "required": [
     "isAccessTokenRevoked",
-    "me",
     "retrieveUserProfile"
   ]
 }

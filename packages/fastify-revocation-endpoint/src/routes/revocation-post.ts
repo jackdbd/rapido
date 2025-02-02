@@ -79,8 +79,12 @@ interface RouteGeneric extends RouteGenericInterface {
 /**
  * Revokes an access token or a refresh token.
  *
- * The token to be revoked is NOT NECESSARILY the same token found in the
- * Authorization header.
+ * The token to be revoked is **not necessarily** the same token found in the
+ * `Authorization` header.
+ *
+ * **Note**: invalid tokens do not cause an error response since the client
+ * cannot handle such an error in a reasonable way. Moreover, the purpose of the
+ * revocation request, invalidating the particular token, is already achieved.
  *
  * The authorization server first validates the client credentials (in case of a
  * confidential client) and then verifies whether the token was issued to the

@@ -12,8 +12,16 @@ import {
   log_prefix,
   report_all_ajv_errors,
 } from "./common.js";
-import { isAccessTokenRevoked } from "./user-provided-functions.js";
-import type { IsAccessTokenRevoked } from "./user-provided-functions.js";
+import {
+  isAccessTokenRevoked,
+  retrieveAccessToken,
+  retrieveRefreshToken,
+} from "./user-provided-functions.js";
+import type {
+  IsAccessTokenRevoked,
+  RetrieveAccessToken,
+  RetrieveRefreshToken,
+} from "./user-provided-functions.js";
 
 export const options = Type.Object(
   {
@@ -37,6 +45,10 @@ export const options = Type.Object(
     ]),
 
     reportAllAjvErrors: Type.Optional(report_all_ajv_errors),
+
+    retrieveAccessToken,
+
+    retrieveRefreshToken,
   },
   {
     $id: "fastify-introspection-endpoint-options",
@@ -48,4 +60,6 @@ export const options = Type.Object(
 export interface Options extends Static<typeof options> {
   ajv?: Ajv;
   isAccessTokenRevoked: IsAccessTokenRevoked;
+  retrieveAccessToken: RetrieveAccessToken;
+  retrieveRefreshToken: RetrieveRefreshToken;
 }

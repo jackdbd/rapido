@@ -36,21 +36,27 @@ export const accessTokenFromRequest = (
   // (e.g. Set-Cookie). I don't think this is a case I should handle, so I
   // return an HTTP 401 error.
   if (Array.isArray(hval)) {
-    throw new Error(`Request header '${hkey}' is an array.`);
+    return { error: new Error(`Request header '${hkey}' is an array.`) };
   }
 
   const splits = hval.split(" ");
 
   if (splits.length !== 2) {
-    throw new Error(`Request header '${hkey}' has no '${header_key}' value.`);
+    return {
+      error: new Error(
+        `Request header '${hkey}' has no '${header_key}' value.`
+      ),
+    };
   }
 
   const access_token = splits.at(1);
 
   if (!access_token) {
-    throw new Error(
-      `Access token not found in request header '${hkey}' (in '${header_key}').`
-    );
+    return {
+      error: new Error(
+        `Access token not found in request header '${hkey}' (in '${header_key}').`
+      ),
+    };
   }
 
   return { value: access_token };

@@ -22,9 +22,9 @@ npm install @jackdbd/fastify-hooks
 | Package | Version |
 |---|---|
 | [@fastify/request-context](https://www.npmjs.com/package/@fastify/request-context) | `^6.0.2` |
-| [@jackdbd/fastify-utils](https://www.npmjs.com/package/@jackdbd/fastify-utils) | `0.2.0-canary.1` |
-| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `*` |
-| [@jackdbd/oauth2-tokens](https://www.npmjs.com/package/@jackdbd/oauth2-tokens) | `*` |
+| [@jackdbd/fastify-utils](https://www.npmjs.com/package/@jackdbd/fastify-utils) | `*` |
+| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `0.2.0-canary.2` |
+| [@jackdbd/oauth2-tokens](https://www.npmjs.com/package/@jackdbd/oauth2-tokens) | `0.2.0-canary.6` |
 
 > ⚠️ **Peer Dependencies**
 >

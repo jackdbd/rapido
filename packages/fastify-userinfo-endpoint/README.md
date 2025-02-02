@@ -30,9 +30,9 @@ Options for the Fastify userinfo-endpoint plugin
 |**ajv**||Instance of Ajv<br/>|no|
 |**includeErrorDescription**|`boolean`|Whether to include an `error_description` property in all error responses. This is meant to assist the client developer in understanding the error. This is NOT meant to be shown to the end user.<br/>Default: `false`<br/>|no|
 |**isAccessTokenRevoked**|`Function`|Predicate function that returns true if a jti (JSON Web Token ID) is revoked.<br/>|yes|
-|**logPrefix**|`string`|Default: `"userinfo-endpoint "`<br/>|no|
-|**me**|||yes|
+|**logPrefix**|`string`|Default: `"[userinfo-endpoint] "`<br/>|no|
 |**reportAllAjvErrors**<br/>(report all AJV errors)|`boolean`|Whether to report all AJV validation errors.<br/>Default: `false`<br/>|no|
+|**requestContextKey**|`string`|The key under which the access token claims are stored in the request context.<br/>Default: `"access_token_claims"`<br/>Minimal Length: `1`<br/>|no|
 |**retrieveUserProfile**|`Function`|Function that retrieves a user's profile from a storage backend.<br/>|yes|
 
 **Example**
@@ -40,8 +40,9 @@ Options for the Fastify userinfo-endpoint plugin
 ```json
 {
     "includeErrorDescription": false,
-    "logPrefix": "userinfo-endpoint ",
-    "reportAllAjvErrors": false
+    "logPrefix": "[userinfo-endpoint] ",
+    "reportAllAjvErrors": false,
+    "requestContextKey": "access_token_claims"
 }
 ```
 
@@ -50,14 +51,14 @@ Options for the Fastify userinfo-endpoint plugin
 | Package | Version |
 |---|---|
 | [@fastify/response-validation](https://www.npmjs.com/package/@fastify/response-validation) | `^3.0.3` |
-| [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.1.1-canary.0` |
-| [@jackdbd/fastify-hooks](https://www.npmjs.com/package/@jackdbd/fastify-hooks) | `0.2.0-canary.0` |
-| [@jackdbd/fastify-utils](https://www.npmjs.com/package/@jackdbd/fastify-utils) | `0.2.0-canary.1` |
-| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `^0.1.1-canary.0` |
-| [@jackdbd/oauth2](https://www.npmjs.com/package/@jackdbd/oauth2) | `^0.1.0` |
-| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `^0.1.1-canary.0` |
-| [@jackdbd/oauth2-tokens](https://www.npmjs.com/package/@jackdbd/oauth2-tokens) | `^0.1.1-canary.4` |
-| [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `^0.1.1-canary.0` |
+| [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.2.0-canary.2` |
+| [@jackdbd/fastify-hooks](https://www.npmjs.com/package/@jackdbd/fastify-hooks) | `*` |
+| [@jackdbd/fastify-utils](https://www.npmjs.com/package/@jackdbd/fastify-utils) | `*` |
+| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `^0.2.0-canary.2` |
+| [@jackdbd/oauth2](https://www.npmjs.com/package/@jackdbd/oauth2) | `^0.2.0-canary.1` |
+| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `^0.2.0-canary.2` |
+| [@jackdbd/oauth2-tokens](https://www.npmjs.com/package/@jackdbd/oauth2-tokens) | `^0.2.0-canary.6` |
+| [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `^0.2.0-canary.5` |
 | [@sinclair/typebox](https://www.npmjs.com/package/@sinclair/typebox) | `^0.34.14` |
 | [ajv](https://www.npmjs.com/package/ajv) | `^8.17.1` |
 | [ajv-formats](https://www.npmjs.com/package/ajv-formats) | `^3.0.1` |

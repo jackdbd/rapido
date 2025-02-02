@@ -3,7 +3,7 @@ import fastifyRequestContext from "@fastify/request-context";
 import responseValidation from "@fastify/response-validation";
 import canonicalUrl from "@jackdbd/canonical-url";
 import {
-  decodeAccessToken,
+  defDecodeAccessToken,
   defLogClaims,
   defValidateClaim,
   defValidateNotRevoked,
@@ -119,6 +119,10 @@ const syndicateEndpoint: FastifyPluginCallback<Options> = (
     );
   });
 
+  const decodeAccessToken = defDecodeAccessToken({
+    includeErrorDescription: include_error_description,
+  });
+
   const logClaims = defLogClaims({
     logPrefix: "[micropub-endpoint/log-claims] ",
   });
@@ -131,7 +135,6 @@ const syndicateEndpoint: FastifyPluginCallback<Options> = (
     },
     { includeErrorDescription: include_error_description }
   );
-  console.log("=== TODO: re-add validateClaimExp ===", validateClaimExp);
 
   const validateClaimMe = defValidateClaim(
     {
@@ -156,7 +159,7 @@ const syndicateEndpoint: FastifyPluginCallback<Options> = (
       preHandler: [
         decodeAccessToken,
         logClaims,
-        // validateClaimExp,
+        validateClaimExp,
         validateClaimMe,
         validateAccessTokenNotRevoked,
       ],

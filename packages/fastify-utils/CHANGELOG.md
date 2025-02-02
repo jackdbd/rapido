@@ -1,5 +1,11 @@
 # @jackdbd/fastify-utils
 
+## 0.2.0-canary.4
+
+### Minor Changes
+
+- Avoid throwing exception in `accessTokenFromRequest`.
+
 ## 0.2.0-canary.3
 
 ### Minor Changes

@@ -11,12 +11,17 @@ import {
 } from "@repo/stdlib/test-utils";
 import Fastify from "fastify";
 import fastifyRequestContext from "@fastify/request-context";
-import { decodeAccessToken } from "../lib/index.js";
+import { defDecodeAccessToken } from "../lib/index.js";
 
-const ajv = defAjv();
 const issuer = ISSUER;
 const me = ME;
 const scope = SCOPE;
+
+const ajv = defAjv();
+
+const decodeAccessToken = defDecodeAccessToken({
+  includeErrorDescription: true,
+});
 
 describe("decodeAccessToken", () => {
   let fastify;

@@ -1,7 +1,3 @@
-import {
-  me_after_url_canonicalization,
-  me_before_url_canonicalization,
-} from "@jackdbd/indieauth";
 import { Static, Type } from "@sinclair/typebox";
 import type { Ajv } from "ajv";
 import {
@@ -9,6 +5,7 @@ import {
   include_error_description,
   log_prefix,
   report_all_ajv_errors,
+  request_context_key,
 } from "./common.js";
 import {
   isAccessTokenRevoked,
@@ -29,12 +26,9 @@ export const options = Type.Object(
 
     logPrefix: Type.Optional(log_prefix),
 
-    me: Type.Union([
-      me_before_url_canonicalization,
-      me_after_url_canonicalization,
-    ]),
-
     reportAllAjvErrors: Type.Optional(report_all_ajv_errors),
+
+    requestContextKey: Type.Optional(request_context_key),
 
     retrieveUserProfile,
   },

@@ -29,6 +29,32 @@ describe("accessTokenFromRequest", () => {
     });
   });
 
+  it("returns an error when request has no 'authorization' header", async () => {
+    const response = await fastify.inject({ method: "GET", url: "/default" });
+
+    const res = response.json();
+
+    assert.ok(res.error);
+    assert.strictEqual(res.value, undefined);
+  });
+
+  it("returns an error when request has no 'Bearer' key in 'authorization' header", async () => {
+    const access_token = nanoid();
+
+    const response = await fastify.inject({
+      method: "GET",
+      headers: {
+        authorization: `Foo ${access_token}`,
+      },
+      url: "/default",
+    });
+
+    const res = response.json();
+
+    assert.ok(res.error);
+    assert.strictEqual(res.value, undefined);
+  });
+
   it("extracts the access token from the 'authorization' request header, key 'Bearer' (default)", async () => {
     const access_token = nanoid();
 
@@ -42,7 +68,6 @@ describe("accessTokenFromRequest", () => {
 
     const res = response.json();
 
-    assert.strictEqual(response.statusCode, 200);
     assert.strictEqual(res.error, undefined);
     assert.strictEqual(res.value, access_token);
   });
