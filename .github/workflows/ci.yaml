@@ -21,7 +21,7 @@ jobs:
         # 2. Active LTS
         # 3. Current (i.e. the latest Node.js version available)
         # https://nodejs.org/en/about/previous-releases
-        node: [lts/Iron, lts/Jod]
+        node: [lts/Jod]
         # node: [lts/Iron, lts/Jod, current]
         # Test all packages with these Fastify versions:
         # 1. Latest
