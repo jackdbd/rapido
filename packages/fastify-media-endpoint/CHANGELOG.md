@@ -1,5 +1,16 @@
 # @jackdbd/fastify-media-endpoint
 
+## 0.2.0-canary.6
+
+### Minor Changes
+
+- e9e5603: Declare `@fastify/request-context` as peer dependency in `@jackdbd/fastify-hooks`.
+
+### Patch Changes
+
+- Updated dependencies [e9e5603]
+  - @jackdbd/fastify-hooks@0.2.0-canary.6
+
 ## 0.2.0-canary.5
 
 ### Minor Changes

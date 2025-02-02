@@ -1,5 +1,16 @@
 # Change Log
 
+## 1.3.0-canary.9
+
+### Minor Changes
+
+- e9e5603: Declare `@fastify/request-context` as peer dependency in `@jackdbd/fastify-hooks`.
+
+### Patch Changes
+
+- Updated dependencies [e9e5603]
+  - @jackdbd/fastify-hooks@0.2.0-canary.6
+
 ## 1.3.0-canary.8
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @jackdbd/fastify-hooks
 
+## 0.2.0-canary.6
+
+### Minor Changes
+
+- e9e5603: Declare `@fastify/request-context` as peer dependency in `@jackdbd/fastify-hooks`.
+
 ## 0.2.0-canary.5
 
 ### Patch Changes
