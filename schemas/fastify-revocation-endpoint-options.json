@@ -96,7 +96,7 @@
       ]
     },
     "logPrefix": {
-      "default": "revocation-endpoint ",
+      "default": "[revocation-endpoint] ",
       "type": "string"
     },
     "maxAccessTokenAge": {

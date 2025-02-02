@@ -21,17 +21,18 @@ npm install @jackdbd/fastify-hooks
 
 | Package | Version |
 |---|---|
-| [@fastify/request-context](https://www.npmjs.com/package/@fastify/request-context) | `^6.0.2` |
-| [@jackdbd/fastify-utils](https://www.npmjs.com/package/@jackdbd/fastify-utils) | `0.2.0-canary.4` |
-| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `0.2.0-canary.2` |
-| [@jackdbd/oauth2-tokens](https://www.npmjs.com/package/@jackdbd/oauth2-tokens) | `0.2.0-canary.6` |
+| [@jackdbd/fastify-utils](https://www.npmjs.com/package/@jackdbd/fastify-utils) | `0.2.0-canary.5` |
+| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `0.2.0-canary.3` |
+| [@jackdbd/oauth2-tokens](https://www.npmjs.com/package/@jackdbd/oauth2-tokens) | `0.2.0-canary.7` |
+| [@sinclair/typebox](https://www.npmjs.com/package/@sinclair/typebox) | `^0.34.14` |
 
 > ⚠️ **Peer Dependencies**
 >
-> This package defines 1 peer dependency.
+> This package defines 2 peer dependencies.
 
 | Peer | Version range |
 |---|---|
+| `@fastify/request-context` | `>=6.0.0` |
 | `fastify` | `>=5.0.0` |
 
 ## License
