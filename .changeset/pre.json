@@ -33,5 +33,7 @@
     "@repo/typescript-config": "0.1.1",
     "@jackdbd/unwrap": "0.2.0-canary.2"
   },
-  "changesets": []
+  "changesets": [
+    "olive-birds-check"
+  ]
 }

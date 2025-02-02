@@ -1,5 +1,11 @@
 # @jackdbd/fastify-syndicate-endpoint
 
+## 0.2.0-canary.5
+
+### Minor Changes
+
+- 4b4808e: Avoid registering @fastify/request-context.
+
 ## 0.2.0-canary.4
 
 ### Minor Changes
