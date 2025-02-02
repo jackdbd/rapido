@@ -19,7 +19,7 @@ interface RouteGeneric extends RouteGenericInterface {
 }
 
 /**
- * Returns a route handler that renders a consent screen to the end user.
+ * Renders a consent screen to the end user.
  *
  * The consent screen provides the user with sufficient information to make an
  * informed decision about what they are sharing with the client application and

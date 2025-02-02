@@ -10,12 +10,12 @@ import responseValidation from "@fastify/response-validation";
 import webc from "@jackdbd/fastify-webc";
 import { code_challenge, code_challenge_method } from "@jackdbd/pkce";
 import { Type } from "@sinclair/typebox";
-import { Ajv } from "ajv";
+import { Ajv, type Plugin as AjvPlugin } from "ajv";
 import addFormats from "ajv-formats";
 import type { FastifyPluginCallback } from "fastify";
 import fp from "fastify-plugin";
 import { error_response } from "@jackdbd/oauth2";
-import { throwWhenNotConform } from "@jackdbd/schema-validators";
+import { conformResult } from "@jackdbd/schema-validators";
 import { DEFAULT, NAME } from "./constants.js";
 import { defAuthorizePage } from "./routes/authorize-page.js";
 import { defAuthorizePost } from "./routes/authorize-post.js";
@@ -95,24 +95,7 @@ const authorizationEndpoint: FastifyPluginCallback<Options> = (
   options,
   done
 ) => {
-  const config = applyToDefaults(
-    defaults,
-    options as Partial<Options>
-  ) as Required<Options>;
-
-  const {
-    authorizationCodeExpiration: authorization_code_expiration,
-    components,
-    includeErrorDescription: include_error_description,
-    issuer,
-    logPrefix: log_prefix,
-    onAuthorizationCodeVerified,
-    onUserApprovedRequest,
-    redirectPathOnSubmit: redirect_path_on_submit,
-    reportAllAjvErrors: report_all_ajv_errors,
-    retrieveAuthorizationCode,
-    templates,
-  } = config;
+  const config = applyToDefaults(defaults, options as Partial<Options>);
 
   // Recommended setup for Ajv when using TypeBox
   // https://github.com/sinclairzx81/typebox?tab=readme-ov-file#ajv
@@ -120,31 +103,52 @@ const authorizationEndpoint: FastifyPluginCallback<Options> = (
   if (config.ajv) {
     ajv = config.ajv as Ajv;
   } else {
-    ajv = (addFormats as any)(new Ajv({ allErrors: report_all_ajv_errors }), [
-      "email",
-      "uri",
-    ]);
+    // I have no idea why I have to do this to make TypeScript happy.
+    // In JavaScript, Ajv and addFormats can be imported without any of this mess.
+    const addFormatsPlugin = addFormats as any as AjvPlugin<string[]>;
+    ajv = addFormatsPlugin(
+      new Ajv({ allErrors: config.reportAllAjvErrors, schemas: [] }),
+      ["email", "uri"]
+    );
   }
 
-  throwWhenNotConform(
+  const { error, value } = conformResult(
     { ajv, schema: options_schema, data: config },
-    { basePath: "authorization-endpoint options" }
+    { basePath: "authorization-endpoint-options" }
   );
+
+  if (error) {
+    return done(error);
+  }
+
+  const {
+    authorizationCodeExpiration: authorization_code_expiration,
+    components,
+    includeErrorDescription: include_error_description,
+    issuer,
+    logPrefix,
+    onAuthorizationCodeVerified,
+    onUserApprovedRequest,
+    redirectPathOnSubmit: redirect_path_on_submit,
+    retrieveAuthorizationCode,
+    templates,
+  } = value.validated as Required<Options>;
 
   fastify.addSchema(code_challenge);
   fastify.addSchema(code_challenge_method);
 
   // === PLUGINS ============================================================ //
-  // Parse application/x-www-form-urlencoded requests
   fastify.register(formbody);
-  fastify.log.debug(`${log_prefix}registered plugin: formbody`);
+  fastify.log.debug(
+    `${logPrefix}registered plugin: formbody (for parsing application/x-www-form-urlencoded)`
+  );
 
   fastify.register(webc, { components, templates });
-  fastify.log.debug(`${log_prefix}registered plugin: fastify-webc`);
+  fastify.log.debug(`${logPrefix}registered plugin: fastify-webc`);
 
   if (process.env.NODE_ENV === "development") {
     fastify.register(responseValidation);
-    fastify.log.debug(`${log_prefix}registered plugin: response-validation`);
+    fastify.log.debug(`${logPrefix}registered plugin: response-validation`);
   }
 
   // === DECORATORS ========================================================= //
@@ -152,32 +156,11 @@ const authorizationEndpoint: FastifyPluginCallback<Options> = (
   // === HOOKS ============================================================== //
   fastify.addHook("onRoute", (routeOptions) => {
     fastify.log.debug(
-      `${log_prefix}registered route ${routeOptions.method} ${routeOptions.url}`
+      `${logPrefix}registered route ${routeOptions.method} ${routeOptions.url}`
     );
   });
 
   // === ROUTES ============================================================= //
-  // fastify.get("/authorize", (_request, reply) => {
-  //   const data = {
-  //     authorization_code_expiration,
-  //     client_id: "https://micropub.fly.dev/id",
-  //     client_name: "Pulp",
-  //     client_uri: "https://micropub.fly.dev/",
-  //     code_challenge: "123456789012345678901234567890123456789012345",
-  //     code_challenge_method: "plain",
-  //     description: "Authorization page with user consent screen.",
-  //     logo_uri: "https://example.com/logo.png",
-  //     me: "https://www.giacomodebidda.com/",
-  //     redirect_path_on_submit,
-  //     redirect_uri: "http://localhost:3001/auth/callback",
-  //     redirect_uri_on_deny: "http://localhost:3001/",
-  //     scopes: ["create", "update"],
-  //     state: "some-state",
-  //     title: "Authorize",
-  //   };
-  //   return reply.render("authorize.webc", data);
-  // });
-
   fastify.get(
     "/auth",
     {
@@ -192,7 +175,7 @@ const authorizationEndpoint: FastifyPluginCallback<Options> = (
     defAuthorizePage({
       authorization_code_expiration,
       include_error_description,
-      log_prefix,
+      log_prefix: logPrefix,
       redirect_path_on_submit,
     })
   );
@@ -214,7 +197,7 @@ const authorizationEndpoint: FastifyPluginCallback<Options> = (
     },
     defAuthorizePost({
       include_error_description,
-      log_prefix,
+      log_prefix: logPrefix,
       onAuthorizationCodeVerified,
       retrieveAuthorizationCode,
     })
@@ -242,13 +225,32 @@ const authorizationEndpoint: FastifyPluginCallback<Options> = (
       authorization_code_expiration,
       include_error_description,
       issuer,
-      log_prefix,
+      log_prefix: logPrefix,
       onUserApprovedRequest,
     })
   );
 
-  fastify.setErrorHandler((error, _request, reply) => {
+  fastify.setErrorHandler((error, request, reply) => {
     const code = error.statusCode;
+
+    // Think about including these data error_description:
+    // - some JWT claims (e.g. me, scope)
+    // - jf2 (e.g. action, content, h, url)
+    // const claims = request.requestContext.get("access_token_claims");
+    // const jf2 = request.requestContext.get("jf2");
+    // console.log("=== claims ===", claims);
+    // console.log("=== jf2 ===", jf2);
+
+    if (code && code >= 400 && code < 500) {
+      request.log.warn(
+        `${logPrefix}client error catched by error handler: ${error.message}`
+      );
+    } else {
+      request.log.error(
+        `${logPrefix}server error catched by error handler: ${error.message}`
+      );
+    }
+
     if (error.validation && error.validationContext) {
       if (code && code >= 400 && code < 500) {
         const messages = error.validation.map((ve) => {
@@ -261,6 +263,11 @@ const authorizationEndpoint: FastifyPluginCallback<Options> = (
           .send(err.payload({ include_error_description }));
       }
     }
+
+    // If it's not a client error, is it always a generic Internal Server Error?
+    // Probably we can return a HTTP 503 Service Unavailable (maybe use
+    // @fastify/under-pressure).
+    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses
 
     const error_description = error.message;
     const err = new ServerError({ error_description });

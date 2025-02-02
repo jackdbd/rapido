@@ -26,7 +26,10 @@ export interface Config {
 }
 
 /**
- * Verifies an authorization code and marks it as used.
+ * Verifies that an authorization code is valid, has not yet been used, and that
+ * it was issued for the matching client_id and redirect_uri, and checks that
+ * the provided code_verifier hashes to the same value as given in the
+ * code_challenge in the original authorization request.
  *
  * ### [Profile URL requests](https://indieauth.spec.indieweb.org/#request)
  *
@@ -48,12 +51,12 @@ export interface Config {
  *   following property: email.
  *
  * @see [Redeeming the Authorization Code - IndieAuth](https://indieauth.spec.indieweb.org/#redeeming-the-authorization-code)
- * @see [Verifying the authorization code - indieweb.org](https://indieweb.org/obtaining-an-access-token#Verifying_the_authorization_code)
+ * @see [Verifying the Authorization Code - indieweb.org](https://indieweb.org/obtaining-an-access-token#Verifying_the_authorization_code)
  */
 export const defAuthorizePost = (config: Config) => {
   const {
     include_error_description,
-    log_prefix: prefix,
+    log_prefix,
     onAuthorizationCodeVerified,
     retrieveAuthorizationCode,
   } = config;
@@ -63,7 +66,7 @@ export const defAuthorizePost = (config: Config) => {
       request.body;
 
     request.log.debug(
-      `${prefix}verifying that ${code} is among stored authorization codes`
+      `${log_prefix}verifying that ${code} is among stored authorization codes`
     );
 
     let record:
@@ -77,7 +80,7 @@ export const defAuthorizePost = (config: Config) => {
       if (ex && ex.message) {
         error_description = `${error_description} Here is the original error message: ${ex.message}`;
       }
-      request.log.error(`${prefix}${error_description}`);
+      request.log.error(`${log_prefix}${error_description}`);
       const error_uri = undefined;
       const err = new ServerError({ error_description, error_uri });
       // const err = new InvalidGrantError({ error_description, error_uri })
@@ -88,21 +91,12 @@ export const defAuthorizePost = (config: Config) => {
 
     const { exp, me, scope, used } = record;
 
-    request.log.debug(`${prefix}verifying that code ${code} has not been used`);
+    request.log.debug(
+      `${log_prefix}verifying that code ${code} has not been used`
+    );
     if (used) {
       const error_description = `Authorization code ${code} has already been used.`;
-      request.log.warn(`${prefix}${error_description}`);
-      const error_uri = undefined;
-      const err = new InvalidGrantError({ error_description, error_uri });
-      return reply
-        .code(err.statusCode)
-        .send(err.payload({ include_error_description }));
-    }
-
-    request.log.debug(`${prefix}verifying that code ${code} is not expired`);
-    if (isExpired(exp as number)) {
-      const error_description = `Authorization code ${code} is expired.`;
-      request.log.warn(`${prefix}${error_description}`);
+      request.log.warn(`${log_prefix}${error_description}`);
       const error_uri = undefined;
       const err = new InvalidGrantError({ error_description, error_uri });
       return reply
@@ -111,13 +105,26 @@ export const defAuthorizePost = (config: Config) => {
     }
 
     request.log.debug(
-      `${prefix}verifying that code ${code} was issued for client_id ${client_id}`
+      `${log_prefix}verifying that code ${code} is not expired`
+    );
+    if (isExpired(exp as number)) {
+      const error_description = `Authorization code ${code} is expired.`;
+      request.log.warn(`${log_prefix}${error_description}`);
+      const error_uri = undefined;
+      const err = new InvalidGrantError({ error_description, error_uri });
+      return reply
+        .code(err.statusCode)
+        .send(err.payload({ include_error_description }));
+    }
+
+    request.log.debug(
+      `${log_prefix}verifying that code ${code} was issued for client_id ${client_id}`
     );
     if (client_id !== record.client_id) {
       const error_description = `Authorization code ${code} was issued for client_id ${
         record.client_id as string
       }, not ${client_id}.`;
-      request.log.warn(`${prefix}${error_description}`);
+      request.log.warn(`${log_prefix}${error_description}`);
       const error_uri = undefined;
       const err = new InvalidGrantError({ error_description, error_uri });
       return reply
@@ -126,7 +133,7 @@ export const defAuthorizePost = (config: Config) => {
     }
 
     request.log.debug(
-      `${prefix}verifying that code ${code} was issued for redirect_uri ${redirect_uri}`
+      `${log_prefix}verifying that code ${code} was issued for redirect_uri ${redirect_uri}`
     );
     if (redirect_uri !== record.redirect_uri) {
       const error_description = `Authorization code ${code} was issued for redirect_uri ${
@@ -140,7 +147,7 @@ export const defAuthorizePost = (config: Config) => {
     }
 
     request.log.debug(
-      `${prefix}verifying that code_verifier from request body hashes to the same value as given in the code_challenge in the stored record about the original authorization request.`
+      `${log_prefix}verifying that code_verifier from request body hashes to the same value as given in the code_challenge in the stored record about the original authorization request.`
     );
 
     const code_challenge = codeChallenge({
@@ -159,7 +166,7 @@ export const defAuthorizePost = (config: Config) => {
         .send(err.payload({ include_error_description }));
     }
 
-    request.log.debug(`${prefix}verified authorization code ${code}`);
+    request.log.debug(`${log_prefix}verified authorization code ${code}`);
     try {
       await onAuthorizationCodeVerified(code);
     } catch (ex: any) {
@@ -167,7 +174,7 @@ export const defAuthorizePost = (config: Config) => {
       if (ex && ex.message) {
         error_description = `${error_description} Here is the original error message: ${ex.message}`;
       }
-      request.log.error(`${prefix}${error_description}`);
+      request.log.error(`${log_prefix}${error_description}`);
       const error_uri = undefined;
       const err = new ServerError({ error_description, error_uri });
       return reply

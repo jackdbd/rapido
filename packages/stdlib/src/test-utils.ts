@@ -46,7 +46,8 @@ export const defAjv = (options?: Options) => {
 export const ACCESS_TOKEN_EXPIRATION_IN_SECONDS = 10;
 export const ACCESS_TOKEN_EXPIRATION = `${ACCESS_TOKEN_EXPIRATION_IN_SECONDS} seconds`;
 
-export const CLIENT_ID = "https://client-application.com/id";
+export const CLIENT_ID_INDIEBOOKCLUB = "https://indiebookclub.biz/id";
+export const CLIENT_ID_NONEXISTENT = "https://client-application.com/id";
 
 export const ISSUER = "https://authorization-server.com/";
 
@@ -76,7 +77,10 @@ export const PROFILE_NAME = "John Doe";
 export const PROFILE_URL = "https://john-doe.com/";
 export const PROFILE_PHOTO = "https://john-doe.com/photo.jpeg";
 
-export const REDIRECT_URI = "https://client-application.com/auth/callback";
+export const REDIRECT_URI_INDIEBOOKCLUB =
+  "https://indiebookclub.biz/auth/callback";
+export const REDIRECT_URI_NONEXISTENT =
+  "https://client-application.com/auth/callback";
 
 export const REFRESH_TOKEN_EXPIRATION_IN_SECONDS = 30;
 export const REFRESH_TOKEN_EXPIRATION = `${REFRESH_TOKEN_EXPIRATION_IN_SECONDS} seconds`;
