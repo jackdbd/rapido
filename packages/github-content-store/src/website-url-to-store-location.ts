@@ -1,13 +1,22 @@
 import type { Publication } from "@jackdbd/micropub";
-import type { Log } from "./log.js";
+import { defaultLog, type Log } from "./log.js";
 
-interface Config {
-  log: Log;
+interface Options {
+  log?: Log;
   publication: Publication;
 }
 
-export const defWebsiteUrlToStoreLocation = (config: Config) => {
+const defaults: Partial<Options> = {
+  log: defaultLog,
+};
+
+export const defWebsiteUrlToStoreLocation = (options?: Options) => {
+  const config = Object.assign({}, defaults, options) as Required<Options>;
   const { log, publication } = config;
+
+  if (!publication) {
+    throw new Error("publication is required");
+  }
 
   // E.g. A note published on my website: https://www.giacomodebidda.com/notes/test-note/
 
