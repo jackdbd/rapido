@@ -96,7 +96,7 @@
       ]
     },
     "logPrefix": {
-      "default": "introspection-endpoint ",
+      "default": "[introspection-endpoint] ",
       "type": "string"
     },
     "me": {

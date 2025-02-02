@@ -33,7 +33,7 @@ Options for the Fastify revocation-endpoint plugin
 |**isAccessTokenRevoked**|`Function`|Predicate function that returns true if a jti (JSON Web Token ID) is revoked.<br/>|yes|
 |**issuer**|`string`|The authorization server's issuer identifier. It's a URL that uses the "https" scheme and has no query or fragment components. It MUST also be a prefix of the indieauth-metadata URL.<br/>Format: `"uri"`<br/>|yes|
 |[**jwksUrl**](#jwksurl)<br/>(JWKS public URL)|`object`|URL where the public JSON Web Key Set is hosted.<br/>|yes|
-|**logPrefix**|`string`|Default: `"revocation-endpoint "`<br/>|no|
+|**logPrefix**|`string`|Default: `"[revocation-endpoint] "`<br/>|no|
 |**maxAccessTokenAge**|`string`|Minimal Length: `1`<br/>|no|
 |**me**|||yes|
 |**reportAllAjvErrors**<br/>(report all AJV errors)|`boolean`|Whether to report all AJV validation errors.<br/>Default: `false`<br/>|no|
@@ -48,7 +48,7 @@ Options for the Fastify revocation-endpoint plugin
 {
     "includeErrorDescription": false,
     "jwksUrl": {},
-    "logPrefix": "revocation-endpoint ",
+    "logPrefix": "[revocation-endpoint] ",
     "reportAllAjvErrors": false
 }
 ```
@@ -84,13 +84,13 @@ URL where the public JSON Web Key Set is hosted.
 |---|---|
 | [@fastify/formbody](https://www.npmjs.com/package/@fastify/formbody) | `^8.0.2` |
 | [@fastify/response-validation](https://www.npmjs.com/package/@fastify/response-validation) | `^3.0.3` |
-| [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.2.0-canary.2` |
-| [@jackdbd/fastify-hooks](https://www.npmjs.com/package/@jackdbd/fastify-hooks) | `canary` |
-| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `^0.2.0-canary.2` |
-| [@jackdbd/oauth2](https://www.npmjs.com/package/@jackdbd/oauth2) | `^0.2.0-canary.1` |
-| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `^0.2.0-canary.2` |
-| [@jackdbd/oauth2-tokens](https://www.npmjs.com/package/@jackdbd/oauth2-tokens) | `^0.2.0-canary.6` |
-| [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `^0.2.0-canary.5` |
+| [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.2.0-canary.3` |
+| [@jackdbd/fastify-hooks](https://www.npmjs.com/package/@jackdbd/fastify-hooks) | `0.2.0-canary.5` |
+| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `^0.2.0-canary.3` |
+| [@jackdbd/oauth2](https://www.npmjs.com/package/@jackdbd/oauth2) | `^0.2.0-canary.2` |
+| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `^0.2.0-canary.3` |
+| [@jackdbd/oauth2-tokens](https://www.npmjs.com/package/@jackdbd/oauth2-tokens) | `^0.2.0-canary.7` |
+| [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `^0.2.0-canary.6` |
 | [@sinclair/typebox](https://www.npmjs.com/package/@sinclair/typebox) | `^0.34.14` |
 | [ajv](https://www.npmjs.com/package/ajv) | `^8.17.1` |
 | [ajv-formats](https://www.npmjs.com/package/ajv-formats) | `^3.0.1` |
@@ -98,10 +98,11 @@ URL where the public JSON Web Key Set is hosted.
 
 > ⚠️ **Peer Dependencies**
 >
-> This package defines 1 peer dependency.
+> This package defines 2 peer dependencies.
 
 | Peer | Version range |
 |---|---|
+| `@fastify/request-context` | `>=6.0.0` |
 | `fastify` | `>=5.0.0` |
 
 ## References

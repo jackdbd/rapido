@@ -3,6 +3,7 @@ import { accessTokenFromRequest } from "@jackdbd/fastify-utils";
 import {
   InvalidTokenError,
   UnauthorizedError,
+  ServerError,
 } from "@jackdbd/oauth2-error-responses";
 import { safeDecode, type AccessTokenClaims } from "@jackdbd/oauth2-tokens";
 import type { preHandlerAsyncHookHandler } from "fastify";
@@ -40,7 +41,9 @@ export const defDecodeAccessToken = (options?: Options) => {
     const { error, value } = accessTokenFromRequest(request);
 
     if (error) {
-      const err = new UnauthorizedError({ error_description: error.message });
+      const error_description = error.message;
+      const err = new UnauthorizedError({ error_description });
+      request.log.warn(`${logPrefix}${error_description}`);
       return reply
         .code(err.statusCode)
         .send(err.payload({ include_error_description }));
@@ -50,9 +53,19 @@ export const defDecodeAccessToken = (options?: Options) => {
       await safeDecode<AccessTokenClaims>(value);
 
     if (decode_error) {
-      const err = new InvalidTokenError({
-        error_description: decode_error.message,
-      });
+      const error_description = decode_error.message;
+      const err = new InvalidTokenError({ error_description });
+      request.log.warn(`${logPrefix}${error_description}`);
+      return reply
+        .code(err.statusCode)
+        .send(err.payload({ include_error_description }));
+    }
+
+    if (!request.requestContext) {
+      const error_description =
+        "Request-scoped storage is not available. Did you forget to register the @fastify/request-context plugin?";
+      const err = new ServerError({ error_description });
+      request.log.error(`${logPrefix}${error_description}`);
       return reply
         .code(err.statusCode)
         .send(err.payload({ include_error_description }));

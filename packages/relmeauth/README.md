@@ -21,7 +21,7 @@ npm install @jackdbd/relmeauth
 
 | Package | Version |
 |---|---|
-| [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.2.0-canary.2` |
+| [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.2.0-canary.3` |
 | [posthtml-parser](https://www.npmjs.com/package/posthtml-parser) | `^0.12.1` |
 
 ## License
