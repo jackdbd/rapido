@@ -1,5 +1,11 @@
 # @jackdbd/fastify-micropub-endpoint
 
+## 0.2.0-canary.9
+
+### Minor Changes
+
+- 4b4808e: Avoid registering @fastify/request-context.
+
 ## 0.2.0-canary.8
 
 ### Minor Changes
