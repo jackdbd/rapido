@@ -1,5 +1,11 @@
 # @jackdbd/fastify-token-endpoint
 
+## 1.3.0-canary.8
+
+### Minor Changes
+
+- e9e5603: Declare `@fastify/request-context` as peer dependency in `@jackdbd/fastify-hooks`.
+
 ## 1.3.0-canary.7
 
 ### Minor Changes

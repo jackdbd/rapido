@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/fastify-hooks",
-  "version": "0.2.0-canary.5",
+  "version": "0.2.0-canary.6",
   "description": "Miscellaneous hooks for Fastify servers.",
   "author": {
     "name": "Giacomo Debidda",
