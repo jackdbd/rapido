@@ -1,5 +1,4 @@
 import multipart from "@fastify/multipart";
-import fastifyRequestContext from "@fastify/request-context";
 import responseValidation from "@fastify/response-validation";
 import canonicalUrl from "@jackdbd/canonical-url";
 import {
@@ -14,10 +13,7 @@ import {
   InvalidRequestError,
   ServerError,
 } from "@jackdbd/oauth2-error-responses";
-import {
-  unixTimestampInSeconds,
-  type AccessTokenClaims,
-} from "@jackdbd/oauth2-tokens";
+import { unixTimestampInSeconds } from "@jackdbd/oauth2-tokens";
 import { conformResult } from "@jackdbd/schema-validators";
 import { Ajv, type Plugin as AjvPlugin } from "ajv";
 import addFormats from "ajv-formats";
@@ -40,13 +36,6 @@ export type {
   Options as PluginOptions,
   UploadMedia,
 } from "./schemas/index.js";
-
-declare module "@fastify/request-context" {
-  interface RequestContextData {
-    access_token_claims?: AccessTokenClaims;
-    // jf2?: Jf2;
-  }
-}
 
 const defaults: Partial<Options> = {
   includeErrorDescription: DEFAULT.INCLUDE_ERROR_DESCRIPTION,
@@ -103,9 +92,6 @@ const mediaEndpoint: FastifyPluginCallback<Options> = (
   fastify.log.debug(
     `${logPrefix}registered plugin: @fastify/multipart (for parsing multipart/form-data)`
   );
-
-  fastify.register(fastifyRequestContext);
-  fastify.log.debug(`${logPrefix}registered plugin: @fastify/request-context`);
 
   if (process.env.NODE_ENV === "development") {
     fastify.register(responseValidation);

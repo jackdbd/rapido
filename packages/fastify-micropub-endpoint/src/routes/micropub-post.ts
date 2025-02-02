@@ -1,3 +1,4 @@
+import { requestContext } from "@fastify/request-context";
 import { InvalidRequestError } from "@jackdbd/oauth2-error-responses";
 import { rfc3339 } from "@jackdbd/oauth2-tokens";
 import type { Jf2 } from "@paulrobertlloyd/mf2tojf2";
@@ -11,6 +12,12 @@ import type {
   UpdatePatch,
 } from "../schemas/index.js";
 import { defMultipartRequestBody } from "./micropub-post-multipart.js";
+
+declare module "@fastify/request-context" {
+  interface RequestContextData {
+    jf2?: Jf2;
+  }
+}
 
 interface PostRouteGeneric extends RouteGenericInterface {
   Body: PostRequestBody;
@@ -138,7 +145,14 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
 
     // We store the jf2 object in the request context, so if there is a server
     // error we can access it in the error handler.
-    request.requestContext.set("jf2", jf2);
+    if (requestContext) {
+      requestContext.set("jf2", jf2);
+      request.log.debug(`${logPrefix}set jf2 (normalized) in requestContext`);
+    } else {
+      request.log.warn(
+        `${logPrefix}cannot set jf2 in requestContext (requestContext is not available)`
+      );
+    }
 
     // The server MUST respond to successful delete and undelete requests with
     // HTTP 200, 201 or 204. If the undelete operation caused the URL of the
