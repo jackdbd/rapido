@@ -1,6 +1,5 @@
 import formbody from "@fastify/formbody";
 import multipart from "@fastify/multipart";
-import fastifyRequestContext from "@fastify/request-context";
 import responseValidation from "@fastify/response-validation";
 import canonicalUrl from "@jackdbd/canonical-url";
 import {
@@ -15,12 +14,8 @@ import {
   InvalidRequestError,
   ServerError,
 } from "@jackdbd/oauth2-error-responses";
-import {
-  unixTimestampInSeconds,
-  type AccessTokenClaims,
-} from "@jackdbd/oauth2-tokens";
+import { unixTimestampInSeconds } from "@jackdbd/oauth2-tokens";
 import { conformResult } from "@jackdbd/schema-validators";
-import type { Jf2 } from "@paulrobertlloyd/mf2tojf2";
 import { Ajv, type Plugin as AjvPlugin } from "ajv";
 import addFormats from "ajv-formats";
 import type { FastifyPluginCallback } from "fastify";
@@ -59,13 +54,6 @@ export type {
   Update,
   UpdatePatch,
 } from "./schemas/index.js";
-
-declare module "@fastify/request-context" {
-  interface RequestContextData {
-    access_token_claims?: AccessTokenClaims;
-    jf2?: Jf2;
-  }
-}
 
 const defaults = {
   includeErrorDescription: DEFAULT.INCLUDE_ERROR_DESCRIPTION,
@@ -156,9 +144,6 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
   fastify.log.debug(
     `${logPrefix}registered plugin: @fastify/multipart (for parsing multipart/form-data)`
   );
-
-  fastify.register(fastifyRequestContext);
-  fastify.log.debug(`${logPrefix}registered plugin: @fastify/request-context`);
 
   if (process.env.NODE_ENV === "development") {
     fastify.register(responseValidation);
