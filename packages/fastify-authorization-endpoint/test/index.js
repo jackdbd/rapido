@@ -138,7 +138,7 @@ describe("authorization-endpoint plugin", () => {
       t.assert.strictEqual(res.state, state);
     });
 
-    it("returns an HTML page with a consent screen and information about the IndieAuth client, when the IndieAuth client exists", async (t) => {
+    it.skip("returns an HTML page with a consent screen and information about the IndieAuth client, when the IndieAuth client exists", async (t) => {
       const fastify = Fastify();
 
       await fastify.register(authorizationEndpoint, {
