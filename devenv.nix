@@ -50,6 +50,8 @@ in {
     entr # run arbitrary commands when files change
     git
     nodejs
+    rsync
+    sd # sed replacement
   ];
 
   pre-commit.hooks = {
@@ -63,10 +65,9 @@ in {
   scripts = {
     build.exec = ''
       echo "build package $1"
-      npm run build -w @repo/stdlib -w @repo/scripts -w @jackdbd/$1
-      # npx turbo build -F @repo/stdlib -F @repo/scripts -F ./packages/$1
-      npm run publint -w @jackdbd/$1
-      npm run size -w @jackdbd/$1
+      npm run build -w @repo/stdlib -w @repo/scripts -w ./packages/$1
+      npm run publint -w ./packages/$1 --if-present
+      npm run size -w ./packages/$1 --if-present
     '';
     "build:ts".exec = ''
       npm run build:ts

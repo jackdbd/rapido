@@ -52,5 +52,10 @@
       "env": ["JWKS"],
       "persistent": true
     }
+    //  "vendor": {
+    //   "cache": false,
+    //   "dependsOn": ["^vendor"],
+    //   "inputs": ["$TURBO_DEFAULT$", ".env*"]
+    // }
   }
 }

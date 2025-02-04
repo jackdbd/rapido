@@ -354,7 +354,7 @@ const run = async () => {
             entries.length === 1 ? `peer dependency` : `peer dependencies`
 
           const rows = entries.map(([name, version]) => {
-            const s = (version as any).replaceAll('||', 'or')
+            const s = (version as string).replaceAll('||', 'or')
             return `| \`${name}\` | \`${s}\` |`
           })
 
@@ -378,7 +378,16 @@ const run = async () => {
         } else {
           return ''
         }
-      }
+      },
+
+      'pkg.private': pkg.private
+        ? callout({
+            // emoji: ':warning:',
+            emoji: '⚠️',
+            title: `Internal package`,
+            message: `This is an ${link('internal package', 'https://turbo.build/repo/docs/core-concepts/internal-packages')}. It's **private** and not meant to be published to npm.js.`
+          })
+        : ''
     },
 
     post: [toc(), compactEmptyLines]
