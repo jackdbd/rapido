@@ -39,6 +39,7 @@
       ]
     }
   },
+  "sideEffects": false,
   "files": [
     "CHANGELOG.md",
     "LICENSE",
