@@ -3,10 +3,8 @@ import Fastify from 'fastify'
 import { nanoid } from 'nanoid'
 import { codeChallenge, codeVerifier } from '@jackdbd/pkce'
 import {
-  CLIENT_ID_INDIEBOOKCLUB,
   CLIENT_ID_NONEXISTENT,
   ME,
-  REDIRECT_URI_INDIEBOOKCLUB,
   REDIRECT_URI_NONEXISTENT,
   SCOPE
 } from '@repo/stdlib/test-utils'
@@ -16,6 +14,14 @@ const code_valid = nanoid()
 const code_invalid = nanoid()
 const code_verifier_valid = codeVerifier({ len: 43, seed: 123 })
 const code_verifier_invalid = codeVerifier({ len: 43, seed: 456 })
+
+const host = '0.0.0.0'
+const port = 8080
+const client_id = `http://localhost:${port}/id`
+const client_name = 'Test client'
+const client_uri = `http://localhost:${port}`
+const logo_uri = 'https://indiebookclub.biz/images/book.svg'
+const redirect_uri = `http://localhost:${port}/auth/callback`
 
 const onAuthorizationCodeVerified = async (_code) => {
   // console.log(`mark this authorization code as used: ${code}`);
@@ -31,9 +37,9 @@ const retrieveAuthorizationCode = async (code) => {
     code === code_valid ? code_verifier_valid : code_verifier_invalid
 
   const record = {
-    client_id: CLIENT_ID_INDIEBOOKCLUB,
+    client_id,
     code_challenge: codeChallenge({ code_verifier, method: 'S256' }),
-    redirect_uri: REDIRECT_URI_INDIEBOOKCLUB,
+    redirect_uri,
     code_challenge_method: 'S256',
     me: ME,
     scope: SCOPE
@@ -138,7 +144,7 @@ describe('authorization-endpoint plugin', () => {
       t.assert.strictEqual(res.state, state)
     })
 
-    it.skip('returns an HTML page with a consent screen and information about the IndieAuth client, when the IndieAuth client exists', async (t) => {
+    it('returns an HTML page with a consent screen and information about the IndieAuth client, when the IndieAuth client exists', async (t) => {
       const fastify = Fastify()
 
       await fastify.register(authorizationEndpoint, {
@@ -148,6 +154,18 @@ describe('authorization-endpoint plugin', () => {
         retrieveAuthorizationCode
       })
 
+      fastify.get('/id', async (_request, reply) => {
+        return reply.send({
+          client_id,
+          client_name,
+          client_uri,
+          logo_uri,
+          redirect_uris: [redirect_uri]
+        })
+      })
+
+      await fastify.listen({ host, port })
+
       const code_challenge_method = 'S256'
       const code_challenge = codeChallenge({
         code_verifier: code_verifier_valid,
@@ -156,11 +174,11 @@ describe('authorization-endpoint plugin', () => {
       const state = nanoid()
 
       const query = {
-        client_id: CLIENT_ID_INDIEBOOKCLUB,
+        client_id,
         code_challenge,
         code_challenge_method,
         me: ME,
-        redirect_uri: REDIRECT_URI_INDIEBOOKCLUB,
+        redirect_uri,
         state
       }
 
@@ -174,10 +192,12 @@ describe('authorization-endpoint plugin', () => {
 
       t.assert.strictEqual(response.statusCode, 200)
       t.assert.ok(html.includes('consent'))
-      t.assert.ok(html.includes(CLIENT_ID_INDIEBOOKCLUB))
-      t.assert.ok(html.includes(REDIRECT_URI_INDIEBOOKCLUB))
+      t.assert.ok(html.includes(client_id))
+      t.assert.ok(html.includes(redirect_uri))
       t.assert.ok(html.includes(code_challenge))
       t.assert.ok(html.includes(state))
+
+      await fastify.close()
     })
   })
 
@@ -193,11 +213,11 @@ describe('authorization-endpoint plugin', () => {
       })
 
       const body = {
-        client_id: CLIENT_ID_INDIEBOOKCLUB,
+        client_id,
         code: code_invalid,
         code_verifier: code_verifier_valid,
         grant_type: 'authorization_code',
-        redirect_uri: REDIRECT_URI_INDIEBOOKCLUB
+        redirect_uri
       }
 
       const response = await fastify.inject({
@@ -223,11 +243,11 @@ describe('authorization-endpoint plugin', () => {
       })
 
       const body = {
-        client_id: CLIENT_ID_INDIEBOOKCLUB,
+        client_id,
         code: code_valid,
         code_verifier: code_verifier_valid,
         grant_type: 'authorization_code',
-        redirect_uri: REDIRECT_URI_INDIEBOOKCLUB
+        redirect_uri
       }
 
       const response = await fastify.inject({
