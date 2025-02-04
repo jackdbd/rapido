@@ -32,7 +32,8 @@
       "persistent": true
     },
     "lint": {
-      "dependsOn": ["^lint"]
+      "dependsOn": ["^lint"],
+      "env": ["JWKS", "NODE_ENV"]
     },
     "size": {
       "dependsOn": ["build:ts"]

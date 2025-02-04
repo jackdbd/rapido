@@ -56,7 +56,7 @@ in {
     alejandra.enable = true;
     # deadnix.enable = true;
     hadolint.enable = true;
-    # prettier.enable = true;
+    prettier.enable = false;
     statix.enable = true;
   };
 

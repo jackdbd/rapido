@@ -7,7 +7,7 @@
   "fixed": [],
   "ignore": [
     "@repo/demo-app",
-    "@repo/eslint-config",
+    "@repo/prettier-config",
     "@repo/scripts",
     "@repo/stdlib",
     "@repo/typescript-config"
