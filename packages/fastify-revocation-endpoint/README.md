@@ -84,13 +84,13 @@ URL where the public JSON Web Key Set is hosted.
 |---|---|
 | [@fastify/formbody](https://www.npmjs.com/package/@fastify/formbody) | `^8.0.2` |
 | [@fastify/response-validation](https://www.npmjs.com/package/@fastify/response-validation) | `^3.0.3` |
-| [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.2.0-canary.3` |
-| [@jackdbd/fastify-hooks](https://www.npmjs.com/package/@jackdbd/fastify-hooks) | `0.2.0-canary.5` |
-| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `^0.2.0-canary.3` |
-| [@jackdbd/oauth2](https://www.npmjs.com/package/@jackdbd/oauth2) | `^0.2.0-canary.2` |
-| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `^0.2.0-canary.3` |
-| [@jackdbd/oauth2-tokens](https://www.npmjs.com/package/@jackdbd/oauth2-tokens) | `^0.2.0-canary.7` |
-| [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `^0.2.0-canary.6` |
+| [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.2.0-canary.4` |
+| [@jackdbd/fastify-hooks](https://www.npmjs.com/package/@jackdbd/fastify-hooks) | `0.2.0-canary.7` |
+| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `^0.2.0-canary.4` |
+| [@jackdbd/oauth2](https://www.npmjs.com/package/@jackdbd/oauth2) | `^0.2.0-canary.3` |
+| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `^0.2.0-canary.4` |
+| [@jackdbd/oauth2-tokens](https://www.npmjs.com/package/@jackdbd/oauth2-tokens) | `^0.2.0-canary.8` |
+| [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `^0.2.0-canary.7` |
 | [@sinclair/typebox](https://www.npmjs.com/package/@sinclair/typebox) | `^0.34.14` |
 | [ajv](https://www.npmjs.com/package/ajv) | `^8.17.1` |
 | [ajv-formats](https://www.npmjs.com/package/ajv-formats) | `^3.0.1` |

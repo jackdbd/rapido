@@ -21,9 +21,9 @@ npm install @jackdbd/indieauth
 
 | Package | Version |
 |---|---|
-| [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.2.0-canary.3` |
-| [@jackdbd/oauth2](https://www.npmjs.com/package/@jackdbd/oauth2) | `0.2.0-canary.2` |
-| [@jackdbd/pkce](https://www.npmjs.com/package/@jackdbd/pkce) | `0.2.0-canary.2` |
+| [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.2.0-canary.4` |
+| [@jackdbd/oauth2](https://www.npmjs.com/package/@jackdbd/oauth2) | `0.2.0-canary.3` |
+| [@jackdbd/pkce](https://www.npmjs.com/package/@jackdbd/pkce) | `0.2.0-canary.3` |
 | [@sinclair/typebox](https://www.npmjs.com/package/@sinclair/typebox) | `^0.34.14` |
 | [posthtml-parser](https://www.npmjs.com/package/posthtml-parser) | `^0.12.1` |
 

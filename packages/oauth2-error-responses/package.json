@@ -57,7 +57,5 @@
     "test:watch": "node --test --watch"
   },
   "dependencies": {},
-  "devDependencies": {
-    "@fastify/error": "^4.0.0"
-  }
+  "devDependencies": {}
 }

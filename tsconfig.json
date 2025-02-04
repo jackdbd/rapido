@@ -7,6 +7,9 @@
       "path": "./packages/stdlib/tsconfig.json"
     },
     {
+      "path": "./packages/oauth2-error-responses/tsconfig.json"
+    },
+    {
       "path": "./packages/error-handlers/tsconfig.json"
     },
     {
@@ -29,9 +32,6 @@
     },
     {
       "path": "./packages/oauth2/tsconfig.json"
-    },
-    {
-      "path": "./packages/oauth2-error-responses/tsconfig.json"
     },
     {
       "path": "./packages/relmeauth/tsconfig.json"
