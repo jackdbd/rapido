@@ -49,6 +49,7 @@ in {
   packages = with pkgs; [
     entr # run arbitrary commands when files change
     git
+    gnused
     nodejs
     rsync
     sd # sed replacement

@@ -67,7 +67,7 @@
     "vendor": "run-s 'vendor:build' 'vendor:copy' 'vendor:adjust-imports' --print-label",
     "vendor:build": "npm run build:ts -w @repo/error-handlers",
     "vendor:copy": "rsync -a ../error-handlers/lib/* lib/error-handlers/",
-    "vendor:adjust-imports": "sd '@repo/error-handlers' './error-handlers/index.js' ./lib/index.js"
+    "vendor:adjust-imports": "sed -i 's|@repo/error-handlers|./error-handlers/index.js|g' ./lib/index.js"
   },
   "dependencies": {
     "@fastify/formbody": "^8.0.2",
