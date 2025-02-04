@@ -1,22 +1,22 @@
-import type { AuthorOrCommitter, SharedConfig } from "./config.js";
-import { BASE_URL, REF } from "./defaults.js";
-import { internalServerError } from "./errors.js";
-import { defHeaders } from "./headers.js";
+import type { AuthorOrCommitter, SharedConfig } from './config.js'
+import { BASE_URL, REF } from './defaults.js'
+import { internalServerError } from './errors.js'
+import { defHeaders } from './headers.js'
 
 export interface CreateOrUpdateOptions extends SharedConfig {
-  author?: AuthorOrCommitter;
-  branch?: string;
-  committer: AuthorOrCommitter;
-  content: string; // Base64-encoded content
-  path: string;
-  sha?: string;
+  author?: AuthorOrCommitter
+  branch?: string
+  committer: AuthorOrCommitter
+  content: string // Base64-encoded content
+  path: string
+  sha?: string
 }
 
 const defaults: Partial<CreateOrUpdateOptions> = {
   base_url: BASE_URL,
   branch: REF,
-  path: "",
-};
+  path: ''
+}
 
 /**
  * Creates a new file or replaces an existing file in a repository.
@@ -28,7 +28,7 @@ export const createOrUpdate = async (options: CreateOrUpdateOptions) => {
     {},
     defaults,
     options
-  ) as Required<CreateOrUpdateOptions>;
+  ) as Required<CreateOrUpdateOptions>
 
   const {
     base_url,
@@ -39,12 +39,12 @@ export const createOrUpdate = async (options: CreateOrUpdateOptions) => {
     path,
     repo,
     sha,
-    token,
-  } = config;
-  const author = config.author || committer;
+    token
+  } = config
+  const author = config.author || committer
 
-  const endpoint = `/repos/${owner}/${repo}/contents/${path}`;
-  const url = `${base_url}${endpoint}`;
+  const endpoint = `/repos/${owner}/${repo}/contents/${path}`
+  const url = `${base_url}${endpoint}`
 
   const shared = {
     author,
@@ -53,27 +53,27 @@ export const createOrUpdate = async (options: CreateOrUpdateOptions) => {
     repo,
     path,
     committer,
-    content,
-  };
-
-  let body: Record<string, any>;
-  if (sha) {
-    body = { ...shared, message: `update ${path}`, sha };
-  } else {
-    body = { ...shared, message: `create ${path}` };
+    content
   }
 
-  let response: Response;
+  let body: Record<string, any>
+  if (sha) {
+    body = { ...shared, message: `update ${path}`, sha }
+  } else {
+    body = { ...shared, message: `create ${path}` }
+  }
+
+  let response: Response
   try {
     response = await fetch(url, {
-      method: "PUT",
+      method: 'PUT',
       body: JSON.stringify(body),
-      headers: defHeaders({ token }),
-    });
+      headers: defHeaders({ token })
+    })
   } catch (err: any) {
     return {
-      error: internalServerError(err),
-    };
+      error: internalServerError(err)
+    }
   }
 
   if (sha && response.status !== 200) {
@@ -81,9 +81,9 @@ export const createOrUpdate = async (options: CreateOrUpdateOptions) => {
       error: {
         error_description: `could not update ${config.path} in repo ${owner}/${repo}`,
         status_code: response.status,
-        status_text: response.statusText,
-      },
-    };
+        status_text: response.statusText
+      }
+    }
   }
 
   if (!sha && response.status !== 201) {
@@ -91,20 +91,20 @@ export const createOrUpdate = async (options: CreateOrUpdateOptions) => {
       error: {
         error_description: `could not create ${config.path} in repo ${owner}/${repo}`,
         status_code: response.status,
-        status_text: response.statusText,
-      },
-    };
+        status_text: response.statusText
+      }
+    }
   }
 
-  let summary: string;
+  let summary: string
   if (sha) {
-    summary = `updated ${config.path} in repo ${owner}/${repo}`;
+    summary = `updated ${config.path} in repo ${owner}/${repo}`
   } else {
-    summary = `created ${config.path} in repo ${owner}/${repo}`;
+    summary = `created ${config.path} in repo ${owner}/${repo}`
   }
 
   try {
-    const body = await response.json();
+    const body = await response.json()
     // TODO: maybe consider returning just the link/url/permalink/location
     // instead of the entire response body.
     return {
@@ -112,12 +112,12 @@ export const createOrUpdate = async (options: CreateOrUpdateOptions) => {
         summary,
         body,
         status_code: response.status,
-        status_text: response.statusText,
-      },
-    };
+        status_text: response.statusText
+      }
+    }
   } catch (err: any) {
     return {
-      error: internalServerError(err),
-    };
+      error: internalServerError(err)
+    }
   }
-};
+}

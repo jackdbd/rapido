@@ -1,4 +1,4 @@
-import { Static, Type } from "@sinclair/typebox";
+import { Static, Type } from '@sinclair/typebox'
 
 /**
  * Revocation Response.
@@ -10,14 +10,14 @@ import { Static, Type } from "@sinclair/typebox";
  */
 export const revocation_response_body_success = Type.Object(
   {
-    message: Type.Optional(Type.String({ minLength: 1 })),
+    message: Type.Optional(Type.String({ minLength: 1 }))
   },
   {
-    $id: "revocation-response-body-success",
-    title: "revoke POST response",
+    $id: 'revocation-response-body-success',
+    title: 'revoke POST response'
   }
-);
+)
 
 export type RevocationResponseBodySuccess = Static<
   typeof revocation_response_body_success
->;
+>

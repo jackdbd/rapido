@@ -1,31 +1,31 @@
 import {
   me_before_url_canonicalization,
-  me_after_url_canonicalization,
-} from "@jackdbd/indieauth";
-import { Static, Type } from "@sinclair/typebox";
-import type { Ajv } from "ajv";
-import { DEFAULT } from "../constants.js";
+  me_after_url_canonicalization
+} from '@jackdbd/indieauth'
+import { Static, Type } from '@sinclair/typebox'
+import type { Ajv } from 'ajv'
+import { DEFAULT } from '../constants.js'
 import {
   ajv,
   media_endpoint,
   micropub_endpoint,
-  report_all_ajv_errors,
-} from "./common.js";
+  report_all_ajv_errors
+} from './common.js'
 import {
   create,
   deleteContentOrMedia,
   isAccessTokenRevoked,
   undelete,
-  update,
-} from "./user-provided-functions.js";
+  update
+} from './user-provided-functions.js'
 import type {
   Create,
   DeleteContentOrMedia,
   IsAccessTokenRevoked,
   Undelete,
-  Update,
-} from "./user-provided-functions.js";
-import { syndicate_to_item } from "./syndicate-to.js";
+  Update
+} from './user-provided-functions.js'
+import { syndicate_to_item } from './syndicate-to.js'
 
 export const options = Type.Object(
   {
@@ -45,7 +45,7 @@ export const options = Type.Object(
 
     me: Type.Union([
       me_before_url_canonicalization,
-      me_after_url_canonicalization,
+      me_after_url_canonicalization
     ]),
 
     mediaEndpoint: Type.Optional(media_endpoint),
@@ -54,10 +54,10 @@ export const options = Type.Object(
 
     multipartFormDataMaxFileSize: Type.Optional(
       Type.Number({
-        title: "multipart/form-data max file size",
+        title: 'multipart/form-data max file size',
         description: `Max file size (in bytes) for multipart/form-data requests.`,
         default: DEFAULT.MULTIPART_FORMDATA_MAX_FILE_SIZE,
-        minimum: 0,
+        minimum: 0
       })
     ),
 
@@ -69,20 +69,20 @@ export const options = Type.Object(
 
     undelete: Type.Optional(undelete),
 
-    update,
+    update
   },
   {
-    $id: "fastify-micropub-endpoint-options",
-    description: "Options for the Fastify micropub-endpoint plugin",
-    title: "Micropub Endpoint Options",
+    $id: 'fastify-micropub-endpoint-options',
+    description: 'Options for the Fastify micropub-endpoint plugin',
+    title: 'Micropub Endpoint Options'
   }
-);
+)
 
 export interface Options extends Static<typeof options> {
-  ajv?: Ajv;
-  create: Create;
-  delete: DeleteContentOrMedia;
-  isAccessTokenRevoked: IsAccessTokenRevoked;
-  undelete?: Undelete;
-  update: Update;
+  ajv?: Ajv
+  create: Create
+  delete: DeleteContentOrMedia
+  isAccessTokenRevoked: IsAccessTokenRevoked
+  undelete?: Undelete
+  update: Update
 }

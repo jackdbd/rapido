@@ -1,11 +1,11 @@
-import { createHash } from "node:crypto";
+import { createHash } from 'node:crypto'
 
 export interface Config {
   /**
    * The original plaintext random string generated before starting the
    * authorization request.
    */
-  code_verifier: string;
+  code_verifier: string
 
   /**
    * The hashing method to use in the code challenge.
@@ -13,7 +13,7 @@ export interface Config {
    * If the client is capable of using `"S256"`, it MUST use `"S256"`, as
    * `"S256"` is Mandatory To Implement (MTI) on the server.
    */
-  method: string;
+  method: string
 }
 
 /**
@@ -24,18 +24,18 @@ export interface Config {
  * @see [Online PKCE Generator Tool](https://tonyxu-io.github.io/pkce-generator/)
  */
 export const codeChallenge = (config: Config) => {
-  const { method, code_verifier } = config;
+  const { method, code_verifier } = config
 
   switch (method) {
-    case "plain": {
-      return code_verifier;
+    case 'plain': {
+      return code_verifier
     }
-    case "S256": {
+    case 'S256': {
       // Pseudocode:
       // code_challenge = BASE64URL-ENCODE(SHA256(ASCII(code_verifier)))
-      return createHash("sha256").update(code_verifier).digest("base64url");
+      return createHash('sha256').update(code_verifier).digest('base64url')
     }
     default:
-      throw new Error(`Unsupported PKCE code challenge method: ${method}`);
+      throw new Error(`Unsupported PKCE code challenge method: ${method}`)
   }
-};
+}

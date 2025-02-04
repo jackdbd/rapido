@@ -1,16 +1,16 @@
-import { describe, it } from "node:test";
-import assert from "node:assert";
-import Fastify from "fastify";
-import micropub from "../lib/index.js";
+import { describe, it } from 'node:test'
+import assert from 'node:assert'
+import Fastify from 'fastify'
+import micropub from '../lib/index.js'
 
-describe("fastify-micropub-endpoint", () => {
-  it("can be registered with no options", () => {
-    const fastify = Fastify();
+describe('fastify-micropub-endpoint', () => {
+  it('can be registered with no options', () => {
+    const fastify = Fastify()
 
-    fastify.register(micropub);
+    fastify.register(micropub)
 
-    assert.ok(true);
-  });
+    assert.ok(true)
+  })
 
-  it.todo("write some actual tests (probably with light-my-request)");
-});
+  it.todo('write some actual tests (probably with light-my-request)')
+})

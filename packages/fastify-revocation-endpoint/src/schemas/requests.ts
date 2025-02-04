@@ -1,7 +1,7 @@
-import { access_token, refresh_token } from "@jackdbd/oauth2";
-import { Static, Type } from "@sinclair/typebox";
-import { token_type_hint } from "./common.js";
-import { revocation_reason } from "./revocation.js";
+import { access_token, refresh_token } from '@jackdbd/oauth2'
+import { Static, Type } from '@sinclair/typebox'
+import { token_type_hint } from './common.js'
+import { revocation_reason } from './revocation.js'
 
 /**
  * Revocation request.
@@ -16,14 +16,14 @@ export const revocation_request_body = Type.Object(
      * different from the access token used to authorize the request.
      */
     token: Type.Union([access_token, refresh_token]),
-    token_type_hint: Type.Optional(token_type_hint),
+    token_type_hint: Type.Optional(token_type_hint)
   },
   {
-    $id: "revocation-request-body",
+    $id: 'revocation-request-body',
     additionalProperties: false,
-    description: "The body sent by the client with a POST request.",
-    title: "Revocation POST request",
+    description: 'The body sent by the client with a POST request.',
+    title: 'Revocation POST request'
   }
-);
+)
 
-export type RevocationRequestBody = Static<typeof revocation_request_body>;
+export type RevocationRequestBody = Static<typeof revocation_request_body>

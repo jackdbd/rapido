@@ -1,53 +1,53 @@
-import type { Publication } from "@jackdbd/micropub";
-import { defaultLog, type Log } from "./log.js";
+import type { Publication } from '@jackdbd/micropub'
+import { defaultLog, type Log } from './log.js'
 
 interface Options {
-  log?: Log;
-  publication: Publication;
+  log?: Log
+  publication: Publication
 }
 
 const defaults: Partial<Options> = {
-  log: defaultLog,
-};
+  log: defaultLog
+}
 
 export const defWebsiteUrlToStoreLocation = (options?: Options) => {
-  const config = Object.assign({}, defaults, options) as Required<Options>;
-  const { log, publication } = config;
+  const config = Object.assign({}, defaults, options) as Required<Options>
+  const { log, publication } = config
 
   if (!publication) {
-    throw new Error("publication is required");
+    throw new Error('publication is required')
   }
 
   // E.g. A note published on my website: https://www.giacomodebidda.com/notes/test-note/
 
   const websiteUrlToStoreLocation = (url: string) => {
-    const [_domain, ...splits] = url.split("/").slice(2);
-    const slug = splits.filter((s) => s !== "").at(-1);
+    const [_domain, ...splits] = url.split('/').slice(2)
+    const slug = splits.filter((s) => s !== '').at(-1)
 
-    const loc = publication.default.location;
+    const loc = publication.default.location
 
-    const keys = Object.keys(publication.items);
-    log.debug(`supported publications: ${keys.join(", ")}`);
+    const keys = Object.keys(publication.items)
+    log.debug(`supported publications: ${keys.join(', ')}`)
 
     for (const [key, item] of Object.entries(publication.items)) {
-      const { location, predicate } = item;
+      const { location, predicate } = item
       if (predicate.website(url)) {
-        log.debug(`matched predicate: ${key}`);
-        loc.store = `${location.store}${slug}.md`;
-        loc.website = `${location.website}${slug}/`;
+        log.debug(`matched predicate: ${key}`)
+        loc.store = `${location.store}${slug}.md`
+        loc.website = `${location.website}${slug}/`
 
         if (location.store_deleted) {
-          loc.store_deleted = `${location.store_deleted}${slug}.md`;
+          loc.store_deleted = `${location.store_deleted}${slug}.md`
         } else {
-          loc.store_deleted = undefined;
+          loc.store_deleted = undefined
         }
 
-        break;
+        break
       }
     }
 
-    return loc;
-  };
+    return loc
+  }
 
-  return websiteUrlToStoreLocation;
-};
+  return websiteUrlToStoreLocation
+}

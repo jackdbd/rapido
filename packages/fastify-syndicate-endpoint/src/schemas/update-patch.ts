@@ -1,9 +1,9 @@
-import { Static, Type } from "@sinclair/typebox";
+import { Static, Type } from '@sinclair/typebox'
 
 export const update_patch = Type.Object({
   add: Type.Optional(Type.Any()),
   delete: Type.Optional(Type.String({ minLength: 1 })),
-  replace: Type.Optional(Type.Any()),
-});
+  replace: Type.Optional(Type.Any())
+})
 
-export type UpdatePatch = Static<typeof update_patch>;
+export type UpdatePatch = Static<typeof update_patch>

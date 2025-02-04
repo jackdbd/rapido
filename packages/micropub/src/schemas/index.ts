@@ -1,16 +1,16 @@
-export { audio, type Audio } from "./audio.js";
+export { audio, type Audio } from './audio.js'
 
-export { date_time } from "./date-time.js";
+export { date_time } from './date-time.js'
 
-export { mp_card, type MP_Card } from "./card.js";
+export { mp_card, type MP_Card } from './card.js'
 
-export { mp_cite, type MP_Cite } from "./cite.js";
+export { mp_cite, type MP_Cite } from './cite.js'
 
-export { mp_entry, type MP_Entry } from "./entry.js";
+export { mp_entry, type MP_Entry } from './entry.js'
 
-export { mp_event, type MP_Event } from "./event.js";
+export { mp_event, type MP_Event } from './event.js'
 
-export { location, type Location } from "./location.js";
+export { location, type Location } from './location.js'
 
 export {
   access_token,
@@ -22,10 +22,10 @@ export {
   mp_post_status,
   mp_slug,
   mp_syndicate_to,
-  mp_visibility,
-} from "./micropub-reserved-properties.js";
-export type { Action } from "./micropub-reserved-properties.js";
+  mp_visibility
+} from './micropub-reserved-properties.js'
+export type { Action } from './micropub-reserved-properties.js'
 
-export { photo, type Photo } from "./photo.js";
+export { photo, type Photo } from './photo.js'
 
-export { video, type Video } from "./video.js";
+export { video, type Video } from './video.js'

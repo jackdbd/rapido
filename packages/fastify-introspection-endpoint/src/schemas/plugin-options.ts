@@ -1,27 +1,27 @@
 import {
   issuer,
   me_after_url_canonicalization,
-  me_before_url_canonicalization,
-} from "@jackdbd/indieauth";
-import { jwks_url } from "@jackdbd/oauth2-tokens";
-import { Static, Type } from "@sinclair/typebox";
-import type { Ajv } from "ajv";
+  me_before_url_canonicalization
+} from '@jackdbd/indieauth'
+import { jwks_url } from '@jackdbd/oauth2-tokens'
+import { Static, Type } from '@sinclair/typebox'
+import type { Ajv } from 'ajv'
 import {
   ajv,
   include_error_description,
   log_prefix,
-  report_all_ajv_errors,
-} from "./common.js";
+  report_all_ajv_errors
+} from './common.js'
 import {
   isAccessTokenRevoked,
   retrieveAccessToken,
-  retrieveRefreshToken,
-} from "./user-provided-functions.js";
+  retrieveRefreshToken
+} from './user-provided-functions.js'
 import type {
   IsAccessTokenRevoked,
   RetrieveAccessToken,
-  RetrieveRefreshToken,
-} from "./user-provided-functions.js";
+  RetrieveRefreshToken
+} from './user-provided-functions.js'
 
 export const options = Type.Object(
   {
@@ -41,25 +41,25 @@ export const options = Type.Object(
 
     me: Type.Union([
       me_before_url_canonicalization,
-      me_after_url_canonicalization,
+      me_after_url_canonicalization
     ]),
 
     reportAllAjvErrors: Type.Optional(report_all_ajv_errors),
 
     retrieveAccessToken,
 
-    retrieveRefreshToken,
+    retrieveRefreshToken
   },
   {
-    $id: "fastify-introspection-endpoint-options",
-    description: "Options for the Fastify introspection-endpoint plugin",
-    title: "Introspection Endpoint Options",
+    $id: 'fastify-introspection-endpoint-options',
+    description: 'Options for the Fastify introspection-endpoint plugin',
+    title: 'Introspection Endpoint Options'
   }
-);
+)
 
 export interface Options extends Static<typeof options> {
-  ajv?: Ajv;
-  isAccessTokenRevoked: IsAccessTokenRevoked;
-  retrieveAccessToken: RetrieveAccessToken;
-  retrieveRefreshToken: RetrieveRefreshToken;
+  ajv?: Ajv
+  isAccessTokenRevoked: IsAccessTokenRevoked
+  retrieveAccessToken: RetrieveAccessToken
+  retrieveRefreshToken: RetrieveRefreshToken
 }

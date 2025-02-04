@@ -1,20 +1,20 @@
-import { Static, Type } from "@sinclair/typebox";
-import type { Ajv } from "ajv";
+import { Static, Type } from '@sinclair/typebox'
+import type { Ajv } from 'ajv'
 import {
   ajv,
   include_error_description,
   log_prefix,
   report_all_ajv_errors,
-  request_context_key,
-} from "./common.js";
+  request_context_key
+} from './common.js'
 import {
   isAccessTokenRevoked,
-  retrieveUserProfile,
-} from "./user-provided-functions.js";
+  retrieveUserProfile
+} from './user-provided-functions.js'
 import type {
   IsAccessTokenRevoked,
-  RetrieveUserProfile,
-} from "./user-provided-functions.js";
+  RetrieveUserProfile
+} from './user-provided-functions.js'
 
 export const options = Type.Object(
   {
@@ -30,17 +30,17 @@ export const options = Type.Object(
 
     requestContextKey: Type.Optional(request_context_key),
 
-    retrieveUserProfile,
+    retrieveUserProfile
   },
   {
-    $id: "fastify-userinfo-endpoint-options",
-    description: "Options for the Fastify userinfo-endpoint plugin",
-    title: "Userinfo Endpoint Options",
+    $id: 'fastify-userinfo-endpoint-options',
+    description: 'Options for the Fastify userinfo-endpoint plugin',
+    title: 'Userinfo Endpoint Options'
   }
-);
+)
 
 export interface Options extends Static<typeof options> {
-  ajv?: Ajv;
-  isAccessTokenRevoked: IsAccessTokenRevoked;
-  retrieveUserProfile: RetrieveUserProfile;
+  ajv?: Ajv
+  isAccessTokenRevoked: IsAccessTokenRevoked
+  retrieveUserProfile: RetrieveUserProfile
 }

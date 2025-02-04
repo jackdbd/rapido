@@ -1,30 +1,30 @@
-import type { RouteGenericInterface, RouteHandler } from "fastify";
-import { accessTokenFromRequest } from "@jackdbd/fastify-utils";
-import type { Profile } from "@jackdbd/indieauth";
+import type { RouteGenericInterface, RouteHandler } from 'fastify'
+import { accessTokenFromRequest } from '@jackdbd/fastify-utils'
+import type { Profile } from '@jackdbd/indieauth'
 import {
   InvalidRequestError,
   InvalidGrantError,
   UnauthorizedError,
   UnsupportedGrantTypeError,
-  ServerError,
-} from "@jackdbd/oauth2-error-responses";
-import { tokensPlusInfo, unixTimestampInSeconds } from "@jackdbd/oauth2-tokens";
-import type { TokensPlusInfo } from "@jackdbd/oauth2-tokens";
-import { throwWhenNotConform } from "@jackdbd/schema-validators";
-import { retrieveUserProfile } from "../retrieve-user-profile.js";
-import { revokeToken } from "../revoke-token.js";
-import { token_post_config } from "../schemas/index.js";
+  ServerError
+} from '@jackdbd/oauth2-error-responses'
+import { tokensPlusInfo, unixTimestampInSeconds } from '@jackdbd/oauth2-tokens'
+import type { TokensPlusInfo } from '@jackdbd/oauth2-tokens'
+import { throwWhenNotConform } from '@jackdbd/schema-validators'
+import { retrieveUserProfile } from '../retrieve-user-profile.js'
+import { revokeToken } from '../revoke-token.js'
+import { token_post_config } from '../schemas/index.js'
 import type {
   AccessTokenRequestBody,
   RefreshRequestBody,
   RefreshTokenImmutableRecord,
   RefreshTokenMutableRecord,
-  TokenPostConfig,
-} from "../schemas/index.js";
-import { verifyAuthorizationCode } from "../verify-authorization-code.js";
+  TokenPostConfig
+} from '../schemas/index.js'
+import { verifyAuthorizationCode } from '../verify-authorization-code.js'
 
 interface RouteGeneric extends RouteGenericInterface {
-  Body: AccessTokenRequestBody | RefreshRequestBody;
+  Body: AccessTokenRequestBody | RefreshRequestBody
 }
 
 /**
@@ -76,104 +76,104 @@ export const defTokenPost = (config: TokenPostConfig) => {
     refreshTokenExpiration: refresh_token_expiration,
     retrieveRefreshToken,
     revocationEndpoint: revocation_endpoint,
-    userinfoEndpoint: userinfo_endpoint,
-  } = config;
+    userinfoEndpoint: userinfo_endpoint
+  } = config
 
   throwWhenNotConform(
     { ajv, schema: token_post_config, data: config },
-    { basePath: "token-endpoint-post-method-config" }
-  );
+    { basePath: 'token-endpoint-post-method-config' }
+  )
 
   const tokenPost: RouteHandler<RouteGeneric> = async (request, reply) => {
-    const { grant_type } = request.body;
+    const { grant_type } = request.body
 
-    let issued_info: TokensPlusInfo;
-    if (grant_type === "refresh_token") {
-      const { refresh_token, scope } = request.body;
+    let issued_info: TokensPlusInfo
+    if (grant_type === 'refresh_token') {
+      const { refresh_token, scope } = request.body
 
-      let record: RefreshTokenImmutableRecord | RefreshTokenMutableRecord;
+      let record: RefreshTokenImmutableRecord | RefreshTokenMutableRecord
       try {
-        record = await retrieveRefreshToken(refresh_token);
+        record = await retrieveRefreshToken(refresh_token)
       } catch (ex: any) {
-        let error_description = `The user-provided retrieveRefreshToken function threw an exception.`;
+        let error_description = `The user-provided retrieveRefreshToken function threw an exception.`
         if (ex && ex.message) {
-          error_description = `${error_description} Here is the original error message: ${ex.message}`;
+          error_description = `${error_description} Here is the original error message: ${ex.message}`
         }
-        request.log.error(`${log_prefix}${error_description}`);
-        const error_uri = undefined;
-        const err = new ServerError({ error_description, error_uri });
+        request.log.error(`${log_prefix}${error_description}`)
+        const error_uri = undefined
+        const err = new ServerError({ error_description, error_uri })
         // const err = new InvalidGrantError({ error_description, error_uri })
         return reply
           .code(err.statusCode)
-          .send(err.payload({ include_error_description }));
+          .send(err.payload({ include_error_description }))
       }
 
       if (record.revoked) {
         const details = record.revocation_reason
           ? ` (revocation_reason: ${record.revocation_reason as string})`
-          : "";
-        const error_description = `Refresh token ${refresh_token} is revoked${details}.`;
+          : ''
+        const error_description = `Refresh token ${refresh_token} is revoked${details}.`
         // TODO: create an HTML page for error_uri
-        const error_uri = undefined;
-        const err = new InvalidGrantError({ error_description, error_uri });
+        const error_uri = undefined
+        const err = new InvalidGrantError({ error_description, error_uri })
         return reply
           .code(err.statusCode)
-          .send(err.payload({ include_error_description }));
+          .send(err.payload({ include_error_description }))
       }
 
-      const now = unixTimestampInSeconds();
+      const now = unixTimestampInSeconds()
 
       if (record.exp < now) {
-        const details = ` (expired_at: ${record.exp}, now: ${now})`;
-        const error_description = `Refresh token found in storage is expired${details}.`;
+        const details = ` (expired_at: ${record.exp}, now: ${now})`
+        const error_description = `Refresh token found in storage is expired${details}.`
         // TODO: create an HTML page for error_uri
-        const error_uri = undefined;
-        const err = new InvalidGrantError({ error_description, error_uri });
+        const error_uri = undefined
+        const err = new InvalidGrantError({ error_description, error_uri })
         return reply
           .code(err.statusCode)
-          .send(err.payload({ include_error_description }));
+          .send(err.payload({ include_error_description }))
       }
 
       if (!record.me) {
-        const error_description = `Refresh token found in storage has no 'me' parameter.`;
-        request.log.warn(`${log_prefix}${error_description}`);
-        const err = new InvalidRequestError({ error_description });
+        const error_description = `Refresh token found in storage has no 'me' parameter.`
+        request.log.warn(`${log_prefix}${error_description}`)
+        const err = new InvalidRequestError({ error_description })
         return reply
           .code(err.statusCode)
-          .send(err.payload({ include_error_description }));
+          .send(err.payload({ include_error_description }))
       }
 
       if (!record.scope) {
-        const error_description = `Refresh token found in storage has no 'scope' parameter.`;
-        request.log.warn(`${log_prefix}${error_description}`);
-        const error_uri = undefined;
-        const err = new InvalidRequestError({ error_description, error_uri });
+        const error_description = `Refresh token found in storage has no 'scope' parameter.`
+        request.log.warn(`${log_prefix}${error_description}`)
+        const error_uri = undefined
+        const err = new InvalidRequestError({ error_description, error_uri })
         return reply
           .code(err.statusCode)
-          .send(err.payload({ include_error_description }));
+          .send(err.payload({ include_error_description }))
       }
 
       if (scope !== record.scope) {
         const error_description = `Mismatch of parameter 'scope'. Request asks for these scopes: ${scope}. Refresh token found in storage has these scopes: ${
           record.scope as string
-        }.`;
-        request.log.warn(`${log_prefix}${error_description}`);
-        const error_uri = undefined;
-        const err = new InvalidRequestError({ error_description, error_uri });
+        }.`
+        request.log.warn(`${log_prefix}${error_description}`)
+        const error_uri = undefined
+        const err = new InvalidRequestError({ error_description, error_uri })
         return reply
           .code(err.statusCode)
-          .send(err.payload({ include_error_description }));
+          .send(err.payload({ include_error_description }))
       }
 
-      const { value: access_token } = accessTokenFromRequest(request);
+      const { value: access_token } = accessTokenFromRequest(request)
 
       if (!access_token) {
-        const error_description = `Cannot revoke refresh token ${refresh_token}: no access token in Authorization header.`;
-        const error_uri = undefined;
-        const err = new UnauthorizedError({ error_description, error_uri });
+        const error_description = `Cannot revoke refresh token ${refresh_token}: no access token in Authorization header.`
+        const error_uri = undefined
+        const err = new UnauthorizedError({ error_description, error_uri })
         return reply
           .code(err.statusCode)
-          .send(err.payload({ include_error_description }));
+          .send(err.payload({ include_error_description }))
       }
 
       // Decide between these revocation reasons:
@@ -181,59 +181,59 @@ export const defTokenPost = (config: TokenPostConfig) => {
       // - `refreshed`
       // - `refresh_request`
       // https://datatracker.ietf.org/doc/html/rfc6749#section-6
-      const revocation_reason = "refreshed";
+      const revocation_reason = 'refreshed'
 
-      request.log.debug(`${log_prefix}revoking refresh token ${refresh_token}`);
+      request.log.debug(`${log_prefix}revoking refresh token ${refresh_token}`)
 
       const { error: revoke_error_refresh } = await revokeToken({
         access_token,
         revocation_endpoint,
         revocation_reason,
         token: refresh_token,
-        token_type_hint: "refresh_token",
-      });
+        token_type_hint: 'refresh_token'
+      })
 
       if (revoke_error_refresh) {
         const payload = revoke_error_refresh.payload({
-          include_error_description,
-        });
+          include_error_description
+        })
         request.log.error(
           `${log_prefix}cannot revoke refresh token ${refresh_token}: ${payload.error_description}`
-        );
-        return reply.code(revoke_error_refresh.statusCode).send(payload);
+        )
+        return reply.code(revoke_error_refresh.statusCode).send(payload)
       }
 
       request.log.debug(
         `${log_prefix}revoked refresh token ${refresh_token} with revocation_reason: ${revocation_reason}`
-      );
+      )
 
       // TODO: consider making it optional to revoke the current access token.
       // Access tokens are usually short-lived, so it might not be necessary to
       // revoke them.
 
-      request.log.debug(`${log_prefix}revoking current access token`);
+      request.log.debug(`${log_prefix}revoking current access token`)
 
       const { error: revoke_error_access } = await revokeToken({
         access_token,
         revocation_endpoint,
         revocation_reason,
         token: access_token,
-        token_type_hint: "access_token",
-      });
+        token_type_hint: 'access_token'
+      })
 
       if (revoke_error_access) {
         const payload = revoke_error_access.payload({
-          include_error_description,
-        });
+          include_error_description
+        })
         request.log.error(
           `${log_prefix}cannot revoke access token: ${payload.error_description}`
-        );
-        return reply.code(revoke_error_access.statusCode).send(payload);
+        )
+        return reply.code(revoke_error_access.statusCode).send(payload)
       }
 
       request.log.debug(
         `${log_prefix}revoked access token with revocation_reason: ${revocation_reason}`
-      );
+      )
 
       // check that issuer === record.iss?
 
@@ -247,44 +247,44 @@ export const defTokenPost = (config: TokenPostConfig) => {
         me: record.me,
         redirect_uri: record.redirect_uri,
         refresh_token_expiration,
-        scope,
-      });
+        scope
+      })
 
       if (error) {
-        const error_description = error.message;
-        request.log.error(`${log_prefix}${error_description}`);
-        const error_uri = undefined;
-        const err = new ServerError({ error_description, error_uri });
+        const error_description = error.message
+        request.log.error(`${log_prefix}${error_description}`)
+        const error_uri = undefined
+        const err = new ServerError({ error_description, error_uri })
         return reply
           .code(err.statusCode)
-          .send(err.payload({ include_error_description }));
+          .send(err.payload({ include_error_description }))
       }
 
-      issued_info = value;
+      issued_info = value
 
       try {
-        await onIssuedTokens(issued_info);
+        await onIssuedTokens(issued_info)
       } catch (ex: any) {
-        let error_description = `The user-provided onIssuedTokens function threw an exception.`;
+        let error_description = `The user-provided onIssuedTokens function threw an exception.`
         if (ex && ex.message) {
-          error_description = `${error_description} Here is the original error message: ${ex.message}`;
+          error_description = `${error_description} Here is the original error message: ${ex.message}`
         }
-        request.log.error(`${log_prefix}${error_description}`);
-        const error_uri = undefined;
-        const err = new ServerError({ error_description, error_uri });
+        request.log.error(`${log_prefix}${error_description}`)
+        const error_uri = undefined
+        const err = new ServerError({ error_description, error_uri })
         return reply
           .code(err.statusCode)
-          .send(err.payload({ include_error_description }));
+          .send(err.payload({ include_error_description }))
       }
       // === END of grant_type === 'refresh_token' ========================== //
-    } else if (grant_type === "authorization_code") {
-      const { client_id, code, code_verifier, redirect_uri } = request.body;
+    } else if (grant_type === 'authorization_code') {
+      const { client_id, code, code_verifier, redirect_uri } = request.body
 
       // Do I need to do this in the token endpoint or in the authorization
       // endpoint?
       request.log.warn(
         `${log_prefix}TODO: verify that 'code_verifier' ${code_verifier} hashes to the same value as given in the code_challenge in the original authorization request`
-      );
+      )
 
       const { error: verify_error, value: verify_value } =
         await verifyAuthorizationCode({
@@ -292,33 +292,33 @@ export const defTokenPost = (config: TokenPostConfig) => {
           client_id,
           code,
           code_verifier,
-          redirect_uri,
-        });
+          redirect_uri
+        })
 
       if (verify_error) {
-        const payload = verify_error.payload({ include_error_description });
+        const payload = verify_error.payload({ include_error_description })
         request.log.error(
           `${log_prefix}cannot verify authorization code ${code}: ${payload.error_description}`
-        );
-        return reply.code(verify_error.statusCode).send(payload);
+        )
+        return reply.code(verify_error.statusCode).send(payload)
       }
 
       if (!verify_value) {
-        throw new Error(`cannot verify authorization code ${code}`);
+        throw new Error(`cannot verify authorization code ${code}`)
       }
 
-      const { me, scope } = verify_value;
+      const { me, scope } = verify_value
 
       // IndieAuth requires a 'me' parameter in the access token response.
       // https://indieauth.spec.indieweb.org/#access-token-response-li-2
       if (!me) {
-        const error_description = `Authorization code ${code} is verified but it has no 'me' parameter.`;
-        request.log.error(`${log_prefix}${error_description}`);
-        const error_uri = undefined;
-        const err = new InvalidGrantError({ error_description, error_uri });
+        const error_description = `Authorization code ${code} is verified but it has no 'me' parameter.`
+        request.log.error(`${log_prefix}${error_description}`)
+        const error_uri = undefined
+        const err = new InvalidGrantError({ error_description, error_uri })
         return reply
           .code(err.statusCode)
-          .send(err.payload({ include_error_description }));
+          .send(err.payload({ include_error_description }))
       }
 
       // OAuth 2.0 says this:
@@ -333,18 +333,18 @@ export const defTokenPost = (config: TokenPostConfig) => {
       // 3.3 of OAuth 2.0.
       // https://indieauth.spec.indieweb.org/#access-token-response
       if (!scope) {
-        const error_description = `Authorization code ${code} is verified but it has no 'scope' parameter.`;
-        request.log.error(`${log_prefix}${error_description}`);
-        const error_uri = undefined;
-        const err = new InvalidGrantError({ error_description, error_uri });
+        const error_description = `Authorization code ${code} is verified but it has no 'scope' parameter.`
+        request.log.error(`${log_prefix}${error_description}`)
+        const error_uri = undefined
+        const err = new InvalidGrantError({ error_description, error_uri })
         return reply
           .code(err.statusCode)
-          .send(err.payload({ include_error_description }));
+          .send(err.payload({ include_error_description }))
       }
 
       request.log.debug(
         `${log_prefix}issuer ${issuer} will now try issuing an access token and a refresh token that can be used by client_id ${client_id} to access resources owned by ${me}`
-      );
+      )
 
       const { error, value } = await tokensPlusInfo({
         access_token_expiration,
@@ -356,45 +356,45 @@ export const defTokenPost = (config: TokenPostConfig) => {
         me,
         redirect_uri,
         refresh_token_expiration,
-        scope,
-      });
+        scope
+      })
 
       if (error) {
-        const error_description = error.message;
-        request.log.error(`${log_prefix}${error_description}`);
-        const error_uri = undefined;
-        const err = new ServerError({ error_description, error_uri });
+        const error_description = error.message
+        request.log.error(`${log_prefix}${error_description}`)
+        const error_uri = undefined
+        const err = new ServerError({ error_description, error_uri })
         return reply
           .code(err.statusCode)
-          .send(err.payload({ include_error_description }));
+          .send(err.payload({ include_error_description }))
       }
 
-      issued_info = value;
+      issued_info = value
 
       try {
-        await onIssuedTokens(issued_info);
+        await onIssuedTokens(issued_info)
       } catch (ex: any) {
-        let error_description = `The user-provided onIssuedTokens function threw an exception.`;
+        let error_description = `The user-provided onIssuedTokens function threw an exception.`
         if (ex && ex.message) {
-          error_description = `${error_description} Here is the original error message: ${ex.message}`;
+          error_description = `${error_description} Here is the original error message: ${ex.message}`
         }
-        request.log.error(`${log_prefix}${error_description}`);
-        const error_uri = undefined;
-        const err = new ServerError({ error_description, error_uri });
+        request.log.error(`${log_prefix}${error_description}`)
+        const error_uri = undefined
+        const err = new ServerError({ error_description, error_uri })
         return reply
           .code(err.statusCode)
-          .send(err.payload({ include_error_description }));
+          .send(err.payload({ include_error_description }))
       }
     } else {
-      const error_description = `This endpoint does not support grant type ${grant_type}.`;
-      const error_uri = undefined;
+      const error_description = `This endpoint does not support grant type ${grant_type}.`
+      const error_uri = undefined
       const err = new UnsupportedGrantTypeError({
         error_description,
-        error_uri,
-      });
+        error_uri
+      })
       return reply
         .code(err.statusCode)
-        .send(err.payload({ include_error_description }));
+        .send(err.payload({ include_error_description }))
     }
 
     const {
@@ -402,34 +402,34 @@ export const defTokenPost = (config: TokenPostConfig) => {
       access_token_expires_in: expires_in,
       me,
       refresh_token,
-      scope,
-    } = issued_info;
+      scope
+    } = issued_info
 
-    const scopes = scope.split(" ");
+    const scopes = scope.split(' ')
 
-    let profile: Profile | undefined = undefined;
-    if (scopes.includes("profile")) {
+    let profile: Profile | undefined = undefined
+    if (scopes.includes('profile')) {
       request.log.debug(
         `${log_prefix}access token has 'profile' scope, retrieving profile info from userinfo endpoint ${userinfo_endpoint}`
-      );
+      )
       const { error: profile_error, value } = await retrieveUserProfile({
         access_token,
-        userinfo_endpoint,
-      });
+        userinfo_endpoint
+      })
 
       if (profile_error) {
         const payload = profile_error.payload({
-          include_error_description,
-        });
-        let message = `cannot retrieve profile info`;
+          include_error_description
+        })
+        let message = `cannot retrieve profile info`
         if (payload.error_description) {
-          message = `${message}: ${payload.error_description}`;
+          message = `${message}: ${payload.error_description}`
         }
-        request.log.error(`${log_prefix}${message}`);
-        return reply.code(profile_error.statusCode).send(payload);
+        request.log.error(`${log_prefix}${message}`)
+        return reply.code(profile_error.statusCode).send(payload)
       }
 
-      profile = value;
+      profile = value
     }
 
     // The authorization server MUST include the HTTP "Cache-Control" response
@@ -440,8 +440,8 @@ export const defTokenPost = (config: TokenPostConfig) => {
     // https://indieauth.spec.indieweb.org/#access-token-response
     return reply
       .code(200)
-      .header("Cache-Control", "no-store")
-      .header("Pragma", "no-cache")
+      .header('Cache-Control', 'no-store')
+      .header('Pragma', 'no-cache')
       .send({
         access_token,
         expires_in,
@@ -449,9 +449,9 @@ export const defTokenPost = (config: TokenPostConfig) => {
         profile,
         refresh_token,
         scope,
-        token_type: "Bearer",
-      });
-  };
+        token_type: 'Bearer'
+      })
+  }
 
-  return tokenPost;
-};
+  return tokenPost
+}

@@ -1,25 +1,25 @@
-import { issuer, userinfo_endpoint } from "@jackdbd/indieauth";
-import { authorization_endpoint, revocation_endpoint } from "@jackdbd/oauth2";
-import { expiration, jwks_private } from "@jackdbd/oauth2-tokens";
-import { Static, Type } from "@sinclair/typebox";
-import type { Ajv } from "ajv";
-import { DEFAULT } from "../constants.js";
+import { issuer, userinfo_endpoint } from '@jackdbd/indieauth'
+import { authorization_endpoint, revocation_endpoint } from '@jackdbd/oauth2'
+import { expiration, jwks_private } from '@jackdbd/oauth2-tokens'
+import { Static, Type } from '@sinclair/typebox'
+import type { Ajv } from 'ajv'
+import { DEFAULT } from '../constants.js'
 import {
   ajv,
   include_error_description,
   log_prefix,
-  report_all_ajv_errors,
-} from "./common.js";
+  report_all_ajv_errors
+} from './common.js'
 import {
   isAccessTokenRevoked,
   onIssuedTokens,
-  retrieveRefreshToken,
-} from "./user-provided-functions.js";
+  retrieveRefreshToken
+} from './user-provided-functions.js'
 import type {
   IsAccessTokenRevoked,
   OnIssuedTokens,
-  RetrieveRefreshToken,
-} from "./user-provided-functions.js";
+  RetrieveRefreshToken
+} from './user-provided-functions.js'
 
 export const options = Type.Object(
   {
@@ -32,7 +32,7 @@ export const options = Type.Object(
     accessTokenExpiration: Type.Optional(
       Type.String({
         ...expiration,
-        default: DEFAULT.ACCESS_TOKEN_EXPIRATION,
+        default: DEFAULT.ACCESS_TOKEN_EXPIRATION
       })
     ),
 
@@ -61,7 +61,7 @@ export const options = Type.Object(
       { ...jwks_private.properties },
       {
         description:
-          "Private JSON Web Key Set (JWKS). The access token issued by this token endpoint will be signed using a JWK randomly chosen from this set.",
+          'Private JSON Web Key Set (JWKS). The access token issued by this token endpoint will be signed using a JWK randomly chosen from this set.'
       }
     ),
 
@@ -78,7 +78,7 @@ export const options = Type.Object(
     refreshTokenExpiration: Type.Optional(
       Type.String({
         ...expiration,
-        default: DEFAULT.REFRESH_TOKEN_EXPIRATION,
+        default: DEFAULT.REFRESH_TOKEN_EXPIRATION
       })
     ),
 
@@ -88,21 +88,21 @@ export const options = Type.Object(
 
     revocationEndpoint: revocation_endpoint,
 
-    userinfoEndpoint: userinfo_endpoint,
+    userinfoEndpoint: userinfo_endpoint
   },
   {
-    $id: "fastify-token-endpoint-options",
-    description: "Options for the Fastify token-endpoint plugin",
-    title: "Token Endpoint Options",
+    $id: 'fastify-token-endpoint-options',
+    description: 'Options for the Fastify token-endpoint plugin',
+    title: 'Token Endpoint Options'
     // jsonschema2mk keeps outputting an example even if I explicitly set it to
     // an empty array, an empty string, null, undefined, etc.
     // examples: [],
   }
-);
+)
 
 export interface Options extends Static<typeof options> {
-  ajv?: Ajv;
-  isAccessTokenRevoked: IsAccessTokenRevoked;
-  onIssuedTokens: OnIssuedTokens;
-  retrieveRefreshToken: RetrieveRefreshToken;
+  ajv?: Ajv
+  isAccessTokenRevoked: IsAccessTokenRevoked
+  onIssuedTokens: OnIssuedTokens
+  retrieveRefreshToken: RetrieveRefreshToken
 }

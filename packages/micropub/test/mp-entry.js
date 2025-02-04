@@ -1,6 +1,6 @@
-import { describe, it } from "node:test";
-import assert from "node:assert";
-import { defAjv } from "@repo/stdlib/test-utils";
+import { describe, it } from 'node:test'
+import assert from 'node:assert'
+import { defAjv } from '@repo/stdlib/test-utils'
 import {
   dt_accessed,
   dt_published,
@@ -16,8 +16,8 @@ import {
   p_rsvp,
   p_summary,
   u_syndication,
-  u_url,
-} from "@jackdbd/microformats2";
+  u_url
+} from '@jackdbd/microformats2'
 import {
   access_token,
   action,
@@ -30,8 +30,8 @@ import {
   mp_syndicate_to,
   mp_visibility,
   photo,
-  video,
-} from "../lib/index.js";
+  video
+} from '../lib/index.js'
 
 const ajv = defAjv({
   schemas: [
@@ -60,76 +60,76 @@ const ajv = defAjv({
     photo,
     u_url,
     u_syndication,
-    video,
-  ],
-});
+    video
+  ]
+})
 
-const validate = ajv.compile(mp_entry);
+const validate = ajv.compile(mp_entry)
 
-describe("mp-entry", () => {
-  it("can be an empty objects, since all properties are optional", () => {
-    const valid = validate({});
+describe('mp-entry', () => {
+  it('can be an empty objects, since all properties are optional', () => {
+    const valid = validate({})
 
-    assert(valid);
-    assert(validate.errors === null);
-  });
+    assert(valid)
+    assert(validate.errors === null)
+  })
 
-  it("can have a plain test string for content", () => {
-    const valid = validate({ content: "Hello World" });
+  it('can have a plain test string for content', () => {
+    const valid = validate({ content: 'Hello World' })
 
-    assert(valid);
-    assert(validate.errors === null);
-  });
+    assert(valid)
+    assert(validate.errors === null)
+  })
 
-  it("can be a repost with HTML content", () => {
+  it('can be a repost with HTML content', () => {
     const valid = validate({
-      "repost-of": "http://othersite.example.com/permalink47",
+      'repost-of': 'http://othersite.example.com/permalink47',
       content: {
-        html: "<p>You should read this <strong>awesome</strong> article</p>",
-      },
-    });
+        html: '<p>You should read this <strong>awesome</strong> article</p>'
+      }
+    })
 
-    assert(valid);
-    assert(validate.errors === null);
-  });
+    assert(valid)
+    assert(validate.errors === null)
+  })
 
-  it("can be a note with a photo (URL)", () => {
+  it('can be a note with a photo (URL)', () => {
     const valid = validate({
-      content: "hello world",
-      category: ["foo", "bar"],
-      photo: "https://photos.example.com/592829482876343254.jpg",
-    });
+      content: 'hello world',
+      category: ['foo', 'bar'],
+      photo: 'https://photos.example.com/592829482876343254.jpg'
+    })
 
-    assert(valid);
-    assert(validate.errors === null);
-  });
+    assert(valid)
+    assert(validate.errors === null)
+  })
 
-  it("can be a note with a photo (URL + alt text)", () => {
+  it('can be a note with a photo (URL + alt text)', () => {
     const valid = validate({
-      content: "hello world",
-      category: ["foo", "bar"],
+      content: 'hello world',
+      category: ['foo', 'bar'],
       photo: {
-        alt: "A photo of something cool",
-        value: "https://photos.example.com/592829482876343254.jpg",
-      },
-    });
+        alt: 'A photo of something cool',
+        value: 'https://photos.example.com/592829482876343254.jpg'
+      }
+    })
 
-    assert(valid);
-    assert(validate.errors === null);
-  });
+    assert(valid)
+    assert(validate.errors === null)
+  })
 
-  it("can be an RSVP with two syndication targets", () => {
+  it('can be an RSVP with two syndication targets', () => {
     const valid = validate({
-      "in-reply-to":
-        "https://aaronparecki.com/2014/09/13/7/indieweb-xoxo-breakfast",
-      rsvp: "maybe",
-      "mp-syndicate-to": [
-        "https://fosstodon.org/@jackdbd",
-        "https://news.indieweb.org/en",
-      ],
-    });
+      'in-reply-to':
+        'https://aaronparecki.com/2014/09/13/7/indieweb-xoxo-breakfast',
+      rsvp: 'maybe',
+      'mp-syndicate-to': [
+        'https://fosstodon.org/@jackdbd',
+        'https://news.indieweb.org/en'
+      ]
+    })
 
-    assert(valid);
-    assert(validate.errors === null);
-  });
-});
+    assert(valid)
+    assert(validate.errors === null)
+  })
+})

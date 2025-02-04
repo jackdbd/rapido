@@ -1,43 +1,43 @@
-import type { Undelete } from "@jackdbd/fastify-micropub-endpoint";
-import type { AuthorOrCommitter } from "@jackdbd/github-contents-api";
-import { move, BASE_URL, GITHUB_TOKEN } from "@jackdbd/github-contents-api";
-import type { Publication } from "@jackdbd/micropub";
-import type { Log } from "./log.js";
-import { defWebsiteUrlToStoreLocation } from "./website-url-to-store-location.js";
+import type { Undelete } from '@jackdbd/fastify-micropub-endpoint'
+import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
+import { move, BASE_URL, GITHUB_TOKEN } from '@jackdbd/github-contents-api'
+import type { Publication } from '@jackdbd/micropub'
+import type { Log } from './log.js'
+import { defWebsiteUrlToStoreLocation } from './website-url-to-store-location.js'
 
 export interface Options {
-  base_url?: string;
-  committer: AuthorOrCommitter;
-  log?: Log;
-  owner?: string;
-  publication: Publication;
-  repo?: string;
-  token?: string;
+  base_url?: string
+  committer: AuthorOrCommitter
+  log?: Log
+  owner?: string
+  publication: Publication
+  repo?: string
+  token?: string
 }
 
 const defaults: Partial<Options> = {
   base_url: BASE_URL,
-  token: GITHUB_TOKEN,
-};
+  token: GITHUB_TOKEN
+}
 
 export const defUndelete = (options?: Options) => {
-  const config = Object.assign({}, defaults, options) as Required<Options>;
+  const config = Object.assign({}, defaults, options) as Required<Options>
 
-  const { base_url, committer, log, owner, publication, repo, token } = config;
+  const { base_url, committer, log, owner, publication, repo, token } = config
 
   const websiteUrlToStoreLocation = defWebsiteUrlToStoreLocation({
     log,
-    publication,
-  });
+    publication
+  })
 
   const undelete: Undelete = async (url) => {
-    const loc = websiteUrlToStoreLocation(url);
+    const loc = websiteUrlToStoreLocation(url)
 
     if (!loc.store_deleted) {
-      const error_description = `Cannot undelete post published at ${loc.website} because it does not specify a location for when it's deleted.`;
-      log.error(error_description);
+      const error_description = `Cannot undelete post published at ${loc.website} because it does not specify a location for when it's deleted.`
+      log.error(error_description)
       //   { status_code: 409, status_text: 'Conflict', error_description }
-      throw new Error(error_description);
+      throw new Error(error_description)
     }
 
     const result = await move({
@@ -47,18 +47,18 @@ export const defUndelete = (options?: Options) => {
       path_after: loc.store,
       owner,
       repo,
-      token,
-    });
-    console.log("=== move (undelete) result ===", result);
+      token
+    })
+    console.log('=== move (undelete) result ===', result)
 
     if (result.error) {
-      const { error_description: original } = result.error;
-      const message = `Cannot undelete post published at ${loc.website}. ${original}`;
-      throw new Error(message);
+      const { error_description: original } = result.error
+      const message = `Cannot undelete post published at ${loc.website}. ${original}`
+      throw new Error(message)
     } else {
-      return loc;
+      return loc
     }
-  };
+  }
 
-  return undelete;
-};
+  return undelete
+}

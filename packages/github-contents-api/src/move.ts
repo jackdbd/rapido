@@ -1,24 +1,24 @@
-import type { AuthorOrCommitter, SharedConfig } from "./config.js";
-import { createOrUpdate } from "./create-or-update.js";
-import { BASE_URL, REF } from "./defaults.js";
-import { hardDelete } from "./delete.js";
-import { get } from "./get.js";
+import type { AuthorOrCommitter, SharedConfig } from './config.js'
+import { createOrUpdate } from './create-or-update.js'
+import { BASE_URL, REF } from './defaults.js'
+import { hardDelete } from './delete.js'
+import { get } from './get.js'
 
 export interface MoveOptions extends SharedConfig {
-  author?: AuthorOrCommitter;
-  committer: AuthorOrCommitter;
-  path_before: string;
-  path_after: string;
-  ref?: string;
+  author?: AuthorOrCommitter
+  committer: AuthorOrCommitter
+  path_before: string
+  path_after: string
+  ref?: string
 }
 
 const defaults: Partial<MoveOptions> = {
   base_url: BASE_URL,
-  ref: REF,
-};
+  ref: REF
+}
 
 export const move = async (options: MoveOptions) => {
-  const config = Object.assign({}, defaults, options) as Required<MoveOptions>;
+  const config = Object.assign({}, defaults, options) as Required<MoveOptions>
 
   const {
     base_url,
@@ -28,9 +28,9 @@ export const move = async (options: MoveOptions) => {
     path_after,
     ref,
     repo,
-    token,
-  } = config;
-  const author = config.author || committer;
+    token
+  } = config
+  const author = config.author || committer
 
   const result_get = await get({
     base_url,
@@ -38,14 +38,14 @@ export const move = async (options: MoveOptions) => {
     repo,
     token,
     path: path_before,
-    ref,
-  });
+    ref
+  })
 
   if (result_get.error) {
-    return { error: result_get.error };
+    return { error: result_get.error }
   }
 
-  const { content, sha } = result_get.value.body;
+  const { content, sha } = result_get.value.body
 
   const result_create = await createOrUpdate({
     author,
@@ -56,13 +56,13 @@ export const move = async (options: MoveOptions) => {
     owner,
     path: path_after,
     repo,
-    token,
-  });
+    token
+  })
 
   if (result_create.error) {
-    const tip = `Make sure you can write to ${path_after}.`;
-    const error_description = `Cannot move ${path_before} to ${path_after} in repository ${owner}/${repo} on branch ${ref}. ${tip}`;
-    return { error: { ...result_create.error, error_description } };
+    const tip = `Make sure you can write to ${path_after}.`
+    const error_description = `Cannot move ${path_before} to ${path_after} in repository ${owner}/${repo} on branch ${ref}. ${tip}`
+    return { error: { ...result_create.error, error_description } }
   }
 
   const result_hard_delete = await hardDelete({
@@ -73,23 +73,23 @@ export const move = async (options: MoveOptions) => {
     path: path_before,
     repo,
     sha,
-    token,
-  });
+    token
+  })
 
   if (result_hard_delete.error) {
-    return { error: result_hard_delete.error };
+    return { error: result_hard_delete.error }
   }
 
   const messages = [
     result_create.value.summary,
-    result_hard_delete.value.summary,
-  ];
+    result_hard_delete.value.summary
+  ]
 
   return {
     value: {
-      summary: messages.join("; "),
+      summary: messages.join('; '),
       status_code: 200,
-      status_text: "Success",
-    },
-  };
-};
+      status_text: 'Success'
+    }
+  }
+}

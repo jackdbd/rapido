@@ -1,8 +1,8 @@
-import seedrandom from "seedrandom";
+import seedrandom from 'seedrandom'
 
 export interface Config {
-  len: number;
-  seed?: string;
+  len: number
+  seed?: string
 }
 
 /**
@@ -22,21 +22,21 @@ export interface Config {
  * @see [Online PKCE Generator Tool](https://tonyxu-io.github.io/pkce-generator/)
  */
 export const codeVerifier = (config: Config) => {
-  const { len, seed } = config;
+  const { len, seed } = config
 
-  const rng = seedrandom(seed);
+  const rng = seedrandom(seed)
 
   // The code verifier will be part of the URL, so we need to use characters
   // that can be used in a URI (unreserved characters).
   // https://datatracker.ietf.org/doc/html/rfc3986#section-2.3
   const charset =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~'
 
-  let str = "";
+  let str = ''
   for (let i = 0; i < len; i++) {
-    const idx = Math.floor(rng() * charset.length);
-    str += charset[idx];
+    const idx = Math.floor(rng() * charset.length)
+    str += charset[idx]
   }
 
-  return str;
-};
+  return str
+}

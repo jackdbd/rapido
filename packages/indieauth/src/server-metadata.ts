@@ -1,5 +1,5 @@
-import canonicalUrl from "@jackdbd/canonical-url";
-import type { ServerMetadata } from "./schemas.js";
+import canonicalUrl from '@jackdbd/canonical-url'
+import type { ServerMetadata } from './schemas.js'
 
 /**
  * Performs IndieAuth metadata discovery.
@@ -12,27 +12,27 @@ import type { ServerMetadata } from "./schemas.js";
  * @see [OAuth 2.0 Authorization Server Metadata](https://www.rfc-editor.org/rfc/rfc8414)
  */
 export const serverMetadata = async (metadata_endpoint: string) => {
-  const url = canonicalUrl(metadata_endpoint);
+  const url = canonicalUrl(metadata_endpoint)
 
-  let response: Response;
+  let response: Response
   try {
     response = await fetch(url, {
-      method: "GET",
-      headers: { Accept: "application/json" },
-    });
+      method: 'GET',
+      headers: { Accept: 'application/json' }
+    })
   } catch (ex: any) {
-    return { error: new Error(`Failed to fetch ${url}: ${ex.message}`) };
+    return { error: new Error(`Failed to fetch ${url}: ${ex.message}`) }
   }
 
   if (!response.ok) {
-    const details = `${response.statusText} (${response.status})`;
-    return { error: new Error(`Failed to fetch ${url}: ${details}`) };
+    const details = `${response.statusText} (${response.status})`
+    return { error: new Error(`Failed to fetch ${url}: ${details}`) }
   }
 
   try {
-    const metadata: ServerMetadata = await response.json();
-    return { value: metadata };
+    const metadata: ServerMetadata = await response.json()
+    return { value: metadata }
   } catch (ex: any) {
-    return { error: new Error(`Failed to parse JSON response: ${ex.message}`) };
+    return { error: new Error(`Failed to parse JSON response: ${ex.message}`) }
   }
-};
+}

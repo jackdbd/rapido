@@ -1,27 +1,27 @@
-import formbody from "@fastify/formbody";
-import responseValidation from "@fastify/response-validation";
-import { error_response } from "@jackdbd/oauth2";
+import formbody from '@fastify/formbody'
+import responseValidation from '@fastify/response-validation'
+import { error_response } from '@jackdbd/oauth2'
 import {
   InvalidRequestError,
-  ServerError,
-} from "@jackdbd/oauth2-error-responses";
-import { conformResult } from "@jackdbd/schema-validators";
-import { Type } from "@sinclair/typebox";
-import { Ajv, type Plugin as AjvPlugin } from "ajv";
-import addFormats from "ajv-formats";
-import type { FastifyPluginCallback } from "fastify";
-import fp from "fastify-plugin";
+  ServerError
+} from '@jackdbd/oauth2-error-responses'
+import { conformResult } from '@jackdbd/schema-validators'
+import { Type } from '@sinclair/typebox'
+import { Ajv, type Plugin as AjvPlugin } from 'ajv'
+import addFormats from 'ajv-formats'
+import type { FastifyPluginCallback } from 'fastify'
+import fp from 'fastify-plugin'
 
 // import { defRedirectWhenNotAuthenticated } from '../../lib/fastify-hooks/index.js'
-import { DEFAULT, NAME } from "./constants.js";
-import { defTokenPost } from "./routes/token-post.js";
+import { DEFAULT, NAME } from './constants.js'
+import { defTokenPost } from './routes/token-post.js'
 import {
   access_token_request_body,
   access_token_response_body_success,
   options as options_schema,
   refresh_request_body,
-  type Options,
-} from "./schemas/index.js";
+  type Options
+} from './schemas/index.js'
 
 export {
   access_token_props,
@@ -36,8 +36,8 @@ export {
   refresh_token_immutable_record,
   refresh_token_mutable_record,
   refresh_request_body,
-  retrieveRefreshToken,
-} from "./schemas/index.js";
+  retrieveRefreshToken
+} from './schemas/index.js'
 export type {
   AccessTokenProps,
   AccessTokenImmutableRecord,
@@ -51,16 +51,16 @@ export type {
   RefreshTokenProps,
   RefreshTokenImmutableRecord,
   RefreshTokenMutableRecord,
-  RetrieveRefreshToken,
-} from "./schemas/index.js";
+  RetrieveRefreshToken
+} from './schemas/index.js'
 
 const defaults = {
   accessTokenExpiration: DEFAULT.ACCESS_TOKEN_EXPIRATION,
   includeErrorDescription: DEFAULT.INCLUDE_ERROR_DESCRIPTION,
   logPrefix: DEFAULT.LOG_PREFIX,
   refreshTokenExpiration: DEFAULT.REFRESH_TOKEN_EXPIRATION,
-  reportAllAjvErrors: DEFAULT.REPORT_ALL_AJV_ERRORS,
-};
+  reportAllAjvErrors: DEFAULT.REPORT_ALL_AJV_ERRORS
+}
 
 /**
  * Adds an IndieAuth Token Endpoint to a Fastify server.
@@ -70,28 +70,28 @@ const tokenEndpoint: FastifyPluginCallback<Options> = (
   options,
   done
 ) => {
-  const config = Object.assign({}, defaults, options);
+  const config = Object.assign({}, defaults, options)
 
-  let ajv: Ajv;
+  let ajv: Ajv
   if (config.ajv) {
-    ajv = config.ajv;
+    ajv = config.ajv
   } else {
     // I have no idea why I have to do this to make TypeScript happy.
     // In JavaScript, Ajv and addFormats can be imported without any of this mess.
-    const addFormatsPlugin = addFormats as any as AjvPlugin<string[]>;
+    const addFormatsPlugin = addFormats as any as AjvPlugin<string[]>
     ajv = addFormatsPlugin(
       new Ajv({ allErrors: config.reportAllAjvErrors, schemas: [] }),
-      ["email", "uri"]
-    );
+      ['email', 'uri']
+    )
   }
 
   const { error, value } = conformResult(
     { ajv, schema: options_schema, data: config },
-    { basePath: "token-endpoint-options" }
-  );
+    { basePath: 'token-endpoint-options' }
+  )
 
   if (error) {
-    return done(error);
+    return done(error)
   }
 
   const {
@@ -106,39 +106,39 @@ const tokenEndpoint: FastifyPluginCallback<Options> = (
     refreshTokenExpiration,
     retrieveRefreshToken,
     revocationEndpoint,
-    userinfoEndpoint,
-  } = value.validated as Required<Options>;
+    userinfoEndpoint
+  } = value.validated as Required<Options>
 
   fastify.log.debug(
     `${logPrefix}access token expiration: ${accessTokenExpiration}`
-  );
+  )
   fastify.log.debug(
     `${logPrefix}refresh token expiration: ${refreshTokenExpiration}`
-  );
+  )
 
   // === PLUGINS ============================================================ //
-  fastify.register(formbody);
+  fastify.register(formbody)
   fastify.log.debug(
     `${logPrefix}registered plugin: formbody (for parsing application/x-www-form-urlencoded)`
-  );
+  )
 
-  if (process.env.NODE_ENV === "development") {
-    fastify.register(responseValidation);
-    fastify.log.debug(`${logPrefix}registered plugin: response-validation`);
+  if (process.env.NODE_ENV === 'development') {
+    fastify.register(responseValidation)
+    fastify.log.debug(`${logPrefix}registered plugin: response-validation`)
   }
 
   // === DECORATORS ========================================================= //
 
   // === HOOKS ============================================================== //
-  fastify.addHook("onRoute", (routeOptions) => {
+  fastify.addHook('onRoute', (routeOptions) => {
     fastify.log.debug(
       `${logPrefix}registered route ${routeOptions.method} ${routeOptions.url}`
-    );
-  });
+    )
+  })
 
   // === ROUTES ============================================================= //
   fastify.post(
-    "/token",
+    '/token',
     {
       preHandler: function (_request, _reply, done) {
         // const { grant_type } = request.body
@@ -152,16 +152,16 @@ const tokenEndpoint: FastifyPluginCallback<Options> = (
         // TODO: do NOT redirect here. This is an API endpoint! A redirect
         // might be ok for browser clients, but not for API clients (e.g. Bruno).
         // }
-        done();
+        done()
       },
       schema: {
         body: Type.Union([access_token_request_body, refresh_request_body]),
         response: {
           200: access_token_response_body_success,
-          "4xx": error_response,
-          "5xx": error_response,
-        },
-      },
+          '4xx': error_response,
+          '5xx': error_response
+        }
+      }
     },
     defTokenPost({
       accessTokenExpiration,
@@ -175,12 +175,12 @@ const tokenEndpoint: FastifyPluginCallback<Options> = (
       refreshTokenExpiration,
       retrieveRefreshToken,
       revocationEndpoint,
-      userinfoEndpoint,
+      userinfoEndpoint
     })
-  );
+  )
 
   fastify.setErrorHandler((error, request, reply) => {
-    const code = error.statusCode;
+    const code = error.statusCode
 
     // Think about including these data error_description:
     // - some JWT claims (e.g. me, scope)
@@ -193,23 +193,23 @@ const tokenEndpoint: FastifyPluginCallback<Options> = (
     if (code && code >= 400 && code < 500) {
       request.log.warn(
         `${logPrefix}client error catched by error handler: ${error.message}`
-      );
+      )
     } else {
       request.log.error(
         `${logPrefix}server error catched by error handler: ${error.message}`
-      );
+      )
     }
 
     if (error.validation && error.validationContext) {
       if (code && code >= 400 && code < 500) {
         const messages = error.validation.map((ve) => {
-          return `${error.validationContext}${ve.instancePath} ${ve.message}`;
-        });
-        const error_description = messages.join("; ");
-        const err = new InvalidRequestError({ error_description });
+          return `${error.validationContext}${ve.instancePath} ${ve.message}`
+        })
+        const error_description = messages.join('; ')
+        const err = new InvalidRequestError({ error_description })
         return reply
           .code(err.statusCode)
-          .send(err.payload({ include_error_description }));
+          .send(err.payload({ include_error_description }))
       }
     }
 
@@ -218,18 +218,18 @@ const tokenEndpoint: FastifyPluginCallback<Options> = (
     // @fastify/under-pressure).
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses
 
-    const error_description = error.message;
-    const err = new ServerError({ error_description });
+    const error_description = error.message
+    const err = new ServerError({ error_description })
     return reply
       .code(err.statusCode)
-      .send(err.payload({ include_error_description }));
-  });
+      .send(err.payload({ include_error_description }))
+  })
 
-  done();
-};
+  done()
+}
 
 export default fp(tokenEndpoint, {
-  fastify: "5.x",
+  fastify: '5.x',
   name: NAME,
-  encapsulate: true,
-});
+  encapsulate: true
+})

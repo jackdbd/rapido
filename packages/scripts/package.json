@@ -13,6 +13,7 @@
     "build:ts:watch": "tsc -p tsconfig.json --watch",
     "clean": "rimraf lib/ tsconfig.tsbuildinfo",
     "dev": "tsc -p tsconfig.json --watch",
+    "lint": "eslint --config ../../eslint.config.mjs --fix",
     "pub": "echo '@repo/scripts is a private package. Skip publishing it.'"
   },
   "dependencies": {

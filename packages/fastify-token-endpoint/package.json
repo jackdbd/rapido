@@ -57,6 +57,7 @@
     "build:ts:watch": "tsc -p tsconfig.json --watch",
     "clean": "rimraf lib/ tsconfig.tsbuildinfo",
     "dev": "run-p build:ts:watch test:watch",
+    "lint": "eslint --config ../../eslint.config.mjs --fix",
     "publint": "publint run .",
     "size": "pkg-size ./lib --sort-by=brotli --ignore-files {*.d.ts,*.map}",
     "test": "node --test --experimental-test-coverage",

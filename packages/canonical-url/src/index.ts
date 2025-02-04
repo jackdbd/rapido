@@ -15,13 +15,13 @@ export default function canonicalUrl(str: string, base?: string) {
   // and appending the path /. For example, if the user enters example.com, the
   // client transforms it into http://example.com/ before beginning discovery.
   if (!base) {
-    if (!str.includes("http://") && !str.includes("https://")) {
-      return new URL(`https://${str.toLowerCase()}`).href;
+    if (!str.includes('http://') && !str.includes('https://')) {
+      return new URL(`https://${str.toLowerCase()}`).href
     } else {
-      return new URL(str.toLowerCase()).href;
+      return new URL(str.toLowerCase()).href
     }
   }
 
-  const base_href: string = canonicalUrl(base);
-  return new URL(str.toLowerCase(), base_href).href;
+  const base_href: string = canonicalUrl(base)
+  return new URL(str.toLowerCase(), base_href).href
 }

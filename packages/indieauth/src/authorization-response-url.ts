@@ -1,9 +1,9 @@
-import crypto from "node:crypto";
+import crypto from 'node:crypto'
 
 export interface Config {
-  iss?: string;
-  redirect_uri: string;
-  state: string;
+  iss?: string
+  redirect_uri: string
+  state: string
 }
 
 // type AuthResponseQuery = Omit<Config, 'redirect_uri'>
@@ -31,16 +31,16 @@ export interface Config {
  * @see [Authorization Response - The OAuth 2.0 Authorization Framework (RFC 6749)](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1.2)
  */
 export const authorizationResponseUrl = (config: Config) => {
-  const { iss, redirect_uri, state } = config;
+  const { iss, redirect_uri, state } = config
 
   // 16 bytes of binary data => 32 hexadecimal characters
-  const code = crypto.randomBytes(16).toString("hex");
+  const code = crypto.randomBytes(16).toString('hex')
 
-  const query = { code, iss, state };
+  const query = { code, iss, state }
 
   const qs = Object.entries(query).reduce((acc, [key, value]) => {
-    return value ? `${acc}&${key}=${encodeURIComponent(value)}` : acc;
-  }, "");
+    return value ? `${acc}&${key}=${encodeURIComponent(value)}` : acc
+  }, '')
 
-  return { redirect_url: `${redirect_uri}?${qs}`, code, iss, state };
-};
+  return { redirect_url: `${redirect_uri}?${qs}`, code, iss, state }
+}

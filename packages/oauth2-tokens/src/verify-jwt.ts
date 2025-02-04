@@ -1,12 +1,12 @@
-import * as jose from "jose";
-import type { JWKSPublicURL } from "./schemas/index.js";
+import * as jose from 'jose'
+import type { JWKSPublicURL } from './schemas/index.js'
 
 export interface VerifyConfig {
-  issuer: string;
+  issuer: string
   // jwks_url: URL
-  jwks_url: JWKSPublicURL;
-  jwt: string;
-  max_token_age?: string;
+  jwks_url: JWKSPublicURL
+  jwt: string
+  max_token_age?: string
 }
 
 /**
@@ -15,18 +15,18 @@ export interface VerifyConfig {
 export const verify = async <P extends jose.JWTPayload = jose.JWTPayload>(
   config: VerifyConfig
 ) => {
-  const { issuer, jwks_url, jwt, max_token_age } = config;
+  const { issuer, jwks_url, jwt, max_token_age } = config
 
-  const JWKS = jose.createRemoteJWKSet(jwks_url);
+  const JWKS = jose.createRemoteJWKSet(jwks_url)
 
   try {
     const verify_result = await jose.jwtVerify(jwt, JWKS, {
       issuer,
       maxTokenAge: max_token_age,
-      requiredClaims: ["exp", "iat", "iss", "jti", "me", "scope"],
-    });
-    return { value: verify_result.payload as P };
+      requiredClaims: ['exp', 'iat', 'iss', 'jti', 'me', 'scope']
+    })
+    return { value: verify_result.payload as P }
   } catch (err) {
-    return { error: err as Error };
+    return { error: err as Error }
   }
-};
+}

@@ -1,6 +1,6 @@
-import { issuer, me_after_url_canonicalization } from "@jackdbd/indieauth";
-import { authorization_code, scope, state } from "@jackdbd/oauth2";
-import { Static, Type } from "@sinclair/typebox";
+import { issuer, me_after_url_canonicalization } from '@jackdbd/indieauth'
+import { authorization_code, scope, state } from '@jackdbd/oauth2'
+import { Static, Type } from '@sinclair/typebox'
 
 /**
  * Query string built by the authorization endpoint.
@@ -27,17 +27,17 @@ export const authorization_response_querystring = Type.Object(
      * Parameter 'state' set by the client in the request. It MUST be set to the
      * exact value that the client set in the request.
      */
-    state,
+    state
   },
   {
-    title: "Authorization Response Query String",
-    description: `Query string built by the authorization endpoint. If the user approves the request, the authorization endpoint generates an authorization code and builds the redirect back to the client.`,
+    title: 'Authorization Response Query String',
+    description: `Query string built by the authorization endpoint. If the user approves the request, the authorization endpoint generates an authorization code and builds the redirect back to the client.`
   }
-);
+)
 
 export type AuthorizationResponseQuerystring = Static<
   typeof authorization_response_querystring
->;
+>
 
 /**
  * Response body to a successful Authorization Request.
@@ -50,17 +50,17 @@ export type AuthorizationResponseQuerystring = Static<
  */
 export const authorization_response_body_success = Type.Object({
   me: me_after_url_canonicalization,
-  scope: Type.Optional(scope),
-});
+  scope: Type.Optional(scope)
+})
 
 export type AuthorizationResponseBodySuccess = Static<
   typeof authorization_response_body_success
->;
+>
 
 export const profile_url_response_body_success = Type.Object({
-  me: me_after_url_canonicalization,
-});
+  me: me_after_url_canonicalization
+})
 
 export type ProfileUrlResponseBodySuccess = Static<
   typeof profile_url_response_body_success
->;
+>

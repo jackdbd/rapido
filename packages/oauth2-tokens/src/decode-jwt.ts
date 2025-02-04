@@ -1,4 +1,4 @@
-import * as jose from "jose";
+import * as jose from 'jose'
 
 /**
  * Decodes a signed JSON Web Token.
@@ -10,9 +10,9 @@ export const safeDecode = async <P extends jose.JWTPayload = jose.JWTPayload>(
   jwt: string
 ) => {
   try {
-    const value = jose.decodeJwt(jwt) as P;
-    return { value };
+    const value = jose.decodeJwt(jwt) as P
+    return { value }
   } catch (err) {
-    return { error: err as Error };
+    return { error: err as Error }
   }
-};
+}

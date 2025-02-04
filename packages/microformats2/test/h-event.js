@@ -1,6 +1,6 @@
-import { describe, it } from "node:test";
-import assert from "node:assert";
-import { defAjv } from "@repo/stdlib/test-utils";
+import { describe, it } from 'node:test'
+import assert from 'node:assert'
+import { defAjv } from '@repo/stdlib/test-utils'
 import {
   dt_duration,
   dt_end,
@@ -19,8 +19,8 @@ import {
   p_longitude,
   p_name,
   p_summary,
-  u_url,
-} from "../lib/index.js";
+  u_url
+} from '../lib/index.js'
 
 const ajv = defAjv({
   schemas: [
@@ -40,38 +40,38 @@ const ajv = defAjv({
     p_longitude,
     p_name,
     p_summary,
-    u_url,
-  ],
-});
+    u_url
+  ]
+})
 
-const validate = ajv.compile(h_event);
+const validate = ajv.compile(h_event)
 
-describe("h_event", () => {
-  it("can be an event that has start, end, location, name, summary", () => {
+describe('h_event', () => {
+  it('can be an event that has start, end, location, name, summary', () => {
     const valid = validate({
-      type: "event",
-      name: "Microformats Meetup",
-      start: "2013-06-30 12:00:00-07:00",
-      end: "2013-06-30 18:00:00-07:00",
-      location: "Some bar in SF",
-      summary: "Get together and discuss all things microformats-related.",
-    });
+      type: 'event',
+      name: 'Microformats Meetup',
+      start: '2013-06-30 12:00:00-07:00',
+      end: '2013-06-30 18:00:00-07:00',
+      location: 'Some bar in SF',
+      summary: 'Get together and discuss all things microformats-related.'
+    })
 
-    assert(valid);
-    assert(validate.errors === null);
-  });
+    assert(valid)
+    assert(validate.errors === null)
+  })
 
-  it("can have dates in the YYYY-MM-DD format", () => {
+  it('can have dates in the YYYY-MM-DD format', () => {
     const x = {
-      type: "event",
-      name: "Microformats Meetup",
-      start: "2013-06-30",
-      location: "Some bar in SF",
-    };
+      type: 'event',
+      name: 'Microformats Meetup',
+      start: '2013-06-30',
+      location: 'Some bar in SF'
+    }
 
-    const valid = validate(x);
+    const valid = validate(x)
 
-    assert(valid);
-    assert(validate.errors === null);
-  });
-});
+    assert(valid)
+    assert(validate.errors === null)
+  })
+})
