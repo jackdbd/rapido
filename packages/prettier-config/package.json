@@ -1,0 +1,13 @@
+{
+  "name": "@repo/prettier-config",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./prettier.config.js"
+  },
+  "scripts": {
+    "pub": "echo '@repo/prettier-config is a private package. Skip publishing it.'"
+  },
+  "devDependencies": {}
+}

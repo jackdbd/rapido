@@ -1,4 +1,19 @@
 {
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.formatOnSave": true,
+  "eslint.debug": false,
+  "eslint.format.enable": true,
+  "eslint.validate": ["javascript", "typescript", "typescriptreact"],
+  "[javascript]": {
+    // "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
   "files.associations": {
     "**/typescript-config/*.json": "jsonc",
     "tsconfig*.json": "jsonc",
@@ -9,6 +24,9 @@
     "**/.devenv/": true,
     "**/.direnv/": true
   },
+  "prettier.enable": true,
+  "prettier.configPath": "packages/prettier-config/prettier.config.js",
+  "prettier.requireConfig": true,
   "search.exclude": {
     "**/.devenv/": true,
     "**/.direnv/": true
