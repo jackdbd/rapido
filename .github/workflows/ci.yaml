@@ -46,6 +46,7 @@ jobs:
         run: npm install fastify@${{ matrix.fastify }}
 
       - run: npm run build:ts
+      - run: npm run vendor
       
       - run: npx turbo test:ci --filter @repo/error-handlers
       - run: npx turbo test:ci --filter @jackdbd/canonical-url
@@ -63,8 +64,8 @@ jobs:
       - run: npx turbo test:ci --filter @jackdbd/micropub
       - run: npx turbo test:ci --filter @jackdbd/github-contents-api
       - run: npx turbo test:ci --filter @jackdbd/fastify-webc
-      - run: npx turbo test:ci --filter @jackdbd/fastify-authorization-endpoint
-      - run: npx turbo test:ci --filter @jackdbd/fastify-introspection-endpoint
+      - run: npm run test:ci -w @jackdbd/fastify-authorization-endpoint
+      - run: npm run test:ci -w @jackdbd/fastify-introspection-endpoint
       - run: npx turbo test:ci --filter @jackdbd/fastify-revocation-endpoint
       - run: npx turbo test:ci --filter @jackdbd/fastify-token-endpoint
       - run: npx turbo test:ci --filter @jackdbd/fastify-userinfo-endpoint
