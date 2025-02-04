@@ -13,7 +13,7 @@ const config = [
   // https://typescript-eslint.io/getting-started
   ...tseslint.configs.recommended,
   {
-    ignores: ['dist/**'],
+    ignores: ['**/dist/**', '**/lib/**'],
     languageOptions: {
       globals: {
         ...globals.node
