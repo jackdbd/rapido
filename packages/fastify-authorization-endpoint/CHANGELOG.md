@@ -1,5 +1,11 @@
 # @jackdbd/fastify-authorization-endpoint
 
+## 1.3.0-canary.8
+
+### Minor Changes
+
+- 0093985: Vendorize internal package `@repo/error-handlers`.
+
 ## 1.3.0-canary.7
 
 ### Minor Changes
