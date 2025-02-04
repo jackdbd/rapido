@@ -1,5 +1,18 @@
 # @jackdbd/micropub
 
+## 0.2.0-canary.5
+
+### Minor Changes
+
+- d1bb983: Add `sideEffects: false` in package.json (for tree shaking)
+
+### Patch Changes
+
+- 6ca2d72: Lint all packages.
+- Updated dependencies [d1bb983]
+- Updated dependencies [6ca2d72]
+  - @jackdbd/microformats2@0.2.0-canary.4
+
 ## 0.2.0-canary.4
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @jackdbd/schema-validators
 
+## 0.2.0-canary.7
+
+### Minor Changes
+
+- d1bb983: Add `sideEffects: false` in package.json (for tree shaking)
+
+### Patch Changes
+
+- 6ca2d72: Lint all packages.
+
 ## 0.2.0-canary.6
 
 ### Patch Changes
