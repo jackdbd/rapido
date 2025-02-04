@@ -1,5 +1,25 @@
 # Change Log
 
+## 1.3.0-canary.10
+
+### Minor Changes
+
+- d1bb983: Add `sideEffects: false` in package.json (for tree shaking)
+
+### Patch Changes
+
+- 6ca2d72: Lint all packages.
+- Updated dependencies [d1bb983]
+- Updated dependencies [6ca2d72]
+  - @jackdbd/oauth2-error-responses@0.2.0-canary.4
+  - @jackdbd/schema-validators@0.2.0-canary.7
+  - @jackdbd/canonical-url@0.2.0-canary.4
+  - @jackdbd/fastify-hooks@0.2.0-canary.7
+  - @jackdbd/fastify-utils@0.2.0-canary.6
+  - @jackdbd/oauth2-tokens@0.2.0-canary.8
+  - @jackdbd/indieauth@0.2.0-canary.4
+  - @jackdbd/oauth2@0.2.0-canary.3
+
 ## 1.3.0-canary.9
 
 ### Minor Changes

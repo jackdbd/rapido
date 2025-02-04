@@ -1,5 +1,24 @@
 # @jackdbd/fastify-authorization-endpoint
 
+## 1.3.0-canary.7
+
+### Minor Changes
+
+- d1bb983: Add `sideEffects: false` in package.json (for tree shaking)
+
+### Patch Changes
+
+- 6ca2d72: Lint all packages.
+- Updated dependencies [d1bb983]
+- Updated dependencies [6ca2d72]
+  - @jackdbd/oauth2-error-responses@0.2.0-canary.4
+  - @jackdbd/schema-validators@0.2.0-canary.7
+  - @jackdbd/canonical-url@0.2.0-canary.4
+  - @jackdbd/fastify-webc@0.2.0-canary.3
+  - @jackdbd/indieauth@0.2.0-canary.4
+  - @jackdbd/oauth2@0.2.0-canary.3
+  - @jackdbd/pkce@0.2.0-canary.3
+
 ## 1.3.0-canary.6
 
 ### Minor Changes

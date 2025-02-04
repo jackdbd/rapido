@@ -30,7 +30,13 @@
     "@repo/scripts": "0.1.1",
     "@repo/stdlib": "0.1.1",
     "@repo/typescript-config": "0.1.1",
-    "@jackdbd/unwrap": "0.2.0-canary.2"
+    "@jackdbd/unwrap": "0.2.0-canary.2",
+    "@repo/prettier-config": "0.1.0"
   },
-  "changesets": ["olive-birds-check"]
+  "changesets": [
+    "dull-bugs-bathe",
+    "few-cooks-remember",
+    "olive-birds-check",
+    "silent-rice-check"
+  ]
 }
