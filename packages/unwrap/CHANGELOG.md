@@ -1,5 +1,15 @@
 # @jackdbd/unwrap
 
+## 0.2.0-canary.3
+
+### Minor Changes
+
+- d1bb983: Add `sideEffects: false` in package.json (for tree shaking)
+
+### Patch Changes
+
+- 6ca2d72: Lint all packages.
+
 ## 0.2.0-canary.2
 
 ### Patch Changes
