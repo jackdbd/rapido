@@ -1,5 +1,11 @@
 # @jackdbd/fastify-introspection-endpoint
 
+## 1.3.0-canary.10
+
+### Minor Changes
+
+- 0093985: Vendorize internal package `@repo/error-handlers`.
+
 ## 1.3.0-canary.9
 
 ### Minor Changes
