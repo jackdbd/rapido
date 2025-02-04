@@ -57,7 +57,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "run-s 'build:ts' 'build:readme' 'copy:webc' --print-label",
+    "build": "run-s 'build:ts' 'vendor' 'build:readme' 'copy:webc' --print-label",
     "build:readme": "node ../scripts/dist/readme.js --package fastify-authorization-endpoint",
     "build:ts": "tsc -p tsconfig.json",
     "build:ts:watch": "tsc -p tsconfig.json --watch",
@@ -69,7 +69,11 @@
     "size": "pkg-size ./lib --sort-by=brotli --ignore-files {*.d.ts,*.map}",
     "test": "node --test --experimental-test-coverage",
     "test:ci": "node --test --test-reporter=@reporters/github --test-reporter-destination=stdout --test-reporter=spec --test-reporter-destination=stdout",
-    "test:watch": "node --test --watch"
+    "test:watch": "node --test --watch",
+    "vendor": "run-s 'vendor:build' 'vendor:copy' 'vendor:adjust-imports' --print-label",
+    "vendor:build": "npm run build:ts -w @repo/error-handlers",
+    "vendor:copy": "rsync -a ../error-handlers/lib/* lib/error-handlers/",
+    "vendor:adjust-imports": "sd '@repo/error-handlers' './error-handlers/index.js' ./lib/index.js"
   },
   "dependencies": {
     "@fastify/formbody": "^8.0.2",
@@ -93,5 +97,7 @@
   "peerDependencies": {
     "fastify": ">=5.0.0"
   },
-  "devDependencies": {}
+  "internalPackages": {
+    "@repo/error-handlers": "*"
+  }
 }

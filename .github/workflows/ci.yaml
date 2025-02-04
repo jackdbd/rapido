@@ -47,6 +47,7 @@ jobs:
 
       - run: npm run build:ts
       
+      - run: npx turbo test:ci --filter @repo/error-handlers
       - run: npx turbo test:ci --filter @jackdbd/canonical-url
       - run: npx turbo test:ci --filter @jackdbd/relmeauth
       - run: npx turbo test:ci --filter @jackdbd/pkce

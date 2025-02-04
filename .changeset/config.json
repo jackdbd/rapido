@@ -7,6 +7,7 @@
   "fixed": [],
   "ignore": [
     "@repo/demo-app",
+    "@repo/error-handlers",
     "@repo/prettier-config",
     "@repo/scripts",
     "@repo/stdlib",

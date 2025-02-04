@@ -7,6 +7,9 @@
       "path": "./packages/stdlib/tsconfig.json"
     },
     {
+      "path": "./packages/error-handlers/tsconfig.json"
+    },
+    {
       "path": "./packages/schema-validators/tsconfig.json"
     },
     {
