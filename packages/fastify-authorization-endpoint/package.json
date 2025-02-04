@@ -64,6 +64,7 @@
     "clean": "rimraf lib/ tsconfig.tsbuildinfo",
     "copy:webc": "cp -r src/webc/templates lib/webc/templates && cp -r src/webc/components lib/webc/components",
     "dev": "run-p build:ts:watch test:watch",
+    "lint": "eslint --config ../../eslint.config.mjs --fix",
     "publint": "publint run .",
     "size": "pkg-size ./lib --sort-by=brotli --ignore-files {*.d.ts,*.map}",
     "test": "node --test --experimental-test-coverage",

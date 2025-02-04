@@ -1,5 +1,5 @@
-import { Static, Type } from "@sinclair/typebox";
-import { jwk_public, jwk_private } from "./jwk.js";
+import { Static, Type } from '@sinclair/typebox'
+import { jwk_public, jwk_private } from './jwk.js'
 
 export const jwks_url = Type.Object(
   {
@@ -15,28 +15,28 @@ export const jwks_url = Type.Object(
     search: Type.String(),
     searchParams: Type.Any(),
     username: Type.String(),
-    toJSON: Type.Any(),
+    toJSON: Type.Any()
   },
   {
     additionalProperties: true,
     description: `URL where the public JSON Web Key Set is hosted.`,
-    title: "JWKS public URL",
+    title: 'JWKS public URL'
   }
-);
+)
 
-export type JWKSPublicURL = Static<typeof jwks_url>;
+export type JWKSPublicURL = Static<typeof jwks_url>
 
 export const jwks_public = Type.Object({
-  keys: Type.Array(jwk_public),
-});
+  keys: Type.Array(jwk_public)
+})
 
-export type JWKSPublic = Static<typeof jwks_public>;
+export type JWKSPublic = Static<typeof jwks_public>
 
 export const jwks_private = Type.Object(
   {
-    keys: Type.Array(jwk_private),
+    keys: Type.Array(jwk_private)
   },
-  { description: "Private JSON Web Key Set" }
-);
+  { description: 'Private JSON Web Key Set' }
+)
 
-export type JWKSPrivate = Static<typeof jwks_private>;
+export type JWKSPrivate = Static<typeof jwks_private>

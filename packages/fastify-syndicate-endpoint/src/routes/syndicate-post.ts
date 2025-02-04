@@ -1,30 +1,30 @@
-import { normalizeJf2 } from "@jackdbd/micropub";
-import type { Syndicator } from "@jackdbd/micropub";
+import { normalizeJf2 } from '@jackdbd/micropub'
+import type { Syndicator } from '@jackdbd/micropub'
 import {
   InvalidRequestError,
-  ServerError,
-} from "@jackdbd/oauth2-error-responses";
-import { Jf2 } from "@paulrobertlloyd/mf2tojf2";
-import type { RouteHandler } from "fastify";
-import { XMLParser } from "fast-xml-parser";
+  ServerError
+} from '@jackdbd/oauth2-error-responses'
+import { Jf2 } from '@paulrobertlloyd/mf2tojf2'
+import type { RouteHandler } from 'fastify'
+import { XMLParser } from 'fast-xml-parser'
 
 import type {
   RetrieveContent,
   Update,
   UpdatePatch,
-  WebsiteUrlToStoreLocation,
-} from "../schemas/index.js";
+  WebsiteUrlToStoreLocation
+} from '../schemas/index.js'
 
 export interface Config {
-  get: RetrieveContent;
-  includeErrorDescription: boolean;
-  logPrefix: string;
-  publishedUrlToStorageLocation: WebsiteUrlToStoreLocation;
-  syndicators: { [uid: string]: Syndicator };
-  update: Update;
+  get: RetrieveContent
+  includeErrorDescription: boolean
+  logPrefix: string
+  publishedUrlToStorageLocation: WebsiteUrlToStoreLocation
+  syndicators: { [uid: string]: Syndicator }
+  update: Update
 }
 
-const parser = new XMLParser();
+const parser = new XMLParser()
 
 export const defSyndicatePost = (config: Config) => {
   const {
@@ -32,26 +32,26 @@ export const defSyndicatePost = (config: Config) => {
     includeErrorDescription: include_error_description,
     logPrefix,
     syndicators,
-    update,
-  } = config;
+    update
+  } = config
 
   const syndicatePost: RouteHandler = async (request, reply) => {
     // TODO: decide what request body to expect. For example:
     // 1. a URL pointing to a single post (e.g. a single note)
     // 2. a URL pointing to a feed (e.g. all notes)
-    const { feed } = request.body as any;
+    const { feed } = request.body as any
     // If it's a feed, we need to fetch it with a GET. If it's a single post, we
     // can simply check it exists using method: 'HEAD' (and then retrieve it
     // from the store).
 
-    const response = await fetch(feed, { method: "GET" });
+    const response = await fetch(feed, { method: 'GET' })
 
-    const xml = await response.text();
+    const xml = await response.text()
 
-    const obj = parser.parse(xml);
+    const obj = parser.parse(xml)
 
-    const feed_title = obj.feed.title;
-    request.log.debug(`${logPrefix}Feed title: ${feed_title}`);
+    const feed_title = obj.feed.title
+    request.log.debug(`${logPrefix}Feed title: ${feed_title}`)
     // const me_url = obj.feed.entry.id
 
     // TODO: do this for each post in the feed
@@ -74,33 +74,33 @@ export const defSyndicatePost = (config: Config) => {
     // Testing a note
     const loc = {
       // store: 'notes/test-note.md',
-      store: "notes/kitesurfing-at-el-medano.md",
+      store: 'notes/kitesurfing-at-el-medano.md',
       // website: 'https://www.giacomodebidda.com/notes/test-note/',
-      website: "https://www.giacomodebidda.com/notes/kitesurfing-at-el-medano/",
-    };
+      website: 'https://www.giacomodebidda.com/notes/kitesurfing-at-el-medano/'
+    }
     // ====================================================================== //
 
-    let jf2: Jf2;
+    let jf2: Jf2
     try {
-      const value = await get(loc);
-      jf2 = value.jf2;
+      const value = await get(loc)
+      jf2 = value.jf2
     } catch (ex: any) {
-      const error_description = `The post published at ${loc.website} is not stored at ${loc.store}.`;
-      const err = new InvalidRequestError({ error_description });
+      const error_description = `The post published at ${loc.website} is not stored at ${loc.store}.`
+      const err = new InvalidRequestError({ error_description })
       return reply
         .code(err.statusCode)
-        .send(err.payload({ include_error_description }));
+        .send(err.payload({ include_error_description }))
     }
 
     // We assume all content retrieved from the store to be untrusted data, so
     // we normalize it and sanitize it.
-    request.log.debug(jf2, "=== jf2 (pre normalization) ===");
-    jf2 = normalizeJf2(jf2);
-    request.log.debug(jf2, "=== jf2 (after normalization) ===");
+    request.log.debug(jf2, '=== jf2 (pre normalization) ===')
+    jf2 = normalizeJf2(jf2)
+    request.log.debug(jf2, '=== jf2 (after normalization) ===')
 
-    const targets = jf2["mp-syndicate-to"]
-      ? (jf2["mp-syndicate-to"] as string[])
-      : [];
+    const targets = jf2['mp-syndicate-to']
+      ? (jf2['mp-syndicate-to'] as string[])
+      : []
 
     // Testing the Telegram syndicator
     // targets.push('https://t.me/+rQSrJsu5RtgzNjM0')
@@ -116,97 +116,97 @@ export const defSyndicatePost = (config: Config) => {
     // maybe wait for all syndication results, and update the post only once.
     const results = await Promise.allSettled(
       targets.map((target) => {
-        const syndicator = syndicators[target];
+        const syndicator = syndicators[target]
         if (syndicator) {
           request.log.debug(
             `Try syndicating ${loc.website} to ${target} using syndicator ${syndicator.uid}`
-          );
-          return syndicator.syndicate(loc.website, jf2);
+          )
+          return syndicator.syndicate(loc.website, jf2)
         } else {
-          const tip = `Please provide a syndicator that can syndicate to ${target}.`;
+          const tip = `Please provide a syndicator that can syndicate to ${target}.`
           return Promise.reject(
             `Could not syndicate ${loc.website} to target ${target} because no syndicator for that target was provided. ${tip}`
-          );
+          )
         }
       })
-    );
+    )
 
-    const failures: string[] = [];
-    const successes: string[] = [];
+    const failures: string[] = []
+    const successes: string[] = []
 
-    const mp_syndicate_to = new Set(jf2["mp-syndicate-to"]);
-    const syndication = new Set(jf2.syndication);
+    const mp_syndicate_to = new Set(jf2['mp-syndicate-to'])
+    const syndication = new Set(jf2.syndication)
 
     request.log.debug(
       {
-        "mp-syndicate-to": jf2["mp-syndicate-to"],
-        syndication: jf2.syndication,
+        'mp-syndicate-to': jf2['mp-syndicate-to'],
+        syndication: jf2.syndication
       },
-      "=== before syndication ==="
-    );
+      '=== before syndication ==='
+    )
 
     for (const res of results) {
-      if (res.status === "rejected") {
-        request.log.error(`Syndication exception: ${res.reason}`);
-        failures.push(res.reason);
+      if (res.status === 'rejected') {
+        request.log.error(`Syndication exception: ${res.reason}`)
+        failures.push(res.reason)
       } else {
         if (res.value.error) {
           const message =
             res.value.error.message ||
-            "The error returned from the syndicator had no message";
-          failures.push(message);
+            'The error returned from the syndicator had no message'
+          failures.push(message)
         } else {
           // console.log('=== res.value.value ===', res.value.value)
-          const v = res.value.value;
+          const v = res.value.value
 
-          let message: string;
+          let message: string
           if (v.syndication) {
-            syndication.add(v.syndication);
-            mp_syndicate_to.delete(v.uid);
-            message = `${loc.website} syndicated to target ${v.syndication}`;
+            syndication.add(v.syndication)
+            mp_syndicate_to.delete(v.uid)
+            message = `${loc.website} syndicated to target ${v.syndication}`
           } else {
-            syndication.add(v.uid);
-            mp_syndicate_to.delete(v.uid);
-            message = `${loc.website} syndicated to target ${v.uid}`;
+            syndication.add(v.uid)
+            mp_syndicate_to.delete(v.uid)
+            message = `${loc.website} syndicated to target ${v.uid}`
           }
-          successes.push(message);
+          successes.push(message)
         }
       }
     }
 
     const patch: UpdatePatch = {
-      delete: "mp-syndicated-to",
+      delete: 'mp-syndicated-to',
       replace: {
-        "mp-syndicate-to": Array.from(mp_syndicate_to),
-        syndication: Array.from(syndication),
-      },
-    };
+        'mp-syndicate-to': Array.from(mp_syndicate_to),
+        syndication: Array.from(syndication)
+      }
+    }
     // request.log.warn(patch, `=== update patch ===`)
 
-    const result_update = await update(loc.website, patch);
+    const result_update = await update(loc.website, patch)
 
     if (result_update.error) {
-      const error_description = result_update.error.message;
-      const err = new ServerError({ error_description });
+      const error_description = result_update.error.message
+      const err = new ServerError({ error_description })
       return reply
         .code(err.statusCode)
-        .send(err.payload({ include_error_description }));
+        .send(err.payload({ include_error_description }))
     }
 
     // request.log.warn(result_update, `=== syndication update ===`)
 
     const summary = [
-      `${successes.length} Successes: ${successes.join("\n")}`,
-      `${failures.length} Failures: ${failures.join("\n")}`,
-    ].join("\n\n");
+      `${successes.length} Successes: ${successes.join('\n')}`,
+      `${failures.length} Failures: ${failures.join('\n')}`
+    ].join('\n\n')
 
     return reply.code(200).send({
       successes,
       failures,
       store_update_patch: patch,
-      summary,
-    });
-  };
+      summary
+    })
+  }
 
-  return syndicatePost;
-};
+  return syndicatePost
+}

@@ -1,5 +1,5 @@
-import { Static, Type } from "@sinclair/typebox";
-import { operation } from "./operation.js";
+import { Static, Type } from '@sinclair/typebox'
+import { operation } from './operation.js'
 
 // According to jose's JWTPayload interface, the aud claim could be string or string[].
 export const value = Type.Union([
@@ -7,17 +7,17 @@ export const value = Type.Union([
   Type.Array(Type.String({ minLength: 1 })),
   Type.Number(),
   Type.Boolean(),
-  Type.Undefined(),
-]);
+  Type.Undefined()
+])
 
-export type Value = Static<typeof value>;
+export type Value = Static<typeof value>
 
 export const assertion = Type.Object({
   claim: Type.String({ minLength: 1 }),
   op: Type.Optional(operation),
-  value: Type.Optional(Type.Union([value, Type.Any()])),
-});
+  value: Type.Optional(Type.Union([value, Type.Any()]))
+})
 
 export interface Assertion extends Static<typeof assertion> {
-  value?: Value | Function;
+  value?: Value | Function
 }

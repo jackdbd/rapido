@@ -1,9 +1,9 @@
-import { client_id, me_after_url_canonicalization } from "@jackdbd/indieauth";
-import { redirect_uri, refresh_token, scope } from "@jackdbd/oauth2";
-import { exp, iss, jti } from "@jackdbd/oauth2-tokens";
-import { Static, Type } from "@sinclair/typebox";
-import { immutable_record, mutable_record } from "./record.js";
-import { revocation_reason, revoked } from "./revocation.js";
+import { client_id, me_after_url_canonicalization } from '@jackdbd/indieauth'
+import { redirect_uri, refresh_token, scope } from '@jackdbd/oauth2'
+import { exp, iss, jti } from '@jackdbd/oauth2-tokens'
+import { Static, Type } from '@sinclair/typebox'
+import { immutable_record, mutable_record } from './record.js'
+import { revocation_reason, revoked } from './revocation.js'
 
 export const refresh_token_props = Type.Object(
   {
@@ -34,48 +34,48 @@ export const refresh_token_props = Type.Object(
     refresh_token,
     revoked: Type.Optional(revoked),
     revocation_reason: Type.Optional(revocation_reason),
-    scope,
+    scope
   },
   {
-    $id: "refresh-token-props",
+    $id: 'refresh-token-props',
     additionalProperties: false,
-    description: "Properties of a refresh token",
-    title: "Refresh Token Props",
+    description: 'Properties of a refresh token',
+    title: 'Refresh Token Props'
   }
-);
+)
 
-export type RefreshTokenProps = Static<typeof refresh_token_props>;
+export type RefreshTokenProps = Static<typeof refresh_token_props>
 
 export const refresh_token_immutable_record = Type.Object(
   {
     ...immutable_record.properties,
-    ...refresh_token_props.properties,
+    ...refresh_token_props.properties
   },
   {
-    $id: "refresh-token-immutable-record",
+    $id: 'refresh-token-immutable-record',
     additionalProperties: false,
     description: `Represents a record of a refresh token. The values of this record should never change. Any updates to the underlying entity should create a new record.`,
-    title: "Refresh Token Immutable Record",
+    title: 'Refresh Token Immutable Record'
   }
-);
+)
 
 export type RefreshTokenImmutableRecord = Static<
   typeof refresh_token_immutable_record
->;
+>
 
 export const refresh_token_mutable_record = Type.Object(
   {
     ...mutable_record.properties,
-    ...refresh_token_props.properties,
+    ...refresh_token_props.properties
   },
   {
-    $id: "refresh-token-mutable-record",
+    $id: 'refresh-token-mutable-record',
     additionalProperties: false,
     description: `Represents a record of a refresh token with a predefined set of properties (columns). While the structure of the record remains consistent, the values of these properties may change over time.`,
-    title: "Refresh Token Mutable Record",
+    title: 'Refresh Token Mutable Record'
   }
-);
+)
 
 export type RefreshTokenMutableRecord = Static<
   typeof refresh_token_mutable_record
->;
+>

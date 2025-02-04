@@ -1,6 +1,6 @@
-import { describe, it } from "node:test";
-import assert from "node:assert";
-import { defAjv } from "@repo/stdlib/test-utils";
+import { describe, it } from 'node:test'
+import assert from 'node:assert'
+import { defAjv } from '@repo/stdlib/test-utils'
 import {
   dt_accessed,
   dt_published,
@@ -18,8 +18,8 @@ import {
   p_rsvp,
   p_summary,
   u_syndication,
-  u_url,
-} from "../lib/index.js";
+  u_url
+} from '../lib/index.js'
 
 const ajv = defAjv({
   schemas: [
@@ -38,64 +38,64 @@ const ajv = defAjv({
     p_rsvp,
     p_summary,
     u_syndication,
-    u_url,
-  ],
-});
+    u_url
+  ]
+})
 
 // const validate = ajv.getSchema(h_entry.$id);
-const validate = ajv.compile(h_entry);
+const validate = ajv.compile(h_entry)
 
-describe("h_entry", () => {
-  it("can be an empty objects, since all properties are optional", () => {
-    const valid = validate({});
-    assert(valid);
-    assert(validate.errors === null);
-  });
+describe('h_entry', () => {
+  it('can be an empty objects, since all properties are optional', () => {
+    const valid = validate({})
+    assert(valid)
+    assert(validate.errors === null)
+  })
 
-  it("can be a bookmark with plain text content", () => {
+  it('can be a bookmark with plain text content', () => {
     const valid = validate({
-      "bookmark-of": "https://mxb.dev/blog/make-free-stuff/",
-      content: "Nice article!",
-    });
-    assert(valid);
-    assert(validate.errors === null);
-  });
+      'bookmark-of': 'https://mxb.dev/blog/make-free-stuff/',
+      content: 'Nice article!'
+    })
+    assert(valid)
+    assert(validate.errors === null)
+  })
 
-  it("can be a like-of", () => {
+  it('can be a like-of', () => {
     const valid = validate({
-      "like-of": "http://othersite.example.com/permalink47",
-    });
-    assert(valid);
-    assert(validate.errors === null);
-  });
+      'like-of': 'http://othersite.example.com/permalink47'
+    })
+    assert(valid)
+    assert(validate.errors === null)
+  })
 
-  it("can be a repost-of", () => {
+  it('can be a repost-of', () => {
     const valid = validate({
-      "repost-of": "https://example.com/post",
-    });
-    assert(valid);
-    assert(validate.errors === null);
-  });
+      'repost-of': 'https://example.com/post'
+    })
+    assert(valid)
+    assert(validate.errors === null)
+  })
 
-  it("can be a RSVP", () => {
+  it('can be a RSVP', () => {
     const valid = validate({
-      "in-reply-to":
-        "https://aaronparecki.com/2014/09/13/7/indieweb-xoxo-breakfast",
-      rsvp: "maybe",
-    });
-    assert(valid);
-    assert(validate.errors === null);
-  });
+      'in-reply-to':
+        'https://aaronparecki.com/2014/09/13/7/indieweb-xoxo-breakfast',
+      rsvp: 'maybe'
+    })
+    assert(valid)
+    assert(validate.errors === null)
+  })
 
-  it("can be a note that has both plain text and html", () => {
+  it('can be a note that has both plain text and html', () => {
     const valid = validate({
       content: {
-        text: "this is a note",
-        html: "<p>This <b>is</b> a note</p>",
+        text: 'this is a note',
+        html: '<p>This <b>is</b> a note</p>'
       },
-      published: "1985-04-12T23:20:50.52Z",
-    });
-    assert(valid);
-    assert(validate.errors === null);
-  });
-});
+      published: '1985-04-12T23:20:50.52Z'
+    })
+    assert(valid)
+    assert(validate.errors === null)
+  })
+})

@@ -1,18 +1,18 @@
-import type { RouteGenericInterface, RouteHandler } from "fastify";
-import ms, { StringValue } from "ms";
-import { ServerError } from "@jackdbd/oauth2-error-responses";
-import { authorizationResponseUrl } from "@jackdbd/indieauth";
-import canonicalUrl from "@jackdbd/canonical-url";
-import { unixTimestampInMs } from "../date.js";
+import type { RouteGenericInterface, RouteHandler } from 'fastify'
+import ms, { StringValue } from 'ms'
+import { ServerError } from '@jackdbd/oauth2-error-responses'
+import { authorizationResponseUrl } from '@jackdbd/indieauth'
+import canonicalUrl from '@jackdbd/canonical-url'
+import { unixTimestampInMs } from '../date.js'
 import type {
   HandleActionQuerystring,
-  OnUserApprovedRequest,
-} from "../schemas/index.js";
+  OnUserApprovedRequest
+} from '../schemas/index.js'
 
 export interface Config {
-  authorization_code_expiration: string;
+  authorization_code_expiration: string
 
-  include_error_description: boolean;
+  include_error_description: boolean
 
   /**
    * Issuer identifier. This is optional in OAuth 2.0 servers, but required in
@@ -22,15 +22,15 @@ export interface Config {
    * See also the `authorization_response_iss_parameter_supported` parameter in
    * [IndieAuth Server Metadata](https://indieauth.spec.indieweb.org/#indieauth-server-metadata).
    */
-  issuer?: string;
+  issuer?: string
 
-  log_prefix: string;
+  log_prefix: string
 
-  onUserApprovedRequest: OnUserApprovedRequest;
+  onUserApprovedRequest: OnUserApprovedRequest
 }
 
 interface RouteGeneric extends RouteGenericInterface {
-  Querystring: HandleActionQuerystring;
+  Querystring: HandleActionQuerystring
 }
 
 /**
@@ -57,8 +57,8 @@ export const defHandleAction = (config: Config) => {
     include_error_description,
     issuer,
     log_prefix,
-    onUserApprovedRequest,
-  } = config;
+    onUserApprovedRequest
+  } = config
 
   const handleAction: RouteHandler<RouteGeneric> = async (request, reply) => {
     const {
@@ -69,51 +69,51 @@ export const defHandleAction = (config: Config) => {
       redirect_uri,
       redirect_uri_on_deny,
       scope,
-      state,
-    } = request.query;
+      state
+    } = request.query
 
     request.log.debug(
       request.query,
       `${log_prefix}query string received at the consent page`
-    );
+    )
 
-    if (action && action === "deny") {
+    if (action && action === 'deny') {
       request.log.debug(
         `${log_prefix}user denied the authorization request; redirecting to ${redirect_uri_on_deny}`
-      );
-      return reply.redirect(redirect_uri_on_deny);
+      )
+      return reply.redirect(redirect_uri_on_deny)
     }
 
     request.log.debug(
       `${log_prefix}user approved the authorization request; generating authorization response URL`
-    );
+    )
 
     const auth = authorizationResponseUrl({
       iss: issuer,
       redirect_uri,
-      state,
-    });
+      state
+    })
 
     if (state !== auth.state) {
-      const error_description = `The state (CSRF token) returned by the authorization response URL does not match the state sent by client ${client_id}`;
+      const error_description = `The state (CSRF token) returned by the authorization response URL does not match the state sent by client ${client_id}`
       // TODO: create HTML page for error_uri
-      const error_uri = undefined;
-      const err = new ServerError({ error_description, error_uri, state });
+      const error_uri = undefined
+      const err = new ServerError({ error_description, error_uri, state })
       return reply
         .code(err.statusCode)
-        .send(err.payload({ include_error_description }));
+        .send(err.payload({ include_error_description }))
     }
 
-    const { code, iss, redirect_url } = auth;
+    const { code, iss, redirect_url } = auth
 
     // TODO: should I verify iss? And should I store it in the authorization code record?
 
     const exp = Math.floor(
       (unixTimestampInMs() + ms(authorization_code_expiration as StringValue)) /
         1000
-    );
+    )
 
-    const me = canonicalUrl(request.query.me);
+    const me = canonicalUrl(request.query.me)
 
     const props = {
       client_id,
@@ -123,22 +123,22 @@ export const defHandleAction = (config: Config) => {
       iss,
       me,
       redirect_uri,
-      scope,
-    };
+      scope
+    }
 
     try {
-      await onUserApprovedRequest({ ...props, code });
+      await onUserApprovedRequest({ ...props, code })
     } catch (ex: any) {
-      let error_description = `The user-provided onUserApprovedRequest handler threw an exception.`;
+      let error_description = `The user-provided onUserApprovedRequest handler threw an exception.`
       if (ex && ex.message) {
-        error_description = `${error_description} Here is the original error message: ${ex.message}`;
+        error_description = `${error_description} Here is the original error message: ${ex.message}`
       }
-      request.log.error(`${log_prefix}${error_description}`);
-      const error_uri = undefined;
-      const err = new ServerError({ error_description, error_uri });
+      request.log.error(`${log_prefix}${error_description}`)
+      const error_uri = undefined
+      const err = new ServerError({ error_description, error_uri })
       return reply
         .code(err.statusCode)
-        .send(err.payload({ include_error_description }));
+        .send(err.payload({ include_error_description }))
       // TODO: redirect to an error page when the user-provided handler throws
       // an exception. Do not return a JSON response.
       // reply.redirect(redirect_url)
@@ -146,11 +146,11 @@ export const defHandleAction = (config: Config) => {
 
     request.log.debug(
       `${log_prefix}stored record about authorization code ${code}`
-    );
+    )
 
-    request.log.debug(`${log_prefix}redirect to ${redirect_url}`);
-    reply.redirect(redirect_url);
-  };
+    request.log.debug(`${log_prefix}redirect to ${redirect_url}`)
+    reply.redirect(redirect_url)
+  }
 
-  return handleAction;
-};
+  return handleAction
+}

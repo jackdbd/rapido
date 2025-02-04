@@ -1,20 +1,20 @@
-import { betterAjvErrors } from "@apideck/better-ajv-errors";
-import { Type } from "@sinclair/typebox";
-import type { TSchema } from "@sinclair/typebox";
-import type { Ajv, Schema, ValidateFunction } from "ajv";
+import { betterAjvErrors } from '@apideck/better-ajv-errors'
+import { Type } from '@sinclair/typebox'
+import type { TSchema } from '@sinclair/typebox'
+import type { Ajv, Schema, ValidateFunction } from 'ajv'
 
 // used to replace a function in the schema (read the comment below)
-const any_value = Type.Any();
+const any_value = Type.Any()
 
 export interface Config<V> {
-  ajv: Ajv;
-  schema: Schema;
-  data: V;
+  ajv: Ajv
+  schema: Schema
+  data: V
 }
 
 export interface Options {
-  basePath?: string;
-  validationErrorsSeparator?: string;
+  basePath?: string
+  validationErrorsSeparator?: string
 }
 
 // TODO: create factory that accepts ajv and schema, and compile the schema (to avoid recompiling the schema every single time)
@@ -28,16 +28,16 @@ export interface Options {
  * Validates that a value conforms to a schema. Returns a result object.
  */
 export const conformResult = <V>(config: Config<V>, options?: Options) => {
-  const { ajv, schema, data } = config;
-  const opt = options ?? {};
-  const separator = opt.validationErrorsSeparator ?? ";";
+  const { ajv, schema, data } = config
+  const opt = options ?? {}
+  const separator = opt.validationErrorsSeparator ?? ';'
 
-  let spec = "schema";
+  let spec = 'schema'
   if ((schema as any).title) {
-    spec = `schema '${(schema as any).title}'`;
+    spec = `schema '${(schema as any).title}'`
   }
   if ((schema as any).$id) {
-    spec = `schema ID '${(schema as any).$id}'`;
+    spec = `schema ID '${(schema as any).$id}'`
   }
 
   // Workaround to handle functions in a schema. Here is why we need this:
@@ -49,20 +49,20 @@ export const conformResult = <V>(config: Config<V>, options?: Options) => {
   // See also:
   // https://github.com/sinclairzx81/typebox?tab=readme-ov-file#javascript-types
   for (const [key, value] of Object.entries(data as Record<string, any>)) {
-    if (typeof value === "function") {
-      (schema as any).properties[key] = any_value;
+    if (typeof value === 'function') {
+      ;(schema as any).properties[key] = any_value
     }
   }
 
-  const suggestions: string[] = [];
-  if (typeof schema !== "boolean") {
+  const suggestions: string[] = []
+  if (typeof schema !== 'boolean') {
     if (schema.properties) {
       for (const [key, skema] of Object.entries(schema.properties)) {
-        const sk = skema as TSchema;
+        const sk = skema as TSchema
         if (sk.$ref) {
           suggestions.push(
             `property ${key} refers schema ID ${sk.$ref}. Either pass a schema that has all $ref pointers dereferenced, or pass those schemas when you instantiate Ajv, or call ajv.addSchema() for each $ref schema.`
-          );
+          )
         }
       }
     }
@@ -71,57 +71,57 @@ export const conformResult = <V>(config: Config<V>, options?: Options) => {
   // This try/catch serves two purposes:
   // 1. Keep returning a result object
   // 2. Build a clearer error message
-  let validate: ValidateFunction;
+  let validate: ValidateFunction
   try {
-    validate = ajv.compile(schema);
+    validate = ajv.compile(schema)
   } catch (ex: any) {
-    const message = `${ex.message}. Suggestions: ${suggestions.join("; ")}`;
-    return { error: new Error(message) };
+    const message = `${ex.message}. Suggestions: ${suggestions.join('; ')}`
+    return { error: new Error(message) }
   }
 
-  validate(data);
+  validate(data)
 
   if (!validate.errors) {
     return {
       value: {
         message: `value conforms to ${spec}`,
-        validated: data,
-      },
-    };
+        validated: data
+      }
+    }
   }
 
-  let errors: string[] = [];
-  if (typeof schema === "boolean") {
-    const defaultBasePath = "";
-    const basePath = opt.basePath ?? defaultBasePath;
+  let errors: string[] = []
+  if (typeof schema === 'boolean') {
+    const defaultBasePath = ''
+    const basePath = opt.basePath ?? defaultBasePath
     errors = validate.errors.map((ve) => {
-      return `${ve.message} (basePath: ${basePath}, instancePath: ${ve.instancePath}, schemaPath: ${ve.schemaPath})`;
-    });
+      return `${ve.message} (basePath: ${basePath}, instancePath: ${ve.instancePath}, schemaPath: ${ve.schemaPath})`
+    })
   } else {
-    let defaultBasePath = "";
+    let defaultBasePath = ''
     if (schema.type) {
-      defaultBasePath = schema.type;
+      defaultBasePath = schema.type
     }
     if (schema.title) {
-      defaultBasePath = schema.title;
+      defaultBasePath = schema.title
     }
     if (schema.$id) {
-      defaultBasePath = schema.$id;
+      defaultBasePath = schema.$id
     }
 
-    const basePath = opt.basePath ?? defaultBasePath;
+    const basePath = opt.basePath ?? defaultBasePath
 
     const validation_errors = betterAjvErrors({
       schema,
       data,
       errors: validate.errors,
-      basePath,
-    });
+      basePath
+    })
 
     errors = validation_errors.map((ve) => {
-      return `${ve.message} (path: ${ve.path})`;
-    });
+      return `${ve.message} (path: ${ve.path})`
+    })
   }
 
-  return { error: new Error(errors.join(separator)) };
-};
+  return { error: new Error(errors.join(separator)) }
+}

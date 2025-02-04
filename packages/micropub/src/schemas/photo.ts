@@ -1,5 +1,5 @@
-import { u_photo } from "@jackdbd/microformats2";
-import { Static, Type } from "@sinclair/typebox";
+import { u_photo } from '@jackdbd/microformats2'
+import { Static, Type } from '@sinclair/typebox'
 
 // To upload a photo with a caption, send a multipart request that contains
 // three parts, named: h, content and photo.
@@ -14,24 +14,24 @@ import { Static, Type } from "@sinclair/typebox";
 export const photo_url_and_alt_text = Type.Object(
   {
     alt: Type.String({
-      description: "alternate text for the photo",
-      minLength: 1,
+      description: 'alternate text for the photo',
+      minLength: 1
     }),
-    value: Type.Unsafe<Static<typeof u_photo>>(Type.Ref(u_photo.$id!)),
+    value: Type.Unsafe<Static<typeof u_photo>>(Type.Ref(u_photo.$id!))
   },
   {
-    title: "Micropub photo with URL and alt text",
+    title: 'Micropub photo with URL and alt text'
   }
-);
+)
 
 const photo_item = Type.Union([
   Type.Unsafe<Static<typeof u_photo>>(Type.Ref(u_photo.$id!)),
-  photo_url_and_alt_text,
-]);
+  photo_url_and_alt_text
+])
 
 export const photo = Type.Union([photo_item, Type.Array(photo_item)], {
-  $id: "micropub-photo",
-  title: "Micropub photo",
-});
+  $id: 'micropub-photo',
+  title: 'Micropub photo'
+})
 
-export type Photo = Static<typeof photo>;
+export type Photo = Static<typeof photo>

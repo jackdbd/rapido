@@ -1,28 +1,28 @@
-import { Static, Type } from "@sinclair/typebox";
+import { Static, Type } from '@sinclair/typebox'
 import {
   me_before_url_canonicalization,
-  me_after_url_canonicalization,
-} from "@jackdbd/indieauth";
-import type { Ajv } from "ajv";
+  me_after_url_canonicalization
+} from '@jackdbd/indieauth'
+import type { Ajv } from 'ajv'
 
-import { DEFAULT } from "../constants.js";
+import { DEFAULT } from '../constants.js'
 import {
   ajv,
   include_error_description,
-  report_all_ajv_errors,
-} from "./common.js";
+  report_all_ajv_errors
+} from './common.js'
 import {
   isAccessTokenRevoked,
   retrieveContent,
   update,
-  websiteUrlToStoreLocation,
-} from "./user-provided-functions.js";
+  websiteUrlToStoreLocation
+} from './user-provided-functions.js'
 import type {
   IsAccessTokenRevoked,
   RetrieveContent,
   Update,
-  WebsiteUrlToStoreLocation,
-} from "./user-provided-functions.js";
+  WebsiteUrlToStoreLocation
+} from './user-provided-functions.js'
 
 // import type { Syndicator } from '../../lib/micropub/index.js'
 // syndicators: { [uid: string]: Syndicator }
@@ -41,7 +41,7 @@ export const options = Type.Object(
 
     me: Type.Union([
       me_before_url_canonicalization,
-      me_after_url_canonicalization,
+      me_after_url_canonicalization
     ]),
 
     publishedUrlToStorageLocation: websiteUrlToStoreLocation,
@@ -50,19 +50,19 @@ export const options = Type.Object(
 
     syndicators: Type.Any(),
 
-    update,
+    update
   },
   {
-    $id: "fastify-syndicate-endpoint-options",
-    description: "Options for the Fastify syndicate-endpoint plugin",
-    title: "Syndicate Endpoint Options",
+    $id: 'fastify-syndicate-endpoint-options',
+    description: 'Options for the Fastify syndicate-endpoint plugin',
+    title: 'Syndicate Endpoint Options'
   }
-);
+)
 
 export interface Options extends Static<typeof options> {
-  ajv?: Ajv;
-  get: RetrieveContent;
-  isAccessTokenRevoked: IsAccessTokenRevoked;
-  publishedUrlToStorageLocation: WebsiteUrlToStoreLocation;
-  update: Update;
+  ajv?: Ajv
+  get: RetrieveContent
+  isAccessTokenRevoked: IsAccessTokenRevoked
+  publishedUrlToStorageLocation: WebsiteUrlToStoreLocation
+  update: Update
 }

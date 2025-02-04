@@ -1,14 +1,14 @@
-import { codeChallenge, codeVerifier } from "@jackdbd/pkce";
+import { codeChallenge, codeVerifier } from '@jackdbd/pkce'
 
 export interface Config {
-  authorization_endpoint: string;
-  client_id: string;
-  code_challenge_method: string;
-  code_verifier_length: number;
-  me: string;
-  redirect_uri: string;
-  scopes?: string[];
-  state: string;
+  authorization_endpoint: string
+  client_id: string
+  code_challenge_method: string
+  code_verifier_length: number
+  me: string
+  redirect_uri: string
+  scopes?: string[]
+  state: string
 }
 
 // interface AuthRequestQuery
@@ -43,15 +43,15 @@ export const authorizationRequestUrl = (config: Config) => {
     me,
     redirect_uri,
     scopes,
-    state,
-  } = config;
+    state
+  } = config
 
-  const code_verifier = codeVerifier({ len: code_verifier_length });
+  const code_verifier = codeVerifier({ len: code_verifier_length })
 
   const code_challenge = codeChallenge({
     code_verifier,
-    method: code_challenge_method,
-  });
+    method: code_challenge_method
+  })
 
   const query = {
     client_id,
@@ -59,18 +59,18 @@ export const authorizationRequestUrl = (config: Config) => {
     code_challenge_method,
     me,
     redirect_uri,
-    response_type: "code",
-    scope: scopes ? scopes.join(" ") : undefined,
-    state,
-  };
+    response_type: 'code',
+    scope: scopes ? scopes.join(' ') : undefined,
+    state
+  }
 
   const qs = Object.entries(query).reduce((acc, [key, value]) => {
-    return value ? `${acc}&${key}=${encodeURIComponent(value)}` : acc;
-  }, "");
+    return value ? `${acc}&${key}=${encodeURIComponent(value)}` : acc
+  }, '')
 
   return {
     redirect_url: `${authorization_endpoint}?${qs}`,
     code_verifier,
-    state,
-  };
-};
+    state
+  }
+}

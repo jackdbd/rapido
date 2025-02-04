@@ -1,6 +1,6 @@
-import { describe, it } from "node:test";
-import assert from "node:assert";
-import { defAjv } from "@repo/stdlib/test-utils";
+import { describe, it } from 'node:test'
+import assert from 'node:assert'
+import { defAjv } from '@repo/stdlib/test-utils'
 import {
   dt_duration,
   dt_end,
@@ -18,9 +18,9 @@ import {
   p_longitude,
   p_name,
   p_summary,
-  u_url,
-} from "@jackdbd/microformats2";
-import { mp_event, mp_slug, mp_syndicate_to } from "../lib/index.js";
+  u_url
+} from '@jackdbd/microformats2'
+import { mp_event, mp_slug, mp_syndicate_to } from '../lib/index.js'
 
 const ajv = defAjv({
   schemas: [
@@ -42,29 +42,29 @@ const ajv = defAjv({
     p_longitude,
     p_name,
     p_summary,
-    u_url,
-  ],
-});
+    u_url
+  ]
+})
 
-const validate = ajv.compile(mp_event);
+const validate = ajv.compile(mp_event)
 
-describe("mp-event", () => {
-  it("can have start/end, location, a suggested slug and two syndication targets", () => {
+describe('mp-event', () => {
+  it('can have start/end, location, a suggested slug and two syndication targets', () => {
     const valid = validate({
-      h: "event",
-      location: "Some bar in SF",
-      name: "Microformats Meetup",
-      start: "2013-06-30 12:00:00-07:00",
-      end: "2013-06-30 18:00:00-07:00",
-      summary: "Get together and discuss all things microformats-related.",
-      "mp-slug": "microformats-meetup-in-sf",
-      "mp-syndicate-to": [
-        "https://fosstodon.org/@jackdbd",
-        "https://news.indieweb.org/en",
-      ],
-    });
+      h: 'event',
+      location: 'Some bar in SF',
+      name: 'Microformats Meetup',
+      start: '2013-06-30 12:00:00-07:00',
+      end: '2013-06-30 18:00:00-07:00',
+      summary: 'Get together and discuss all things microformats-related.',
+      'mp-slug': 'microformats-meetup-in-sf',
+      'mp-syndicate-to': [
+        'https://fosstodon.org/@jackdbd',
+        'https://news.indieweb.org/en'
+      ]
+    })
 
-    assert(valid);
-    assert(validate.errors === null);
-  });
-});
+    assert(valid)
+    assert(validate.errors === null)
+  })
+})

@@ -1,19 +1,19 @@
-import path from "node:path";
-import type { TransformCallback } from "@11ty/webc";
-import type { FastifyPluginAsync } from "fastify";
-import fp from "fastify-plugin";
-import { defRender, type Helpers, type Transforms } from "./decorators.js";
-import { tap } from "./helpers.js";
+import path from 'node:path'
+import type { TransformCallback } from '@11ty/webc'
+import type { FastifyPluginAsync } from 'fastify'
+import fp from 'fastify-plugin'
+import { defRender, type Helpers, type Transforms } from './decorators.js'
+import { tap } from './helpers.js'
 
-export { tap } from "./helpers.js";
+export { tap } from './helpers.js'
 
 export type Helper =
   | Function
-  | { name: string; fn: Function; isScoped?: boolean };
+  | { name: string; fn: Function; isScoped?: boolean }
 
 export type Transform =
   | TransformCallback
-  | { name: string; fn: TransformCallback };
+  | { name: string; fn: TransformCallback }
 
 export interface Options {
   /**
@@ -23,22 +23,22 @@ export interface Options {
    *
    * @see [Register Global Components - WebC](https://github.com/11ty/webc/tree/main#register-global-components)
    */
-  components?: string | string[] | Record<string, string>;
+  components?: string | string[] | Record<string, string>
 
   /**
    * [Helper Functions](https://github.com/11ty/webc?tab=readme-ov-file#helper-functions) to attach to the WebC instance.
    */
-  helpers?: Helper[];
+  helpers?: Helper[]
 
   /**
    * Directories where to find your WebC templates.
    */
-  templates?: string[];
+  templates?: string[]
 
   /**
    * [Custom Transforms](https://github.com/11ty/webc?tab=readme-ov-file#custom-transforms) to attach to the WebC instance.
    */
-  transforms?: Transform[];
+  transforms?: Transform[]
 
   /**
    * Whether to enable WebC bundler mode or not.
@@ -49,52 +49,52 @@ export interface Options {
    * @warning Not supported at the moment.
    * @see [Aggregating CSS and JS - WebC](https://github.com/11ty/webc?tab=readme-ov-file#aggregating-css-and-js)
    */
-  useBundlerMode?: boolean;
+  useBundlerMode?: boolean
 }
 
 // Try to use the same defaults as eleventy-plugin-webc
 // https://github.com/11ty/eleventy-plugin-webc/blob/b5d39d55b330990280a9fea34dbf4fcd3d3d25a6/eleventyWebcPlugin.js#L19
 export const defaults = {
-  components: ["components/**/*.webc"],
+  components: ['components/**/*.webc'],
   helpers: [tap] as Helper[],
-  logPrefix: "[fastify-webc] ",
-  templates: [path.join(process.cwd(), "templates")],
+  logPrefix: '[fastify-webc] ',
+  templates: [path.join(process.cwd(), 'templates')],
   transforms: [] as Transform[],
-  useBundlerMode: false,
-};
+  useBundlerMode: false
+}
 
 const webC: FastifyPluginAsync<Options> = async (fastify, options = {}) => {
-  const config = Object.assign({}, defaults, options);
+  const config = Object.assign({}, defaults, options)
 
-  const { components, logPrefix, templates, useBundlerMode } = config;
+  const { components, logPrefix, templates, useBundlerMode } = config
 
   if (useBundlerMode) {
     throw new Error(
       `${logPrefix}WebC bundler mode is not supported at the moment`
-    );
+    )
   }
 
-  let helpers: Helpers = {};
+  let helpers: Helpers = {}
   if (config.helpers.length > 0) {
     helpers = config.helpers.reduce((acc, cv) => {
-      if (typeof cv === "function") {
-        return { ...acc, [cv.name]: { fn: cv, isScoped: false } };
+      if (typeof cv === 'function') {
+        return { ...acc, [cv.name]: { fn: cv, isScoped: false } }
       } else {
-        const { fn, isScoped } = cv;
-        return { ...acc, [cv.name]: { fn, isScoped: isScoped || false } };
+        const { fn, isScoped } = cv
+        return { ...acc, [cv.name]: { fn, isScoped: isScoped || false } }
       }
-    }, {} as Helpers);
+    }, {} as Helpers)
   }
 
-  let transforms: Transforms = {};
+  let transforms: Transforms = {}
   if (config.transforms.length > 0) {
     transforms = config.transforms.reduce((acc, cv) => {
-      if (typeof cv === "function") {
-        return { ...acc, [cv.name]: { fn: cv } };
+      if (typeof cv === 'function') {
+        return { ...acc, [cv.name]: { fn: cv } }
       } else {
-        return { ...acc, [cv.name]: { fn: cv.fn } };
+        return { ...acc, [cv.name]: { fn: cv.fn } }
       }
-    }, {} as Transforms);
+    }, {} as Transforms)
   }
 
   const render = defRender({
@@ -103,14 +103,14 @@ const webC: FastifyPluginAsync<Options> = async (fastify, options = {}) => {
     logPrefix,
     templates,
     transforms,
-    useBundlerMode,
-  });
+    useBundlerMode
+  })
 
-  fastify.decorateReply("render", render);
-  fastify.log.debug(`${logPrefix}decorated fastify.reply with render`);
-};
+  fastify.decorateReply('render', render)
+  fastify.log.debug(`${logPrefix}decorated fastify.reply with render`)
+}
 
 export default fp(webC, {
-  fastify: "5.x",
-  name: "fastify-webc",
-});
+  fastify: '5.x',
+  name: 'fastify-webc'
+})

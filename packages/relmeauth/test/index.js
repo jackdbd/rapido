@@ -1,5 +1,5 @@
-import { describe, it } from "node:test";
+import { describe, it } from 'node:test'
 
-describe("RelMeAuth", () => {
-  it.todo("write some tests");
-});
+describe('RelMeAuth', () => {
+  it.todo('write some tests')
+})

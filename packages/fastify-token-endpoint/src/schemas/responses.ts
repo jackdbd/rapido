@@ -1,11 +1,6 @@
-import { me_after_url_canonicalization, profile } from "@jackdbd/indieauth";
-import {
-  access_token,
-  expires_in,
-  refresh_token,
-  scope,
-} from "@jackdbd/oauth2";
-import { Static, Type } from "@sinclair/typebox";
+import { me_after_url_canonicalization, profile } from '@jackdbd/indieauth'
+import { access_token, expires_in, refresh_token, scope } from '@jackdbd/oauth2'
+import { Static, Type } from '@sinclair/typebox'
 
 export const access_token_response_body_success = Type.Object({
   access_token,
@@ -13,14 +8,14 @@ export const access_token_response_body_success = Type.Object({
   expires_in: Type.Optional(
     Type.Number({
       ...expires_in,
-      description: "The lifetime in seconds of the access token.",
+      description: 'The lifetime in seconds of the access token.'
     })
   ),
 
   me: Type.String({
     ...me_after_url_canonicalization,
     description:
-      "The canonical user profile URL for the user this access token corresponds to.",
+      'The canonical user profile URL for the user this access token corresponds to.'
   }),
 
   profile: Type.Optional(profile),
@@ -29,8 +24,8 @@ export const access_token_response_body_success = Type.Object({
 
   scope,
 
-  token_type: Type.Literal("Bearer"),
-});
+  token_type: Type.Literal('Bearer')
+})
 
 /**
  * Response body to a successful Access Token Request.
@@ -40,7 +35,7 @@ export const access_token_response_body_success = Type.Object({
  */
 export type AccessTokenResponseBodySuccess = Static<
   typeof access_token_response_body_success
->;
+>
 
 // === COPIED FROM fastify-authorization-endpoint =========================== //
 /**
@@ -54,10 +49,10 @@ export type AccessTokenResponseBodySuccess = Static<
  */
 export const authorization_response_body_success = Type.Object({
   me: me_after_url_canonicalization,
-  scope: Type.Optional(scope),
-});
+  scope: Type.Optional(scope)
+})
 
 export type AuthorizationResponseBodySuccess = Static<
   typeof authorization_response_body_success
->;
+>
 // ========================================================================== //

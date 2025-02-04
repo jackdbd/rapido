@@ -1,23 +1,23 @@
-import { issuer } from "@jackdbd/indieauth";
-import { Static, Type } from "@sinclair/typebox";
-import { DEFAULT } from "../constants.js";
+import { issuer } from '@jackdbd/indieauth'
+import { Static, Type } from '@sinclair/typebox'
+import { DEFAULT } from '../constants.js'
 import {
   ajv,
   include_error_description,
-  report_all_ajv_errors,
-} from "./common.js";
+  report_all_ajv_errors
+} from './common.js'
 import {
   retrieveAuthorizationCode,
   onAuthorizationCodeVerified,
-  onUserApprovedRequest,
-} from "./user-provided-functions.js";
+  onUserApprovedRequest
+} from './user-provided-functions.js'
 import type {
   RetrieveAuthorizationCode,
   OnAuthorizationCodeVerified,
-  OnUserApprovedRequest,
-} from "./user-provided-functions.js";
+  OnUserApprovedRequest
+} from './user-provided-functions.js'
 
-const filepath = Type.String({ minLength: 1 });
+const filepath = Type.String({ minLength: 1 })
 
 export const options = Type.Object(
   {
@@ -35,19 +35,19 @@ export const options = Type.Object(
     authorizationCodeExpiration: Type.Optional(
       Type.String({
         default: DEFAULT.AUTHORIZATION_CODE_EXPIRATION,
-        minLength: 1,
+        minLength: 1
       })
     ),
 
     components: Type.Optional(
       Type.Object(
         {
-          "consent-form": Type.Optional(filepath),
-          "scope-list": Type.Optional(filepath),
-          "the-footer": Type.Optional(filepath),
-          "the-header": Type.Optional(filepath),
+          'consent-form': Type.Optional(filepath),
+          'scope-list': Type.Optional(filepath),
+          'the-footer': Type.Optional(filepath),
+          'the-header': Type.Optional(filepath)
         },
-        { description: "Filepaths to WebC components" }
+        { description: 'Filepaths to WebC components' }
       )
     ),
 
@@ -99,20 +99,20 @@ export const options = Type.Object(
 
     templates: Type.Optional(
       Type.Array(filepath, {
-        description: "Filepaths to WebC templates",
-        minItems: 1,
+        description: 'Filepaths to WebC templates',
+        minItems: 1
       })
-    ),
+    )
   },
   {
-    $id: "fastify-authorization-endpoint-options",
-    description: "Options for the Fastify authorization-endpoint plugin",
-    title: "Authorization Endpoint Options",
+    $id: 'fastify-authorization-endpoint-options',
+    description: 'Options for the Fastify authorization-endpoint plugin',
+    title: 'Authorization Endpoint Options'
   }
-);
+)
 
 export interface Options extends Static<typeof options> {
-  retrieveAuthorizationCode: RetrieveAuthorizationCode;
-  onAuthorizationCodeVerified: OnAuthorizationCodeVerified;
-  onUserApprovedRequest: OnUserApprovedRequest;
+  retrieveAuthorizationCode: RetrieveAuthorizationCode
+  onAuthorizationCodeVerified: OnAuthorizationCodeVerified
+  onUserApprovedRequest: OnUserApprovedRequest
 }

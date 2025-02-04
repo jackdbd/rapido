@@ -1,25 +1,25 @@
-import type { FastifyError } from "@fastify/error";
+import type { FastifyError } from '@fastify/error'
 
 export interface ErrorData {
-  error_description: string;
-  error_uri?: string;
-  state?: string;
+  error_description: string
+  error_uri?: string
+  state?: string
 }
 
 export interface PayloadOptions {
-  include_error_description?: boolean;
+  include_error_description?: boolean
 }
 
 export type PayloadFunction = (options?: PayloadOptions) => {
-  error: string;
-  error_description?: string;
-  error_uri?: string;
-  state?: string;
-};
+  error: string
+  error_description?: string
+  error_uri?: string
+  state?: string
+}
 
 export interface ErrorResponseFromJSON {
-  statusCode: number;
-  payload: PayloadFunction;
+  statusCode: number
+  payload: PayloadFunction
 }
 
 /**
@@ -33,12 +33,12 @@ export interface ErrorResponseFromJSON {
  * @see [Error Response - The OAuth 2.0 Authorization Framework (RFC 6749)]()
  */
 class BaseError extends Error implements FastifyError {
-  public readonly code: string;
-  public readonly statusCode: number;
-  public readonly error: string;
-  public readonly error_description?: string;
-  public readonly error_uri?: string;
-  public readonly state?: string;
+  public readonly code: string
+  public readonly statusCode: number
+  public readonly error: string
+  public readonly error_description?: string
+  public readonly error_uri?: string
+  public readonly state?: string
 
   constructor(
     code: string,
@@ -47,29 +47,29 @@ class BaseError extends Error implements FastifyError {
     name: string,
     data: ErrorData
   ) {
-    const message = `${error}: ${data.error_description}`;
-    super(message);
-    this.statusCode = statusCode;
-    this.code = code;
-    this.error = error;
-    this.error_description = data.error_description;
-    this.error_uri = data.error_uri;
-    this.state = data.state;
-    this.name = name;
+    const message = `${error}: ${data.error_description}`
+    super(message)
+    this.statusCode = statusCode
+    this.code = code
+    this.error = error
+    this.error_description = data.error_description
+    this.error_uri = data.error_uri
+    this.state = data.state
+    this.name = name
   }
 
   public payload(options?: PayloadOptions) {
-    const opt = options || {};
-    const include_error_description = opt.include_error_description ?? false;
+    const opt = options || {}
+    const include_error_description = opt.include_error_description ?? false
 
     return include_error_description
       ? {
           error: this.error,
           error_description: this.error_description,
           error_uri: this.error_uri,
-          state: this.state,
+          state: this.state
         }
-      : { error: this.error };
+      : { error: this.error }
   }
 }
 
@@ -80,12 +80,12 @@ class BaseError extends Error implements FastifyError {
 export class InvalidRequestError extends BaseError {
   constructor(data: ErrorData) {
     super(
-      "FST_ERR_INVALID_REQUEST",
-      "invalid_request",
+      'FST_ERR_INVALID_REQUEST',
+      'invalid_request',
       400,
-      "Invalid Request",
+      'Invalid Request',
       data
-    );
+    )
   }
 }
 
@@ -96,12 +96,12 @@ export class InvalidRequestError extends BaseError {
 export class InvalidClientError extends BaseError {
   constructor(data: ErrorData) {
     super(
-      "FST_ERR_INVALID_CLIENT",
-      "invalid_client",
+      'FST_ERR_INVALID_CLIENT',
+      'invalid_client',
       401,
-      "Invalid Client",
+      'Invalid Client',
       data
-    );
+    )
   }
 }
 
@@ -111,12 +111,12 @@ export class InvalidClientError extends BaseError {
 export class UnsupportedGrantTypeError extends BaseError {
   constructor(data: ErrorData) {
     super(
-      "FST_ERR_UNSUPPORTED_GRANT_TYPE",
-      "unsupported_grant_type",
+      'FST_ERR_UNSUPPORTED_GRANT_TYPE',
+      'unsupported_grant_type',
       400,
-      "Unsupported Grant Type",
+      'Unsupported Grant Type',
       data
-    );
+    )
   }
 }
 
@@ -127,12 +127,12 @@ export class UnsupportedGrantTypeError extends BaseError {
 export class UnsupportedResponseTypeError extends BaseError {
   constructor(data: ErrorData) {
     super(
-      "FST_ERR_UNSUPPORTED_RESPONSE_TYPE",
-      "unsupported_response_type",
+      'FST_ERR_UNSUPPORTED_RESPONSE_TYPE',
+      'unsupported_response_type',
       400,
-      "Unsupported Response Type",
+      'Unsupported Response Type',
       data
-    );
+    )
   }
 }
 
@@ -144,7 +144,7 @@ export class UnsupportedResponseTypeError extends BaseError {
  */
 export class InvalidGrantError extends BaseError {
   constructor(data: ErrorData) {
-    super("FST_ERR_INVALID_GRANT", "invalid_grant", 400, "Invalid Grant", data);
+    super('FST_ERR_INVALID_GRANT', 'invalid_grant', 400, 'Invalid Grant', data)
   }
 }
 
@@ -160,7 +160,7 @@ export class InvalidGrantError extends BaseError {
  */
 export class InvalidTokenError extends BaseError {
   constructor(data: ErrorData) {
-    super("FST_ERR_INVALID_TOKEN", "invalid_token", 401, "Invalid Token", data);
+    super('FST_ERR_INVALID_TOKEN', 'invalid_token', 401, 'Invalid Token', data)
   }
 }
 
@@ -173,7 +173,7 @@ export class InvalidTokenError extends BaseError {
  */
 export class UnauthorizedError extends BaseError {
   constructor(data: ErrorData) {
-    super("FST_ERR_UNAUTHORIZED", "unauthorized", 401, "Unauthorized", data);
+    super('FST_ERR_UNAUTHORIZED', 'unauthorized', 401, 'Unauthorized', data)
   }
 }
 
@@ -184,12 +184,12 @@ export class UnauthorizedError extends BaseError {
 export class UnauthorizedClientError extends BaseError {
   constructor(data: ErrorData) {
     super(
-      "FST_ERR_UNAUTHORIZED_CLIENT",
-      "unauthorized_client",
+      'FST_ERR_UNAUTHORIZED_CLIENT',
+      'unauthorized_client',
       401,
-      "Unauthorized Client",
+      'Unauthorized Client',
       data
-    );
+    )
   }
 }
 
@@ -198,7 +198,7 @@ export class UnauthorizedClientError extends BaseError {
  */
 export class InvalidScopeError extends BaseError {
   constructor(data: ErrorData) {
-    super("FST_ERR_INVALID_SCOPE", "invalid_scope", 401, "Invalid Scope", data);
+    super('FST_ERR_INVALID_SCOPE', 'invalid_scope', 401, 'Invalid Scope', data)
   }
 }
 
@@ -207,7 +207,7 @@ export class InvalidScopeError extends BaseError {
  */
 export class ForbiddenError extends BaseError {
   constructor(data: ErrorData) {
-    super("FST_ERR_FORBIDDEN", "forbidden", 403, "Forbidden", data);
+    super('FST_ERR_FORBIDDEN', 'forbidden', 403, 'Forbidden', data)
   }
 }
 
@@ -216,7 +216,7 @@ export class ForbiddenError extends BaseError {
  */
 export class AccessDeniedError extends BaseError {
   constructor(data: ErrorData) {
-    super("FST_ERR_ACCESS_DENIED", "access_denied", 403, "Access Denied", data);
+    super('FST_ERR_ACCESS_DENIED', 'access_denied', 403, 'Access Denied', data)
   }
 }
 
@@ -226,12 +226,12 @@ export class AccessDeniedError extends BaseError {
 export class InsufficientScopeError extends BaseError {
   constructor(data: ErrorData) {
     super(
-      "FST_ERR_INSUFFICIENT_SCOPE",
-      "insufficient_scope",
+      'FST_ERR_INSUFFICIENT_SCOPE',
+      'insufficient_scope',
       403,
-      "Insufficient Scope",
+      'Insufficient Scope',
       data
-    );
+    )
   }
 }
 
@@ -244,7 +244,7 @@ export class InsufficientScopeError extends BaseError {
  */
 export class ServerError extends BaseError {
   constructor(data: ErrorData) {
-    super("FST_ERR_SERVER_ERROR", "server_error", 500, "Server Error", data);
+    super('FST_ERR_SERVER_ERROR', 'server_error', 500, 'Server Error', data)
   }
 }
 
@@ -258,11 +258,11 @@ export class ServerError extends BaseError {
 export class TemporaryUnavailableError extends BaseError {
   constructor(data: ErrorData) {
     super(
-      "FST_ERR_TEMPORARILY_UNAVAILABLE",
-      "temporarily_unavailable",
+      'FST_ERR_TEMPORARILY_UNAVAILABLE',
+      'temporarily_unavailable',
       503,
-      "Temporarily Unavailable",
+      'Temporarily Unavailable',
       data
-    );
+    )
   }
 }

@@ -1,110 +1,110 @@
-import assert from "node:assert";
-import { before, describe, it } from "node:test";
-import Fastify from "fastify";
-import { nanoid } from "nanoid";
-import { accessTokenFromRequest } from "../lib/index.js";
+import assert from 'node:assert'
+import { before, describe, it } from 'node:test'
+import Fastify from 'fastify'
+import { nanoid } from 'nanoid'
+import { accessTokenFromRequest } from '../lib/index.js'
 
-describe("accessTokenFromRequest", () => {
-  let fastify;
+describe('accessTokenFromRequest', () => {
+  let fastify
   before(() => {
-    fastify = Fastify();
+    fastify = Fastify()
 
-    fastify.get("/default", async (request, reply) => {
-      const { error, value } = accessTokenFromRequest(request);
-      return reply.send({ error, value });
-    });
+    fastify.get('/default', async (request, reply) => {
+      const { error, value } = accessTokenFromRequest(request)
+      return reply.send({ error, value })
+    })
 
-    fastify.get("/custom-request-header", async (request, reply) => {
+    fastify.get('/custom-request-header', async (request, reply) => {
       const { error, value } = accessTokenFromRequest(request, {
-        header: "x-custom-header",
-      });
-      return reply.send({ error, value });
-    });
+        header: 'x-custom-header'
+      })
+      return reply.send({ error, value })
+    })
 
-    fastify.get("/custom-request-header-key", async (request, reply) => {
+    fastify.get('/custom-request-header-key', async (request, reply) => {
       const { error, value } = accessTokenFromRequest(request, {
-        header_key: "Foo",
-      });
-      return reply.send({ error, value });
-    });
-  });
+        header_key: 'Foo'
+      })
+      return reply.send({ error, value })
+    })
+  })
 
   it("returns an error when request has no 'authorization' header", async () => {
-    const response = await fastify.inject({ method: "GET", url: "/default" });
+    const response = await fastify.inject({ method: 'GET', url: '/default' })
 
-    const res = response.json();
+    const res = response.json()
 
-    assert.ok(res.error);
-    assert.strictEqual(res.value, undefined);
-  });
+    assert.ok(res.error)
+    assert.strictEqual(res.value, undefined)
+  })
 
   it("returns an error when request has no 'Bearer' key in 'authorization' header", async () => {
-    const access_token = nanoid();
+    const access_token = nanoid()
 
     const response = await fastify.inject({
-      method: "GET",
+      method: 'GET',
       headers: {
-        authorization: `Foo ${access_token}`,
+        authorization: `Foo ${access_token}`
       },
-      url: "/default",
-    });
+      url: '/default'
+    })
 
-    const res = response.json();
+    const res = response.json()
 
-    assert.ok(res.error);
-    assert.strictEqual(res.value, undefined);
-  });
+    assert.ok(res.error)
+    assert.strictEqual(res.value, undefined)
+  })
 
   it("extracts the access token from the 'authorization' request header, key 'Bearer' (default)", async () => {
-    const access_token = nanoid();
+    const access_token = nanoid()
 
     const response = await fastify.inject({
-      method: "GET",
+      method: 'GET',
       headers: {
-        authorization: `Bearer ${access_token}`,
+        authorization: `Bearer ${access_token}`
       },
-      url: "/default",
-    });
+      url: '/default'
+    })
 
-    const res = response.json();
+    const res = response.json()
 
-    assert.strictEqual(res.error, undefined);
-    assert.strictEqual(res.value, access_token);
-  });
+    assert.strictEqual(res.error, undefined)
+    assert.strictEqual(res.value, access_token)
+  })
 
-  it("can extract the access token from a custom request header", async () => {
-    const access_token = nanoid();
+  it('can extract the access token from a custom request header', async () => {
+    const access_token = nanoid()
 
     const response = await fastify.inject({
-      method: "GET",
+      method: 'GET',
       headers: {
-        "x-custom-header": `Bearer ${access_token}`,
+        'x-custom-header': `Bearer ${access_token}`
       },
-      url: "/custom-request-header",
-    });
+      url: '/custom-request-header'
+    })
 
-    const res = response.json();
+    const res = response.json()
 
-    assert.strictEqual(response.statusCode, 200);
-    assert.strictEqual(res.error, undefined);
-    assert.strictEqual(res.value, access_token);
-  });
+    assert.strictEqual(response.statusCode, 200)
+    assert.strictEqual(res.error, undefined)
+    assert.strictEqual(res.value, access_token)
+  })
 
-  it("can extract the access token from a custom request header key", async () => {
-    const access_token = nanoid();
+  it('can extract the access token from a custom request header key', async () => {
+    const access_token = nanoid()
 
     const response = await fastify.inject({
-      method: "GET",
+      method: 'GET',
       headers: {
-        authorization: `Foo ${access_token}`,
+        authorization: `Foo ${access_token}`
       },
-      url: "/custom-request-header-key",
-    });
+      url: '/custom-request-header-key'
+    })
 
-    const res = response.json();
+    const res = response.json()
 
-    assert.strictEqual(response.statusCode, 200);
-    assert.strictEqual(res.error, undefined);
-    assert.strictEqual(res.value, access_token);
-  });
-});
+    assert.strictEqual(response.statusCode, 200)
+    assert.strictEqual(res.error, undefined)
+    assert.strictEqual(res.value, access_token)
+  })
+})

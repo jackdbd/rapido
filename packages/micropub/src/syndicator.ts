@@ -1,4 +1,4 @@
-import { Jf2 } from "@paulrobertlloyd/mf2tojf2";
+import { Jf2 } from '@paulrobertlloyd/mf2tojf2'
 
 export interface BaseValueSyndicate {
   /**
@@ -6,30 +6,30 @@ export interface BaseValueSyndicate {
    * Not all syndicators might return a URL (e.g. when we syndicate to a
    * Telegram chat/group, we don't get a URL back), so this field is optional.
    */
-  syndication?: string;
+  syndication?: string
 
   /**
    * The UID of the syndicator.
    */
-  uid: string;
+  uid: string
 }
 
 export interface Failure<E> {
-  error: E;
-  value?: undefined;
+  error: E
+  value?: undefined
 }
 
 export interface Success<V> {
-  error?: undefined;
-  value: V;
+  error?: undefined
+  value: V
 }
 
-export type Result<E, V> = Failure<E> | Success<V>;
+export type Result<E, V> = Failure<E> | Success<V>
 
 export interface Syndicator<
   V extends BaseValueSyndicate = BaseValueSyndicate,
-  E extends Error = Error,
+  E extends Error = Error
 > {
-  uid: string;
-  syndicate: (url: string, jf2: Jf2) => Promise<Result<E, V>>;
+  uid: string
+  syndicate: (url: string, jf2: Jf2) => Promise<Result<E, V>>
 }

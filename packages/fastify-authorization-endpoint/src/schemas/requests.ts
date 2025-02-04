@@ -1,30 +1,30 @@
 import {
   client_id,
   me_after_url_canonicalization,
-  me_before_url_canonicalization,
-} from "@jackdbd/indieauth";
+  me_before_url_canonicalization
+} from '@jackdbd/indieauth'
 import {
   authorization_code,
   redirect_uri,
   // response_type,
   scope,
-  state,
-} from "@jackdbd/oauth2";
+  state
+} from '@jackdbd/oauth2'
 import {
   code_challenge,
   code_challenge_method,
-  code_verifier,
-} from "@jackdbd/pkce";
-import { Static, Type } from "@sinclair/typebox";
+  code_verifier
+} from '@jackdbd/pkce'
+import { Static, Type } from '@sinclair/typebox'
 
 export const response_type = Type.Union(
-  [Type.Literal("code"), Type.Literal("token")],
+  [Type.Literal('code'), Type.Literal('token')],
   {
-    title: "OAuth 2.0 response_type",
-    description: "Tells the authorization server which grant to execute.",
-    default: "code",
+    title: 'OAuth 2.0 response_type',
+    description: 'Tells the authorization server which grant to execute.',
+    default: 'code'
   }
-);
+)
 
 /**
  * Query string of the Authorization Request.
@@ -53,7 +53,7 @@ export const authorization_request_querystring = Type.Object(
      */
     me: Type.Union([
       me_before_url_canonicalization,
-      me_after_url_canonicalization,
+      me_after_url_canonicalization
     ]),
 
     /**
@@ -69,17 +69,17 @@ export const authorization_request_querystring = Type.Object(
 
     scope: Type.Optional(scope),
 
-    state,
+    state
   },
   {
-    title: "Authorization Request Querystring",
-    $id: "authorization-endpoint-authorization-request-querystring",
+    title: 'Authorization Request Querystring',
+    $id: 'authorization-endpoint-authorization-request-querystring'
   }
-);
+)
 
 export type AuthorizationRequestQuerystring = Static<
   typeof authorization_request_querystring
->;
+>
 
 /**
  * Access Token Request body.
@@ -95,26 +95,26 @@ export const access_token_request_body = Type.Object(
     client_id,
     code: authorization_code,
     code_verifier,
-    grant_type: Type.Literal("authorization_code"),
-    redirect_uri,
+    grant_type: Type.Literal('authorization_code'),
+    redirect_uri
   },
   {
-    title: "Access Token Request Body",
-    $id: "authorization-endpoint-access-token-request-body",
+    title: 'Access Token Request Body',
+    $id: 'authorization-endpoint-access-token-request-body'
   }
-);
+)
 
-export type AccessTokenRequestBody = Static<typeof access_token_request_body>;
+export type AccessTokenRequestBody = Static<typeof access_token_request_body>
 
 export const profile_url_request_body = Type.Object({
   client_id,
   code: authorization_code,
   code_verifier,
-  grant_type: Type.Optional(Type.Literal("profile_url")),
-  redirect_uri,
-});
+  grant_type: Type.Optional(Type.Literal('profile_url')),
+  redirect_uri
+})
 
-export type ProfileUrlRequestBody = Static<typeof profile_url_request_body>;
+export type ProfileUrlRequestBody = Static<typeof profile_url_request_body>
 
 /**
  * Action that the resource owner can take in regards to an authorization
@@ -124,9 +124,9 @@ export type ProfileUrlRequestBody = Static<typeof profile_url_request_body>;
  * an "APPROVE" button and a "DENY" button, and the end user may click either
  * one of those buttons.
  */
-const action = Type.Union([Type.Literal("approve"), Type.Literal("deny")]);
+const action = Type.Union([Type.Literal('approve'), Type.Literal('deny')])
 
-export type Action = Static<typeof action>;
+export type Action = Static<typeof action>
 
 export const handle_action_querystring = Type.Object({
   action,
@@ -139,7 +139,7 @@ export const handle_action_querystring = Type.Object({
 
   me: Type.Union([
     me_before_url_canonicalization,
-    me_after_url_canonicalization,
+    me_after_url_canonicalization
   ]),
 
   /**
@@ -156,7 +156,7 @@ export const handle_action_querystring = Type.Object({
 
   scope,
 
-  state,
-});
+  state
+})
 
-export type HandleActionQuerystring = Static<typeof handle_action_querystring>;
+export type HandleActionQuerystring = Static<typeof handle_action_querystring>

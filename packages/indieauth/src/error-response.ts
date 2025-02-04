@@ -2,9 +2,9 @@ import {
   error_description,
   error_type as oauth2_error_type,
   error_uri,
-  state,
-} from "@jackdbd/oauth2";
-import { Static, Type } from "@sinclair/typebox";
+  state
+} from '@jackdbd/oauth2'
+import { Static, Type } from '@sinclair/typebox'
 
 // export const error_type = Type.Union(
 //   [
@@ -18,13 +18,13 @@ import { Static, Type } from "@sinclair/typebox";
 export const error_type = Type.Union(
   [
     oauth2_error_type,
-    Type.Literal("insufficient_scope"),
-    Type.Literal("invalid_token"),
+    Type.Literal('insufficient_scope'),
+    Type.Literal('invalid_token')
   ],
   { description: `A single ASCII error code.` }
-);
+)
 
-export type ErrorType = Static<typeof error_type>;
+export type ErrorType = Static<typeof error_type>
 
 // export type ErrorType = Static<typeof indieauth_specific_error_type> | OAuth2ErrorType
 
@@ -50,10 +50,10 @@ export const error_response = Type.Object({
    */
   error_uri: Type.Optional(error_uri),
 
-  state: Type.Optional(state),
-});
+  state: Type.Optional(state)
+})
 
 /**
  * IndieAuth [Error Responses](https://indieauth.spec.indieweb.org/#error-responses).
  */
-export type ErrorResponse = Static<typeof error_response>;
+export type ErrorResponse = Static<typeof error_response>

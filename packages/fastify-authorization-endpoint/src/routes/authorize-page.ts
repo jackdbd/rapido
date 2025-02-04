@@ -1,21 +1,21 @@
-import type { RouteGenericInterface, RouteHandler } from "fastify";
-import canonicalUrl from "@jackdbd/canonical-url";
-import { clientMetadata } from "@jackdbd/indieauth";
+import type { RouteGenericInterface, RouteHandler } from 'fastify'
+import canonicalUrl from '@jackdbd/canonical-url'
+import { clientMetadata } from '@jackdbd/indieauth'
 import {
   InvalidClientError,
-  InvalidRequestError,
-} from "@jackdbd/oauth2-error-responses";
-import type { AuthorizationRequestQuerystring } from "../schemas/index.js";
+  InvalidRequestError
+} from '@jackdbd/oauth2-error-responses'
+import type { AuthorizationRequestQuerystring } from '../schemas/index.js'
 
 export interface Config {
-  authorization_code_expiration: string;
-  include_error_description: boolean;
-  log_prefix: string;
-  redirect_path_on_submit: string;
+  authorization_code_expiration: string
+  include_error_description: boolean
+  log_prefix: string
+  redirect_path_on_submit: string
 }
 
 interface RouteGeneric extends RouteGenericInterface {
-  Querystring: AuthorizationRequestQuerystring;
+  Querystring: AuthorizationRequestQuerystring
 }
 
 /**
@@ -42,8 +42,8 @@ export const defAuthorizePage = (config: Config) => {
     authorization_code_expiration,
     include_error_description,
     log_prefix,
-    redirect_path_on_submit,
-  } = config;
+    redirect_path_on_submit
+  } = config
 
   const authorizePage: RouteHandler<RouteGeneric> = async (request, reply) => {
     const {
@@ -52,63 +52,62 @@ export const defAuthorizePage = (config: Config) => {
       code_challenge_method,
       response_type,
       scope,
-      state,
-    } = request.query;
+      state
+    } = request.query
 
-    if (response_type !== "code") {
-      const error_description = `This authorization endpoint only supports the 'code' response type.`;
+    if (response_type !== 'code') {
+      const error_description = `This authorization endpoint only supports the 'code' response type.`
       // TODO: create HTML page for error_uri
-      const error_uri = undefined;
+      const error_uri = undefined
       const err = new InvalidRequestError({
         error_description,
         error_uri,
-        state,
-      });
+        state
+      })
       return reply
         .code(err.statusCode)
-        .send(err.payload({ include_error_description }));
+        .send(err.payload({ include_error_description }))
     }
 
     // The authorization endpoint SHOULD fetch the client_id URL to retrieve
     // application information and the client's registered redirect URLs.
-    request.log.debug(`${log_prefix}fetch metadata for client ${client_id}`);
+    request.log.debug(`${log_prefix}fetch metadata for client ${client_id}`)
     // This function already canonicalizes the client_id URL.
     const { error: client_metadata_error, value: client_metadata } =
-      await clientMetadata(client_id);
+      await clientMetadata(client_id)
 
     if (client_metadata_error) {
-      const original = client_metadata_error.message;
-      const error_description = `Failed to fetch metadata for client ${client_id}: ${original}.`;
+      const original = client_metadata_error.message
+      const error_description = `Failed to fetch metadata for client ${client_id}: ${original}.`
       // TODO: create HTML page for error_uri
-      const error_uri = undefined;
+      const error_uri = undefined
       // Which one is the most appropriate here? InvalidRequestError / InvalidClientError / ServerError
       const err = new InvalidRequestError({
         error_description,
         error_uri,
-        state,
-      });
+        state
+      })
       return reply
         .code(err.statusCode)
-        .send(err.payload({ include_error_description }));
+        .send(err.payload({ include_error_description }))
     }
 
-    request.log.debug(client_metadata, "retrieved IndieAuth client metadata");
-    const { client_name, client_uri, logo_uri, redirect_uris } =
-      client_metadata;
+    request.log.debug(client_metadata, 'retrieved IndieAuth client metadata')
+    const { client_name, client_uri, logo_uri, redirect_uris } = client_metadata
 
     if (!redirect_uris) {
-      const error_description = `Metadata of client ${client_id} does not specify redirect_uris.`;
+      const error_description = `Metadata of client ${client_id} does not specify redirect_uris.`
       // TODO: create HTML page for error_uri
-      const error_uri = undefined;
+      const error_uri = undefined
       // Which one is the most appropriate here? InvalidRequestError / InvalidClientError
       const err = new InvalidClientError({
         error_description,
         error_uri,
-        state,
-      });
+        state
+      })
       return reply
         .code(err.statusCode)
-        .send(err.payload({ include_error_description }));
+        .send(err.payload({ include_error_description }))
     }
 
     // TODO: what to do if there are multiple redirect URIs? Re-read the
@@ -117,7 +116,7 @@ export const defAuthorizePage = (config: Config) => {
     if (redirect_uris.length > 1) {
       request.log.warn(
         `${log_prefix}client ID ${client_id} specifies ${redirect_uris.length} redirect URIs`
-      );
+      )
     }
 
     // redirect_uris in IndieAuth Client Metadata
@@ -126,31 +125,31 @@ export const defAuthorizePage = (config: Config) => {
     // https://www.rfc-editor.org/rfc/rfc7591.html
     const redirect_uri = redirect_uris.find(
       (uri) => uri === request.query.redirect_uri
-    );
+    )
 
     if (!redirect_uri) {
-      const error_description = `Redirect URI from query string does not match any of the redirect URIs found in the client's metadata.`;
+      const error_description = `Redirect URI from query string does not match any of the redirect URIs found in the client's metadata.`
       // TODO: create HTML page for error_uri
-      const error_uri = undefined;
+      const error_uri = undefined
       const err = new InvalidRequestError({
         error_description,
         error_uri,
-        state,
-      });
+        state
+      })
       return reply
         .code(err.statusCode)
-        .send(err.payload({ include_error_description }));
+        .send(err.payload({ include_error_description }))
     }
 
     // URL where the IndieAuth/Micropub client is redirected to by the
     // authorization server when the end user denies the authorization request.
     // I am not sure whether there is a standard way for IndieAuth clients to
     // specify this redirect URL.
-    let redirect_uri_on_deny = client_uri;
+    let redirect_uri_on_deny = client_uri
     if (client_uri) {
-      redirect_uri_on_deny = client_uri;
+      redirect_uri_on_deny = client_uri
     } else {
-      redirect_uri_on_deny = new URL(redirect_uri).origin;
+      redirect_uri_on_deny = new URL(redirect_uri).origin
     }
 
     const data = {
@@ -160,19 +159,19 @@ export const defAuthorizePage = (config: Config) => {
       client_uri,
       code_challenge,
       code_challenge_method,
-      description: "Authorization page with user consent screen.",
+      description: 'Authorization page with user consent screen.',
       logo_uri,
       me: canonicalUrl(request.query.me),
       redirect_path_on_submit,
       redirect_uri,
       redirect_uri_on_deny,
-      scopes: scope ? scope.split(" ") : [],
+      scopes: scope ? scope.split(' ') : [],
       state,
-      title: "Authorize",
-    };
+      title: 'Authorize'
+    }
 
-    return reply.render("authorize.webc", data);
-  };
+    return reply.render('authorize.webc', data)
+  }
 
-  return authorizePage;
-};
+  return authorizePage
+}

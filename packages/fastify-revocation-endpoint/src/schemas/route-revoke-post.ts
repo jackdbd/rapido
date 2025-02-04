@@ -1,20 +1,20 @@
-import { issuer, me_after_url_canonicalization } from "@jackdbd/indieauth";
-import { jwks_url } from "@jackdbd/oauth2-tokens";
-import { Static, Type } from "@sinclair/typebox";
-import type { Ajv } from "ajv";
-import { ajv, include_error_description, log_prefix } from "./common.js";
+import { issuer, me_after_url_canonicalization } from '@jackdbd/indieauth'
+import { jwks_url } from '@jackdbd/oauth2-tokens'
+import { Static, Type } from '@sinclair/typebox'
+import type { Ajv } from 'ajv'
+import { ajv, include_error_description, log_prefix } from './common.js'
 import {
   retrieveAccessToken,
   retrieveRefreshToken,
   revokeAccessToken,
-  revokeRefreshToken,
-} from "./user-provided-functions.js";
+  revokeRefreshToken
+} from './user-provided-functions.js'
 import type {
   RetrieveAccessToken,
   RetrieveRefreshToken,
   RevokeAccessToken,
-  RevokeRefreshToken,
-} from "./user-provided-functions.js";
+  RevokeRefreshToken
+} from './user-provided-functions.js'
 
 export const revoke_post_config = Type.Object(
   {
@@ -28,15 +28,15 @@ export const revoke_post_config = Type.Object(
     retrieveAccessToken,
     retrieveRefreshToken,
     revokeAccessToken,
-    revokeRefreshToken,
+    revokeRefreshToken
   },
-  { additionalProperties: false, $id: "revocation-endpoint-post-method-config" }
-);
+  { additionalProperties: false, $id: 'revocation-endpoint-post-method-config' }
+)
 
 export interface RevokePostConfig extends Static<typeof revoke_post_config> {
-  ajv: Ajv;
-  retrieveAccessToken: RetrieveAccessToken;
-  retrieveRefreshToken: RetrieveRefreshToken;
-  revokeAccessToken: RevokeAccessToken;
-  revokeRefreshToken: RevokeRefreshToken;
+  ajv: Ajv
+  retrieveAccessToken: RetrieveAccessToken
+  retrieveRefreshToken: RetrieveRefreshToken
+  revokeAccessToken: RevokeAccessToken
+  revokeRefreshToken: RevokeRefreshToken
 }
