@@ -1,10 +1,11 @@
 import { execSync } from 'node:child_process'
-import { readFileSync } from 'node:fs'
+import { cpSync, readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { parseArgs } from 'node:util'
 import { REPO_ROOT } from '../../stdlib/lib/index.js'
 
 interface Config {
+  compile_dependency?: boolean
   dependency_name_scoped: string
   package_name_unscoped: string
   packages_root: string
@@ -12,6 +13,7 @@ interface Config {
 
 const vendorize = (config: Config) => {
   const {
+    compile_dependency,
     dependency_name_scoped: dep_scoped,
     package_name_unscoped: pkg_unscoped,
     packages_root
@@ -25,21 +27,23 @@ const vendorize = (config: Config) => {
     throw new Error(`Internal package has unexpected name: ${dep_scoped}`)
   }
 
-  const dep_pkg_root = path.join(packages_root, dep_unscoped)
+  if (compile_dependency) {
+    const dep_pkg_root = path.join(packages_root, dep_unscoped)
+    console.log(`compile ${dep_scoped}`)
+    const cmd = `npx tsc -p ${path.join(dep_pkg_root, 'tsconfig.json')}`
+    execSync(cmd).toString()
+  }
 
-  console.log(`compile ${dep_scoped}`)
-  let cmd = `npx tsc -p ${path.join(dep_pkg_root, 'tsconfig.json')}`
-  execSync(cmd).toString()
-
-  const src = path.join(packages_root, dep_unscoped, 'lib', '*')
+  const src = path.join(packages_root, dep_unscoped, 'lib')
   const dest = path.join(packages_root, pkg_unscoped, 'lib', dep_unscoped)
   console.log(`copy ${src} to ${dest}`)
-  cmd = `rsync -a ${src} ${dest}`
-  execSync(cmd).toString()
+  cpSync(src, dest, { recursive: true })
 
-  console.log(`adjust imports in ${pkg_unscoped}`)
-  cmd = `sed -i 's|${dep_scoped}|./${dep_unscoped}/index.js|g' ./lib/index.js`
-  execSync(cmd).toString()
+  const filepath = path.join(packages_root, pkg_unscoped, 'lib', 'index.js')
+  console.log(`adjust imports in ${filepath}`)
+  const original = readFileSync(filepath, 'utf-8')
+  const str = original.replaceAll(dep_scoped, `./${dep_unscoped}/index.js`)
+  writeFileSync(filepath, str, 'utf-8')
 }
 
 const run = async () => {

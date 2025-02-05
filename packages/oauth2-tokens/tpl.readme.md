@@ -26,6 +26,8 @@ The [refresh tokens](https://indieauth.spec.indieweb.org/#refresh-tokens) issued
 > [!TIP]
 > Read the article [Why we chose NanoIDs for PlanetScale’s API](https://planetscale.com/blog/why-we-chose-nanoids-for-planetscales-api) for a comparison of Nano ID with UUIDs.
 
+{{pkg.docs}}
+
 {{pkg.deps}}
 
 {{pkg.peerDependencies}}

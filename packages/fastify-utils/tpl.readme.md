@@ -8,6 +8,8 @@
 
 {{pkg.installation}}
 
+{{pkg.docs}}
+
 {{pkg.deps}}
 
 {{pkg.peerDependencies}}

@@ -41,7 +41,8 @@
     "lib"
   ],
   "scripts": {
-    "build": "run-s 'build:ts' 'build:readme' --print-label",
+    "build": "run-s 'build:ts' 'build:docs' 'build:readme' --print-label",
+    "build:docs": "node ../scripts/dist/docs.js --package oauth2-tokens",
     "build:readme": "node ../scripts/dist/readme.js --package oauth2-tokens",
     "build:ts": "tsc -p tsconfig.json",
     "build:ts:watch": "tsc -p tsconfig.json --watch",
