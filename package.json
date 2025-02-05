@@ -37,11 +37,10 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "nuke": "npm run clean && rm -rf node_modules package-lock.json",
     "publint": "npm run publint --workspaces --if-present",
-    "publish-packages": "npm run build:ts && npm run vendor && npm run build:readme && npm run copy:webc && npm run publint && npx turbo test:ci && changeset publish",
+    "publish-packages": "npm run build:ts && npm run vendor && npm run build:readme && npm run copy:webc && npm run publint && npm run test:ci && changeset publish",
     "size": "npm run size --workspaces --if-present",
     "start:app": "npm run start -w @repo/demo-app",
-    "test": "turbo test",
-    "test:watch": "turbo test:watch",
+    "test:ci": "npm run test:ci --workspaces --if-present",
     "vendor": "npm run vendor --workspaces --if-present"
   },
   "dependencies": {
