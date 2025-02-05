@@ -1,5 +1,16 @@
 # @jackdbd/r2-media-store
 
+## 0.2.0-canary.11
+
+### Minor Changes
+
+- 38ac06f: Use "vanilla" npm workspaces script (not Turborepo) when publishing packages.
+
+### Patch Changes
+
+- Updated dependencies [38ac06f]
+  - @jackdbd/fastify-media-endpoint@0.2.0-canary.11
+
 ## 0.2.0-canary.10
 
 ### Minor Changes

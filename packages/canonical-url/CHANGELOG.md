@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.2.0-canary.6
+
+### Minor Changes
+
+- 38ac06f: Use "vanilla" npm workspaces script (not Turborepo) when publishing packages.
+
 ## 0.2.0-canary.5
 
 ### Minor Changes
