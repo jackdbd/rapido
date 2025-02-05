@@ -1,5 +1,23 @@
 # Change Log
 
+## 1.3.0-canary.12
+
+### Minor Changes
+
+- b2b0f1b: Build docs of all packages.
+
+### Patch Changes
+
+- Updated dependencies [b2b0f1b]
+  - @jackdbd/oauth2-error-responses@0.2.0-canary.5
+  - @jackdbd/schema-validators@0.2.0-canary.8
+  - @jackdbd/canonical-url@0.2.0-canary.5
+  - @jackdbd/fastify-hooks@0.2.0-canary.8
+  - @jackdbd/fastify-utils@0.2.0-canary.7
+  - @jackdbd/oauth2-tokens@0.2.0-canary.9
+  - @jackdbd/indieauth@0.2.0-canary.5
+  - @jackdbd/oauth2@0.2.0-canary.4
+
 ## 1.3.0-canary.11
 
 ### Minor Changes

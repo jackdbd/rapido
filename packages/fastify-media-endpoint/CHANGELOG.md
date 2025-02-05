@@ -1,5 +1,24 @@
 # @jackdbd/fastify-media-endpoint
 
+## 0.2.0-canary.10
+
+### Minor Changes
+
+- b2b0f1b: Build docs of all packages.
+
+### Patch Changes
+
+- Updated dependencies [b2b0f1b]
+  - @jackdbd/oauth2-error-responses@0.2.0-canary.5
+  - @jackdbd/schema-validators@0.2.0-canary.8
+  - @jackdbd/canonical-url@0.2.0-canary.5
+  - @jackdbd/fastify-hooks@0.2.0-canary.8
+  - @jackdbd/fastify-utils@0.2.0-canary.7
+  - @jackdbd/oauth2-tokens@0.2.0-canary.9
+  - @jackdbd/indieauth@0.2.0-canary.5
+  - @jackdbd/micropub@0.2.0-canary.6
+  - @jackdbd/oauth2@0.2.0-canary.4
+
 ## 0.2.0-canary.9
 
 ### Minor Changes
