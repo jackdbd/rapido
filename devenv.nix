@@ -68,7 +68,7 @@ in {
       echo "build package $1"
       npm run build -w @repo/stdlib -w @repo/scripts -w ./packages/$1
       npm run publint -w ./packages/$1 --if-present
-      npm run size -w ./packages/$1 --if-present
+      # npm run size -w ./packages/$1 --if-present
     '';
     "build:ts".exec = ''
       npm run build:ts

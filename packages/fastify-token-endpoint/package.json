@@ -51,7 +51,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "run-s 'build:ts' 'build:readme' --print-label",
+    "build": "run-s 'build:ts' 'vendor' 'build:readme' --print-label",
     "build:readme": "node ../scripts/dist/readme.js --package fastify-token-endpoint",
     "build:ts": "tsc -p tsconfig.json",
     "build:ts:watch": "tsc -p tsconfig.json --watch",
@@ -62,7 +62,8 @@
     "size": "pkg-size ./lib --sort-by=brotli --ignore-files {*.d.ts,*.map}",
     "test": "node --test --experimental-test-coverage",
     "test:ci": "node --test --test-reporter=@reporters/github --test-reporter-destination=stdout --test-reporter=spec --test-reporter-destination=stdout",
-    "test:watch": "node --test --watch"
+    "test:watch": "node --test --watch",
+    "vendor": "node ../scripts/dist/vendor.js --package fastify-token-endpoint"
   },
   "dependencies": {
     "@fastify/formbody": "^8.0.2",
@@ -81,5 +82,8 @@
   "peerDependencies": {
     "fastify": ">=5.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "internalPackages": {
+    "@repo/error-handlers": "*"
+  }
 }
