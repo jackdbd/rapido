@@ -48,29 +48,29 @@ jobs:
       - run: npm run build:ts
       - run: npm run vendor
       
-      - run: npx turbo test:ci --filter @repo/error-handlers
-      - run: npx turbo test:ci --filter @jackdbd/canonical-url
-      - run: npx turbo test:ci --filter @jackdbd/relmeauth
-      - run: npx turbo test:ci --filter @jackdbd/pkce
-      - run: npx turbo test:ci --filter @jackdbd/unwrap
-      - run: npx turbo test:ci --filter @jackdbd/oauth2-error-responses
-      - run: npx turbo test:ci --filter @jackdbd/oauth2
-      - run: npx turbo test:ci --filter @jackdbd/indieauth
-      - run: npx turbo test:ci --filter @jackdbd/schema-validators
-      - run: npx turbo test:ci --filter @jackdbd/fastify-utils
-      - run: npx turbo test:ci --filter @jackdbd/microformats2
-      - run: npx turbo test:ci --filter @jackdbd/oauth2-tokens
-      - run: npx turbo test:ci --filter @jackdbd/fastify-hooks
-      - run: npx turbo test:ci --filter @jackdbd/micropub
-      - run: npx turbo test:ci --filter @jackdbd/github-contents-api
-      - run: npx turbo test:ci --filter @jackdbd/fastify-webc
+      - run: npm run test:ci -w @repo/error-handlers
+      - run: npm run test:ci -w @jackdbd/canonical-url
+      - run: npm run test:ci -w @jackdbd/relmeauth
+      - run: npm run test:ci -w @jackdbd/pkce
+      - run: npm run test:ci -w @jackdbd/unwrap
+      - run: npm run test:ci -w @jackdbd/oauth2-error-responses
+      - run: npm run test:ci -w @jackdbd/oauth2
+      - run: npm run test:ci -w @jackdbd/indieauth
+      - run: npm run test:ci -w @jackdbd/schema-validators
+      - run: npm run test:ci -w @jackdbd/fastify-utils
+      - run: npm run test:ci -w @jackdbd/microformats2
+      - run: npm run test:ci -w @jackdbd/oauth2-tokens
+      - run: npm run test:ci -w @jackdbd/fastify-hooks
+      - run: npm run test:ci -w @jackdbd/micropub
+      - run: npm run test:ci -w @jackdbd/github-contents-api
+      - run: npm run test:ci -w @jackdbd/fastify-webc
       - run: npm run test:ci -w @jackdbd/fastify-authorization-endpoint
       - run: npm run test:ci -w @jackdbd/fastify-introspection-endpoint
-      - run: npx turbo test:ci --filter @jackdbd/fastify-revocation-endpoint
-      - run: npx turbo test:ci --filter @jackdbd/fastify-token-endpoint
-      - run: npx turbo test:ci --filter @jackdbd/fastify-userinfo-endpoint
-      - run: npx turbo test:ci --filter @jackdbd/fastify-micropub-endpoint
-      - run: npx turbo test:ci --filter @jackdbd/fastify-media-endpoint
-      - run: npx turbo test:ci --filter @jackdbd/fastify-syndicate-endpoint
-      - run: npx turbo test:ci --filter @jackdbd/github-content-store
-      - run: npx turbo test:ci --filter @jackdbd/r2-media-store
+      - run: npm run test:ci -w @jackdbd/fastify-revocation-endpoint
+      - run: npm run test:ci -w @jackdbd/fastify-token-endpoint
+      - run: npm run test:ci -w @jackdbd/fastify-userinfo-endpoint
+      - run: npm run test:ci -w @jackdbd/fastify-micropub-endpoint
+      - run: npm run test:ci -w @jackdbd/fastify-media-endpoint
+      - run: npm run test:ci -w @jackdbd/fastify-syndicate-endpoint
+      - run: npm run test:ci -w @jackdbd/github-content-store
+      - run: npm run test:ci -w @jackdbd/r2-media-store
