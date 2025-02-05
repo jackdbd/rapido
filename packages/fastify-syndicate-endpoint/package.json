@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/fastify-syndicate-endpoint",
-  "version": "0.2.0-canary.6",
+  "version": "0.2.0-canary.7",
   "description": "Fastify plugin that adds a `syndicate` endpoint to a Fastify server.",
   "author": {
     "name": "Giacomo Debidda",

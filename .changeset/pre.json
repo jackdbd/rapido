@@ -35,6 +35,7 @@
     "@repo/error-handlers": "0.1.0"
   },
   "changesets": [
+    "blue-adults-boil",
     "dull-bugs-bathe",
     "few-cooks-remember",
     "moody-insects-check",
