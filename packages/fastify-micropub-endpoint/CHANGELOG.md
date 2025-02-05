@@ -1,5 +1,25 @@
 # @jackdbd/fastify-micropub-endpoint
 
+## 0.2.0-canary.13
+
+### Minor Changes
+
+- 38ac06f: Use "vanilla" npm workspaces script (not Turborepo) when publishing packages.
+
+### Patch Changes
+
+- Updated dependencies [38ac06f]
+  - @jackdbd/oauth2-error-responses@0.2.0-canary.6
+  - @jackdbd/schema-validators@0.2.0-canary.9
+  - @jackdbd/canonical-url@0.2.0-canary.6
+  - @jackdbd/fastify-hooks@0.2.0-canary.9
+  - @jackdbd/fastify-utils@0.2.0-canary.8
+  - @jackdbd/microformats2@0.2.0-canary.6
+  - @jackdbd/oauth2-tokens@0.2.0-canary.10
+  - @jackdbd/indieauth@0.2.0-canary.6
+  - @jackdbd/micropub@0.2.0-canary.7
+  - @jackdbd/oauth2@0.2.0-canary.5
+
 ## 0.2.0-canary.12
 
 ### Minor Changes

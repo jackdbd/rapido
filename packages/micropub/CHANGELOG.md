@@ -1,5 +1,16 @@
 # @jackdbd/micropub
 
+## 0.2.0-canary.7
+
+### Minor Changes
+
+- 38ac06f: Use "vanilla" npm workspaces script (not Turborepo) when publishing packages.
+
+### Patch Changes
+
+- Updated dependencies [38ac06f]
+  - @jackdbd/microformats2@0.2.0-canary.6
+
 ## 0.2.0-canary.6
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @jackdbd/schema-validators
 
+## 0.2.0-canary.9
+
+### Minor Changes
+
+- 38ac06f: Use "vanilla" npm workspaces script (not Turborepo) when publishing packages.
+
 ## 0.2.0-canary.8
 
 ### Minor Changes

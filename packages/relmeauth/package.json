@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/relmeauth",
-  "version": "0.2.0-canary.5",
+  "version": "0.2.0-canary.6",
   "description": "Useful functions for implementing [RelMeAuth](https://indieweb.org/RelMeAuth).",
   "author": {
     "name": "Giacomo Debidda",
@@ -56,7 +56,7 @@
     "test:watch": "node --test --watch"
   },
   "dependencies": {
-    "@jackdbd/canonical-url": "0.2.0-canary.5",
+    "@jackdbd/canonical-url": "0.2.0-canary.6",
     "posthtml-parser": "^0.12.1"
   },
   "devDependencies": {}
