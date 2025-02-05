@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/oauth2",
-  "version": "0.2.0-canary.3",
+  "version": "0.2.0-canary.4",
   "description": "Schemas and functions useful when dealing with OAuth 2.0.",
   "author": {
     "name": "Giacomo Debidda",

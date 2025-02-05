@@ -1,5 +1,11 @@
 # @jackdbd/oauth2
 
+## 0.2.0-canary.4
+
+### Minor Changes
+
+- b2b0f1b: Build docs of all packages.
+
 ## 0.2.0-canary.3
 
 ### Minor Changes
