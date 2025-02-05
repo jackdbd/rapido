@@ -1,5 +1,18 @@
 # @jackdbd/fastify-hooks
 
+## 0.2.0-canary.8
+
+### Minor Changes
+
+- b2b0f1b: Build docs of all packages.
+
+### Patch Changes
+
+- Updated dependencies [b2b0f1b]
+  - @jackdbd/oauth2-error-responses@0.2.0-canary.5
+  - @jackdbd/fastify-utils@0.2.0-canary.7
+  - @jackdbd/oauth2-tokens@0.2.0-canary.9
+
 ## 0.2.0-canary.7
 
 ### Minor Changes

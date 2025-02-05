@@ -1,5 +1,17 @@
 # @jackdbd/github-content-store
 
+## 0.2.0-canary.5
+
+### Minor Changes
+
+- b2b0f1b: Build docs of all packages.
+
+### Patch Changes
+
+- Updated dependencies [b2b0f1b]
+  - @jackdbd/github-contents-api@0.2.0-canary.6
+  - @jackdbd/micropub@0.2.0-canary.6
+
 ## 0.2.0-canary.4
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @jackdbd/oauth2-error-responses
 
+## 0.2.0-canary.5
+
+### Minor Changes
+
+- b2b0f1b: Build docs of all packages.
+
 ## 0.2.0-canary.4
 
 ### Minor Changes
