@@ -1,5 +1,11 @@
 # @jackdbd/fastify-revocation-endpoint
 
+## 1.3.0-canary.10
+
+### Minor Changes
+
+- 0fd14e4: Add script to vendorize internal packages like `@repo/error-handlers`.
+
 ## 1.3.0-canary.9
 
 ### Minor Changes

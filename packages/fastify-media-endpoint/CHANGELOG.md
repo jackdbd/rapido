@@ -1,5 +1,11 @@
 # @jackdbd/fastify-media-endpoint
 
+## 0.2.0-canary.9
+
+### Minor Changes
+
+- 0fd14e4: Add script to vendorize internal packages like `@repo/error-handlers`.
+
 ## 0.2.0-canary.8
 
 ### Minor Changes
