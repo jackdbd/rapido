@@ -1,5 +1,18 @@
 # @jackdbd/indieauth
 
+## 0.2.0-canary.6
+
+### Minor Changes
+
+- 38ac06f: Use "vanilla" npm workspaces script (not Turborepo) when publishing packages.
+
+### Patch Changes
+
+- Updated dependencies [38ac06f]
+  - @jackdbd/canonical-url@0.2.0-canary.6
+  - @jackdbd/oauth2@0.2.0-canary.5
+  - @jackdbd/pkce@0.2.0-canary.5
+
 ## 0.2.0-canary.5
 
 ### Minor Changes
