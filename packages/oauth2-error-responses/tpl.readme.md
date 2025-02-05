@@ -14,6 +14,8 @@ You can use these classes when implementing an OAuth 2.0 / IndieAuth / Micropub 
 
 {{pkg.installation}}
 
+{{pkg.docs}}
+
 {{pkg.deps}}
 
 {{pkg.peerDependencies}}

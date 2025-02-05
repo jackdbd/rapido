@@ -16,6 +16,8 @@
 
 {{microformats2.hEvent}}
 
+{{pkg.docs}}
+
 {{pkg.deps}}
 
 {{pkg.peerDependencies}}

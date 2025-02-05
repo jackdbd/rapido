@@ -53,7 +53,8 @@
     "lib"
   ],
   "scripts": {
-    "build": "run-s 'build:ts' 'vendor' 'build:readme' --print-label",
+    "build": "run-s 'build:ts' 'vendor' 'build:docs' 'build:readme' --print-label",
+    "build:docs": "node ../scripts/dist/docs.js --package fastify-media-endpoint",
     "build:readme": "node ../scripts/dist/readme.js --package fastify-media-endpoint",
     "build:ts": "tsc -p tsconfig.json",
     "build:ts:watch": "tsc -p tsconfig.json --watch",

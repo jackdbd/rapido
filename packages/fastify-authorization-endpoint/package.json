@@ -57,7 +57,8 @@
     "lib"
   ],
   "scripts": {
-    "build": "run-s 'build:ts' 'vendor' 'build:readme' 'copy:webc' --print-label",
+    "build": "run-s 'build:ts' 'vendor' 'build:docs' 'build:readme' 'copy:webc' --print-label",
+    "build:docs": "node ../scripts/dist/docs.js --package fastify-authorization-endpoint",
     "build:readme": "node ../scripts/dist/readme.js --package fastify-authorization-endpoint",
     "build:ts": "tsc -p tsconfig.json",
     "build:ts:watch": "tsc -p tsconfig.json --watch",

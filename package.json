@@ -18,10 +18,12 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "run-s build:ts build:readme copy:webc --print-label",
+    "build": "run-s build:ts build:docs build:readme copy:webc build:docs:root build:readme:root --print-label",
     "build:app": "turbo build --filter @repo/demo-app",
-    "build:plugins": "turbo build --filter ./packages/fastify-webc --filter ./packages/fastify-authorization-endpoint",
+    "build:docs": "npm run build:docs --workspaces --if-present",
+    "build:docs:root": "node ./packages/scripts/dist/docs-root.js",
     "build:readme": "npm run build:readme --workspaces --if-present",
+    "build:readme:root": "node ./packages/scripts/dist/readme-root.js",
     "build:ts": "tsc --build --verbose",
     "build:ts:watch": "tsc --build --watch",
     "changeset:reset": "rm -f .changeset/pre.json && find .changeset -type f -name \"*.md\" ! -name \"README.md\" -delete",
@@ -70,6 +72,7 @@
     "taze": "latest",
     "tsm": "^2.3.0",
     "turbo": "^2.3.3",
+    "typedoc": "^0.27.6",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.23.0",
     "yargs": "^17.7.2"
