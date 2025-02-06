@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/pkce",
-  "version": "0.2.0-canary.5",
+  "version": "0.2.0-canary.6",
   "description": "Useful functions for implementing [Proof Key for Code Exchange (PKCE)](https://datatracker.ietf.org/doc/html/rfc7636).",
   "author": {
     "name": "Giacomo Debidda",

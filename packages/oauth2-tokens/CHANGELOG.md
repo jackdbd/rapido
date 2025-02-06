@@ -1,5 +1,17 @@
 # @jackdbd/oauth2-tokens
 
+## 0.2.0-canary.11
+
+### Minor Changes
+
+- d2ff71d: Move schema definitions of all user-defined functions to indieauth and micropub packages.
+
+### Patch Changes
+
+- Updated dependencies [d2ff71d]
+  - @jackdbd/schema-validators@0.2.0-canary.10
+  - @jackdbd/oauth2@0.2.0-canary.6
+
 ## 0.2.0-canary.10
 
 ### Minor Changes

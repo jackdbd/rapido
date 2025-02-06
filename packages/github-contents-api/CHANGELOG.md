@@ -1,5 +1,11 @@
 # @jackdbd/github-contents-api
 
+## 0.2.0-canary.8
+
+### Minor Changes
+
+- d2ff71d: Move schema definitions of all user-defined functions to indieauth and micropub packages.
+
 ## 0.2.0-canary.7
 
 ### Minor Changes

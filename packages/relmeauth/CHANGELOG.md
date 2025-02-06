@@ -1,5 +1,16 @@
 # @jackdbd/relmeauth
 
+## 0.2.0-canary.7
+
+### Minor Changes
+
+- d2ff71d: Move schema definitions of all user-defined functions to indieauth and micropub packages.
+
+### Patch Changes
+
+- Updated dependencies [d2ff71d]
+  - @jackdbd/canonical-url@0.2.0-canary.7
+
 ## 0.2.0-canary.6
 
 ### Minor Changes
