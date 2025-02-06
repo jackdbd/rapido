@@ -1,4 +1,8 @@
 import type { RouteGenericInterface, RouteHandler } from 'fastify'
+import type {
+  AccessTokenImmutableRecord,
+  AccessTokenMutableRecord
+} from '@jackdbd/indieauth/schemas'
 import {
   InvalidRequestError,
   InvalidTokenError,
@@ -13,8 +17,6 @@ import {
   introspection_response_body_success
 } from '../schemas/index.js'
 import type {
-  AccessTokenImmutableRecord,
-  AccessTokenMutableRecord,
   IntrospectionRequestBody,
   IntrospectPostConfig
 } from '../schemas/index.js'

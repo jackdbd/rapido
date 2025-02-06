@@ -21,18 +21,8 @@ import { DEFAULT, NAME } from './constants.js'
 import { defMediaPost } from './routes/media-post.js'
 import { options as options_schema, type Options } from './schemas/index.js'
 
-export {
-  deleteContentOrMedia,
-  isAccessTokenRevoked,
-  options as plugin_options,
-  uploadMedia
-} from './schemas/index.js'
-export type {
-  DeleteContentOrMedia,
-  IsAccessTokenRevoked,
-  Options as PluginOptions,
-  UploadMedia
-} from './schemas/index.js'
+export { options as plugin_options } from './schemas/index.js'
+export type { Options as PluginOptions } from './schemas/index.js'
 
 const defaults: Partial<Options> = {
   includeErrorDescription: DEFAULT.INCLUDE_ERROR_DESCRIPTION,

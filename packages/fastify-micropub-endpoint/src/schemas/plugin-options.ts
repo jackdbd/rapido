@@ -1,7 +1,21 @@
 import {
   me_before_url_canonicalization,
   me_after_url_canonicalization
-} from '@jackdbd/indieauth'
+} from '@jackdbd/indieauth/schemas'
+import { isAccessTokenRevoked } from '@jackdbd/indieauth/schemas/user-provided-functions'
+import type { IsAccessTokenRevoked } from '@jackdbd/indieauth/schemas/user-provided-functions'
+import {
+  // createPost,
+  deletePost,
+  undeletePost,
+  updatePost
+} from '@jackdbd/micropub/schemas/user-provided-functions'
+import type {
+  // CreatePost,
+  DeletePost,
+  UndeletePost,
+  UpdatePost
+} from '@jackdbd/micropub/schemas/user-provided-functions'
 import { Static, Type } from '@sinclair/typebox'
 import type { Ajv } from 'ajv'
 import { DEFAULT } from '../constants.js'
@@ -11,29 +25,16 @@ import {
   micropub_endpoint,
   report_all_ajv_errors
 } from './common.js'
-import {
-  create,
-  deleteContentOrMedia,
-  isAccessTokenRevoked,
-  undelete,
-  update
-} from './user-provided-functions.js'
-import type {
-  Create,
-  DeleteContentOrMedia,
-  IsAccessTokenRevoked,
-  Undelete,
-  Update
-} from './user-provided-functions.js'
 import { syndicate_to_item } from './syndicate-to.js'
+import { createPost, type CreatePost } from './route-micropub-post.js'
 
 export const options = Type.Object(
   {
     ajv: Type.Optional(ajv),
 
-    create,
+    create: createPost,
 
-    delete: deleteContentOrMedia,
+    delete: deletePost,
 
     includeErrorDescription: Type.Optional(
       Type.Boolean({ default: DEFAULT.INCLUDE_ERROR_DESCRIPTION })
@@ -67,9 +68,9 @@ export const options = Type.Object(
       Type.Array(syndicate_to_item, { default: DEFAULT.SYNDICATE_TO })
     ),
 
-    undelete: Type.Optional(undelete),
+    undelete: Type.Optional(undeletePost),
 
-    update
+    update: updatePost
   },
   {
     $id: 'fastify-micropub-endpoint-options',
@@ -80,9 +81,9 @@ export const options = Type.Object(
 
 export interface Options extends Static<typeof options> {
   ajv?: Ajv
-  create: Create
-  delete: DeleteContentOrMedia
+  create: CreatePost
+  delete: DeletePost
   isAccessTokenRevoked: IsAccessTokenRevoked
-  undelete?: Undelete
-  update: Update
+  undelete?: UndeletePost
+  update: UpdatePost
 }

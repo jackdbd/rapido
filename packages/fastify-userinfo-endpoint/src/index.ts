@@ -19,22 +19,12 @@ import { defUserinfoGet } from './routes/userinfo-get.js'
 import { options as options_schema, type Options } from './schemas/index.js'
 
 export {
-  isAccessTokenRevoked,
   options as plugin_options,
-  retrieveUserProfile,
-  userinfo_get_config,
-  user_profile_props,
-  user_profile_immutable_record,
-  user_profile_mutable_record
+  userinfo_get_config
 } from './schemas/index.js'
 export type {
-  IsAccessTokenRevoked,
   Options as PluginOptions,
-  RetrieveUserProfile,
-  UserinfoGetConfig,
-  UserProfileProps,
-  UserProfileImmutableRecord,
-  UserProfileMutableRecord
+  UserinfoGetConfig
 } from './schemas/index.js'
 
 const defaults = {

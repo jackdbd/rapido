@@ -1,5 +1,5 @@
 import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3'
-import type { DeleteContentOrMedia } from '@jackdbd/fastify-media-endpoint'
+import type { DeletePost } from '@jackdbd/micropub/schemas/user-provided-functions'
 
 export interface Config {
   bucket_name: string
@@ -10,7 +10,7 @@ export interface Config {
 export const defHardDeleteMedia = (config: Config) => {
   const { bucket_name, bucket_prefix, s3 } = config
 
-  const hardDeleteMedia: DeleteContentOrMedia = async (url) => {
+  const hardDeleteMedia: DeletePost = async (url) => {
     const splits = url.split('/')
     const filename = splits.at(-1)!
 

@@ -1,4 +1,14 @@
-import { issuer } from '@jackdbd/indieauth'
+import { issuer } from '@jackdbd/indieauth/schemas'
+import {
+  retrieveAuthorizationCode,
+  onAuthorizationCodeVerified,
+  onUserApprovedRequest
+} from '@jackdbd/indieauth/schemas/user-provided-functions'
+import type {
+  RetrieveAuthorizationCode,
+  OnAuthorizationCodeVerified,
+  OnUserApprovedRequest
+} from '@jackdbd/indieauth/schemas/user-provided-functions'
 import { Static, Type } from '@sinclair/typebox'
 import { DEFAULT } from '../constants.js'
 import {
@@ -6,16 +16,6 @@ import {
   include_error_description,
   report_all_ajv_errors
 } from './common.js'
-import {
-  retrieveAuthorizationCode,
-  onAuthorizationCodeVerified,
-  onUserApprovedRequest
-} from './user-provided-functions.js'
-import type {
-  RetrieveAuthorizationCode,
-  OnAuthorizationCodeVerified,
-  OnUserApprovedRequest
-} from './user-provided-functions.js'
 
 const filepath = Type.String({ minLength: 1 })
 

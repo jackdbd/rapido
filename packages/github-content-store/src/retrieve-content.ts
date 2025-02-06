@@ -1,4 +1,4 @@
-import type { RetrieveContent } from '@jackdbd/fastify-micropub-endpoint'
+import type { RetrievePost } from '@jackdbd/micropub/schemas/user-provided-functions'
 import { get, BASE_URL, GITHUB_TOKEN, REF } from '@jackdbd/github-contents-api'
 import { base64ToUtf8 } from './encoding.js'
 import { markdownToJf2 } from './markdown-to-jf2.js'
@@ -22,7 +22,7 @@ export const defRetrieveContent = (options?: Options) => {
 
   const { base_url, owner, ref, repo, token } = config
 
-  const retrieveContent: RetrieveContent = async (loc) => {
+  const retrieveContent: RetrievePost = async (loc) => {
     const result = await get({
       base_url,
       owner,

@@ -29,27 +29,13 @@ import {
 import type { Options } from './schemas/index.js'
 
 export {
-  create,
-  deleteContentOrMedia,
-  isAccessTokenRevoked,
   micropub_get_request_querystring,
   micropub_post_request_body_jf2,
-  options as plugin_options,
-  retrieveContent,
-  undelete,
-  update,
-  update_patch
+  options as plugin_options
 } from './schemas/index.js'
 export type {
-  Create,
-  DeleteContentOrMedia,
-  IsAccessTokenRevoked,
   MicropubGetConfig,
-  Options as PluginOptions,
-  RetrieveContent,
-  Undelete,
-  Update,
-  UpdatePatch
+  Options as PluginOptions
 } from './schemas/index.js'
 
 const defaults = {

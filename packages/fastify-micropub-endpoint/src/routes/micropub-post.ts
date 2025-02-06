@@ -4,13 +4,9 @@ import { rfc3339 } from '@jackdbd/oauth2-tokens'
 import type { Jf2 } from '@paulrobertlloyd/mf2tojf2'
 import type { RouteHandler, RouteGenericInterface } from 'fastify'
 import { mf2tTojf2, normalizeJf2 } from '@jackdbd/micropub'
-import type { Action } from '@jackdbd/micropub'
+import type { Action, UpdatePatch } from '@jackdbd/micropub/schemas'
 import { isMf2 } from '../schemas/index.js'
-import type {
-  MicropubPostConfig,
-  PostRequestBody,
-  UpdatePatch
-} from '../schemas/index.js'
+import type { MicropubPostConfig, PostRequestBody } from '../schemas/index.js'
 import { defMultipartRequestBody } from './micropub-post-multipart.js'
 
 declare module '@fastify/request-context' {

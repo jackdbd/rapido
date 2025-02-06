@@ -25,24 +25,14 @@ import {
 import type { Options } from './schemas/index.js'
 
 export {
-  access_token_props,
-  refresh_token_props,
   introspection_request_body,
   introspection_response_body_success,
-  isAccessTokenRevoked,
-  retrieveAccessToken,
-  retrieveRefreshToken,
   options as plugin_options
 } from './schemas/index.js'
 export type {
-  AccessTokenProps,
-  RefreshTokenProps,
   IntrospectPostConfig,
   IntrospectionRequestBody,
   IntrospectionResponseBodySuccess,
-  IsAccessTokenRevoked,
-  RetrieveAccessToken,
-  RetrieveRefreshToken,
   Options as PluginOptions
 } from './schemas/index.js'
 

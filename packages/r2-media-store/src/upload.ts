@@ -1,5 +1,5 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
-import type { UploadMedia } from '@jackdbd/fastify-media-endpoint'
+import type { UploadMedia } from '@jackdbd/micropub/schemas/user-provided-functions'
 import mime from 'mime'
 import { nanoid } from 'nanoid'
 

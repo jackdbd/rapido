@@ -1,18 +1,18 @@
-import { issuer } from '@jackdbd/indieauth'
-import { jwks_url } from '@jackdbd/oauth2-tokens'
-import { Static, Type } from '@sinclair/typebox'
-import type { Ajv } from 'ajv'
-import { ajv, include_error_description, log_prefix } from './common.js'
+import { issuer } from '@jackdbd/indieauth/schemas'
 import {
   isAccessTokenRevoked,
   retrieveAccessToken,
   retrieveRefreshToken
-} from './user-provided-functions.js'
+} from '@jackdbd/indieauth/schemas/user-provided-functions'
 import type {
   IsAccessTokenRevoked,
   RetrieveAccessToken,
   RetrieveRefreshToken
-} from './user-provided-functions.js'
+} from '@jackdbd/indieauth/schemas/user-provided-functions'
+import { jwks_url } from '@jackdbd/oauth2-tokens'
+import { Static, Type } from '@sinclair/typebox'
+import type { Ajv } from 'ajv'
+import { ajv, include_error_description, log_prefix } from './common.js'
 
 export const introspect_post_config = Type.Object(
   {

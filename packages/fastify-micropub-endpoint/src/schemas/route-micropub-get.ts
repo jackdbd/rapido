@@ -1,3 +1,4 @@
+// import { media_endpoint } from '@jackdbd/micropub/schemas/endpoints'
 import { Static, Type } from '@sinclair/typebox'
 import { include_error_description, media_endpoint } from './common.js'
 import { syndicate_to_item } from './syndicate-to.js'

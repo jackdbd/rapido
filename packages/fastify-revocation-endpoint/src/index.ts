@@ -24,27 +24,13 @@ import {
 import type { Options } from './schemas/index.js'
 
 export {
-  access_token_props,
-  refresh_token_props,
   revocation_request_body,
   revocation_response_body_success,
-  isAccessTokenRevoked,
-  retrieveAccessToken,
-  retrieveRefreshToken,
-  revokeAccessToken,
-  revokeRefreshToken,
   options as plugin_options
 } from './schemas/index.js'
 export type {
-  AccessTokenProps,
-  RefreshTokenProps,
   RevocationRequestBody,
   RevocationResponseBodySuccess,
-  IsAccessTokenRevoked,
-  RetrieveAccessToken,
-  RetrieveRefreshToken,
-  RevokeAccessToken,
-  RevokeRefreshToken,
   Options as PluginOptions
 } from './schemas/index.js'
 

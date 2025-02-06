@@ -1,32 +1,33 @@
 import type {
-  OnAuthorizationCodeVerified,
-  OnUserApprovedRequest,
-  RetrieveAuthorizationCode
-} from '@jackdbd/fastify-authorization-endpoint'
-import type {
-  Create,
-  DeleteContentOrMedia,
-  Undelete,
-  Update
-} from '@jackdbd/fastify-micropub-endpoint'
-import type {
   IsAccessTokenRevoked,
   OnIssuedTokens,
   RetrieveRefreshToken
-} from '@jackdbd/fastify-token-endpoint'
+} from '@jackdbd/indieauth/schemas/user-provided-functions'
+import type {
+  OnAuthorizationCodeVerified,
+  OnUserApprovedRequest,
+  RetrieveAuthorizationCode
+} from '@jackdbd/indieauth/schemas/user-provided-functions'
+import type {
+  CreatePost,
+  DeletePost,
+  UndeletePost,
+  UpdatePost
+} from '@jackdbd/micropub/schemas/user-provided-functions'
+import { nanoid } from 'nanoid'
 import { SCOPE } from '../../../packages/stdlib/lib/test-utils.js'
 import { defConfig } from './config.js'
 
 const logPrefix = 'user-fx ' // user-provided side effect
 const { client_id, me, issuer, redirect_uri } = defConfig(3001)
 
-export const create: Create = async (jf2) => {
+export const create: CreatePost = async (jf2) => {
   console.log(`[${logPrefix}create] jf2`, jf2)
   // throw new Error("create not implemented");
   return { message: 'post created' }
 }
 
-export const deleteContentOrMedia: DeleteContentOrMedia = async (url) => {
+export const deleteContentOrMedia: DeletePost = async (url) => {
   console.log(`[${logPrefix}deleteContentOrMedia] url: ${url}`)
   // return { error: new Error("Not implemented") };
   // throw new Error("delete not implemented");
@@ -70,6 +71,7 @@ export const retrieveAuthorizationCode: RetrieveAuthorizationCode = async (
     code_challenge_method: '',
     created_at: 456,
     exp: 123,
+    id: nanoid(),
     iss: issuer,
     me,
     redirect_uri,
@@ -90,6 +92,7 @@ export const retrieveRefreshToken: RetrieveRefreshToken = async (
     code_challenge_method: '',
     created_at: 456,
     exp: 123,
+    id: nanoid(),
     iss: issuer,
     jti: 'some-jwt-id',
     me,
@@ -99,14 +102,14 @@ export const retrieveRefreshToken: RetrieveRefreshToken = async (
   }
 }
 
-export const undelete: Undelete = async (url) => {
+export const undelete: UndeletePost = async (url) => {
   console.log(`[${logPrefix}undelete] url: ${url}`)
   // return { error: new Error("Not implemented") };
   // throw new Error("undeleted not implemented");
   return { message: `undeleted post at url ${url} ` }
 }
 
-export const update: Update = async (url, patch) => {
+export const update: UpdatePost = async (url, patch) => {
   console.log(`[${logPrefix}update] url: ${url}`, patch)
   // throw new Error("update not implemented");
   return { message: `updated post at url ${url} ` }

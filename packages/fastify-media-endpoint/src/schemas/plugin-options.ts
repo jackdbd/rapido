@@ -1,7 +1,9 @@
 import {
   me_before_url_canonicalization,
   me_after_url_canonicalization
-} from '@jackdbd/indieauth'
+} from '@jackdbd/indieauth/schemas'
+import { isAccessTokenRevoked } from '@jackdbd/indieauth/schemas/user-provided-functions'
+import type { IsAccessTokenRevoked } from '@jackdbd/indieauth/schemas/user-provided-functions'
 import { Static, Type } from '@sinclair/typebox'
 import type { Ajv } from 'ajv'
 import { DEFAULT } from '../constants.js'
@@ -12,15 +14,13 @@ import {
   report_all_ajv_errors
 } from './common.js'
 import {
-  deleteContentOrMedia,
-  isAccessTokenRevoked,
+  deletePost,
   uploadMedia
-} from './user-provided-functions.js'
+} from '@jackdbd/micropub/schemas/user-provided-functions'
 import type {
-  DeleteContentOrMedia,
-  IsAccessTokenRevoked,
+  DeletePost,
   UploadMedia
-} from './user-provided-functions.js'
+} from '@jackdbd/micropub/schemas/user-provided-functions'
 
 /**
  * Options for the Fastify media-endpoint plugin.
@@ -29,7 +29,7 @@ export const options = Type.Object(
   {
     ajv: Type.Optional(ajv),
 
-    delete: deleteContentOrMedia,
+    delete: deletePost,
 
     includeErrorDescription: Type.Optional(include_error_description),
 
@@ -64,7 +64,7 @@ export const options = Type.Object(
 
 export interface Options extends Static<typeof options> {
   ajv?: Ajv
-  delete: DeleteContentOrMedia
+  delete: DeletePost
   isAccessTokenRevoked: IsAccessTokenRevoked
   upload: UploadMedia
 }

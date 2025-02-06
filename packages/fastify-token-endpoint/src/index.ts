@@ -21,34 +21,16 @@ import {
 } from './schemas/index.js'
 
 export {
-  access_token_props,
-  access_token_immutable_record,
-  access_token_mutable_record,
   access_token_request_body,
   access_token_response_body_success,
-  isAccessTokenRevoked,
-  onIssuedTokens,
   options as plugin_options,
-  refresh_token_props,
-  refresh_token_immutable_record,
-  refresh_token_mutable_record,
-  refresh_request_body,
-  retrieveRefreshToken
+  refresh_request_body
 } from './schemas/index.js'
 export type {
-  AccessTokenProps,
-  AccessTokenImmutableRecord,
-  AccessTokenMutableRecord,
   AccessTokenRequestBody,
   AccessTokenResponseBodySuccess,
-  IsAccessTokenRevoked,
-  OnIssuedTokens,
   Options as PluginOptions,
-  RefreshRequestBody,
-  RefreshTokenProps,
-  RefreshTokenImmutableRecord,
-  RefreshTokenMutableRecord,
-  RetrieveRefreshToken
+  RefreshRequestBody
 } from './schemas/index.js'
 
 const defaults = {

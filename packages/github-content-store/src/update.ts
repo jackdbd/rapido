@@ -1,4 +1,3 @@
-import type { Update } from '@jackdbd/fastify-micropub-endpoint'
 import {
   createOrUpdate,
   BASE_URL,
@@ -7,6 +6,7 @@ import {
 } from '@jackdbd/github-contents-api'
 import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
 import type { Publication } from '@jackdbd/micropub'
+import type { UpdatePost } from '@jackdbd/micropub/schemas/user-provided-functions'
 import type { Jf2 } from '@paulrobertlloyd/mf2tojf2'
 import { rfc3339 } from './date.js'
 import { jf2ToContent } from './jf2-to-content.js'
@@ -60,7 +60,7 @@ export const defUpdate = (options?: Options) => {
     token
   })
 
-  const update: Update = async (url, patch) => {
+  const update: UpdatePost = async (url, patch) => {
     const loc = websiteUrlToStoreLocation(url)
 
     // should we support updating a deleted post (loc.store_deleted)? Probably not.

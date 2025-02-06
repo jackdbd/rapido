@@ -1,7 +1,7 @@
-import type { Undelete } from '@jackdbd/fastify-micropub-endpoint'
 import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
 import { move, BASE_URL, GITHUB_TOKEN } from '@jackdbd/github-contents-api'
 import type { Publication } from '@jackdbd/micropub'
+import type { UndeletePost } from '@jackdbd/micropub/schemas/user-provided-functions'
 import type { Log } from './log.js'
 import { defWebsiteUrlToStoreLocation } from './website-url-to-store-location.js'
 
@@ -30,7 +30,7 @@ export const defUndelete = (options?: Options) => {
     publication
   })
 
-  const undelete: Undelete = async (url) => {
+  const undelete: UndeletePost = async (url) => {
     const loc = websiteUrlToStoreLocation(url)
 
     if (!loc.store_deleted) {

@@ -1,5 +1,11 @@
 import { normalizeJf2 } from '@jackdbd/micropub'
 import type { Syndicator } from '@jackdbd/micropub'
+import type {
+  RetrievePost,
+  UpdatePost,
+  UpdatePatch,
+  WebsiteUrlToStoreLocation
+} from '@jackdbd/micropub/schemas/user-provided-functions'
 import {
   InvalidRequestError,
   ServerError
@@ -8,20 +14,13 @@ import { Jf2 } from '@paulrobertlloyd/mf2tojf2'
 import type { RouteHandler } from 'fastify'
 import { XMLParser } from 'fast-xml-parser'
 
-import type {
-  RetrieveContent,
-  Update,
-  UpdatePatch,
-  WebsiteUrlToStoreLocation
-} from '../schemas/index.js'
-
 export interface Config {
-  get: RetrieveContent
+  get: RetrievePost
   includeErrorDescription: boolean
   logPrefix: string
   publishedUrlToStorageLocation: WebsiteUrlToStoreLocation
   syndicators: { [uid: string]: Syndicator }
-  update: Update
+  update: UpdatePost
 }
 
 const parser = new XMLParser()

@@ -1,4 +1,4 @@
-import type { DeleteContentOrMedia } from '@jackdbd/fastify-micropub-endpoint'
+import type { DeletePost } from '@jackdbd/micropub/schemas/user-provided-functions'
 import { move, BASE_URL, GITHUB_TOKEN } from '@jackdbd/github-contents-api'
 import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
 import type { Publication } from '@jackdbd/micropub'
@@ -30,7 +30,7 @@ export const defSoftDelete = (options?: Options) => {
     publication
   })
 
-  const softDelete: DeleteContentOrMedia = async (url) => {
+  const softDelete: DeletePost = async (url) => {
     const loc = websiteUrlToStoreLocation(url)
 
     if (!loc.store_deleted) {

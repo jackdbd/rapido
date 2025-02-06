@@ -1,6 +1,10 @@
 import type { RouteGenericInterface, RouteHandler } from 'fastify'
 import { accessTokenFromRequest } from '@jackdbd/fastify-utils'
-import type { Profile } from '@jackdbd/indieauth'
+import type {
+  Profile,
+  RefreshTokenImmutableRecord,
+  RefreshTokenMutableRecord
+} from '@jackdbd/indieauth/schemas'
 import {
   InvalidRequestError,
   InvalidGrantError,
@@ -17,8 +21,6 @@ import { token_post_config } from '../schemas/index.js'
 import type {
   AccessTokenRequestBody,
   RefreshRequestBody,
-  RefreshTokenImmutableRecord,
-  RefreshTokenMutableRecord,
   TokenPostConfig
 } from '../schemas/index.js'
 import { verifyAuthorizationCode } from '../verify-authorization-code.js'

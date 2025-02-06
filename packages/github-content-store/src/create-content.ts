@@ -1,4 +1,3 @@
-import type { Create } from '@jackdbd/fastify-micropub-endpoint'
 import {
   createOrUpdate,
   BASE_URL,
@@ -8,6 +7,7 @@ import {
 import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
 import { jf2ToSlug } from '@jackdbd/micropub'
 import type { Location, Publication } from '@jackdbd/micropub'
+import type { CreatePost } from '@jackdbd/micropub/schemas/user-provided-functions'
 import { jf2ToContent } from './jf2-to-content.js'
 import type { Log } from './log.js'
 
@@ -44,7 +44,7 @@ export const defCreate = (options?: Options) => {
     token
   } = config
 
-  const create: Create = async (jf2) => {
+  const create: CreatePost = async (jf2) => {
     const content = jf2ToContent(jf2)
     const slug = jf2ToSlug(jf2)
     const filename = `${slug}.md`

@@ -42,6 +42,17 @@ export {
 export { immutable_record, mutable_record, record_id } from './record.js'
 export type { ImmutableRecord, MutableRecord, RecordId } from './record.js'
 
+export {
+  refresh_token_immutable_record,
+  refresh_token_mutable_record,
+  refresh_token_props
+} from './refresh-token.js'
+export type {
+  RefreshTokenImmutableRecord,
+  RefreshTokenMutableRecord,
+  RefreshTokenProps
+} from './refresh-token.js'
+
 export { revocation_reason, revoked } from './revocation.js'
 
 export {
@@ -76,6 +87,7 @@ export {
   onIssuedTokens,
   onUserApprovedRequest,
   retrieveAccessToken,
+  retrieveAuthorizationCode,
   retrieveRefreshToken,
   retrieveUserProfile,
   revokeAccessToken,
@@ -89,6 +101,7 @@ export type {
   OnIssuedTokens,
   OnUserApprovedRequest,
   RetrieveAccessToken,
+  RetrieveAuthorizationCode,
   RetrieveRefreshToken,
   RetrieveUserProfile,
   RevokeAccessToken,

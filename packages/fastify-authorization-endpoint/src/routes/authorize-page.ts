@@ -5,7 +5,7 @@ import {
   InvalidClientError,
   InvalidRequestError
 } from '@jackdbd/oauth2-error-responses'
-import type { AuthorizationRequestQuerystring } from '../schemas/index.js'
+import type { AuthorizationRequestQuerystring } from '../schemas/requests.js'
 
 export interface Config {
   authorization_code_expiration: string

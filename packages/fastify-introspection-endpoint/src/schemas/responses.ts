@@ -1,4 +1,7 @@
-import { client_id, me_after_url_canonicalization } from '@jackdbd/indieauth'
+import {
+  client_id,
+  me_after_url_canonicalization
+} from '@jackdbd/indieauth/schemas'
 import { scope } from '@jackdbd/oauth2'
 import { exp, iat, iss, jti } from '@jackdbd/oauth2-tokens'
 import { Static, Type } from '@sinclair/typebox'

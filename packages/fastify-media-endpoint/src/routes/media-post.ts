@@ -1,16 +1,17 @@
 import type { MultipartFile, MultipartValue } from '@fastify/multipart'
 import type { Action } from '@jackdbd/micropub'
+import type {
+  DeletePost,
+  UploadMedia
+} from '@jackdbd/micropub/schemas/user-provided-functions'
 import {
-  // InsufficientScopeError,
   InvalidRequestError,
   ServerError
 } from '@jackdbd/oauth2-error-responses'
 import type { RouteHandler } from 'fastify'
-// import { defErrorIfActionNotAllowed } from "../../../lib/error-if-action-not-allowed.js";
-import type { DeleteContentOrMedia, UploadMedia } from '../schemas/index.js'
 
 interface Config {
-  delete: DeleteContentOrMedia
+  delete: DeletePost
   include_error_description: boolean
   upload: UploadMedia
 }

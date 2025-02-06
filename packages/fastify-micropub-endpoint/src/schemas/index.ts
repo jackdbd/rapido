@@ -22,22 +22,3 @@ export {
 } from './route-micropub-post.js'
 
 export { syndicate_to_item, type SyndicateToItem } from './syndicate-to.js'
-
-export { update_patch, type UpdatePatch } from './update-patch.js'
-
-export {
-  create,
-  deleteContentOrMedia,
-  isAccessTokenRevoked,
-  retrieveContent,
-  undelete,
-  update
-} from './user-provided-functions.js'
-export type {
-  Create,
-  DeleteContentOrMedia,
-  IsAccessTokenRevoked,
-  RetrieveContent,
-  Undelete,
-  Update
-} from './user-provided-functions.js'

@@ -8,22 +8,10 @@ export const include_error_description = Type.Boolean({
   default: DEFAULT.INCLUDE_ERROR_DESCRIPTION
 })
 
-// https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.7
-export const jti = Type.String({
-  description: `Unique identifier for the JWT`,
-  minLength: 1,
-  title: '"jti" (JWT ID) Claim'
-})
-
 export const log_prefix = Type.String({ default: DEFAULT.LOG_PREFIX })
 
 export const report_all_ajv_errors = Type.Boolean({
   description: 'Whether to report all AJV validation errors.',
   title: 'report all AJV errors',
   default: DEFAULT.REPORT_ALL_AJV_ERRORS
-})
-
-export const url = Type.String({
-  description: 'A URL',
-  format: 'uri'
 })

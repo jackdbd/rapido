@@ -2,7 +2,17 @@ import {
   issuer,
   me_after_url_canonicalization,
   me_before_url_canonicalization
-} from '@jackdbd/indieauth'
+} from '@jackdbd/indieauth/schemas'
+import {
+  isAccessTokenRevoked,
+  retrieveAccessToken,
+  retrieveRefreshToken
+} from '@jackdbd/indieauth/schemas/user-provided-functions'
+import type {
+  IsAccessTokenRevoked,
+  RetrieveAccessToken,
+  RetrieveRefreshToken
+} from '@jackdbd/indieauth/schemas/user-provided-functions'
 import { jwks_url } from '@jackdbd/oauth2-tokens'
 import { Static, Type } from '@sinclair/typebox'
 import type { Ajv } from 'ajv'
@@ -12,16 +22,6 @@ import {
   log_prefix,
   report_all_ajv_errors
 } from './common.js'
-import {
-  isAccessTokenRevoked,
-  retrieveAccessToken,
-  retrieveRefreshToken
-} from './user-provided-functions.js'
-import type {
-  IsAccessTokenRevoked,
-  RetrieveAccessToken,
-  RetrieveRefreshToken
-} from './user-provided-functions.js'
 
 export const options = Type.Object(
   {

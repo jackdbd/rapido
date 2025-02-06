@@ -1,15 +1,12 @@
-import type {
-  AuthorOrCommitter
-  //   GetResponseBody,
-} from '@jackdbd/github-contents-api'
+import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
 import {
   hardDelete,
   BASE_URL,
   GITHUB_TOKEN,
   REF
 } from '@jackdbd/github-contents-api'
-import type { DeleteContentOrMedia } from '@jackdbd/fastify-micropub-endpoint'
 import type { Publication } from '@jackdbd/micropub'
+import type { DeletePost } from '@jackdbd/micropub/schemas/user-provided-functions'
 import type { Log } from './log.js'
 import { defRetrieveContent } from './retrieve-content.js'
 import { defWebsiteUrlToStoreLocation } from './website-url-to-store-location.js'
@@ -50,7 +47,7 @@ export const defHardDelete = (options?: Options) => {
     token
   })
 
-  const hardDeleteContent: DeleteContentOrMedia = async (url) => {
+  const hardDeleteContent: DeletePost = async (url) => {
     const loc = websiteUrlToStoreLocation(url)
 
     let sha: string | undefined

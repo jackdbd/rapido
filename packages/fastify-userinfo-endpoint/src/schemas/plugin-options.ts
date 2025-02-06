@@ -1,3 +1,11 @@
+import {
+  isAccessTokenRevoked,
+  retrieveUserProfile
+} from '@jackdbd/indieauth/schemas/user-provided-functions'
+import type {
+  IsAccessTokenRevoked,
+  RetrieveUserProfile
+} from '@jackdbd/indieauth/schemas/user-provided-functions'
 import { Static, Type } from '@sinclair/typebox'
 import type { Ajv } from 'ajv'
 import {
@@ -7,14 +15,6 @@ import {
   report_all_ajv_errors,
   request_context_key
 } from './common.js'
-import {
-  isAccessTokenRevoked,
-  retrieveUserProfile
-} from './user-provided-functions.js'
-import type {
-  IsAccessTokenRevoked,
-  RetrieveUserProfile
-} from './user-provided-functions.js'
 
 export const options = Type.Object(
   {

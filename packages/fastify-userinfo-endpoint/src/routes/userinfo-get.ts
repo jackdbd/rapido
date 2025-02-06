@@ -1,12 +1,12 @@
 import type { RouteHandler } from 'fastify'
+import {
+  UserProfileImmutableRecord,
+  UserProfileMutableRecord
+} from '@jackdbd/indieauth/schemas'
 import { InvalidTokenError, ServerError } from '@jackdbd/oauth2-error-responses'
 import { throwWhenNotConform } from '@jackdbd/schema-validators'
 import { userinfo_get_config } from '../schemas/index.js'
-import type {
-  UserinfoGetConfig,
-  UserProfileImmutableRecord,
-  UserProfileMutableRecord
-} from '../schemas/index.js'
+import type { UserinfoGetConfig } from '../schemas/index.js'
 
 // TODO: how to understand that we need to fetch user's info from one
 // authentication provider vs another one? Maybe specify the provider in the
