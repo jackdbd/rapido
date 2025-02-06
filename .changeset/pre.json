@@ -35,6 +35,7 @@
     "@jackdbd/unwrap": "0.2.0-canary.5"
   },
   "changesets": [
-    "four-clocks-wonder"
+    "four-clocks-wonder",
+    "serious-seas-hang"
   ]
 }
