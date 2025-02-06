@@ -1,5 +1,5 @@
 import canonicalUrl from '@jackdbd/canonical-url'
-import type { ClientMetadata } from './schemas.js'
+import type { ClientMetadata } from './schemas/client-metadata.js'
 
 /**
  * Fetches the IndieAuth client metadata.

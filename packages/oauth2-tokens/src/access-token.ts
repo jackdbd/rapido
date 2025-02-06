@@ -1,11 +1,17 @@
-import { issuer, me_after_url_canonicalization } from '@jackdbd/indieauth'
 import { access_token, expires_in, scope } from '@jackdbd/oauth2'
 import { conformResult } from '@jackdbd/schema-validators'
 import { Type, type Static } from '@sinclair/typebox'
 import type { Ajv } from 'ajv'
 import ms, { StringValue } from 'ms'
 import { randomKid } from './random-kid.js'
-import { ajv, expiration, jwks_private, kid } from './schemas/index.js'
+import {
+  ajv,
+  expiration,
+  issuer,
+  me_after_url_canonicalization
+} from './schemas/common.js'
+import { kid } from './schemas/jwk.js'
+import { jwks_private } from './schemas/jwks.js'
 import { sign } from './sign-jwt.js'
 
 export const config_schema = Type.Object(

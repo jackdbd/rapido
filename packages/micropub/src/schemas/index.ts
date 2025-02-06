@@ -10,6 +10,8 @@ export { mp_entry, type MP_Entry } from './entry.js'
 
 export { mp_event, type MP_Event } from './event.js'
 
+export { jf2, type JF2 } from './jf2.js'
+
 export { location, type Location } from './location.js'
 
 export {
@@ -27,5 +29,28 @@ export {
 export type { Action } from './micropub-reserved-properties.js'
 
 export { photo, type Photo } from './photo.js'
+
+export {
+  deletePost,
+  retrievePost,
+  undeletePost,
+  update_patch,
+  updatePost,
+  upload_config,
+  uploadMedia,
+  uploadMediaReturnValue,
+  websiteUrlToStoreLocation
+} from './user-provided-functions.js'
+export type {
+  DeletePost,
+  RetrievePost,
+  UndeletePost,
+  UpdatePatch,
+  UpdatePost,
+  UploadConfig,
+  UploadMedia,
+  UploadMediaReturnValue,
+  WebsiteUrlToStoreLocation
+} from './user-provided-functions.js'
 
 export { video, type Video } from './video.js'
