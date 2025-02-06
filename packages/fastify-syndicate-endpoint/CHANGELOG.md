@@ -1,5 +1,21 @@
 # @jackdbd/fastify-syndicate-endpoint
 
+## 0.2.0-canary.11
+
+### Minor Changes
+
+- d2ff71d: Move schema definitions of all user-defined functions to indieauth and micropub packages.
+
+### Patch Changes
+
+- Updated dependencies [d2ff71d]
+  - @jackdbd/oauth2-error-responses@0.2.0-canary.7
+  - @jackdbd/canonical-url@0.2.0-canary.7
+  - @jackdbd/fastify-hooks@0.2.0-canary.10
+  - @jackdbd/indieauth@0.2.0-canary.8
+  - @jackdbd/micropub@0.2.0-canary.9
+  - @jackdbd/oauth2@0.2.0-canary.6
+
 ## 0.2.0-canary.10
 
 ### Minor Changes
