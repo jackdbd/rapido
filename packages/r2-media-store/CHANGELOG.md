@@ -1,5 +1,12 @@
 # @jackdbd/r2-media-store
 
+## 0.2.0-canary.12
+
+### Patch Changes
+
+- Updated dependencies [75690cc]
+  - @jackdbd/fastify-media-endpoint@0.2.0-canary.12
+
 ## 0.2.0-canary.11
 
 ### Minor Changes

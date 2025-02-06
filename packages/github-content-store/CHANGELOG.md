@@ -1,5 +1,12 @@
 # @jackdbd/github-content-store
 
+## 0.2.0-canary.7
+
+### Patch Changes
+
+- Updated dependencies [75690cc]
+  - @jackdbd/micropub@0.2.0-canary.8
+
 ## 0.2.0-canary.6
 
 ### Minor Changes

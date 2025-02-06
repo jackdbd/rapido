@@ -1,5 +1,16 @@
 # @jackdbd/fastify-token-endpoint
 
+## 1.3.0-canary.13
+
+### Minor Changes
+
+- 75690cc: Add schemas for user-provided functions in IndieAuth and Micropub.
+
+### Patch Changes
+
+- Updated dependencies [75690cc]
+  - @jackdbd/indieauth@0.2.0-canary.7
+
 ## 1.3.0-canary.12
 
 ### Minor Changes
