@@ -37,10 +37,10 @@
       "path": "./packages/relmeauth/tsconfig.json"
     },
     {
-      "path": "./packages/indieauth/tsconfig.json"
+      "path": "./packages/oauth2-tokens/tsconfig.json"
     },
     {
-      "path": "./packages/oauth2-tokens/tsconfig.json"
+      "path": "./packages/indieauth/tsconfig.json"
     },
     {
       "path": "./packages/fastify-hooks/tsconfig.json"

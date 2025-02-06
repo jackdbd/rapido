@@ -1,19 +1,4 @@
 export * as jf2_predicates from './jf2-predicates.js'
-// export {
-//   isBookmark,
-//   isCard,
-//   isCheckin,
-//   isCite,
-//   isEntry,
-//   isEvent,
-//   isIssue,
-//   isLike,
-//   isNote,
-//   isRead,
-//   isReply,
-//   isRepost,
-//   isRsvp,
-// } from "./jf2-predicates.js";
 
 export { jf2ToContentWithFrontmatter } from './jf2-to-content.js'
 
@@ -37,6 +22,27 @@ export type {
   Photo,
   Video
 } from './schemas/index.js'
+
+export {
+  deletePost,
+  retrievePost,
+  update_patch,
+  updatePost,
+  upload_config,
+  uploadMedia,
+  uploadMediaReturnValue,
+  websiteUrlToStoreLocation
+} from './schemas/user-provided-functions.js'
+export type {
+  DeletePost,
+  RetrievePost,
+  UpdatePatch,
+  UpdatePost,
+  UploadConfig,
+  UploadMedia,
+  UploadMediaReturnValue,
+  WebsiteUrlToStoreLocation
+} from './schemas/user-provided-functions.js'
 
 export type { SyndicateToItem } from './syndicate-to.js'
 

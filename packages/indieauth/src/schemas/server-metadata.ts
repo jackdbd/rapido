@@ -3,13 +3,13 @@ import {
   grant_type,
   introspection_endpoint,
   response_mode,
-  redirect_uri,
   response_type,
   revocation_endpoint,
   scope,
   token_endpoint
 } from '@jackdbd/oauth2'
 import { Static, Type } from '@sinclair/typebox'
+import { registration_endpoint, userinfo_endpoint } from './endpoints.js'
 
 /**
  * Issuer identifier of the authorization server.
@@ -27,54 +27,10 @@ export const issuer = Type.String({
   title: 'Issuer'
 })
 
-/**
- * The `me` parameter. It might not be a canonical URL.
- */
-export const me_before_url_canonicalization = Type.String({
-  description: `Profile URL (before URL Canonicalization)`,
-  minLength: 1,
-  title: 'me (not canonicalized)'
-})
-
-/**
- * Profile URL (after [URL Canonicalization](https://indieauth.spec.indieweb.org/#url-canonicalization)).
- */
-export const me_after_url_canonicalization = Type.String({
-  description: `Profile URL (after URL Canonicalization)`,
-  format: 'uri',
-  title: 'me (canonicalized)'
-})
-
 export const jwks_uri = Type.String({
   description: `URL of the authorization server's JWK Set document.`,
   format: 'uri',
   title: 'JWKS URI'
-})
-
-export const name = Type.String({ minLength: 1 })
-
-export const url = Type.String({ format: 'uri' })
-
-export const photo = Type.String({ format: 'uri' })
-
-export const email = Type.String({ format: 'email' })
-
-/**
- * [IndieAuth profile information](https://indieauth.spec.indieweb.org/#profile-information).
- */
-export const profile = Type.Object({
-  name,
-  url,
-  photo,
-  email: Type.Optional(email)
-})
-
-export type Profile = Static<typeof profile>
-
-export const registration_endpoint = Type.String({
-  description: `URL of the authorization server's OAuth 2.0 Dynamic Client Registration endpoint.`,
-  format: 'uri',
-  title: 'Registration endpoint'
 })
 
 export const scopes_supported = Type.Array(scope, {
@@ -122,11 +78,6 @@ const token_endpoint_auth_signing_alg_values_supported = Type.Array(
 const service_documentation = Type.String({
   description: `URL of a page containing human-readable information that developers might want or need to know when using the authorization server.`,
   format: 'uri'
-})
-
-export const userinfo_endpoint = Type.String({
-  format: 'uri',
-  title: 'Userinfo endpoint'
 })
 
 const ui_locales_supported = Type.Array(Type.String(), {
@@ -269,79 +220,3 @@ export const server_metadata = Type.Object({
  * [IndieAuth Server Metadata](https://indieauth.spec.indieweb.org/#indieauth-server-metadata)
  */
 export type ServerMetadata = Static<typeof server_metadata>
-
-/**
- * The ID of the application that asks for authorization.
- *
- * An IndieAuth client ID is always a URL.
- */
-export const client_id = Type.String({
-  description:
-    'The ID of the application that asks for authorization. An IndieAuth client ID is a URL.',
-  format: 'uri'
-})
-
-/**
- * Human readable name of the client to be presented on the consent screen.
- */
-export const client_name = Type.String({ minLength: 1 })
-
-/**
- * URL of a webpage providing information about the client.
- */
-export const client_uri = Type.String({ format: 'uri' })
-
-/**
- * URL that references a logo or icon for the client.
- */
-export const logo_uri = Type.String({ format: 'uri' })
-
-/**
- * An array of redirect URIs.
- */
-export const redirect_uris = Type.Array(redirect_uri, { minItems: 1 })
-
-/**
- * IndieAuth client metadata.
- *
- * @see [Client Metadata - IndieAuth spec](https://indieauth.spec.indieweb.org/#client-metadata)
- * @see [OAuth 2.0 Dynamic Client Registration Protocol (RFC7591)](https://datatracker.ietf.org/doc/html/rfc7591)
- */
-export const client_metadata = Type.Object(
-  {
-    /**
-     * The client identifier. The authorization server MUST verify that the
-     * client_id in the document matches the client_id of the URL where the
-     * document was retrieved.
-     */
-    client_id,
-
-    /**
-     * Human readable name of the client to be presented on the consent screen.
-     */
-    client_name: Type.Optional(client_name),
-
-    /**
-     * URL of a webpage providing information about the client.
-     *
-     * The client_uri MUST be a prefix of the client_id.
-     */
-    client_uri,
-
-    /**
-     * URL that references a logo or icon for the client.
-     */
-    logo_uri: Type.Optional(logo_uri),
-
-    /**
-     * An array of redirect URIs.
-     */
-    redirect_uris: Type.Optional(redirect_uris)
-  },
-  {
-    description:
-      'IndieAuth clients SHOULD have a JSON document at their client_id URL containing client metadata defined in RFC7591.'
-  }
-)
-
-export type ClientMetadata = Static<typeof client_metadata>

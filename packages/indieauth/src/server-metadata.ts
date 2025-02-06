@@ -1,5 +1,5 @@
 import canonicalUrl from '@jackdbd/canonical-url'
-import type { ServerMetadata } from './schemas.js'
+import type { ServerMetadata } from './schemas/server-metadata.js'
 
 /**
  * Performs IndieAuth metadata discovery.

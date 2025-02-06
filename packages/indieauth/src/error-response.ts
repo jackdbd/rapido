@@ -6,15 +6,6 @@ import {
 } from '@jackdbd/oauth2'
 import { Static, Type } from '@sinclair/typebox'
 
-// export const error_type = Type.Union(
-//   [
-//     Type.Literal('insufficient_scope'),
-//     Type.Literal('invalid_request'),
-//     Type.Literal('invalid_token')
-//   ],
-//   { description: `A single ASCII error code.` }
-// )
-
 export const error_type = Type.Union(
   [
     oauth2_error_type,

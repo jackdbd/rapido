@@ -34,7 +34,30 @@ export {
   server_metadata,
   url,
   userinfo_endpoint
-} from './schemas.js'
-export type { ClientMetadata, Profile, ServerMetadata } from './schemas.js'
+} from './schemas/index.js'
+export type {
+  ClientMetadata,
+  Profile,
+  ServerMetadata
+} from './schemas/index.js'
+
+export {
+  isAccessTokenRevoked,
+  retrieveAccessToken,
+  retrieveRefreshToken,
+  retrieveUserProfile,
+  revokeAccessToken,
+  revokeRefreshToken
+} from './schemas/user-provided-functions.js'
+export type {
+  IsAccessTokenRevoked,
+  RetrieveAccessToken,
+  RetrieveRefreshToken,
+  RetrieveUserProfile,
+  RevokeAccessToken,
+  RevokeAccessTokenProps,
+  RevokeRefreshToken,
+  RevokeRefreshTokenProps
+} from './schemas/user-provided-functions.js'
 
 export { serverMetadata } from './server-metadata.js'

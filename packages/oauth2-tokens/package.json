@@ -24,6 +24,14 @@
       "types": "./lib/index.d.ts",
       "import": "./lib/index.js"
     },
+    "./schemas": {
+      "types": "./lib/schemas/index.d.ts",
+      "import": "./lib/schemas/index.js"
+    },
+    "./schemas/*": {
+      "types": "./lib/schemas/*.d.ts",
+      "import": "./lib/schemas/*.js"
+    },
     "./package.json": "./package.json"
   },
   "typesVersions": {
@@ -56,7 +64,6 @@
     "test:watch": "node --test --watch"
   },
   "dependencies": {
-    "@jackdbd/indieauth": "0.2.0-canary.6",
     "@jackdbd/oauth2": "0.2.0-canary.5",
     "@jackdbd/schema-validators": "0.2.0-canary.9",
     "@sinclair/typebox": "^0.34.14",

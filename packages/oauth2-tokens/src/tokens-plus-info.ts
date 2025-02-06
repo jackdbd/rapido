@@ -2,11 +2,6 @@ import { conformResult } from '@jackdbd/schema-validators'
 import { Type, type Static } from '@sinclair/typebox'
 import type { Ajv } from 'ajv'
 import {
-  client_id,
-  issuer,
-  me_after_url_canonicalization
-} from '@jackdbd/indieauth'
-import {
   access_token,
   expires_in,
   redirect_uri,
@@ -17,7 +12,15 @@ import { accessToken } from './access-token.js'
 import { safeDecode } from './decode-jwt.js'
 import type { AccessTokenClaims } from './jwt-claims.js'
 import { refreshToken } from './refresh-token.js'
-import { exp, expiration, jti, jwks_private, kid } from './schemas/index.js'
+import {
+  client_id,
+  expiration,
+  issuer,
+  me_after_url_canonicalization
+} from './schemas/common.js'
+import { kid } from './schemas/jwk.js'
+import { jwks_private } from './schemas/jwks.js'
+import { exp, jti } from './schemas/jwt.js'
 
 export const config_schema = Type.Object({
   access_token_expiration: expiration,
