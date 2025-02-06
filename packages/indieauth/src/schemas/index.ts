@@ -23,6 +23,17 @@ export type {
 } from './authorization-code.js'
 
 export {
+  client_application_immutable_record,
+  client_application_mutable_record,
+  client_application_props
+} from './client-application.js'
+export type {
+  ClientApplicationImmutableRecord,
+  ClientApplicationMutableRecord,
+  ClientApplicationProps
+} from './client-application.js'
+
+export {
   client_id,
   client_metadata,
   client_name,
