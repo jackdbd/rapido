@@ -1,5 +1,16 @@
 # @jackdbd/r2-media-store
 
+## 0.2.0-canary.13
+
+### Minor Changes
+
+- d2ff71d: Move schema definitions of all user-defined functions to indieauth and micropub packages.
+
+### Patch Changes
+
+- Updated dependencies [d2ff71d]
+  - @jackdbd/micropub@0.2.0-canary.9
+
 ## 0.2.0-canary.12
 
 ### Patch Changes

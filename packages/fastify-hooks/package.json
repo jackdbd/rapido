@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/fastify-hooks",
-  "version": "0.2.0-canary.9",
+  "version": "0.2.0-canary.10",
   "description": "Miscellaneous hooks for Fastify servers.",
   "author": {
     "name": "Giacomo Debidda",
@@ -84,9 +84,9 @@
     "test:watch": "node --test --watch"
   },
   "dependencies": {
-    "@jackdbd/fastify-utils": "0.2.0-canary.8",
-    "@jackdbd/oauth2-error-responses": "0.2.0-canary.6",
-    "@jackdbd/oauth2-tokens": "0.2.0-canary.10",
+    "@jackdbd/fastify-utils": "0.2.0-canary.9",
+    "@jackdbd/oauth2-error-responses": "0.2.0-canary.7",
+    "@jackdbd/oauth2-tokens": "0.2.0-canary.11",
     "@sinclair/typebox": "^0.34.14"
   },
   "devDependencies": {},
