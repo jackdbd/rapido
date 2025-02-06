@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/micropub",
-  "version": "0.2.0-canary.7",
+  "version": "0.2.0-canary.8",
   "description": "Schemas and functions for implementing [Micropub](https://micropub.spec.indieweb.org/).",
   "author": {
     "name": "Giacomo Debidda",

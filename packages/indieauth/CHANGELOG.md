@@ -1,5 +1,11 @@
 # @jackdbd/indieauth
 
+## 0.2.0-canary.7
+
+### Minor Changes
+
+- 75690cc: Add schemas for user-provided functions in IndieAuth and Micropub.
+
 ## 0.2.0-canary.6
 
 ### Minor Changes
