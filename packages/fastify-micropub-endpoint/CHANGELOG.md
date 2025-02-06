@@ -1,5 +1,12 @@
 # @jackdbd/fastify-micropub-endpoint
 
+## 0.2.0-canary.16
+
+### Patch Changes
+
+- Updated dependencies [ee97505]
+  - @jackdbd/indieauth@0.2.0-canary.9
+
 ## 0.2.0-canary.15
 
 ### Minor Changes

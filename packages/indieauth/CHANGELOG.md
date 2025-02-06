@@ -1,5 +1,11 @@
 # @jackdbd/indieauth
 
+## 0.2.0-canary.9
+
+### Minor Changes
+
+- ee97505: Add schemas for IndieAuth client application records.
+
 ## 0.2.0-canary.8
 
 ### Minor Changes

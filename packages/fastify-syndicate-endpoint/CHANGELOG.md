@@ -1,5 +1,12 @@
 # @jackdbd/fastify-syndicate-endpoint
 
+## 0.2.0-canary.12
+
+### Patch Changes
+
+- Updated dependencies [ee97505]
+  - @jackdbd/indieauth@0.2.0-canary.9
+
 ## 0.2.0-canary.11
 
 ### Minor Changes
