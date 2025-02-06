@@ -1,5 +1,17 @@
 # @jackdbd/fastify-micropub-endpoint
 
+## 0.2.0-canary.14
+
+### Minor Changes
+
+- 75690cc: Add schemas for user-provided functions in IndieAuth and Micropub.
+
+### Patch Changes
+
+- Updated dependencies [75690cc]
+  - @jackdbd/indieauth@0.2.0-canary.7
+  - @jackdbd/micropub@0.2.0-canary.8
+
 ## 0.2.0-canary.13
 
 ### Minor Changes
