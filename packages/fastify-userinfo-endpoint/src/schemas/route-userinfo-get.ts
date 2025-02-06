@@ -1,3 +1,7 @@
+import {
+  retrieveUserProfile,
+  type RetrieveUserProfile
+} from '@jackdbd/indieauth/schemas/user-provided-functions'
 import { Static, Type } from '@sinclair/typebox'
 import type { Ajv } from 'ajv'
 import {
@@ -6,8 +10,6 @@ import {
   log_prefix,
   request_context_key
 } from './common.js'
-import { retrieveUserProfile } from './user-provided-functions.js'
-import type { RetrieveUserProfile } from './user-provided-functions.js'
 
 export const userinfo_get_config = Type.Object(
   {

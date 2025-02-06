@@ -1,20 +1,23 @@
-import { issuer, me_after_url_canonicalization } from '@jackdbd/indieauth'
-import { jwks_url } from '@jackdbd/oauth2-tokens'
-import { Static, Type } from '@sinclair/typebox'
-import type { Ajv } from 'ajv'
-import { ajv, include_error_description, log_prefix } from './common.js'
+import {
+  issuer,
+  me_after_url_canonicalization
+} from '@jackdbd/indieauth/schemas'
 import {
   retrieveAccessToken,
   retrieveRefreshToken,
   revokeAccessToken,
   revokeRefreshToken
-} from './user-provided-functions.js'
+} from '@jackdbd/indieauth/schemas/user-provided-functions'
 import type {
   RetrieveAccessToken,
   RetrieveRefreshToken,
   RevokeAccessToken,
   RevokeRefreshToken
-} from './user-provided-functions.js'
+} from '@jackdbd/indieauth/schemas/user-provided-functions'
+import { jwks_url } from '@jackdbd/oauth2-tokens'
+import { Static, Type } from '@sinclair/typebox'
+import type { Ajv } from 'ajv'
+import { ajv, include_error_description, log_prefix } from './common.js'
 
 export const revoke_post_config = Type.Object(
   {

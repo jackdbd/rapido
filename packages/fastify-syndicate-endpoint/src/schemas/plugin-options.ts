@@ -1,8 +1,20 @@
-import { Static, Type } from '@sinclair/typebox'
 import {
   me_before_url_canonicalization,
   me_after_url_canonicalization
-} from '@jackdbd/indieauth'
+} from '@jackdbd/indieauth/schemas'
+import { isAccessTokenRevoked } from '@jackdbd/indieauth/schemas/user-provided-functions'
+import type { IsAccessTokenRevoked } from '@jackdbd/indieauth/schemas/user-provided-functions'
+import {
+  retrievePost,
+  updatePost,
+  websiteUrlToStoreLocation
+} from '@jackdbd/micropub/schemas/user-provided-functions'
+import type {
+  RetrievePost,
+  UpdatePost,
+  WebsiteUrlToStoreLocation
+} from '@jackdbd/micropub/schemas/user-provided-functions'
+import { Static, Type } from '@sinclair/typebox'
 import type { Ajv } from 'ajv'
 
 import { DEFAULT } from '../constants.js'
@@ -11,18 +23,6 @@ import {
   include_error_description,
   report_all_ajv_errors
 } from './common.js'
-import {
-  isAccessTokenRevoked,
-  retrieveContent,
-  update,
-  websiteUrlToStoreLocation
-} from './user-provided-functions.js'
-import type {
-  IsAccessTokenRevoked,
-  RetrieveContent,
-  Update,
-  WebsiteUrlToStoreLocation
-} from './user-provided-functions.js'
 
 // import type { Syndicator } from '../../lib/micropub/index.js'
 // syndicators: { [uid: string]: Syndicator }
@@ -31,7 +31,7 @@ export const options = Type.Object(
   {
     ajv: Type.Optional(ajv),
 
-    get: retrieveContent,
+    get: retrievePost,
 
     includeErrorDescription: Type.Optional(include_error_description),
 
@@ -50,7 +50,7 @@ export const options = Type.Object(
 
     syndicators: Type.Any(),
 
-    update
+    update: updatePost
   },
   {
     $id: 'fastify-syndicate-endpoint-options',
@@ -61,8 +61,8 @@ export const options = Type.Object(
 
 export interface Options extends Static<typeof options> {
   ajv?: Ajv
-  get: RetrieveContent
+  get: RetrievePost
   isAccessTokenRevoked: IsAccessTokenRevoked
   publishedUrlToStorageLocation: WebsiteUrlToStoreLocation
-  update: Update
+  update: UpdatePost
 }

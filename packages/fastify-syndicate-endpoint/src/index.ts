@@ -24,14 +24,8 @@ import {
 } from './schemas/index.js'
 import type { Options } from './schemas/index.js'
 
-export {
-  options as plugin_options,
-  websiteUrlToStoreLocation
-} from './schemas/index.js'
-export type {
-  Options as PluginOptions,
-  WebsiteUrlToStoreLocation
-} from './schemas/index.js'
+export { options as plugin_options } from './schemas/index.js'
+export type { Options as PluginOptions } from './schemas/index.js'
 
 const defaults = {
   includeErrorDescription: DEFAULT.INCLUDE_ERROR_DESCRIPTION,

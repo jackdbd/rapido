@@ -1,4 +1,3 @@
-// @ts-ignore-next-line
 import markdownit from 'markdown-it'
 
 // https://github.com/markdown-it/markdown-it?tab=readme-ov-file#init-with-presets-and-options

@@ -1,13 +1,11 @@
 import type { RouteGenericInterface, RouteHandler } from 'fastify'
 import ms, { StringValue } from 'ms'
-import { ServerError } from '@jackdbd/oauth2-error-responses'
-import { authorizationResponseUrl } from '@jackdbd/indieauth'
 import canonicalUrl from '@jackdbd/canonical-url'
+import { authorizationResponseUrl } from '@jackdbd/indieauth'
+import type { OnUserApprovedRequest } from '@jackdbd/indieauth/schemas/user-provided-functions'
+import { ServerError } from '@jackdbd/oauth2-error-responses'
 import { unixTimestampInMs } from '../date.js'
-import type {
-  HandleActionQuerystring,
-  OnUserApprovedRequest
-} from '../schemas/index.js'
+import type { HandleActionQuerystring } from '../schemas/requests.js'
 
 export interface Config {
   authorization_code_expiration: string

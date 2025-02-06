@@ -26,4 +26,4 @@
 "@jackdbd/pkce": minor
 ---
 
-Build docs of all packages.
+Move schema definitions of all user-defined functions to indieauth and micropub packages.

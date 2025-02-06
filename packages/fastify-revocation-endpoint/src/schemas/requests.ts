@@ -1,7 +1,7 @@
+import { revocation_reason } from '@jackdbd/indieauth/schemas/index'
 import { access_token, refresh_token } from '@jackdbd/oauth2'
 import { Static, Type } from '@sinclair/typebox'
 import { token_type_hint } from './common.js'
-import { revocation_reason } from './revocation.js'
 
 /**
  * Revocation request.

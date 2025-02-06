@@ -1,4 +1,13 @@
 import type { RouteGenericInterface, RouteHandler } from 'fastify'
+import type {
+  AccessTokenImmutableRecord,
+  AccessTokenMutableRecord
+} from '@jackdbd/indieauth/schemas/index'
+import type {
+  RefreshTokenImmutableRecord,
+  RefreshTokenMutableRecord
+} from '@jackdbd/indieauth/schemas/refresh-token'
+import { RetrieveAccessToken } from '@jackdbd/indieauth/schemas/user-provided-functions'
 import {
   InvalidRequestError,
   ServerError
@@ -12,11 +21,6 @@ import type { AccessTokenClaims, JWKSPublicURL } from '@jackdbd/oauth2-tokens'
 import { throwWhenNotConform } from '@jackdbd/schema-validators'
 import { revoke_post_config } from '../schemas/index.js'
 import type {
-  AccessTokenImmutableRecord,
-  AccessTokenMutableRecord,
-  RefreshTokenImmutableRecord,
-  RefreshTokenMutableRecord,
-  RetrieveAccessToken,
   RevocationRequestBody,
   RevokePostConfig
 } from '../schemas/index.js'

@@ -59,7 +59,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.740.0",
-    "@jackdbd/fastify-media-endpoint": "0.2.0-canary.12",
+    "@jackdbd/micropub": "0.2.0-canary.8",
     "mime": "^4.0.6",
     "nanoid": "^5.0.9"
   },

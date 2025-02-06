@@ -30,9 +30,6 @@ import {
 
 export {
   access_token_request_body,
-  authorization_code_props,
-  authorization_code_immutable_record,
-  authorization_code_mutable_record,
   authorization_request_querystring,
   authorization_response_body_success,
   authorization_response_querystring,
@@ -42,18 +39,12 @@ export {
 } from './schemas/index.js'
 export type {
   AccessTokenRequestBody,
-  AuthorizationCodeProps,
-  AuthorizationCodeImmutableRecord,
-  AuthorizationCodeMutableRecord,
   AuthorizationRequestQuerystring,
   AuthorizationResponseBodySuccess,
   AuthorizationResponseQuerystring,
-  OnAuthorizationCodeVerified,
-  OnUserApprovedRequest,
   Options as PluginOptions,
   ProfileUrlRequestBody,
-  ProfileUrlResponseBodySuccess,
-  RetrieveAuthorizationCode
+  ProfileUrlResponseBodySuccess
 } from './schemas/index.js'
 
 declare module 'fastify' {

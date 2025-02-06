@@ -2,14 +2,8 @@ import {
   client_id,
   me_after_url_canonicalization,
   me_before_url_canonicalization
-} from '@jackdbd/indieauth'
-import {
-  authorization_code,
-  redirect_uri,
-  // response_type,
-  scope,
-  state
-} from '@jackdbd/oauth2'
+} from '@jackdbd/indieauth/schemas'
+import { authorization_code, redirect_uri, scope, state } from '@jackdbd/oauth2'
 import {
   code_challenge,
   code_challenge_method,

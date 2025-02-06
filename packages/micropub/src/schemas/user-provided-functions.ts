@@ -13,6 +13,19 @@ export const url = Type.String({
 // conclusions about their return type. We can only say that they return a
 // promise.
 
+export const createPost = Type.Function([jf2], Type.Promise(Type.Any()), {
+  title: 'Create post',
+  description:
+    '[Creates](https://micropub.spec.indieweb.org/#create) a post on the Micropub server.'
+})
+
+/**
+ * Creates a post on the Micropub server.
+ *
+ * @see [Create - Micropub](https://micropub.spec.indieweb.org/#create)
+ */
+export type CreatePost = Static<typeof createPost>
+
 export const deletePost = Type.Function([url], Type.Promise(Type.Any()), {
   title: 'Delete post',
   description:
@@ -102,14 +115,10 @@ export const uploadMedia = Type.Function(
 
 export type UploadMedia = Static<typeof uploadMedia>
 
-export const websiteUrlToStoreLocation = Type.Function(
-  [url],
-  Type.Promise(location),
-  {
-    title: 'Website URL to store location',
-    description:
-      "Maps a URL published on the user's website to a location on the user's store (e.g. a table in a database, a path in a git repository, a URL in a public bucket of an object storage service like AWS S3)."
-  }
-)
+export const websiteUrlToStoreLocation = Type.Function([url], location, {
+  title: 'Website URL to store location',
+  description:
+    "Maps a URL published on the user's website to a location on the user's store (e.g. a table in a database, a path in a git repository, a URL in a public bucket of an object storage service like AWS S3)."
+})
 
 export type WebsiteUrlToStoreLocation = Static<typeof websiteUrlToStoreLocation>

@@ -24,6 +24,7 @@ export type {
 } from './schemas/index.js'
 
 export {
+  createPost,
   deletePost,
   retrievePost,
   update_patch,
@@ -34,6 +35,7 @@ export {
   websiteUrlToStoreLocation
 } from './schemas/user-provided-functions.js'
 export type {
+  CreatePost,
   DeletePost,
   RetrievePost,
   UpdatePatch,

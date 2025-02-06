@@ -1,16 +1,3 @@
-export {
-  authorization_code_props,
-  code,
-  authorization_code_immutable_record,
-  authorization_code_mutable_record
-} from './authorization-code.js'
-export type {
-  AuthorizationCodeProps,
-  AuthorizationCodeImmutableRecord,
-  AuthorizationCodeMutableRecord,
-  Code
-} from './authorization-code.js'
-
 export { options, type Options } from './plugin-options.js'
 
 export {
@@ -36,10 +23,3 @@ export type {
   AuthorizationResponseQuerystring,
   ProfileUrlResponseBodySuccess
 } from './responses.js'
-
-// export {} from './user-provided-functions.js'
-export type {
-  OnAuthorizationCodeVerified,
-  OnUserApprovedRequest,
-  RetrieveAuthorizationCode
-} from './user-provided-functions.js'

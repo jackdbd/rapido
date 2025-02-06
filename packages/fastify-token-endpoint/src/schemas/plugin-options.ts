@@ -1,4 +1,14 @@
-import { issuer, userinfo_endpoint } from '@jackdbd/indieauth'
+import { issuer, userinfo_endpoint } from '@jackdbd/indieauth/schemas'
+import {
+  isAccessTokenRevoked,
+  onIssuedTokens,
+  retrieveRefreshToken
+} from '@jackdbd/indieauth/schemas/user-provided-functions'
+import type {
+  IsAccessTokenRevoked,
+  OnIssuedTokens,
+  RetrieveRefreshToken
+} from '@jackdbd/indieauth/schemas/user-provided-functions'
 import { authorization_endpoint, revocation_endpoint } from '@jackdbd/oauth2'
 import { expiration, jwks_private } from '@jackdbd/oauth2-tokens'
 import { Static, Type } from '@sinclair/typebox'
@@ -10,16 +20,6 @@ import {
   log_prefix,
   report_all_ajv_errors
 } from './common.js'
-import {
-  isAccessTokenRevoked,
-  onIssuedTokens,
-  retrieveRefreshToken
-} from './user-provided-functions.js'
-import type {
-  IsAccessTokenRevoked,
-  OnIssuedTokens,
-  RetrieveRefreshToken
-} from './user-provided-functions.js'
 
 export const options = Type.Object(
   {

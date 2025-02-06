@@ -1,4 +1,5 @@
 import type { Publication } from '@jackdbd/micropub'
+import type { WebsiteUrlToStoreLocation } from '@jackdbd/micropub/schemas/user-provided-functions'
 import { defaultLog, type Log } from './log.js'
 
 interface Options {
@@ -20,7 +21,7 @@ export const defWebsiteUrlToStoreLocation = (options?: Options) => {
 
   // E.g. A note published on my website: https://www.giacomodebidda.com/notes/test-note/
 
-  const websiteUrlToStoreLocation = (url: string) => {
+  const websiteUrlToStoreLocation: WebsiteUrlToStoreLocation = (url) => {
     const [_domain, ...splits] = url.split('/').slice(2)
     const slug = splits.filter((s) => s !== '').at(-1)
 

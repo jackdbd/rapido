@@ -1,15 +1,19 @@
 import type { RouteGenericInterface, RouteHandler } from 'fastify'
+import type {
+  AuthorizationCodeImmutableRecord,
+  AuthorizationCodeMutableRecord
+} from '@jackdbd/indieauth/schemas/index'
+import type {
+  OnAuthorizationCodeVerified,
+  RetrieveAuthorizationCode
+} from '@jackdbd/indieauth/schemas/user-provided-functions'
 import { InvalidGrantError, ServerError } from '@jackdbd/oauth2-error-responses'
 import { codeChallenge } from '@jackdbd/pkce'
 import { isExpired } from '../predicates.js'
 import type {
   AccessTokenRequestBody,
-  AuthorizationCodeImmutableRecord,
-  AuthorizationCodeMutableRecord,
-  OnAuthorizationCodeVerified,
-  ProfileUrlRequestBody,
-  RetrieveAuthorizationCode
-} from '../schemas/index.js'
+  ProfileUrlRequestBody
+} from '../schemas/requests.js'
 
 interface RouteGeneric extends RouteGenericInterface {
   Body: AccessTokenRequestBody | ProfileUrlRequestBody
