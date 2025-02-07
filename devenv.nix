@@ -81,10 +81,28 @@ in {
       find .changeset -type f -name "*.md" ! -name "README.md" -delete
       npx changeset pre enter canary
     '';
+    "debug:app".exec = ''
+      npm run build:ts
+      npm run vendor
+      npm run copy:webc
+      NODE_ENV=development NODE_OPTIONS='--inspect' PINO_LOG_LEVEL=debug node apps/demo-app/dist/server.js --port 3001 --print-plugins --print-routes | npx pino-pretty
+    '';
     dev.exec = ''
       echo "develop package $1"
       # npm run dev -w @repo/stdlib -w @repo/scripts -w @jackdbd/$1
       npx turbo dev -F @repo/stdlib -F @repo/scripts -F ./packages/$1
+    '';
+    "dev:app".exec = ''
+      npm run copy:webc
+      npx turbo dev -F @repo/demo-app \
+        --filter @jackdbd/fastify-authorization-endpoint \
+        --filter @jackdbd/fastify-introspection-endpoint \
+        --filter @jackdbd/fastify-media-endpoint \
+        --filter @jackdbd/fastify-micropub-endpoint \
+        --filter @jackdbd/fastify-revocation-endpoint \
+        --filter @jackdbd/fastify-syndicate-endpoint \
+        --filter @jackdbd/fastify-token-endpoint \
+        --filter @jackdbd/fastify-userinfo-endpoint
     '';
     "test:ci".exec = ''
       echo "test package $1"
