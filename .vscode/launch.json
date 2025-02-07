@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // First, launch the server with NODE_OPTIONS='--inspect'. Then attach to it.
+      "name": "Attach to Node.js app",
+      "request": "attach",
+      "type": "node",
+      "port": 9229,
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}
