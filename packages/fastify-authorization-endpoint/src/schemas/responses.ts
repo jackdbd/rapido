@@ -1,5 +1,10 @@
-import { issuer, me_after_url_canonicalization } from '@jackdbd/indieauth'
-import { authorization_code, scope, state } from '@jackdbd/oauth2'
+import {
+  authorization_code,
+  issuer,
+  me_after_url_canonicalization,
+  scope,
+  state
+} from '@jackdbd/indieauth/schemas'
 import { Static, Type } from '@sinclair/typebox'
 
 /**

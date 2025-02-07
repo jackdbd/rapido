@@ -15,6 +15,8 @@
   "keywords": [
     "IndieWeb",
     "IndieAuth",
+    "JWT",
+    "OAuth 2.0",
     "Web Sign-In"
   ],
   "type": "module",
@@ -66,10 +68,16 @@
   },
   "dependencies": {
     "@jackdbd/canonical-url": "0.2.0-canary.7",
-    "@jackdbd/oauth2": "0.2.0-canary.6",
-    "@jackdbd/oauth2-tokens": "0.2.0-canary.11",
     "@jackdbd/pkce": "0.2.0-canary.6",
+    "@jackdbd/schema-validators": "0.2.0-canary.10",
     "@sinclair/typebox": "^0.34.14",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "dayjs": "^1.11.13",
+    "dayjs-plugin-utc": "^0.1.2",
+    "jose": "^5.9.6",
+    "ms": "3.0.0-canary.1",
+    "nanoid": "^5.0.9",
     "posthtml-parser": "^0.12.1"
   },
   "devDependencies": {}

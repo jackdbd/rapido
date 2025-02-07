@@ -2,10 +2,9 @@ import { Type, type Static } from '@sinclair/typebox'
 import type { Ajv } from 'ajv'
 import ms, { StringValue } from 'ms'
 import { nanoid } from 'nanoid'
-import { refresh_token } from '@jackdbd/oauth2'
 import { conformResult } from '@jackdbd/schema-validators'
 import { unixTimestampInMs } from './date.js'
-import { ajv, exp, expiration } from './schemas/index.js'
+import { ajv, exp, expiration, refresh_token } from './schemas/index.js'
 
 export const config_schema = Type.Object(
   { ajv, expiration },
@@ -16,7 +15,7 @@ export interface Config extends Static<typeof config_schema> {
   ajv: Ajv
 }
 
-export const return_value_schema = Type.Object(
+export const refresh_token_plus_info = Type.Object(
   {
     exp,
     refresh_token
@@ -24,7 +23,7 @@ export const return_value_schema = Type.Object(
   { additionalProperties: false }
 )
 
-export type ReturnValue = Static<typeof return_value_schema>
+export type RefreshTokenPlusInfo = Static<typeof refresh_token_plus_info>
 
 export const refreshToken = async (config: Config) => {
   const ajv = config.ajv
@@ -55,7 +54,7 @@ export const refreshToken = async (config: Config) => {
     conformResult(
       {
         ajv,
-        schema: return_value_schema,
+        schema: refresh_token_plus_info,
         data: value
       },
       { basePath: 'refreshToken-return-value' }

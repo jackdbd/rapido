@@ -1,4 +1,6 @@
 import type { RouteGenericInterface, RouteHandler } from 'fastify'
+import { isExpired, safeDecode, verify } from '@jackdbd/indieauth'
+import type { AccessTokenClaims } from '@jackdbd/indieauth'
 import type {
   AccessTokenImmutableRecord,
   AccessTokenMutableRecord
@@ -8,10 +10,7 @@ import {
   InvalidTokenError,
   ServerError
 } from '@jackdbd/oauth2-error-responses'
-import { safeDecode, verify } from '@jackdbd/oauth2-tokens'
-import type { AccessTokenClaims } from '@jackdbd/oauth2-tokens'
 import { conformResult, throwWhenNotConform } from '@jackdbd/schema-validators'
-import { isExpired } from '../predicates.js'
 import {
   introspect_post_config,
   introspection_response_body_success

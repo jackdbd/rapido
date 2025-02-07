@@ -1,8 +1,18 @@
-import { redirect_uri } from '@jackdbd/oauth2'
 import { Static, Type } from '@sinclair/typebox'
-import { client_id } from './client-metadata.js'
+import { redirect_uri } from './common.js'
 import { me_after_url_canonicalization } from './me.js'
 import { immutable_record, mutable_record } from './record.js'
+
+/**
+ * The ID of the application that asks for authorization.
+ *
+ * An IndieAuth client ID is always a URL.
+ */
+export const client_id = Type.String({
+  description:
+    'The ID of the application that asks for authorization. An IndieAuth client ID is a URL.',
+  format: 'uri'
+})
 
 export const client_application_props = Type.Object(
   {

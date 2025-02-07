@@ -1,9 +1,16 @@
-import { redirect_uri } from '@jackdbd/oauth2'
-import { jti } from '@jackdbd/oauth2-tokens'
 import { Static, Type } from '@sinclair/typebox'
-import { client_id } from './client-metadata.js'
+import { client_id } from './client-application.js'
+import { redirect_uri } from './common.js'
+import { jti } from './jwt.js'
 import { immutable_record, mutable_record } from './record.js'
 import { revoked, revocation_reason } from './revocation.js'
+
+/**
+ * Access Token.
+ *
+ * @see [Access Token](https://datatracker.ietf.org/doc/html/rfc6749#section-1.4)
+ */
+export const access_token = Type.String({ minLength: 1 })
 
 export const access_token_props = Type.Object(
   {

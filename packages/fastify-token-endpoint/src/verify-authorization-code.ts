@@ -1,4 +1,4 @@
-import { errorResponseFromJSONResponse } from '@jackdbd/oauth2'
+import { errorResponseFromJSONResponse } from '@jackdbd/indieauth'
 import { ServerError } from '@jackdbd/oauth2-error-responses'
 import { AuthorizationResponseBodySuccess } from './schemas/index.js'
 

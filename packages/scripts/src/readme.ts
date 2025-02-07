@@ -30,7 +30,7 @@ import {
   dt_updated,
   u_uid
 } from '../../microformats2/lib/index.js'
-import { tokens_plus_info } from '../../oauth2-tokens/lib/index.js'
+import { tokens_plus_info } from '../../indieauth/lib/index.js'
 import {
   access_token_request_body,
   authorization_request_querystring,

@@ -1,6 +1,6 @@
 import { requestContext } from '@fastify/request-context'
+import { rfc3339 } from '@jackdbd/indieauth'
 import { InvalidRequestError } from '@jackdbd/oauth2-error-responses'
-import { rfc3339 } from '@jackdbd/oauth2-tokens'
 import type { Jf2 } from '@paulrobertlloyd/mf2tojf2'
 import type { RouteHandler, RouteGenericInterface } from 'fastify'
 import { mf2tTojf2, normalizeJf2 } from '@jackdbd/micropub'

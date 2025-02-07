@@ -1,5 +1,11 @@
-import { me_after_url_canonicalization, profile } from '@jackdbd/indieauth'
-import { access_token, expires_in, refresh_token, scope } from '@jackdbd/oauth2'
+import {
+  access_token,
+  expires_in,
+  me_after_url_canonicalization,
+  profile,
+  refresh_token,
+  scope
+} from '@jackdbd/indieauth/schemas'
 import { Static, Type } from '@sinclair/typebox'
 
 export const access_token_response_body_success = Type.Object({

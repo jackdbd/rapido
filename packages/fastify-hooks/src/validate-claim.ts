@@ -1,10 +1,10 @@
 import type { RequestContextData } from '@fastify/request-context'
+import type { AccessTokenClaims } from '@jackdbd/indieauth'
 import {
   InvalidRequestError,
   InvalidTokenError,
   UnauthorizedError
 } from '@jackdbd/oauth2-error-responses'
-import type { AccessTokenClaims } from '@jackdbd/oauth2-tokens'
 import type { preHandlerHookHandler } from 'fastify'
 import type { Assertion, Value } from './schemas/assertion.js'
 

@@ -1,10 +1,10 @@
-import { client_id } from '@jackdbd/indieauth'
 import {
   authorization_code,
+  client_id,
   redirect_uri,
   refresh_token,
   scope
-} from '@jackdbd/oauth2'
+} from '@jackdbd/indieauth/schemas'
 import { code_verifier } from '@jackdbd/pkce'
 import { Static, Type } from '@sinclair/typebox'
 

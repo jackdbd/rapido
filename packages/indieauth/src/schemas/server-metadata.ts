@@ -1,15 +1,14 @@
+import { Static, Type } from '@sinclair/typebox'
+import { response_mode, response_type, scope } from './common.js'
 import {
   authorization_endpoint,
-  grant_type,
   introspection_endpoint,
-  response_mode,
-  response_type,
+  registration_endpoint,
   revocation_endpoint,
-  scope,
-  token_endpoint
-} from '@jackdbd/oauth2'
-import { Static, Type } from '@sinclair/typebox'
-import { registration_endpoint, userinfo_endpoint } from './endpoints.js'
+  token_endpoint,
+  userinfo_endpoint
+} from './endpoints.js'
+import { grant_type } from './grant-type.js'
 
 /**
  * Issuer identifier of the authorization server.

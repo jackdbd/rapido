@@ -1,4 +1,5 @@
 import type { RouteGenericInterface, RouteHandler } from 'fastify'
+import { isExpired } from '@jackdbd/indieauth'
 import type {
   AuthorizationCodeImmutableRecord,
   AuthorizationCodeMutableRecord
@@ -9,7 +10,6 @@ import type {
 } from '@jackdbd/indieauth/schemas/user-provided-functions'
 import { InvalidGrantError, ServerError } from '@jackdbd/oauth2-error-responses'
 import { codeChallenge } from '@jackdbd/pkce'
-import { isExpired } from '../predicates.js'
 import type {
   AccessTokenRequestBody,
   ProfileUrlRequestBody

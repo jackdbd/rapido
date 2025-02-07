@@ -1,6 +1,6 @@
 import { Static, Type } from '@sinclair/typebox'
+import { errorResponseFromJSONResponse } from '@jackdbd/indieauth'
 import { ServerError } from '@jackdbd/oauth2-error-responses'
-import { errorResponseFromJSONResponse } from '@jackdbd/oauth2'
 
 export const revocation_response_body_success = Type.Object({
   message: Type.Optional(Type.String({ minLength: 1 }))

@@ -1,26 +1,16 @@
 import { conformResult } from '@jackdbd/schema-validators'
 import { Type, type Static } from '@sinclair/typebox'
 import type { Ajv } from 'ajv'
-import {
-  access_token,
-  expires_in,
-  redirect_uri,
-  refresh_token,
-  scope
-} from '@jackdbd/oauth2'
 import { accessToken } from './access-token.js'
 import { safeDecode } from './decode-jwt.js'
 import type { AccessTokenClaims } from './jwt-claims.js'
 import { refreshToken } from './refresh-token.js'
-import {
-  client_id,
-  expiration,
-  issuer,
-  me_after_url_canonicalization
-} from './schemas/common.js'
-import { kid } from './schemas/jwk.js'
+import { client_id } from './schemas/client-application.js'
+import { expiration, redirect_uri, scope } from './schemas/common.js'
 import { jwks_private } from './schemas/jwks.js'
-import { exp, jti } from './schemas/jwt.js'
+import { me_after_url_canonicalization } from './schemas/me.js'
+import { issuer } from './schemas/server-metadata.js'
+import { tokens_plus_info } from './schemas/tokens-plus-info.js'
 
 export const config_schema = Type.Object({
   access_token_expiration: expiration,
@@ -36,35 +26,6 @@ export const config_schema = Type.Object({
 export interface Config extends Static<typeof config_schema> {
   ajv: Ajv
 }
-
-export const return_value_schema = Type.Object(
-  {
-    access_token,
-    access_token_expires_in: expires_in,
-    client_id,
-    issuer,
-    jti,
-    kid,
-    me: me_after_url_canonicalization,
-    redirect_uri,
-    refresh_token,
-    refresh_token_expires_at: exp,
-    scope
-  },
-  {
-    $id: 'tokens-plus-info',
-    additionalProperties: false,
-    title: 'Tokens Plus Info',
-    description:
-      'Access token, refresh token, and some additional information about the issuer, the client, and the end-user.'
-    // examples: [],
-  }
-)
-
-// I think that `me` is always the end-user. Calling it resource owner doesn't seem correct.
-// https://stackoverflow.com/questions/6269376/oauth-what-exactly-is-a-resource-owner-when-is-it-not-an-end-user
-
-export type ReturnValue = Static<typeof return_value_schema>
 
 /**
  * Issues an access token, a refresh token, and returns some additional
@@ -161,7 +122,7 @@ export const tokensPlusInfo = async (config: Config) => {
     conformResult(
       {
         ajv,
-        schema: return_value_schema,
+        schema: tokens_plus_info,
         data
       },
       { basePath: 'tokensPlusInfo-return-value' }

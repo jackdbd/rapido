@@ -85,8 +85,8 @@
   },
   "dependencies": {
     "@jackdbd/fastify-utils": "0.2.0-canary.9",
+    "@jackdbd/indieauth": "*",
     "@jackdbd/oauth2-error-responses": "0.2.0-canary.7",
-    "@jackdbd/oauth2-tokens": "0.2.0-canary.11",
     "@sinclair/typebox": "^0.34.14"
   },
   "devDependencies": {},

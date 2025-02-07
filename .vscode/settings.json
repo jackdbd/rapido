@@ -29,6 +29,9 @@
   "prettier.requireConfig": true,
   "search.exclude": {
     "**/.devenv/": true,
-    "**/.direnv/": true
+    "**/.direnv/": true,
+    "**/docs/": true,
+    "**/CHANGELOG.md": true,
+    "**/package-lock.json": true
   }
 }

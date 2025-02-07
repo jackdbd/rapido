@@ -1,5 +1,6 @@
 import {
   issuer,
+  jwks_url,
   me_after_url_canonicalization,
   me_before_url_canonicalization
 } from '@jackdbd/indieauth/schemas'
@@ -17,7 +18,6 @@ import type {
   RevokeAccessToken,
   RevokeRefreshToken
 } from '@jackdbd/indieauth/schemas/user-provided-functions'
-import { jwks_url } from '@jackdbd/oauth2-tokens'
 import { Static, Type } from '@sinclair/typebox'
 import type { Ajv } from 'ajv'
 import {

@@ -1,5 +1,3 @@
-import { refresh_token } from '@jackdbd/oauth2'
-import { jti, tokens_plus_info } from '@jackdbd/oauth2-tokens'
 import { Static, Type } from '@sinclair/typebox'
 import {
   access_token_immutable_record,
@@ -11,12 +9,15 @@ import {
   authorization_code_mutable_record,
   authorization_code_props
 } from './authorization-code.js'
+import { jti } from './jwt.js'
 import { me_after_url_canonicalization } from './me.js'
 import {
+  refresh_token,
   refresh_token_immutable_record,
   refresh_token_mutable_record
 } from './refresh-token.js'
 import { revocation_reason } from './revocation.js'
+import { tokens_plus_info } from './tokens-plus-info.js'
 import {
   user_profile_immutable_record,
   user_profile_mutable_record

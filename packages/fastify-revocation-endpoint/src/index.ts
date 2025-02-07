@@ -4,8 +4,8 @@ import {
   defValidateNotRevoked
 } from '@jackdbd/fastify-hooks'
 import canonicalUrl from '@jackdbd/canonical-url'
-import { error_response } from '@jackdbd/oauth2'
-import { unixTimestampInSeconds } from '@jackdbd/oauth2-tokens'
+import { unixTimestampInSeconds } from '@jackdbd/indieauth'
+import { error_response } from '@jackdbd/indieauth/schemas'
 import { conformResult } from '@jackdbd/schema-validators'
 import formbody from '@fastify/formbody'
 import responseValidation from '@fastify/response-validation'

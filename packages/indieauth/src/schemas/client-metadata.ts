@@ -1,16 +1,6 @@
-import { redirect_uri } from '@jackdbd/oauth2'
 import { Static, Type } from '@sinclair/typebox'
-
-/**
- * The ID of the application that asks for authorization.
- *
- * An IndieAuth client ID is always a URL.
- */
-export const client_id = Type.String({
-  description:
-    'The ID of the application that asks for authorization. An IndieAuth client ID is a URL.',
-  format: 'uri'
-})
+import { client_id } from './client-application.js'
+import { redirect_uri } from './common.js'
 
 /**
  * Human readable name of the client to be presented on the consent screen.

@@ -2,7 +2,7 @@ import {
   InvalidTokenError,
   UnauthorizedError
 } from '@jackdbd/oauth2-error-responses'
-import type { AccessTokenClaims } from '@jackdbd/oauth2-tokens'
+import type { AccessTokenClaims } from '@jackdbd/indieauth'
 import type { RequestContextData } from '@fastify/request-context'
 import type { preHandlerAsyncHookHandler } from 'fastify'
 import type { IsAccessTokenRevoked } from './schemas/index.js'
