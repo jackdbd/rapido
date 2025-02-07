@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/github-contents-api",
-  "version": "0.2.0-canary.8",
+  "version": "0.2.0-canary.9",
   "description": "Minimal client for the [GitHub Contents API](https://docs.github.com/en/rest/repos/contents).",
   "author": {
     "name": "Giacomo Debidda",
