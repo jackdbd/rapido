@@ -32,7 +32,7 @@
     "@fastify/view": "^10.0.2",
     "@jackdbd/fastify-authorization-endpoint": "1.3.0-canary.14",
     "@jackdbd/fastify-micropub-endpoint": "0.2.0-canary.17",
-    "@jackdbd/fastify-token-endpoint": "1.3.0-canary.16",
+    "@jackdbd/fastify-token-endpoint": "1.3.0-canary.17",
     "@jackdbd/indieauth": "0.2.0-canary.10",
     "@jackdbd/micropub": "0.2.0-canary.10",
     "close-with-grace": "^2.2.0",
