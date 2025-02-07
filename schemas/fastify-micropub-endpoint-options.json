@@ -8,7 +8,7 @@
       "description": "Instance of Ajv"
     },
     "create": {
-      "title": "create",
+      "title": "Create post",
       "description": "[Creates](https://micropub.spec.indieweb.org/#create) a post on the Micropub server.",
       "type": "Function",
       "parameters": [
@@ -58,8 +58,8 @@
       }
     },
     "delete": {
-      "title": "delete",
-      "description": "[Deletes](https://micropub.spec.indieweb.org/#delete) a post or media from the Micropub server.",
+      "title": "Delete post",
+      "description": "[Deletes](https://micropub.spec.indieweb.org/#delete) a post published at a URL.",
       "type": "Function",
       "parameters": [
         {
@@ -195,8 +195,8 @@
       }
     },
     "undelete": {
-      "title": "undelete",
-      "description": "[Undeletes](https://micropub.spec.indieweb.org/#delete) a post or media from the Micropub server.",
+      "title": "Undelete post",
+      "description": "[Undeletes](https://micropub.spec.indieweb.org/#delete) a post published at a URL.",
       "type": "Function",
       "parameters": [
         {
@@ -211,8 +211,8 @@
       }
     },
     "update": {
-      "title": "update",
-      "description": "[Updates](https://micropub.spec.indieweb.org/#update) a post on the Micropub server.",
+      "title": "Update post",
+      "description": "[Updates](https://micropub.spec.indieweb.org/#update) a post published at a URL.",
       "type": "Function",
       "parameters": [
         {

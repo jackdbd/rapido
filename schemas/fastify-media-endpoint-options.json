@@ -8,8 +8,8 @@
       "description": "Instance of Ajv"
     },
     "delete": {
-      "title": "delete",
-      "description": "[Deletes](https://micropub.spec.indieweb.org/#delete) a file from the Micropub server.",
+      "title": "Delete post",
+      "description": "[Deletes](https://micropub.spec.indieweb.org/#delete) a post published at a URL.",
       "type": "Function",
       "parameters": [
         {
@@ -81,7 +81,7 @@
       "type": "boolean"
     },
     "upload": {
-      "title": "upload",
+      "title": "Upload file",
       "description": "[Uploads a file](https://micropub.spec.indieweb.org/#uploading-files) to the Micropub server.",
       "type": "Function",
       "parameters": [
