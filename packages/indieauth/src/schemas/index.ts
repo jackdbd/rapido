@@ -1,4 +1,5 @@
 export {
+  access_token,
   access_token_immutable_record,
   access_token_mutable_record,
   access_token_props
@@ -25,7 +26,8 @@ export type {
 export {
   client_application_immutable_record,
   client_application_mutable_record,
-  client_application_props
+  client_application_props,
+  client_id
 } from './client-application.js'
 export type {
   ClientApplicationImmutableRecord,
@@ -34,7 +36,6 @@ export type {
 } from './client-application.js'
 
 export {
-  client_id,
   client_metadata,
   client_name,
   logo_uri,
@@ -43,7 +44,49 @@ export {
 } from './client-metadata.js'
 export type { ClientMetadata } from './client-metadata.js'
 
-export { registration_endpoint, userinfo_endpoint } from './endpoints.js'
+export {
+  ajv,
+  expiration,
+  expires_in,
+  redirect_uri,
+  response_mode,
+  response_type,
+  scope,
+  state
+} from './common.js'
+export type { ResponseMode, ResponseType } from './common.js'
+
+export {
+  authorization_endpoint,
+  introspection_endpoint,
+  registration_endpoint,
+  revocation_endpoint,
+  token_endpoint,
+  userinfo_endpoint
+} from './endpoints.js'
+
+export {
+  error_description,
+  error_response,
+  error_type,
+  error_uri
+} from './error.js'
+export type {
+  ErrorDescription,
+  ErrorResponse,
+  ErrorType,
+  ErrorUri
+} from './error.js'
+
+export { grant_type, type GrantType } from './grant-type.js'
+
+export { alg, kid, jwk_private, jwk_public } from './jwk.js'
+export type { JWKPrivate, JWKPublic } from './jwk.js'
+
+export { jwks_private, jwks_public, jwks_url } from './jwks.js'
+export type { JWKSPrivate, JWKSPublic, JWKSPublicURL } from './jwks.js'
+
+export { exp, iat, iss, jti, jwt } from './jwt.js'
 
 export {
   me_after_url_canonicalization,
@@ -54,6 +97,7 @@ export { immutable_record, mutable_record, record_id } from './record.js'
 export type { ImmutableRecord, MutableRecord, RecordId } from './record.js'
 
 export {
+  refresh_token,
   refresh_token_immutable_record,
   refresh_token_mutable_record,
   refresh_token_props
@@ -74,6 +118,8 @@ export {
   server_metadata
 } from './server-metadata.js'
 export type { ServerMetadata } from './server-metadata.js'
+
+export { tokens_plus_info, type TokensPlusInfo } from './tokens-plus-info.js'
 
 export {
   email,

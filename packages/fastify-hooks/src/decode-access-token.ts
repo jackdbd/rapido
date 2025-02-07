@@ -1,11 +1,11 @@
 import type { RequestContextData } from '@fastify/request-context'
 import { accessTokenFromRequest } from '@jackdbd/fastify-utils'
+import { safeDecode, type AccessTokenClaims } from '@jackdbd/indieauth'
 import {
   InvalidTokenError,
   UnauthorizedError,
   ServerError
 } from '@jackdbd/oauth2-error-responses'
-import { safeDecode, type AccessTokenClaims } from '@jackdbd/oauth2-tokens'
 import type { preHandlerAsyncHookHandler } from 'fastify'
 
 declare module '@fastify/request-context' {

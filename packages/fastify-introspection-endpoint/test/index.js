@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test'
 import Fastify from 'fastify'
 import fastifyRequestContext from '@fastify/request-context'
-import { accessToken } from '@jackdbd/oauth2-tokens'
+import { accessToken } from '@jackdbd/indieauth'
 import {
   ACCESS_TOKEN_EXPIRATION,
   CLIENT_ID_NONEXISTENT as client_id,

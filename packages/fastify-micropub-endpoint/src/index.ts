@@ -8,9 +8,9 @@ import {
   defValidateClaim,
   defValidateNotRevoked
 } from '@jackdbd/fastify-hooks'
+import { error_response } from '@jackdbd/indieauth/schemas'
+import { unixTimestampInSeconds } from '@jackdbd/indieauth'
 import * as jf2 from '@jackdbd/microformats2'
-import { error_response } from '@jackdbd/oauth2'
-import { unixTimestampInSeconds } from '@jackdbd/oauth2-tokens'
 import { conformResult } from '@jackdbd/schema-validators'
 import { defErrorHandler } from '@repo/error-handlers'
 import { Ajv, type Plugin as AjvPlugin } from 'ajv'

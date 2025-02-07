@@ -1,4 +1,4 @@
-import { issuer } from '@jackdbd/indieauth/schemas'
+import { issuer, jwks_url } from '@jackdbd/indieauth/schemas'
 import {
   isAccessTokenRevoked,
   retrieveAccessToken,
@@ -9,7 +9,6 @@ import type {
   RetrieveAccessToken,
   RetrieveRefreshToken
 } from '@jackdbd/indieauth/schemas/user-provided-functions'
-import { jwks_url } from '@jackdbd/oauth2-tokens'
 import { Static, Type } from '@sinclair/typebox'
 import type { Ajv } from 'ajv'
 import { ajv, include_error_description, log_prefix } from './common.js'

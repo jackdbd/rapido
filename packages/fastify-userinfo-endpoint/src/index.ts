@@ -5,9 +5,8 @@ import {
   defValidateNotRevoked,
   defValidateScope
 } from '@jackdbd/fastify-hooks'
-import { profile } from '@jackdbd/indieauth'
-import { error_response } from '@jackdbd/oauth2'
-import { unixTimestampInSeconds } from '@jackdbd/oauth2-tokens'
+import { error_response, profile } from '@jackdbd/indieauth/schemas'
+import { unixTimestampInSeconds } from '@jackdbd/indieauth'
 import { conformResult } from '@jackdbd/schema-validators'
 import { defErrorHandler } from '@repo/error-handlers'
 import { Ajv, type Plugin as AjvPlugin } from 'ajv'

@@ -1,12 +1,12 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert'
+import { defAjv } from '@repo/stdlib/test-utils'
 import {
   iso8601,
   rfc3339,
   unixTimestampInMs,
   unixTimestampInSeconds
-} from '../../oauth2-tokens/lib/date.js'
-import { defAjv } from '@repo/stdlib/test-utils'
+} from '../../indieauth/lib/date.js'
 import { date_time } from '../lib/index.js'
 
 const ajv = defAjv()

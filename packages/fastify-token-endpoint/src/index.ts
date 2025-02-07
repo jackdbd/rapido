@@ -1,6 +1,6 @@
 import formbody from '@fastify/formbody'
 import responseValidation from '@fastify/response-validation'
-import { error_response } from '@jackdbd/oauth2'
+import { error_response } from '@jackdbd/indieauth/schemas'
 import { conformResult } from '@jackdbd/schema-validators'
 import { defErrorHandler } from '@repo/error-handlers'
 import { Type } from '@sinclair/typebox'

@@ -1,6 +1,6 @@
 import type { RequestContextData } from '@fastify/request-context'
+import type { AccessTokenClaims } from '@jackdbd/indieauth'
 import { InsufficientScopeError } from '@jackdbd/oauth2-error-responses'
-import type { AccessTokenClaims } from '@jackdbd/oauth2-tokens'
 import type { preHandlerHookHandler } from 'fastify'
 
 export interface Options {

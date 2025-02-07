@@ -35,3 +35,10 @@ export const secondsToUTCString = (s: number): string => {
     .utc()
     .format('ddd, DD MMM YYYY HH:mm:ss [GMT]')
 }
+
+export const isExpired = (
+  exp: number,
+  now: number = unixTimestampInSeconds()
+) => {
+  return now > exp
+}

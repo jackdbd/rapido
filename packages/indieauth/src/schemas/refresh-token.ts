@@ -1,10 +1,24 @@
-import { redirect_uri, refresh_token, scope } from '@jackdbd/oauth2'
-import { exp, iss, jti } from '@jackdbd/oauth2-tokens'
 import { Static, Type } from '@sinclair/typebox'
-import { client_id } from './client-metadata.js'
+import { client_id } from './client-application.js'
+import { redirect_uri, scope } from './common.js'
+import { exp, iss, jti } from './jwt.js'
 import { me_after_url_canonicalization } from './me.js'
 import { immutable_record, mutable_record } from './record.js'
 import { revocation_reason, revoked } from './revocation.js'
+
+/**
+ * Refresh Token.
+ *
+ * After completing its interaction with the resource owner, the authorization
+ * server directs the resource owner's user-agent back to the client.
+ *
+ * The authorization server redirects the user-agent to the client's redirection
+ * endpoint previously established with the authorization server during the
+ * client registration process or when making the authorization request.
+ *
+ * @see [Refresh Token](https://datatracker.ietf.org/doc/html/rfc6749#section-1.5)
+ */
+export const refresh_token = Type.String({ minLength: 1 })
 
 export const refresh_token_props = Type.Object(
   {

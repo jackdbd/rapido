@@ -16,14 +16,12 @@
 "@jackdbd/fastify-hooks": minor
 "@jackdbd/fastify-utils": minor
 "@jackdbd/microformats2": minor
-"@jackdbd/oauth2-tokens": minor
 "@jackdbd/fastify-webc": minor
 "@jackdbd/indieauth": minor
 "@jackdbd/relmeauth": minor
 "@jackdbd/micropub": minor
-"@jackdbd/oauth2": minor
 "@jackdbd/unwrap": minor
 "@jackdbd/pkce": minor
 ---
 
-Move schema definitions of all user-defined functions to indieauth and micropub packages.
+Move code from libs oauth2 and oauth2-tokens to lib indieauth.

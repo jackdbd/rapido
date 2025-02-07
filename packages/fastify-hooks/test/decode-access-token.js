@@ -1,6 +1,6 @@
 import assert from 'node:assert'
 import { before, describe, it } from 'node:test'
-import { accessToken } from '@jackdbd/oauth2-tokens'
+import { accessToken } from '@jackdbd/indieauth'
 import {
   defAjv,
   ACCESS_TOKEN_EXPIRATION,

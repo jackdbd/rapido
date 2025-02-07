@@ -12,8 +12,8 @@ import {
   UnsupportedGrantTypeError,
   ServerError
 } from '@jackdbd/oauth2-error-responses'
-import { tokensPlusInfo, unixTimestampInSeconds } from '@jackdbd/oauth2-tokens'
-import type { TokensPlusInfo } from '@jackdbd/oauth2-tokens'
+import { tokensPlusInfo, unixTimestampInSeconds } from '@jackdbd/indieauth'
+import type { TokensPlusInfo } from '@jackdbd/indieauth'
 import { throwWhenNotConform } from '@jackdbd/schema-validators'
 import { retrieveUserProfile } from '../retrieve-user-profile.js'
 import { revokeToken } from '../revoke-token.js'

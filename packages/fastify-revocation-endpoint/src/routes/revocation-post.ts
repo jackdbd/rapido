@@ -1,23 +1,22 @@
 import type { RouteGenericInterface, RouteHandler } from 'fastify'
+import {
+  secondsToUTCString,
+  verify,
+  unixTimestampInSeconds
+} from '@jackdbd/indieauth'
+import type { AccessTokenClaims } from '@jackdbd/indieauth'
 import type {
   AccessTokenImmutableRecord,
-  AccessTokenMutableRecord
-} from '@jackdbd/indieauth/schemas/index'
-import type {
+  AccessTokenMutableRecord,
+  JWKSPublicURL,
   RefreshTokenImmutableRecord,
   RefreshTokenMutableRecord
-} from '@jackdbd/indieauth/schemas/refresh-token'
+} from '@jackdbd/indieauth/schemas'
 import { RetrieveAccessToken } from '@jackdbd/indieauth/schemas/user-provided-functions'
 import {
   InvalidRequestError,
   ServerError
 } from '@jackdbd/oauth2-error-responses'
-import {
-  secondsToUTCString,
-  verify,
-  unixTimestampInSeconds
-} from '@jackdbd/oauth2-tokens'
-import type { AccessTokenClaims, JWKSPublicURL } from '@jackdbd/oauth2-tokens'
 import { throwWhenNotConform } from '@jackdbd/schema-validators'
 import { revoke_post_config } from '../schemas/index.js'
 import type {

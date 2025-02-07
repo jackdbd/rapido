@@ -1,5 +1,4 @@
-import type { Profile } from '@jackdbd/indieauth'
-import { errorResponseFromJSONResponse } from '@jackdbd/oauth2'
+import { errorResponseFromJSONResponse, type Profile } from '@jackdbd/indieauth'
 import { ServerError } from '@jackdbd/oauth2-error-responses'
 
 export interface Config {

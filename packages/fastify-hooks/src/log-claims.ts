@@ -1,8 +1,7 @@
-import { msToUTCString } from '@jackdbd/oauth2-tokens'
-import type { AccessTokenClaims } from '@jackdbd/oauth2-tokens'
+import { isExpired, msToUTCString } from '@jackdbd/indieauth'
+import type { AccessTokenClaims } from '@jackdbd/indieauth'
 import type { RequestContextData } from '@fastify/request-context'
 import type { preHandlerHookHandler } from 'fastify'
-import { isExpired } from './predicates.js'
 
 export interface Options {
   logPrefix?: string

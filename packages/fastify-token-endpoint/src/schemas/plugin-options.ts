@@ -1,16 +1,18 @@
 import { issuer, userinfo_endpoint } from '@jackdbd/indieauth/schemas'
 import {
+  authorization_endpoint,
+  expiration,
   isAccessTokenRevoked,
+  jwks_private,
   onIssuedTokens,
-  retrieveRefreshToken
-} from '@jackdbd/indieauth/schemas/user-provided-functions'
+  retrieveRefreshToken,
+  revocation_endpoint
+} from '@jackdbd/indieauth/schemas'
 import type {
   IsAccessTokenRevoked,
   OnIssuedTokens,
   RetrieveRefreshToken
-} from '@jackdbd/indieauth/schemas/user-provided-functions'
-import { authorization_endpoint, revocation_endpoint } from '@jackdbd/oauth2'
-import { expiration, jwks_private } from '@jackdbd/oauth2-tokens'
+} from '@jackdbd/indieauth/schemas'
 import { Static, Type } from '@sinclair/typebox'
 import type { Ajv } from 'ajv'
 import { DEFAULT } from '../constants.js'

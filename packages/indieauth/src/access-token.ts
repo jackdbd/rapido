@@ -1,17 +1,19 @@
-import { access_token, expires_in, scope } from '@jackdbd/oauth2'
 import { conformResult } from '@jackdbd/schema-validators'
 import { Type, type Static } from '@sinclair/typebox'
 import type { Ajv } from 'ajv'
 import ms, { StringValue } from 'ms'
 import { randomKid } from './random-kid.js'
 import {
+  access_token,
   ajv,
   expiration,
+  expires_in,
   issuer,
-  me_after_url_canonicalization
-} from './schemas/common.js'
-import { kid } from './schemas/jwk.js'
-import { jwks_private } from './schemas/jwks.js'
+  jwks_private,
+  kid,
+  me_after_url_canonicalization,
+  scope
+} from './schemas/index.js'
 import { sign } from './sign-jwt.js'
 
 export const config_schema = Type.Object(
@@ -30,12 +32,12 @@ export interface Config extends Static<typeof config_schema> {
   ajv: Ajv
 }
 
-export const return_value_schema = Type.Object(
+export const access_token_plus_info = Type.Object(
   { access_token, expires_in, kid },
   { additionalProperties: false }
 )
 
-export type ReturnValue = Static<typeof return_value_schema>
+export type AccessTokenPlusInfo = Static<typeof access_token_plus_info>
 
 export const accessToken = async (config: Config) => {
   const ajv = config.ajv
@@ -82,7 +84,7 @@ export const accessToken = async (config: Config) => {
     conformResult(
       {
         ajv,
-        schema: return_value_schema,
+        schema: access_token_plus_info,
         data: value
       },
       { basePath: 'accessToken-return-value' }
