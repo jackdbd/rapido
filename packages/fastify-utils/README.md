@@ -26,8 +26,7 @@ npm install @jackdbd/fastify-utils
 
 This package has no dependencies.
 
-> ⚠️ **Peer Dependencies**
->
+> [!WARNING]
 > This package defines 1 peer dependency.
 
 | Peer | Version range |

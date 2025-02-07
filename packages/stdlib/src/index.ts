@@ -2,7 +2,14 @@ export * from './constants.js'
 
 export { EMOJI, toEmoji } from './emojis.js'
 
-export { callout } from './markdown.js'
+export {
+  calloutEmoji,
+  calloutCaution,
+  calloutImportant,
+  calloutNote,
+  calloutTip,
+  calloutWarning
+} from './markdown.js'
 
 export { schemaToMarkdown, safeSchemaToMarkdown } from './schema-to-markdown.js'
 

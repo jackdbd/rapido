@@ -1,6 +1,12 @@
 {
   "name": "@repo/stdlib",
   "version": "0.1.1",
+  "description": "Library for internal use of this monorepo.",
+  "author": {
+    "name": "Giacomo Debidda",
+    "email": "giacomo@giacomodebidda.com",
+    "url": "https://giacomodebidda.com/"
+  },
   "private": true,
   "license": "MIT",
   "publishConfig": {
@@ -28,7 +34,9 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "run-s 'build:ts' 'build:readme' --print-label",
+    "build:readme": "node ../scripts/dist/readme.js --package stdlib",
+    "build:ts": "tsc -p tsconfig.json",
     "build:ts:watch": "tsc -p tsconfig.json --watch",
     "clean": "rimraf lib/ tsconfig.tsbuildinfo",
     "dev": "tsc -p tsconfig.json --watch",

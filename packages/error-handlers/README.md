@@ -2,9 +2,10 @@
 
 Error handlers used by the fastify plugins of this project.
 
-> ⚠️ **Internal package**
+> [!WARNING]
+> This is an [internal package](https://turbo.build/repo/docs/core-concepts/internal-packages).
 >
-> This is an [internal package](https://turbo.build/repo/docs/core-concepts/internal-packages). It's **private** and not meant to be published to npm.js.
+> An internal package should have `private: true` in its `package.json` because it's not meant to be published to npm.js.
 
 - [Installation](#installation)
 - [Docs](#docs)

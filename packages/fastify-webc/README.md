@@ -76,8 +76,7 @@ You can access the data available to the WebC template/component using `this.$da
 | [@11ty/webc](https://www.npmjs.com/package/@11ty/webc) | `^0.11.4` |
 | [fastify-plugin](https://www.npmjs.com/package/fastify-plugin) | `^5.0.1` |
 
-> ⚠️ **Peer Dependencies**
->
+> [!WARNING]
 > This package defines 1 peer dependency.
 
 | Peer | Version range |
