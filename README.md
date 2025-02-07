@@ -5,8 +5,7 @@
 
 Monorepo for my Fastify plugins and support libraries.
 
-> [!IMPORTANT] **ESM only**
->
+> [!WARNING]
 > All packages of this monorepo are published to npmjs.com as ECMAScript modules **only** (i.e. there are no CJS builds).
 
 ## Packages
@@ -31,7 +30,6 @@ Monorepo for my Fastify plugins and support libraries.
 | [@jackdbd/microformats2](https://github.com/jackdbd/rapido/tree/main/packages/microformats2) | [![npm version](https://badge.fury.io/js/@jackdbd%2Fmicroformats2.svg)](https://badge.fury.io/js/@jackdbd%2Fmicroformats2) | [![install size](https://packagephobia.com/badge?p=@jackdbd/microformats2)](https://packagephobia.com/result?p=@jackdbd/microformats2) | [Docs](https://jackdbd.github.io/rapido/microformats2/index.html) |
 | [@jackdbd/micropub](https://github.com/jackdbd/rapido/tree/main/packages/micropub) | [![npm version](https://badge.fury.io/js/@jackdbd%2Fmicropub.svg)](https://badge.fury.io/js/@jackdbd%2Fmicropub) | [![install size](https://packagephobia.com/badge?p=@jackdbd/micropub)](https://packagephobia.com/result?p=@jackdbd/micropub) | [Docs](https://jackdbd.github.io/rapido/micropub/index.html) |
 | [@jackdbd/oauth2-error-responses](https://github.com/jackdbd/rapido/tree/main/packages/oauth2-error-responses) | [![npm version](https://badge.fury.io/js/@jackdbd%2Foauth2-error-responses.svg)](https://badge.fury.io/js/@jackdbd%2Foauth2-error-responses) | [![install size](https://packagephobia.com/badge?p=@jackdbd/oauth2-error-responses)](https://packagephobia.com/result?p=@jackdbd/oauth2-error-responses) | [Docs](https://jackdbd.github.io/rapido/oauth2-error-responses/index.html) |
-| [@jackdbd/oauth2-tokens](https://github.com/jackdbd/rapido/tree/main/packages/oauth2-tokens) | [![npm version](https://badge.fury.io/js/@jackdbd%2Foauth2-tokens.svg)](https://badge.fury.io/js/@jackdbd%2Foauth2-tokens) | [![install size](https://packagephobia.com/badge?p=@jackdbd/oauth2-tokens)](https://packagephobia.com/result?p=@jackdbd/oauth2-tokens) | [Docs](https://jackdbd.github.io/rapido/oauth2-tokens/index.html) |
 | [@jackdbd/pkce](https://github.com/jackdbd/rapido/tree/main/packages/pkce) | [![npm version](https://badge.fury.io/js/@jackdbd%2Fpkce.svg)](https://badge.fury.io/js/@jackdbd%2Fpkce) | [![install size](https://packagephobia.com/badge?p=@jackdbd/pkce)](https://packagephobia.com/result?p=@jackdbd/pkce) | [Docs](https://jackdbd.github.io/rapido/pkce/index.html) |
 | [@jackdbd/r2-media-store](https://github.com/jackdbd/rapido/tree/main/packages/r2-media-store) | [![npm version](https://badge.fury.io/js/@jackdbd%2Fr2-media-store.svg)](https://badge.fury.io/js/@jackdbd%2Fr2-media-store) | [![install size](https://packagephobia.com/badge?p=@jackdbd/r2-media-store)](https://packagephobia.com/result?p=@jackdbd/r2-media-store) | [Docs](https://jackdbd.github.io/rapido/r2-media-store/index.html) |
 | [@jackdbd/relmeauth](https://github.com/jackdbd/rapido/tree/main/packages/relmeauth) | [![npm version](https://badge.fury.io/js/@jackdbd%2Frelmeauth.svg)](https://badge.fury.io/js/@jackdbd%2Frelmeauth) | [![install size](https://packagephobia.com/badge?p=@jackdbd/relmeauth)](https://packagephobia.com/result?p=@jackdbd/relmeauth) | [Docs](https://jackdbd.github.io/rapido/relmeauth/index.html) |

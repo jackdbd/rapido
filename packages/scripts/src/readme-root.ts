@@ -8,7 +8,7 @@ import {
   link,
   transcludeFile
 } from '@thi.ng/transclude'
-import { callout, REPO_ROOT } from '../../stdlib/lib/index.js'
+import { calloutWarning, REPO_ROOT } from '../../stdlib/lib/index.js'
 
 const EXCLUDED_PACKAGES = [
   'error-handlers',
@@ -93,12 +93,15 @@ const run = async () => {
   const transcluded = transcludeFile(path.join(REPO_ROOT, 'tpl.readme.md'), {
     user: pkg.author,
     templates: {
-      'callout.esmOnly': callout({
-        emoji: '[!IMPORTANT]',
-        // emoji: '📦',
-        title: `ESM only`,
-        message: `All packages of this monorepo are published to npmjs.com as ECMAScript modules **only** (i.e. there are no CJS builds).`
-      }),
+      // 'callout.esmOnly': callout({
+      //   // emoji: '[!IMPORTANT]',
+      //   emoji: '📦',
+      //   title: `ESM only`,
+      //   message: `All packages of this monorepo are published to npmjs.com as ECMAScript modules **only** (i.e. there are no CJS builds).`
+      // }),
+      'callout.esmOnly': calloutWarning([
+        `All packages of this monorepo are published to npmjs.com as ECMAScript modules **only** (i.e. there are no CJS builds).`
+      ]),
 
       'pkg.description': pkg.description,
 

@@ -100,14 +100,14 @@ Options for the Fastify micropub-endpoint plugin
 | [@fastify/formbody](https://www.npmjs.com/package/@fastify/formbody) | `^8.0.2` |
 | [@fastify/multipart](https://www.npmjs.com/package/@fastify/multipart) | `^9.0.3` |
 | [@fastify/response-validation](https://www.npmjs.com/package/@fastify/response-validation) | `^3.0.3` |
-| [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.2.0-canary.7` |
-| [@jackdbd/fastify-hooks](https://www.npmjs.com/package/@jackdbd/fastify-hooks) | `0.2.0-canary.10` |
-| [@jackdbd/fastify-utils](https://www.npmjs.com/package/@jackdbd/fastify-utils) | `0.2.0-canary.9` |
-| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `*` |
-| [@jackdbd/microformats2](https://www.npmjs.com/package/@jackdbd/microformats2) | `0.2.0-canary.7` |
-| [@jackdbd/micropub](https://www.npmjs.com/package/@jackdbd/micropub) | `0.2.0-canary.9` |
-| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `0.2.0-canary.7` |
-| [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `^0.2.0-canary.10` |
+| [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.2.0-canary.8` |
+| [@jackdbd/fastify-hooks](https://www.npmjs.com/package/@jackdbd/fastify-hooks) | `0.2.0-canary.11` |
+| [@jackdbd/fastify-utils](https://www.npmjs.com/package/@jackdbd/fastify-utils) | `0.2.0-canary.10` |
+| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `0.2.0-canary.10` |
+| [@jackdbd/microformats2](https://www.npmjs.com/package/@jackdbd/microformats2) | `0.2.0-canary.8` |
+| [@jackdbd/micropub](https://www.npmjs.com/package/@jackdbd/micropub) | `0.2.0-canary.10` |
+| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `0.2.0-canary.8` |
+| [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `^0.2.0-canary.11` |
 | [@paulrobertlloyd/mf2tojf2](https://www.npmjs.com/package/@paulrobertlloyd/mf2tojf2) | `^2.4.0` |
 | [@sinclair/typebox](https://www.npmjs.com/package/@sinclair/typebox) | `^0.34.14` |
 | [ajv](https://www.npmjs.com/package/ajv) | `^8.17.1` |
@@ -115,8 +115,7 @@ Options for the Fastify micropub-endpoint plugin
 | [fastify-plugin](https://www.npmjs.com/package/fastify-plugin) | `^5.0.1` |
 | [form-auto-content](https://www.npmjs.com/package/form-auto-content) | `^3.2.1` |
 
-> ⚠️ **Peer Dependencies**
->
+> [!WARNING]
 > This package defines 2 peer dependencies.
 
 | Peer | Version range |

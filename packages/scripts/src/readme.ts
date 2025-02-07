@@ -45,7 +45,7 @@ import { plugin_options as token_endpoint_plugin_options } from '../../fastify-t
 import { plugin_options as userinfo_endpoint_plugin_options } from '../../fastify-userinfo-endpoint/lib/index.js'
 import { code_challenge, code_challenge_method } from '../../pkce/lib/index.js'
 import {
-  callout,
+  calloutWarning,
   safeSchemaToMarkdown,
   writeJsonSchema,
   REPO_ROOT,
@@ -374,12 +374,12 @@ const run = async () => {
           ].join('\n')
 
           const strings = [
-            callout({
-              // emoji: ':warning:',
-              emoji: '⚠️',
-              title: `Peer Dependencies`,
-              message: `This package defines ${entries.length} ${what}.`
-            }),
+            // calloutEmoji({
+            //   emoji: '⚠️',
+            //   title: `Peer Dependencies`,
+            //   message: `This package defines ${entries.length} ${what}.`
+            // }),
+            calloutWarning([`This package defines ${entries.length} ${what}.`]),
             '\n\n',
             table
           ]
@@ -390,12 +390,10 @@ const run = async () => {
       },
 
       'pkg.private': pkg.private
-        ? callout({
-            // emoji: ':warning:',
-            emoji: '⚠️',
-            title: `Internal package`,
-            message: `This is an ${link('internal package', 'https://turbo.build/repo/docs/core-concepts/internal-packages')}. It's **private** and not meant to be published to npm.js.`
-          })
+        ? calloutWarning([
+            `This is an ${link('internal package', 'https://turbo.build/repo/docs/core-concepts/internal-packages')}.`,
+            `An internal package should have \`private: true\` in its \`package.json\` because it's not meant to be published to npm.js.`
+          ])
         : ''
     },
 

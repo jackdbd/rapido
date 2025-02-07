@@ -47,9 +47,9 @@ The [refresh tokens](https://indieauth.spec.indieweb.org/#refresh-tokens) issued
 
 | Package | Version |
 |---|---|
-| [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.2.0-canary.7` |
-| [@jackdbd/pkce](https://www.npmjs.com/package/@jackdbd/pkce) | `0.2.0-canary.6` |
-| [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `0.2.0-canary.10` |
+| [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.2.0-canary.8` |
+| [@jackdbd/pkce](https://www.npmjs.com/package/@jackdbd/pkce) | `0.2.0-canary.7` |
+| [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `0.2.0-canary.11` |
 | [@sinclair/typebox](https://www.npmjs.com/package/@sinclair/typebox) | `^0.34.14` |
 | [ajv](https://www.npmjs.com/package/ajv) | `^8.17.1` |
 | [ajv-formats](https://www.npmjs.com/package/ajv-formats) | `^3.0.1` |

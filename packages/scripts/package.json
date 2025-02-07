@@ -1,6 +1,12 @@
 {
   "name": "@repo/scripts",
   "version": "0.1.1",
+  "description": "Scripts for managing the project.",
+  "author": {
+    "name": "Giacomo Debidda",
+    "email": "giacomo@giacomodebidda.com",
+    "url": "https://giacomodebidda.com/"
+  },
   "private": true,
   "license": "MIT",
   "publishConfig": {
@@ -8,7 +14,8 @@
   },
   "type": "module",
   "scripts": {
-    "build": "run-s 'build:ts' --print-label",
+    "build": "run-s 'build:ts' 'build:readme' --print-label",
+    "build:readme": "node ./dist/readme.js --package scripts",
     "build:ts": "tsc -p tsconfig.json",
     "build:ts:watch": "tsc -p tsconfig.json --watch",
     "clean": "rimraf lib/ tsconfig.tsbuildinfo",

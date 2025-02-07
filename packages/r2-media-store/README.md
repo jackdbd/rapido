@@ -27,7 +27,7 @@ npm install @jackdbd/r2-media-store
 | Package | Version |
 |---|---|
 | [@aws-sdk/client-s3](https://www.npmjs.com/package/@aws-sdk/client-s3) | `^3.740.0` |
-| [@jackdbd/micropub](https://www.npmjs.com/package/@jackdbd/micropub) | `0.2.0-canary.9` |
+| [@jackdbd/micropub](https://www.npmjs.com/package/@jackdbd/micropub) | `0.2.0-canary.10` |
 | [mime](https://www.npmjs.com/package/mime) | `^4.0.6` |
 | [nanoid](https://www.npmjs.com/package/nanoid) | `^5.0.9` |
 
