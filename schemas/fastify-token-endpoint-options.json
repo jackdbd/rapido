@@ -32,8 +32,8 @@
       "type": "boolean"
     },
     "isAccessTokenRevoked": {
-      "description": "Predicate function that returns true if a jti (JSON Web Token ID) is revoked.",
       "title": "isAccessTokenRevoked",
+      "description": "Predicate function that returns true if a jti (JSON Web Token ID) is revoked.",
       "type": "Function",
       "parameters": [
         {
@@ -238,7 +238,7 @@
     "retrieveRefreshToken": {
       "$id": "retrieve-refresh-token",
       "title": "retrieveRefreshToken",
-      "description": "Function that retrieves a refresh token from a storage backend.",
+      "description": "Retrieves a refresh token from a storage backend.",
       "type": "Function",
       "parameters": [
         {
@@ -253,16 +253,19 @@
             {
               "$id": "refresh-token-immutable-record",
               "additionalProperties": false,
-              "description": "Represents a record of a refresh token. The values of this\n    record should never change. Any updates to the underlying entity should \n    create a new record.",
+              "description": "Represents a record of a refresh token. The values of this record should never change. Any updates to the underlying entity should create a new record.",
               "title": "Refresh Token Immutable Record",
               "type": "object",
               "properties": {
                 "created_at": {
                   "minimum": 1,
+                  "title": "Timestamp (ms)",
                   "description": "Timestamp in milliseconds since UNIX epoch",
                   "type": "number"
                 },
                 "id": {
+                  "title": "Record ID",
+                  "description": "Unique identifier for a record stored in some persistent storage (e.g. a database).",
                   "anyOf": [
                     {
                       "minimum": 1,
@@ -317,6 +320,8 @@
                 },
                 "revocation_reason": {
                   "minLength": 1,
+                  "title": "Revocation reason",
+                  "description": "The reason why a token was revoked.",
                   "type": "string"
                 },
                 "scope": {
@@ -342,7 +347,7 @@
             {
               "$id": "refresh-token-mutable-record",
               "additionalProperties": false,
-              "description": "Represents a record of a refresh token with a predefined set \n    of properties (columns). While the structure of the record remains \n    consistent, the values of these properties may change over time.",
+              "description": "Represents a record of a refresh token with a predefined set of properties (columns). While the structure of the record remains consistent, the values of these properties may change over time.",
               "title": "Refresh Token Mutable Record",
               "type": "object",
               "properties": {
@@ -350,6 +355,7 @@
                   "anyOf": [
                     {
                       "minimum": 1,
+                      "title": "Timestamp (ms)",
                       "description": "Timestamp in milliseconds since UNIX epoch",
                       "type": "number"
                     },
@@ -362,6 +368,7 @@
                   "anyOf": [
                     {
                       "minimum": 1,
+                      "title": "Timestamp (ms)",
                       "description": "Timestamp in milliseconds since UNIX epoch",
                       "type": "number"
                     },
@@ -370,10 +377,25 @@
                     }
                   ]
                 },
+                "id": {
+                  "title": "Record ID",
+                  "description": "Unique identifier for a record stored in some persistent storage (e.g. a database).",
+                  "anyOf": [
+                    {
+                      "minimum": 1,
+                      "type": "number"
+                    },
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  ]
+                },
                 "undeleted_at": {
                   "anyOf": [
                     {
                       "minimum": 1,
+                      "title": "Timestamp (ms)",
                       "description": "Timestamp in milliseconds since UNIX epoch",
                       "type": "number"
                     },
@@ -386,6 +408,7 @@
                   "anyOf": [
                     {
                       "minimum": 1,
+                      "title": "Timestamp (ms)",
                       "description": "Timestamp in milliseconds since UNIX epoch",
                       "type": "number"
                     },
@@ -437,6 +460,8 @@
                 },
                 "revocation_reason": {
                   "minLength": 1,
+                  "title": "Revocation reason",
+                  "description": "The reason why a token was revoked.",
                   "type": "string"
                 },
                 "scope": {
@@ -448,6 +473,7 @@
               },
               "required": [
                 "created_at",
+                "id",
                 "client_id",
                 "exp",
                 "iss",
@@ -471,6 +497,7 @@
     "userinfoEndpoint": {
       "format": "uri",
       "title": "Userinfo endpoint",
+      "description": "URL of the IndieAuth server's [User Information](https://indieauth.spec.indieweb.org/#user-information) endpoint.",
       "type": "string"
     }
   },

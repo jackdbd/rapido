@@ -48,9 +48,9 @@ Options for the Fastify token-endpoint plugin
 |**onIssuedTokens**|`Function`|Handler invoked when the token endpoint has issued an access token and a refresh token. You should use this handler to persist the tokens to some storage (e.g. a database).<br/>|yes|
 |**refreshTokenExpiration**<br/>(Token expiration)|`string`|Human-readable expiration time for the token issued by the token endpoint.<br/>Default: `"30 days"`<br/>Minimal Length: `1`<br/>|no|
 |**reportAllAjvErrors**<br/>(report all AJV errors)|`boolean`|Whether to report all AJV validation errors.<br/>Default: `false`<br/>|no|
-|**retrieveRefreshToken**|`Function`|Function that retrieves a refresh token from a storage backend.<br/>|yes|
+|**retrieveRefreshToken**|`Function`|Retrieves a refresh token from a storage backend.<br/>|yes|
 |**revocationEndpoint**<br/>(Revocation endpoint)|`string`|URL of the authorization server's OAuth 2.0 revocation endpoint.<br/>Format: `"uri"`<br/>|yes|
-|**userinfoEndpoint**<br/>(Userinfo endpoint)|`string`|Format: `"uri"`<br/>|yes|
+|**userinfoEndpoint**<br/>(Userinfo endpoint)|`string`|URL of the IndieAuth server's [User Information](https://indieauth.spec.indieweb.org/#user-information) endpoint.<br/>Format: `"uri"`<br/>|yes|
 
 **Example**
 
@@ -188,11 +188,9 @@ Function that retrieves a refresh token from a storage backend.
 | [@fastify/formbody](https://www.npmjs.com/package/@fastify/formbody) | `^8.0.2` |
 | [@fastify/response-validation](https://www.npmjs.com/package/@fastify/response-validation) | `^3.0.3` |
 | [@jackdbd/fastify-utils](https://www.npmjs.com/package/@jackdbd/fastify-utils) | `canary` |
-| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `^0.2.0-canary.4` |
-| [@jackdbd/oauth2](https://www.npmjs.com/package/@jackdbd/oauth2) | `^0.2.0-canary.3` |
-| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `^0.2.0-canary.4` |
-| [@jackdbd/oauth2-tokens](https://www.npmjs.com/package/@jackdbd/oauth2-tokens) | `^0.2.0-canary.8` |
-| [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `^0.2.0-canary.7` |
+| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `*` |
+| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `^0.2.0-canary.7` |
+| [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `^0.2.0-canary.10` |
 | [@sinclair/typebox](https://www.npmjs.com/package/@sinclair/typebox) | `^0.34.14` |
 | [ajv](https://www.npmjs.com/package/ajv) | `^8.17.1` |
 | [ajv-formats](https://www.npmjs.com/package/ajv-formats) | `^3.0.1` |

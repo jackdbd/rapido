@@ -13,8 +13,8 @@
       "type": "boolean"
     },
     "isAccessTokenRevoked": {
-      "description": "Predicate function that returns true if a jti (JSON Web Token ID) is revoked.",
       "title": "isAccessTokenRevoked",
+      "description": "Predicate function that returns true if a jti (JSON Web Token ID) is revoked.",
       "type": "Function",
       "parameters": [
         {
@@ -123,8 +123,8 @@
     },
     "retrieveAccessToken": {
       "$id": "retrieve-access-token",
-      "description": "Function that retrieves an access token from a storage backend.",
       "title": "retrieveAccessToken",
+      "description": "Retrieves an access token from a storage backend.",
       "type": "Function",
       "parameters": [
         {
@@ -147,10 +147,13 @@
               "properties": {
                 "created_at": {
                   "minimum": 1,
+                  "title": "Timestamp (ms)",
                   "description": "Timestamp in milliseconds since UNIX epoch",
                   "type": "number"
                 },
                 "id": {
+                  "title": "Record ID",
+                  "description": "Unique identifier for a record stored in some persistent storage (e.g. a database).",
                   "anyOf": [
                     {
                       "minimum": 1,
@@ -183,6 +186,8 @@
                 },
                 "revocation_reason": {
                   "minLength": 1,
+                  "title": "Revocation reason",
+                  "description": "The reason why a token was revoked.",
                   "type": "string"
                 }
               },
@@ -205,6 +210,7 @@
                   "anyOf": [
                     {
                       "minimum": 1,
+                      "title": "Timestamp (ms)",
                       "description": "Timestamp in milliseconds since UNIX epoch",
                       "type": "number"
                     },
@@ -217,6 +223,7 @@
                   "anyOf": [
                     {
                       "minimum": 1,
+                      "title": "Timestamp (ms)",
                       "description": "Timestamp in milliseconds since UNIX epoch",
                       "type": "number"
                     },
@@ -225,10 +232,25 @@
                     }
                   ]
                 },
+                "id": {
+                  "title": "Record ID",
+                  "description": "Unique identifier for a record stored in some persistent storage (e.g. a database).",
+                  "anyOf": [
+                    {
+                      "minimum": 1,
+                      "type": "number"
+                    },
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  ]
+                },
                 "undeleted_at": {
                   "anyOf": [
                     {
                       "minimum": 1,
+                      "title": "Timestamp (ms)",
                       "description": "Timestamp in milliseconds since UNIX epoch",
                       "type": "number"
                     },
@@ -241,6 +263,7 @@
                   "anyOf": [
                     {
                       "minimum": 1,
+                      "title": "Timestamp (ms)",
                       "description": "Timestamp in milliseconds since UNIX epoch",
                       "type": "number"
                     },
@@ -270,11 +293,14 @@
                 },
                 "revocation_reason": {
                   "minLength": 1,
+                  "title": "Revocation reason",
+                  "description": "The reason why a token was revoked.",
                   "type": "string"
                 }
               },
               "required": [
                 "created_at",
+                "id",
                 "client_id",
                 "jti",
                 "redirect_uri"
@@ -287,7 +313,7 @@
     "retrieveRefreshToken": {
       "$id": "retrieve-refresh-token",
       "title": "retrieveRefreshToken",
-      "description": "Function that retrieves a refresh token from a storage backend.",
+      "description": "Retrieves a refresh token from a storage backend.",
       "type": "Function",
       "parameters": [
         {
@@ -308,10 +334,13 @@
               "properties": {
                 "created_at": {
                   "minimum": 1,
+                  "title": "Timestamp (ms)",
                   "description": "Timestamp in milliseconds since UNIX epoch",
                   "type": "number"
                 },
                 "id": {
+                  "title": "Record ID",
+                  "description": "Unique identifier for a record stored in some persistent storage (e.g. a database).",
                   "anyOf": [
                     {
                       "minimum": 1,
@@ -366,6 +395,8 @@
                 },
                 "revocation_reason": {
                   "minLength": 1,
+                  "title": "Revocation reason",
+                  "description": "The reason why a token was revoked.",
                   "type": "string"
                 },
                 "scope": {
@@ -399,6 +430,7 @@
                   "anyOf": [
                     {
                       "minimum": 1,
+                      "title": "Timestamp (ms)",
                       "description": "Timestamp in milliseconds since UNIX epoch",
                       "type": "number"
                     },
@@ -411,6 +443,7 @@
                   "anyOf": [
                     {
                       "minimum": 1,
+                      "title": "Timestamp (ms)",
                       "description": "Timestamp in milliseconds since UNIX epoch",
                       "type": "number"
                     },
@@ -419,10 +452,25 @@
                     }
                   ]
                 },
+                "id": {
+                  "title": "Record ID",
+                  "description": "Unique identifier for a record stored in some persistent storage (e.g. a database).",
+                  "anyOf": [
+                    {
+                      "minimum": 1,
+                      "type": "number"
+                    },
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  ]
+                },
                 "undeleted_at": {
                   "anyOf": [
                     {
                       "minimum": 1,
+                      "title": "Timestamp (ms)",
                       "description": "Timestamp in milliseconds since UNIX epoch",
                       "type": "number"
                     },
@@ -435,6 +483,7 @@
                   "anyOf": [
                     {
                       "minimum": 1,
+                      "title": "Timestamp (ms)",
                       "description": "Timestamp in milliseconds since UNIX epoch",
                       "type": "number"
                     },
@@ -486,6 +535,8 @@
                 },
                 "revocation_reason": {
                   "minLength": 1,
+                  "title": "Revocation reason",
+                  "description": "The reason why a token was revoked.",
                   "type": "string"
                 },
                 "scope": {
@@ -497,6 +548,7 @@
               },
               "required": [
                 "created_at",
+                "id",
                 "client_id",
                 "exp",
                 "iss",

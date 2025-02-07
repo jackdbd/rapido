@@ -9,7 +9,7 @@
     },
     "get": {
       "title": "retrieveContent",
-      "description": "Function that retrieves a post from the Micropub server.",
+      "description": "Retrieves a post from the Micropub server.",
       "type": "Function",
       "parameters": [
         {
@@ -134,8 +134,8 @@
       ]
     },
     "publishedUrlToStorageLocation": {
-      "title": "websiteUrlToStoreLocation",
-      "description": "Function that maps a URL published on the user's website, to a location on the user's store (e.g. a table in a database, a path in a git repository, a URL in a public bucket of an object storage service like AWS S3).",
+      "title": "Website URL to store location",
+      "description": "Maps a URL published on the user's website to a location on the user's store (e.g. a table in a database, a path in a git repository, a URL in a public bucket of an object storage service like AWS S3).",
       "type": "Function",
       "parameters": [
         {
@@ -145,28 +145,25 @@
         }
       ],
       "returns": {
-        "type": "Promise",
-        "item": {
-          "type": "object",
-          "properties": {
-            "store": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "store_deleted": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "website": {
-              "minLength": 1,
-              "type": "string"
-            }
+        "type": "object",
+        "properties": {
+          "store": {
+            "minLength": 1,
+            "type": "string"
           },
-          "required": [
-            "store",
-            "website"
-          ]
-        }
+          "store_deleted": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "website": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "store",
+          "website"
+        ]
       }
     },
     "reportAllAjvErrors": {
@@ -177,8 +174,8 @@
     },
     "syndicators": {},
     "update": {
-      "title": "update",
-      "description": "[Updates](https://micropub.spec.indieweb.org/#update) a post on the Micropub server.",
+      "title": "Update post",
+      "description": "[Updates](https://micropub.spec.indieweb.org/#update) a post published at a URL.",
       "type": "Function",
       "parameters": [
         {
