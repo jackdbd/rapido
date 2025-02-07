@@ -1,12 +1,15 @@
+import { unixTimestampInSeconds } from '@jackdbd/indieauth'
 import type {
   IsAccessTokenRevoked,
   OnIssuedTokens,
-  RetrieveRefreshToken
-} from '@jackdbd/indieauth/schemas/user-provided-functions'
-import type {
   OnAuthorizationCodeVerified,
   OnUserApprovedRequest,
-  RetrieveAuthorizationCode
+  RetrieveAccessToken,
+  RetrieveAuthorizationCode,
+  RetrieveRefreshToken,
+  RetrieveUserProfile,
+  RevokeAccessToken,
+  RevokeRefreshToken
 } from '@jackdbd/indieauth/schemas/user-provided-functions'
 import type {
   CreatePost,
@@ -15,7 +18,13 @@ import type {
   UpdatePost
 } from '@jackdbd/micropub/schemas/user-provided-functions'
 import { nanoid } from 'nanoid'
-import { SCOPE } from '../../../packages/stdlib/lib/test-utils.js'
+import {
+  PROFILE_EMAIL,
+  PROFILE_NAME,
+  PROFILE_PHOTO,
+  PROFILE_URL,
+  SCOPE
+} from '../../../packages/stdlib/lib/test-utils.js'
 import { defConfig } from './config.js'
 
 const logPrefix = 'user-fx ' // user-provided side effect
@@ -57,6 +66,13 @@ export const onUserApprovedRequest: OnUserApprovedRequest = async (props) => {
   console.log(`[${logPrefix}OnUserApprovedRequest] props`, props)
 }
 
+export const retrieveAccessToken: RetrieveAccessToken = async (jti) => {
+  console.log(
+    `[${logPrefix}retrieveAccessToken] retrieving access token jti=${jti}`
+  )
+  return { client_id, created_at: 456, id: nanoid(), jti, redirect_uri }
+}
+
 export const retrieveAuthorizationCode: RetrieveAuthorizationCode = async (
   code: string
 ) => {
@@ -91,7 +107,8 @@ export const retrieveRefreshToken: RetrieveRefreshToken = async (
     code_challenge: '',
     code_challenge_method: '',
     created_at: 456,
-    exp: 123,
+    // exp: 1, // i.e., expired
+    exp: unixTimestampInSeconds() + 100, // i.e., not expired
     id: nanoid(),
     iss: issuer,
     jti: 'some-jwt-id',
@@ -100,6 +117,26 @@ export const retrieveRefreshToken: RetrieveRefreshToken = async (
     refresh_token,
     scope: SCOPE
   }
+}
+
+export const retrieveUserProfile: RetrieveUserProfile = async (me) => {
+  console.log(`[${logPrefix}retrieveUserProfile] retrieving user profile ${me}`)
+  return {
+    created_at: 456,
+    email: PROFILE_EMAIL,
+    id: nanoid(),
+    name: PROFILE_NAME,
+    photo: PROFILE_PHOTO,
+    url: PROFILE_URL
+  }
+}
+
+export const revokeAccessToken: RevokeAccessToken = async (props) => {
+  console.log('=== revokeAccessToken props ===', props)
+}
+
+export const revokeRefreshToken: RevokeRefreshToken = async (props) => {
+  console.log('=== revokeRefreshToken props ===', props)
 }
 
 export const undelete: UndeletePost = async (url) => {

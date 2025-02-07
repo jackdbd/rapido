@@ -1,9 +1,15 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import fastifyRequestContext from '@fastify/request-context'
 import view from '@fastify/view'
 import authorizationEndpoint from '@jackdbd/fastify-authorization-endpoint'
+import introspectionEndpoint from '@jackdbd/fastify-introspection-endpoint'
+// import mediaEndpoint from '@jackdbd/fastify-media-endpoint'
 import micropubEndpoint from '@jackdbd/fastify-micropub-endpoint'
+import revocationEndpoint from '@jackdbd/fastify-revocation-endpoint'
+// import syndicateEndpoint from '@jackdbd/fastify-syndicate-endpoint'
 import tokenEndpoint from '@jackdbd/fastify-token-endpoint'
+import userinfoEndpoint from '@jackdbd/fastify-userinfo-endpoint'
 import Fastify from 'fastify'
 import nunjucks from 'nunjucks'
 import type { Environment } from 'nunjucks'
@@ -15,12 +21,19 @@ import {
   onAuthorizationCodeVerified,
   onIssuedTokens,
   onUserApprovedRequest,
+  retrieveAccessToken,
   retrieveAuthorizationCode,
   retrieveRefreshToken,
+  retrieveUserProfile,
+  revokeAccessToken,
+  revokeRefreshToken,
   undelete,
   update
 } from './user-provided-functions.js'
-import { jwks } from '../../../packages/stdlib/lib/test-utils.js'
+import {
+  jwks,
+  jwks_url as jwksUrl
+} from '../../../packages/stdlib/lib/test-utils.js'
 import type { Config } from './config.js'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -65,6 +78,8 @@ export const defFastify = (config: Config) => {
   )
 
   // === PLUGINS ============================================================ //
+  fastify.register(fastifyRequestContext)
+
   fastify.register(authorizationEndpoint, {
     // authorizationCodeExpiration: "180 seconds",
     components: {
@@ -76,6 +91,16 @@ export const defFastify = (config: Config) => {
     onUserApprovedRequest,
     reportAllAjvErrors,
     retrieveAuthorizationCode
+  })
+
+  fastify.register(introspectionEndpoint, {
+    includeErrorDescription,
+    isAccessTokenRevoked,
+    issuer,
+    me,
+    jwksUrl,
+    retrieveAccessToken,
+    retrieveRefreshToken
   })
 
   fastify.register(micropubEndpoint, {
@@ -92,8 +117,21 @@ export const defFastify = (config: Config) => {
     update
   })
 
+  fastify.register(revocationEndpoint, {
+    includeErrorDescription,
+    isAccessTokenRevoked,
+    issuer,
+    me,
+    jwksUrl,
+    retrieveAccessToken,
+    retrieveRefreshToken,
+    revokeAccessToken,
+    revokeRefreshToken
+  })
+
   fastify.register(tokenEndpoint, {
     authorizationEndpoint: authorization_endpoint,
+    includeErrorDescription,
     isAccessTokenRevoked,
     issuer,
     jwks,
@@ -101,6 +139,12 @@ export const defFastify = (config: Config) => {
     retrieveRefreshToken,
     revocationEndpoint: revocation_endpoint,
     userinfoEndpoint: userinfo_endpoint
+  })
+
+  fastify.register(userinfoEndpoint, {
+    includeErrorDescription,
+    isAccessTokenRevoked,
+    retrieveUserProfile
   })
 
   // https://github.com/fastify/point-of-view?tab=readme-ov-file#migrating-from-view-to-viewasync
@@ -130,6 +174,17 @@ export const defFastify = (config: Config) => {
   // === HOOKS ============================================================== //
 
   // === ROUTES ============================================================= //
+  fastify.get('/id', (_request, reply) => {
+    const port = 3001
+    return reply.send({
+      client_id: `http://localhost:${port}/id`,
+      client_name: 'Test client',
+      client_uri: `http://localhost:${port}`,
+      logo_uri: 'https://indiebookclub.biz/images/book.svg',
+      redirect_uris: [`http://localhost:${port}/auth/callback`]
+    })
+  })
+
   fastify.get('/auth/callback', (request, reply) => {
     return reply.send({
       message: 'auth callback done',
