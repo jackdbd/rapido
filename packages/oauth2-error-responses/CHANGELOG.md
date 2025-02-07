@@ -1,5 +1,11 @@
 # @jackdbd/oauth2-error-responses
 
+## 0.2.0-canary.8
+
+### Minor Changes
+
+- 1d7b5bf: Move code from libs oauth2 and oauth2-tokens to lib indieauth.
+
 ## 0.2.0-canary.7
 
 ### Minor Changes

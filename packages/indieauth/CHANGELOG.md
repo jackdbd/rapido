@@ -1,5 +1,18 @@
 # @jackdbd/indieauth
 
+## 0.2.0-canary.10
+
+### Minor Changes
+
+- 1d7b5bf: Move code from libs oauth2 and oauth2-tokens to lib indieauth.
+
+### Patch Changes
+
+- Updated dependencies [1d7b5bf]
+  - @jackdbd/schema-validators@0.2.0-canary.11
+  - @jackdbd/canonical-url@0.2.0-canary.8
+  - @jackdbd/pkce@0.2.0-canary.7
+
 ## 0.2.0-canary.9
 
 ### Minor Changes

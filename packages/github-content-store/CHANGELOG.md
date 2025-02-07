@@ -1,5 +1,17 @@
 # @jackdbd/github-content-store
 
+## 0.2.0-canary.9
+
+### Minor Changes
+
+- 1d7b5bf: Move code from libs oauth2 and oauth2-tokens to lib indieauth.
+
+### Patch Changes
+
+- Updated dependencies [1d7b5bf]
+  - @jackdbd/github-contents-api@0.2.0-canary.9
+  - @jackdbd/micropub@0.2.0-canary.10
+
 ## 0.2.0-canary.8
 
 ### Minor Changes
