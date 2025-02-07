@@ -1,5 +1,11 @@
 # @jackdbd/fastify-token-endpoint
 
+## 1.3.0-canary.16
+
+### Minor Changes
+
+- 0eac812: Handle request requests (grant type `refresh_token`).
+
 ## 1.3.0-canary.15
 
 ### Minor Changes
