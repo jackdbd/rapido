@@ -8,7 +8,6 @@ import type {
 import {
   InvalidRequestError,
   InvalidGrantError,
-  UnauthorizedError,
   UnsupportedGrantTypeError,
   ServerError
 } from '@jackdbd/oauth2-error-responses'
@@ -93,6 +92,15 @@ export const defTokenPost = (config: TokenPostConfig) => {
     if (grant_type === 'refresh_token') {
       const { refresh_token, scope } = request.body
 
+      if (!scope) {
+        const error_description = `Refresh token received in request has no 'scope' parameter.`
+        request.log.warn(`${log_prefix}${error_description}`)
+        const err = new InvalidRequestError({ error_description })
+        return reply
+          .code(err.statusCode)
+          .send(err.payload({ include_error_description }))
+      }
+
       let record: RefreshTokenImmutableRecord | RefreshTokenMutableRecord
       try {
         record = await retrieveRefreshToken(refresh_token)
@@ -102,9 +110,7 @@ export const defTokenPost = (config: TokenPostConfig) => {
           error_description = `${error_description} Here is the original error message: ${ex.message}`
         }
         request.log.error(`${log_prefix}${error_description}`)
-        const error_uri = undefined
-        const err = new ServerError({ error_description, error_uri })
-        // const err = new InvalidGrantError({ error_description, error_uri })
+        const err = new ServerError({ error_description })
         return reply
           .code(err.statusCode)
           .send(err.payload({ include_error_description }))
@@ -115,9 +121,7 @@ export const defTokenPost = (config: TokenPostConfig) => {
           ? ` (revocation_reason: ${record.revocation_reason as string})`
           : ''
         const error_description = `Refresh token ${refresh_token} is revoked${details}.`
-        // TODO: create an HTML page for error_uri
-        const error_uri = undefined
-        const err = new InvalidGrantError({ error_description, error_uri })
+        const err = new InvalidGrantError({ error_description })
         return reply
           .code(err.statusCode)
           .send(err.payload({ include_error_description }))
@@ -128,9 +132,16 @@ export const defTokenPost = (config: TokenPostConfig) => {
       if (record.exp < now) {
         const details = ` (expired_at: ${record.exp}, now: ${now})`
         const error_description = `Refresh token found in storage is expired${details}.`
-        // TODO: create an HTML page for error_uri
-        const error_uri = undefined
-        const err = new InvalidGrantError({ error_description, error_uri })
+        const err = new InvalidGrantError({ error_description })
+        return reply
+          .code(err.statusCode)
+          .send(err.payload({ include_error_description }))
+      }
+
+      if (record.iss !== issuer) {
+        const error_description = `Refresh token found in storage has a different issuer.`
+        request.log.warn(`${log_prefix}${error_description}`)
+        const err = new InvalidGrantError({ error_description })
         return reply
           .code(err.statusCode)
           .send(err.payload({ include_error_description }))
@@ -148,8 +159,7 @@ export const defTokenPost = (config: TokenPostConfig) => {
       if (!record.scope) {
         const error_description = `Refresh token found in storage has no 'scope' parameter.`
         request.log.warn(`${log_prefix}${error_description}`)
-        const error_uri = undefined
-        const err = new InvalidRequestError({ error_description, error_uri })
+        const err = new InvalidRequestError({ error_description })
         return reply
           .code(err.statusCode)
           .send(err.payload({ include_error_description }))
@@ -160,23 +170,51 @@ export const defTokenPost = (config: TokenPostConfig) => {
           record.scope as string
         }.`
         request.log.warn(`${log_prefix}${error_description}`)
-        const error_uri = undefined
-        const err = new InvalidRequestError({ error_description, error_uri })
+        const err = new InvalidGrantError({ error_description })
         return reply
           .code(err.statusCode)
           .send(err.payload({ include_error_description }))
       }
 
-      const { value: access_token } = accessTokenFromRequest(request)
+      const { error, value } = await tokensPlusInfo({
+        access_token_expiration,
+        ajv,
+        client_id: record.client_id,
+        issuer, // or record.iss
+        // jti: record.jti,
+        jwks,
+        me: record.me,
+        redirect_uri: record.redirect_uri,
+        refresh_token_expiration,
+        scope
+      })
 
-      if (!access_token) {
-        const error_description = `Cannot revoke refresh token ${refresh_token}: no access token in Authorization header.`
-        const error_uri = undefined
-        const err = new UnauthorizedError({ error_description, error_uri })
+      if (error) {
+        const error_description = error.message
+        request.log.error(`${log_prefix}${error_description}`)
+        const err = new ServerError({ error_description })
         return reply
           .code(err.statusCode)
           .send(err.payload({ include_error_description }))
       }
+
+      issued_info = value
+
+      try {
+        await onIssuedTokens(issued_info)
+      } catch (ex: any) {
+        let error_description = `The user-provided onIssuedTokens function threw an exception.`
+        if (ex && ex.message) {
+          error_description = `${error_description} Here is the original error message: ${ex.message}`
+        }
+        request.log.error(`${log_prefix}${error_description}`)
+        const err = new ServerError({ error_description })
+        return reply
+          .code(err.statusCode)
+          .send(err.payload({ include_error_description }))
+      }
+
+      const refreshed_access_token = issued_info.access_token
 
       // Decide between these revocation reasons:
       // - `refreshed_access_token`
@@ -185,10 +223,14 @@ export const defTokenPost = (config: TokenPostConfig) => {
       // https://datatracker.ietf.org/doc/html/rfc6749#section-6
       const revocation_reason = 'refreshed'
 
+      // TODO: consider making it optional to revoke the current access token.
+      // Access tokens are usually short-lived, so it might not be necessary to
+      // revoke them.
+
       request.log.debug(`${log_prefix}revoking refresh token ${refresh_token}`)
 
       const { error: revoke_error_refresh } = await revokeToken({
-        access_token,
+        access_token: refreshed_access_token,
         revocation_endpoint,
         revocation_reason,
         token: refresh_token,
@@ -209,75 +251,36 @@ export const defTokenPost = (config: TokenPostConfig) => {
         `${log_prefix}revoked refresh token ${refresh_token} with revocation_reason: ${revocation_reason}`
       )
 
-      // TODO: consider making it optional to revoke the current access token.
-      // Access tokens are usually short-lived, so it might not be necessary to
-      // revoke them.
+      // A refresh request typically does NOT have an access token in the
+      // request header. However, if it has one, we revoke it.
+      const { value: access_token } = accessTokenFromRequest(request)
 
-      request.log.debug(`${log_prefix}revoking current access token`)
+      if (access_token) {
+        request.log.debug(`${log_prefix}revoking current access token`)
 
-      const { error: revoke_error_access } = await revokeToken({
-        access_token,
-        revocation_endpoint,
-        revocation_reason,
-        token: access_token,
-        token_type_hint: 'access_token'
-      })
-
-      if (revoke_error_access) {
-        const payload = revoke_error_access.payload({
-          include_error_description
+        const { error: revoke_error_access } = await revokeToken({
+          access_token: refreshed_access_token,
+          revocation_endpoint,
+          revocation_reason,
+          token: access_token,
+          token_type_hint: 'access_token'
         })
-        request.log.error(
-          `${log_prefix}cannot revoke access token: ${payload.error_description}`
-        )
-        return reply.code(revoke_error_access.statusCode).send(payload)
-      }
 
-      request.log.debug(
-        `${log_prefix}revoked access token with revocation_reason: ${revocation_reason}`
-      )
-
-      // check that issuer === record.iss?
-
-      const { error, value } = await tokensPlusInfo({
-        access_token_expiration,
-        ajv,
-        client_id: record.client_id,
-        issuer, // or record.iss
-        // jti: record.jti,
-        jwks,
-        me: record.me,
-        redirect_uri: record.redirect_uri,
-        refresh_token_expiration,
-        scope
-      })
-
-      if (error) {
-        const error_description = error.message
-        request.log.error(`${log_prefix}${error_description}`)
-        const error_uri = undefined
-        const err = new ServerError({ error_description, error_uri })
-        return reply
-          .code(err.statusCode)
-          .send(err.payload({ include_error_description }))
-      }
-
-      issued_info = value
-
-      try {
-        await onIssuedTokens(issued_info)
-      } catch (ex: any) {
-        let error_description = `The user-provided onIssuedTokens function threw an exception.`
-        if (ex && ex.message) {
-          error_description = `${error_description} Here is the original error message: ${ex.message}`
+        if (revoke_error_access) {
+          const payload = revoke_error_access.payload({
+            include_error_description
+          })
+          request.log.error(
+            `${log_prefix}cannot revoke access token: ${payload.error_description}`
+          )
+          return reply.code(revoke_error_access.statusCode).send(payload)
         }
-        request.log.error(`${log_prefix}${error_description}`)
-        const error_uri = undefined
-        const err = new ServerError({ error_description, error_uri })
-        return reply
-          .code(err.statusCode)
-          .send(err.payload({ include_error_description }))
+
+        request.log.debug(
+          `${log_prefix}revoked access token with revocation_reason: ${revocation_reason}`
+        )
       }
+
       // === END of grant_type === 'refresh_token' ========================== //
     } else if (grant_type === 'authorization_code') {
       const { client_id, code, code_verifier, redirect_uri } = request.body
@@ -316,8 +319,7 @@ export const defTokenPost = (config: TokenPostConfig) => {
       if (!me) {
         const error_description = `Authorization code ${code} is verified but it has no 'me' parameter.`
         request.log.error(`${log_prefix}${error_description}`)
-        const error_uri = undefined
-        const err = new InvalidGrantError({ error_description, error_uri })
+        const err = new InvalidGrantError({ error_description })
         return reply
           .code(err.statusCode)
           .send(err.payload({ include_error_description }))
@@ -337,8 +339,7 @@ export const defTokenPost = (config: TokenPostConfig) => {
       if (!scope) {
         const error_description = `Authorization code ${code} is verified but it has no 'scope' parameter.`
         request.log.error(`${log_prefix}${error_description}`)
-        const error_uri = undefined
-        const err = new InvalidGrantError({ error_description, error_uri })
+        const err = new InvalidGrantError({ error_description })
         return reply
           .code(err.statusCode)
           .send(err.payload({ include_error_description }))
@@ -364,8 +365,7 @@ export const defTokenPost = (config: TokenPostConfig) => {
       if (error) {
         const error_description = error.message
         request.log.error(`${log_prefix}${error_description}`)
-        const error_uri = undefined
-        const err = new ServerError({ error_description, error_uri })
+        const err = new ServerError({ error_description })
         return reply
           .code(err.statusCode)
           .send(err.payload({ include_error_description }))
@@ -381,19 +381,14 @@ export const defTokenPost = (config: TokenPostConfig) => {
           error_description = `${error_description} Here is the original error message: ${ex.message}`
         }
         request.log.error(`${log_prefix}${error_description}`)
-        const error_uri = undefined
-        const err = new ServerError({ error_description, error_uri })
+        const err = new ServerError({ error_description })
         return reply
           .code(err.statusCode)
           .send(err.payload({ include_error_description }))
       }
     } else {
       const error_description = `This endpoint does not support grant type ${grant_type}.`
-      const error_uri = undefined
-      const err = new UnsupportedGrantTypeError({
-        error_description,
-        error_uri
-      })
+      const err = new UnsupportedGrantTypeError({ error_description })
       return reply
         .code(err.statusCode)
         .send(err.payload({ include_error_description }))
@@ -423,7 +418,7 @@ export const defTokenPost = (config: TokenPostConfig) => {
         const payload = profile_error.payload({
           include_error_description
         })
-        let message = `cannot retrieve profile info`
+        let message = `Cannot retrieve profile info`
         if (payload.error_description) {
           message = `${message}: ${payload.error_description}`
         }

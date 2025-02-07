@@ -40,8 +40,7 @@ export const revokeToken = async (config: Config) => {
     })
   } catch (ex: any) {
     const error_description = `Failed to fetch ${revocation_endpoint}: ${ex.message}`
-    const error_uri = undefined
-    return { error: new ServerError({ error_description, error_uri }) }
+    return { error: new ServerError({ error_description }) }
   }
 
   if (!response.ok) {
@@ -54,8 +53,7 @@ export const revokeToken = async (config: Config) => {
     res_body = await response.json()
   } catch (ex: any) {
     const error_description = `Failed to parse JSON response received from ${revocation_endpoint}: ${ex.message}`
-    const error_uri = undefined
-    return { error: new ServerError({ error_description, error_uri }) }
+    return { error: new ServerError({ error_description }) }
   }
 
   let message: string

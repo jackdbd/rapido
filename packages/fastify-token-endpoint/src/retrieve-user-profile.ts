@@ -20,8 +20,7 @@ export const retrieveUserProfile = async (config: Config) => {
     })
   } catch (ex: any) {
     const error_description = `Failed to fetch ${userinfo_endpoint}: ${ex.message}`
-    const error_uri = undefined
-    return { error: new ServerError({ error_description, error_uri }) }
+    return { error: new ServerError({ error_description }) }
   }
 
   if (!response.ok) {
@@ -34,8 +33,7 @@ export const retrieveUserProfile = async (config: Config) => {
     profile = await response.json()
   } catch (ex: any) {
     const error_description = `Failed to parse JSON response received from ${userinfo_endpoint}: ${ex.message}`
-    const error_uri = undefined
-    return { error: new ServerError({ error_description, error_uri }) }
+    return { error: new ServerError({ error_description }) }
   }
 
   return { value: profile }
