@@ -1,0 +1,19 @@
+meta {
+  name: introspect token
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{introspection_endpoint}}
+  body: formUrlEncoded
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:form-urlencoded {
+  token: {{expired_access_token}}
+}

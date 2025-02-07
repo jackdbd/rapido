@@ -1,0 +1,26 @@
+meta {
+  name: obtain authorization code
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{authorization_endpoint}}?response_type=code&client_id={{client_id}}&redirect_uri={{redirect_uri}}&state={{state}}&code_challenge={{code_challenge}}&code_challenge_method={{code_challenge_method}}&scope={{scope}}&me={{me}}
+  body: none
+  auth: none
+}
+
+params:query {
+  response_type: code
+  client_id: {{client_id}}
+  redirect_uri: {{redirect_uri}}
+  state: {{state}}
+  code_challenge: {{code_challenge}}
+  code_challenge_method: {{code_challenge_method}}
+  scope: {{scope}}
+  me: {{me}}
+}
+
+headers {
+  Accept: text/html
+}
