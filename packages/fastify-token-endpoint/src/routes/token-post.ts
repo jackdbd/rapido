@@ -90,7 +90,21 @@ export const defTokenPost = (config: TokenPostConfig) => {
 
     let issued_info: TokensPlusInfo
     if (grant_type === 'refresh_token') {
-      const { refresh_token, scope } = request.body
+      const { client_id, refresh_token, scope } = request.body
+
+      // The section "Refreshing an Access Token" of the OAuth 2.0 RFC does not
+      // mention that the request body should contain the client_id. However,
+      // IndieAuth does require client_id to be present in the request body.
+      // https://datatracker.ietf.org/doc/html/rfc6749#section-6
+      // https://indieauth.spec.indieweb.org/#refreshing-an-access-token
+      if (!client_id) {
+        const error_description = `Refresh token received in request has no 'client_id' parameter.`
+        request.log.warn(`${log_prefix}${error_description}`)
+        const err = new InvalidRequestError({ error_description })
+        return reply
+          .code(err.statusCode)
+          .send(err.payload({ include_error_description }))
+      }
 
       if (!scope) {
         const error_description = `Refresh token received in request has no 'scope' parameter.`
@@ -132,6 +146,15 @@ export const defTokenPost = (config: TokenPostConfig) => {
       if (record.exp < now) {
         const details = ` (expired_at: ${record.exp}, now: ${now})`
         const error_description = `Refresh token found in storage is expired${details}.`
+        const err = new InvalidGrantError({ error_description })
+        return reply
+          .code(err.statusCode)
+          .send(err.payload({ include_error_description }))
+      }
+
+      if (record.client_id !== client_id) {
+        const error_description = `Refresh token found in storage has a different client_id.`
+        request.log.warn(`${log_prefix}${error_description}`)
         const err = new InvalidGrantError({ error_description })
         return reply
           .code(err.statusCode)

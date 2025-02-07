@@ -34,6 +34,7 @@ export type AccessTokenRequestBody = Static<typeof access_token_request_body>
  * @see [Refreshing an Access Token - The OAuth 2.0 Authorization Framework (RFC 6749)](https://datatracker.ietf.org/doc/html/rfc6749#section-6)
  */
 export const refresh_request_body = Type.Object({
+  client_id,
   grant_type: Type.Literal('refresh_token'),
   refresh_token,
   scope: Type.Optional(scope)
