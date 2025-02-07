@@ -1,0 +1,20 @@
+vars {
+  base_url: http://localhost:3001
+  client_id: {{base_url}}/id
+  redirect_uri: {{base_url}}/auth/callback
+  me: https://giacomodebidda.com/
+  code_challenge_method: S256
+  scope: create+update+delete+profile
+  authorization_endpoint: {{base_url}}/auth
+  token_endpoint: {{base_url}}/token
+  introspection_endpoint: {{base_url}}/introspect
+  expired_access_token: eyJhbGciOiJSUzI1NiIsImtpZCI6InJJMnFoN0x5NzVwT09TSWNVdkdTUSJ9.eyJtZSI6Imh0dHBzOi8vZ2lhY29tb2RlYmlkZGEuY29tLyIsInNjb3BlIjoicHJvZmlsZSBlbWFpbCBjcmVhdGUgdXBkYXRlIGRlbGV0ZSB1bmRlbGV0ZSBkcmFmdCBtZWRpYSIsImV4cCI6MTczMzQ4ODYzMSwiaWF0IjoxNzMzNDg4MzMxLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDEiLCJqdGkiOiJrOXZraXl4UXVmVHJrbU53QlRPZ1EifQ.UE2aJ5YlOiAMMVEn-gNMZu_q_JW8uvizgSpxrcicl8waL5It4eJIEixvTRlkCKBbPfgiL15kxdgbUnI618xKc05xhepDZ_C1nQD6bB1FA-9_HjaBdP1ERyvIQ7ceCqaG8RnRe3cdNu4sj8ezgcpgWBk0RbLwrrvkEw4NlS6b_p_5EF9IonpZEYYPUh_FhsvlkgrZ3NqlPw0moWzFnqc06xnHXE21Zki1WQZQDlTWmjE4VGx72VDM0mzBpwcRnQZipcolxaSmVOacmO7F4zVIrYH0amJn7szbO-xISJtG6rh1ImwJnvxNVF6tZBebUPbPDDZXOvD2E34GPAOnVuUDOA
+}
+vars:secret [
+  refresh_token,
+  state,
+  code,
+  code_verifier,
+  code_challenge,
+  access_token
+]

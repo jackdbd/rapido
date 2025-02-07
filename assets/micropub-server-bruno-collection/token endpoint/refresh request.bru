@@ -1,0 +1,18 @@
+meta {
+  name: refresh request
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{token_endpoint}}
+  body: formUrlEncoded
+  auth: none
+}
+
+body:form-urlencoded {
+  grant_type: refresh_token
+  refresh_token: {{refresh_token}}
+  state: {{state}}
+  scope: create update profile email
+}
