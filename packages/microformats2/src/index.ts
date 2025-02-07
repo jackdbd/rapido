@@ -5,7 +5,8 @@
  * @see https://microformats.org/wiki/microformats2
  * @see https://indieweb.org/microformats2
  */
-export { date, date_time } from './date.js'
+export { date, date_time, date_or_date_time } from './date.js'
+export type { DateOrDateTime, DateTime } from './date.js'
 
 export { dt_accessed, type DT_Accessed } from './dt-accessed.js'
 export { dt_anniversary, type DT_Anniversary } from './dt-anniversary.js'

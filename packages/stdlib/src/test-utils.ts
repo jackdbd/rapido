@@ -1,10 +1,12 @@
 // import path from "node:path";
 import Ajv from 'ajv'
-import type { Options, Plugin } from 'ajv'
+import type { Options, Plugin, ValidateFunction } from 'ajv'
 import addFormats from 'ajv-formats'
+import c from 'ansi-colors'
 // TODO: do I actually need this library?
 // import RefResolver from "json-schema-resolver";
 // import { SCHEMAS_ROOT } from "./constants.js";
+import { EMOJI } from './emojis.js'
 
 // export const ref = RefResolver({
 //   clone: true, // Clone the input schema without changing it. Default: false,
@@ -43,11 +45,41 @@ export const defAjv = (options?: Options) => {
   return ajv_with_formats
 }
 
+export const check = (what: string, value: any, validate: ValidateFunction) => {
+  const valid = validate(value)
+  console.log(`is '${what}' valid?`, valid)
+
+  // console.log('value after validation (and after defaults when Ajv useDefaults: true)')
+  // console.log(value)
+
+  if (validate.errors) {
+    validate.errors.forEach((error, i) => {
+      console.error(
+        `${EMOJI.ERROR} validation error ${i + 1} in '${what}'`,
+        error
+      )
+    })
+  }
+}
+
+export const exitOne = (message: string) => {
+  console.error(c.red(`${EMOJI.EXIT_ONE} ${message}`))
+  process.exit(1)
+}
+
+export const exitZero = (message: string) => {
+  console.log(c.green(`${EMOJI.EXIT_ZERO} ${message}`))
+  process.exit(0)
+}
+
 export const ACCESS_TOKEN_EXPIRATION_IN_SECONDS = 10
 export const ACCESS_TOKEN_EXPIRATION = `${ACCESS_TOKEN_EXPIRATION_IN_SECONDS} seconds`
 
 export const CLIENT_ID_INDIEBOOKCLUB = 'https://indiebookclub.biz/id'
 export const CLIENT_ID_NONEXISTENT = 'https://client-application.com/id'
+
+export const CODE_CHALLENGE_METHOD = 'S256'
+export const CODE_VERIFIER_LENGTH = 128
 
 export const ISSUER = 'https://authorization-server.com/'
 

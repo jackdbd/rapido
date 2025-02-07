@@ -26,6 +26,18 @@
       "types": "./lib/index.d.ts",
       "import": "./lib/index.js"
     },
+    "./date": {
+      "types": "./lib/date.d.ts",
+      "import": "./lib/date.js"
+    },
+    "./h-entry": {
+      "types": "./lib/h-entry.d.ts",
+      "import": "./lib/h-entry.js"
+    },
+    "./h-event": {
+      "types": "./lib/h-event.d.ts",
+      "import": "./lib/h-event.js"
+    },
     "./package.json": "./package.json"
   },
   "typesVersions": {
