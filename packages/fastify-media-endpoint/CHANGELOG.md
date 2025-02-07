@@ -1,5 +1,22 @@
 # @jackdbd/fastify-media-endpoint
 
+## 0.2.0-canary.15
+
+### Minor Changes
+
+- 1d7b5bf: Move code from libs oauth2 and oauth2-tokens to lib indieauth.
+
+### Patch Changes
+
+- Updated dependencies [1d7b5bf]
+  - @jackdbd/oauth2-error-responses@0.2.0-canary.8
+  - @jackdbd/schema-validators@0.2.0-canary.11
+  - @jackdbd/canonical-url@0.2.0-canary.8
+  - @jackdbd/fastify-hooks@0.2.0-canary.11
+  - @jackdbd/fastify-utils@0.2.0-canary.10
+  - @jackdbd/indieauth@0.2.0-canary.10
+  - @jackdbd/micropub@0.2.0-canary.10
+
 ## 0.2.0-canary.14
 
 ### Patch Changes
