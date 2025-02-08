@@ -41,7 +41,8 @@
     "size": "npm run size --workspaces --if-present",
     "start:app": "npm run start -w @repo/demo-app",
     "test:ci": "npm run test:ci --workspaces --if-present",
-    "vendor": "npm run vendor --workspaces --if-present"
+    "vendor": "npm run vendor --workspaces --if-present",
+    "webserver": "npx http-server --port 8080"
   },
   "dependencies": {
     "@changesets/cli": "^2.27.12"
@@ -63,6 +64,7 @@
     "eslint-plugin-only-warn": "^1.1.0",
     "eslint-plugin-prettier": "^5.2.3",
     "fastify": "^5.2.1",
+    "http-server": "^14.1.1",
     "npm-run-all": "^4.1.5",
     "pino-pretty": "^13.0.0",
     "pkg-size": "^2.4.0",

@@ -104,6 +104,10 @@ in {
         --filter @jackdbd/fastify-token-endpoint \
         --filter @jackdbd/fastify-userinfo-endpoint
     '';
+    serve.exec = ''
+      echo "serve directory $1"
+      npx http-server $1 --port 8090
+    '';
     "test:ci".exec = ''
       echo "test package $1"
       npm run build:ts -w @jackdbd/$1
