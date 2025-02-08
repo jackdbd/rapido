@@ -22,6 +22,8 @@ const run = async () => {
   const { values } = parseArgs({
     allowPositionals: false,
     options: {
+      // git reference could be a branch (e.g. main, canary) or a git tag (e.g. v1.0.0-canary.6)
+      git_ref: { type: 'string', default: 'main' },
       github_username: { type: 'string', default: 'jackdbd' },
       npm_scope: { type: 'string', default: '@jackdbd' },
       output: { type: 'string', default: path.join(REPO_ROOT, 'README.md') },
@@ -29,7 +31,7 @@ const run = async () => {
     }
   })
 
-  const { github_username, npm_scope, output } = values
+  const { git_ref, github_username, npm_scope, output } = values
   // const github_username = npm_scope.replace('@', '') as string
   const project_started_in_year = parseInt(values.started_in_year)
 
@@ -43,7 +45,7 @@ const run = async () => {
   const items = readdirSync(path.join(REPO_ROOT, 'packages'))
     .filter((s) => !EXCLUDED_PACKAGES.includes(s))
     .map((unscoped_pkg_name) => {
-      const pkg_href = `https://github.com/${github_username}/${repo_name}/tree/main/packages/${unscoped_pkg_name}`
+      const pkg_href = `https://github.com/${github_username}/${repo_name}/tree/${git_ref}/packages/${unscoped_pkg_name}`
       const scoped_pkg_name = `${npm_scope}/${unscoped_pkg_name}`
       const home = link(scoped_pkg_name, pkg_href)
 

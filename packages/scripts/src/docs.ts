@@ -1,4 +1,5 @@
 import { execSync } from 'node:child_process'
+import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { parseArgs } from 'node:util'
 import { REPO_ROOT } from '../../stdlib/lib/index.js'
@@ -20,7 +21,12 @@ const run = async () => {
   const packages_root = path.join(REPO_ROOT, 'packages')
   const pkg_root = path.join(packages_root, unscoped_pkg_name)
   const entry_point = path.join(pkg_root, 'src', values['entry-point'])
-  const docs_out = path.join(REPO_ROOT, 'docs', unscoped_pkg_name)
+
+  const pkg = JSON.parse(
+    readFileSync(path.join(pkg_root, 'package.json'), 'utf-8')
+  )
+  const version = pkg.version
+  const docs_out = path.join(REPO_ROOT, 'docs', unscoped_pkg_name, version)
 
   const cmd = `typedoc ${entry_point} --excludeInternal --excludePrivate --out ${docs_out} --theme ${theme}`
   execSync(cmd).toString()

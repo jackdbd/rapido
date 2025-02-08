@@ -57,16 +57,17 @@ const run = async () => {
     allowPositionals: false,
     options: {
       package: { type: 'string', short: 'p' }, // unscoped package name
+      repo_name: { type: 'string', default: 'rapido' },
       started_in_year: { type: 'string', default: '2024' }
     }
   })
-  const project_started_in_year = parseInt(values.started_in_year)
-  const unscoped_pkg_name = values.package
+  const { repo_name, package: unscoped_pkg_name, started_in_year } = values
+
+  const project_started_in_year = parseInt(started_in_year)
   if (!unscoped_pkg_name) {
     throw new Error('You must provide a package name')
   }
   const current_year = new Date().getFullYear()
-  const repo_name = 'rapido'
   const packages_root = path.join(REPO_ROOT, 'packages')
   const pkg_root = path.join(packages_root, unscoped_pkg_name)
 

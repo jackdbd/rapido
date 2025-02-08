@@ -1,4 +1,4 @@
-import { readdirSync, writeFileSync } from 'node:fs'
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { parseArgs } from 'node:util'
 import { image, link } from '@thi.ng/transclude'
@@ -17,6 +17,8 @@ const run = async () => {
   const { values } = parseArgs({
     allowPositionals: false,
     options: {
+      // git reference could be a branch (e.g. main, canary) or a git tag (e.g. v1.0.0-canary.6)
+      git_ref: { type: 'string' },
       github_username: { type: 'string', default: 'jackdbd' },
       npm_scope: { type: 'string', default: '@jackdbd' },
       output: {
@@ -28,23 +30,50 @@ const run = async () => {
         default: 'Index of all packages of the rapido monorepo.'
       },
       page_title: { type: 'string', default: 'Rapido Docs' },
+      repo_name: { type: 'string', default: 'rapido' },
       started_in_year: { type: 'string', default: '2024' }
     }
   })
 
-  const { github_username, npm_scope, output, page_description, page_title } =
-    values
+  const {
+    github_username,
+    npm_scope,
+    output,
+    page_description,
+    page_title,
+    repo_name
+  } = values
 
   const items = readdirSync(path.join(REPO_ROOT, 'packages'))
     .filter((s) => !EXCLUDED_PACKAGES.includes(s))
     .map((unscoped_pkg_name) => {
-      const pkg_href = `https://github.com/${github_username}/undici/tree/main/packages/${unscoped_pkg_name}`
+      const pkg_root = path.join(REPO_ROOT, 'packages', unscoped_pkg_name)
+      const pkg = JSON.parse(
+        readFileSync(path.join(pkg_root, 'package.json'), 'utf-8')
+      )
+      const version = pkg.version
+
       const scoped_pkg_name = `${npm_scope}/${unscoped_pkg_name}`
-      const home = link(scoped_pkg_name, pkg_href)
+
+      let git_ref: string
+      if (values.git_ref) {
+        git_ref = values.git_ref
+      } else {
+        git_ref = encodeURIComponent(
+          `${npm_scope}/${unscoped_pkg_name}@${pkg.version}`
+        ).replace('%2F', '/')
+      }
+
+      const pkg_href = `https://github.com/${github_username}/${repo_name}/tree/${git_ref}/packages/${unscoped_pkg_name}`
 
       // The docs/ directory is published to GitHub pages. Each package of this
       // monorepo is under a subdirectory of the docs/ directory.
-      const typedoc = link('Docs', `./${unscoped_pkg_name}/index.html`)
+      const home = link(scoped_pkg_name, pkg_href)
+
+      const typedoc = link(
+        'Docs',
+        `./${unscoped_pkg_name}/${version}/index.html`
+      )
 
       const npm_version = link(
         image(
