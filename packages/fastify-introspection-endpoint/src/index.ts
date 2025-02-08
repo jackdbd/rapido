@@ -102,7 +102,8 @@ const introspectionEndpoint: FastifyPluginCallback<Options> = (
   })
 
   const decodeAccessToken = defDecodeAccessToken({
-    includeErrorDescription: include_error_description
+    includeErrorDescription: include_error_description,
+    logPrefix: `[introspection-endpoint/decode-access-token] `
   })
 
   const validateClaimExp = defValidateClaim(
@@ -111,7 +112,10 @@ const introspectionEndpoint: FastifyPluginCallback<Options> = (
       op: '>',
       value: unixTimestampInSeconds
     },
-    { includeErrorDescription: include_error_description }
+    {
+      includeErrorDescription: include_error_description,
+      logPrefix: `[introspection-endpoint/validate-claim-exp] `
+    }
   )
 
   const validateClaimMe = defValidateClaim(
@@ -120,7 +124,10 @@ const introspectionEndpoint: FastifyPluginCallback<Options> = (
       op: '==',
       value: canonicalUrl(me)
     },
-    { includeErrorDescription: include_error_description }
+    {
+      includeErrorDescription: include_error_description,
+      logPrefix: `[introspection-endpoint/validate-claim-me] `
+    }
   )
 
   // TODO: re-read RFC7662 and decide which scope to check
@@ -129,7 +136,8 @@ const introspectionEndpoint: FastifyPluginCallback<Options> = (
 
   const validateAccessTokenNotRevoked = defValidateNotRevoked({
     includeErrorDescription: include_error_description,
-    isAccessTokenRevoked
+    isAccessTokenRevoked,
+    logPrefix: `[introspection-endpoint/validate-not-revoked] `
   })
 
   // === ROUTES ============================================================= //
