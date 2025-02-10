@@ -2,12 +2,14 @@ import type { AuthorOrCommitter, SharedConfig } from './config.js'
 import { BASE_URL, REF } from './defaults.js'
 import { internalServerError } from './errors.js'
 import { defHeaders } from './headers.js'
+import { defaultLog, type Log } from './log.js'
 
 export interface CreateOrUpdateOptions extends SharedConfig {
   author?: AuthorOrCommitter
   branch?: string
   committer: AuthorOrCommitter
   content: string // Base64-encoded content
+  log?: Log
   path: string
   sha?: string
 }
@@ -15,6 +17,7 @@ export interface CreateOrUpdateOptions extends SharedConfig {
 const defaults: Partial<CreateOrUpdateOptions> = {
   base_url: BASE_URL,
   branch: REF,
+  log: defaultLog,
   path: ''
 }
 
@@ -35,6 +38,7 @@ export const createOrUpdate = async (options: CreateOrUpdateOptions) => {
     branch,
     committer,
     content,
+    log,
     owner,
     path,
     repo,
@@ -63,20 +67,30 @@ export const createOrUpdate = async (options: CreateOrUpdateOptions) => {
     body = { ...shared, message: `create ${path}` }
   }
 
+  console.log(`=== debug github-contents-api create-or-update ===`, {
+    body,
+    token,
+    url,
+    sha
+  })
+
   let response: Response
   try {
+    log.debug(`PUT ${url}`)
     response = await fetch(url, {
       method: 'PUT',
       body: JSON.stringify(body),
       headers: defHeaders({ token })
     })
-  } catch (err: any) {
+  } catch (ex: any) {
+    log.error(`PUT ${url} errored: ${ex.message}`)
     return {
-      error: internalServerError(err)
+      error: internalServerError(ex)
     }
   }
 
   if (sha && response.status !== 200) {
+    log.error(`sha=${sha} and response.status=${response.status}`)
     return {
       error: {
         error_description: `could not update ${config.path} in repo ${owner}/${repo}`,
@@ -87,6 +101,7 @@ export const createOrUpdate = async (options: CreateOrUpdateOptions) => {
   }
 
   if (!sha && response.status !== 201) {
+    log.error(`response.status=${response.status} and sha is undefined`)
     return {
       error: {
         error_description: `could not create ${config.path} in repo ${owner}/${repo}`,
@@ -104,6 +119,7 @@ export const createOrUpdate = async (options: CreateOrUpdateOptions) => {
   }
 
   try {
+    log.debug(`parse JSON response from ${url}`)
     const body = await response.json()
     // TODO: maybe consider returning just the link/url/permalink/location
     // instead of the entire response body.
@@ -115,9 +131,10 @@ export const createOrUpdate = async (options: CreateOrUpdateOptions) => {
         status_text: response.statusText
       }
     }
-  } catch (err: any) {
+  } catch (ex: any) {
+    log.error(`cannot parse JSON response: ${ex.message}`)
     return {
-      error: internalServerError(err)
+      error: internalServerError(ex)
     }
   }
 }

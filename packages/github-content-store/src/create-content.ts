@@ -9,7 +9,7 @@ import { jf2ToSlug } from '@jackdbd/micropub'
 import type { Location, Publication } from '@jackdbd/micropub'
 import type { CreatePost } from '@jackdbd/micropub/schemas/user-provided-functions'
 import { jf2ToContent } from './jf2-to-content.js'
-import type { Log } from './log.js'
+import { defaultLog, type Log } from './log.js'
 
 export interface Options {
   author?: AuthorOrCommitter
@@ -26,6 +26,7 @@ export interface Options {
 const defaults: Partial<Options> = {
   base_url: BASE_URL,
   branch: REF,
+  log: defaultLog,
   token: GITHUB_TOKEN
 }
 
@@ -86,6 +87,7 @@ export const defCreate = (options?: Options) => {
       branch,
       committer,
       content,
+      log,
       owner,
       path: loc.store,
       repo,
