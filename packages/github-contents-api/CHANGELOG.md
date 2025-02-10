@@ -1,5 +1,11 @@
 # @jackdbd/github-contents-api
 
+## 0.2.0-canary.11
+
+### Minor Changes
+
+- 2c383bb: Add tests and cleanup.
+
 ## 0.2.0-canary.10
 
 ### Minor Changes

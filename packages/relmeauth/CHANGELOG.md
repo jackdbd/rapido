@@ -1,5 +1,11 @@
 # @jackdbd/relmeauth
 
+## 0.2.0-canary.9
+
+### Patch Changes
+
+- d231871: Add test.
+
 ## 0.2.0-canary.8
 
 ### Minor Changes
