@@ -8,12 +8,25 @@ export type Result<V, E extends Error = Error> =
   | { error: E; value?: undefined }
   | { error?: undefined; value: V }
 
-export interface Config<E extends Error = Error> {
-  onError: (error: E) => never
-  onUndefinedValue: () => never
+export interface Options<E extends Error = Error> {
+  onError?: (error: E) => never
+  onUndefinedValue?: () => never
 }
 
-export const defUnwrap = (config: Config) => {
+const defaults = {
+  onError: <E extends Error = Error>(error: E) => {
+    console.error(`${EMOJI.ERROR} ${error.message}`)
+    throw error
+  },
+  onUndefinedValue: () => {
+    console.error(`${EMOJI.ERROR} value is undefined`)
+    throw new Error(`value is undefined`)
+  }
+}
+
+export const defUnwrap = (options?: Options) => {
+  const config = Object.assign({}, defaults, options)
+
   const { onError, onUndefinedValue } = config
 
   const unwrap = <V, E extends Error = Error>(result: Result<V, E>) => {
@@ -32,16 +45,7 @@ export const defUnwrap = (config: Config) => {
   return unwrap
 }
 
-export const unwrap = defUnwrap({
-  onError: (error) => {
-    console.error(`${EMOJI.ERROR} ${error.message}`)
-    process.exit(1)
-  },
-  onUndefinedValue: () => {
-    console.error(`${EMOJI.ERROR} value is undefined`)
-    process.exit(1)
-  }
-})
+export const unwrap = defUnwrap()
 
 export const unwrapP = async <V, E extends Error = Error>(
   promise: Promise<Result<V, E>>
