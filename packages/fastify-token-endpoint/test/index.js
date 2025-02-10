@@ -14,7 +14,7 @@ const AUTHORIZATION_ENDPOINT = 'http://localhost:3000/auth'
 const REVOCATION_ENDPOINT = 'http://localhost:3000/revoke'
 const USERINFO_ENDPOINT = 'http://localhost:3000/userinfo'
 
-const code_valid = nanoid()
+const code_valid = nanoid(32)
 const code_verifier_valid = codeVerifier({ len: 43, seed: 123 })
 
 const isAccessTokenRevoked = async (_jti) => {

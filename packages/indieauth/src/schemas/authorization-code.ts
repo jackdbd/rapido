@@ -16,8 +16,8 @@ import { issuer } from './server-metadata.js'
  * prescribe a particular length, encoding, or algorithm to generate the code.
  */
 export const authorization_code = Type.String({
-  minLength: 10,
-  maxLength: 128,
+  minLength: 32,
+  maxLength: 1000,
   title: 'Authorization code',
   description:
     'Authorization code issued by the authorization endpoint of the IndieAuth server. It should be a single-use, unguessable, random string.'

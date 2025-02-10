@@ -125,7 +125,7 @@ To verify that the authorization code is valid, the token endpoint of the author
 |Name|Type|Description|Required|
 |----|----|-----------|--------|
 |**client\_id**|`string`|The ID of the application that asks for authorization. An IndieAuth client ID is a URL.<br/>Format: `"uri"`<br/>|yes|
-|**code**<br/>(Authorization code)|`string`|Authorization code issued by the authorization endpoint of the IndieAuth server. It should be a single-use, unguessable, random string.<br/>Minimal Length: `10`<br/>Maximal Length: `128`<br/>|yes|
+|**code**<br/>(Authorization code)|`string`|Authorization code issued by the authorization endpoint of the IndieAuth server. It should be a single-use, unguessable, random string.<br/>Minimal Length: `32`<br/>Maximal Length: `1000`<br/>|yes|
 |**code\_verifier**|`string`|PKCE code verifier. A high-entropy cryptographic random string. See [Client Creates a Code Verifier](https://datatracker.ietf.org/doc/html/rfc7636#section-4.1).<br/>Minimal Length: `43`<br/>Maximal Length: `128`<br/>|yes|
 |**grant\_type**|`string`|Constant Value: `"authorization_code"`<br/>|yes|
 |**redirect\_uri**|`string`|Holds a URL. A successful response from this endpoint results in a redirect to this URL.<br/>Format: `"uri"`<br/>|yes|
