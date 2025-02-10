@@ -1,0 +1,18 @@
+meta {
+  name: profile URL request
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{authorization_endpoint}}
+  body: formUrlEncoded
+  auth: none
+}
+
+body:form-urlencoded {
+  client_id: {{client_id}}
+  code: {{code}}
+  redirect_uri: {{redirect_uri}}
+  code_verifier: {{code_verifier}}
+}

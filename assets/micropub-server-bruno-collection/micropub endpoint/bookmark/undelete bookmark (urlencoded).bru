@@ -1,0 +1,20 @@
+meta {
+  name: undelete bookmark (urlencoded)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{micropub_endpoint}}
+  body: formUrlEncoded
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:form-urlencoded {
+  action: undelete
+  url: {{test_bookmark_url}}
+}

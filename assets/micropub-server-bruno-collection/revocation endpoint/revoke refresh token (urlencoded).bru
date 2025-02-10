@@ -1,0 +1,28 @@
+meta {
+  name: revoke refresh token (urlencoded)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{revocation_endpoint}}
+  body: formUrlEncoded
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "token": "{{access_token}}",
+    "revocation_reason": "testing from Bruno"
+  }
+}
+
+body:form-urlencoded {
+  token: {{refresh_token}}
+  revocation_reason: testing from Bruno
+  token_type_hint: refresh_token
+}

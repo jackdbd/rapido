@@ -1,0 +1,22 @@
+meta {
+  name: revoke access token (JSON)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{revocation_endpoint}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "token": "{{access_token}}",
+    "revocation_reason": "testing from Bruno"
+  }
+}
