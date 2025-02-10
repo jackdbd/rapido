@@ -60,8 +60,8 @@
       "type": "Function",
       "parameters": [
         {
-          "minLength": 10,
-          "maxLength": 128,
+          "minLength": 32,
+          "maxLength": 1000,
           "title": "Authorization code",
           "description": "Authorization code issued by the authorization endpoint of the IndieAuth server. It should be a single-use, unguessable, random string.",
           "type": "string"
@@ -92,8 +92,8 @@
               "type": "string"
             },
             "code": {
-              "minLength": 10,
-              "maxLength": 128,
+              "minLength": 32,
+              "maxLength": 1000,
               "title": "Authorization code",
               "description": "Authorization code issued by the authorization endpoint of the IndieAuth server. It should be a single-use, unguessable, random string.",
               "type": "string"
@@ -169,8 +169,8 @@
       "type": "Function",
       "parameters": [
         {
-          "minLength": 10,
-          "maxLength": 128,
+          "minLength": 32,
+          "maxLength": 1000,
           "title": "Authorization code",
           "description": "Authorization code issued by the authorization endpoint of the IndieAuth server. It should be a single-use, unguessable, random string.",
           "type": "string"
@@ -213,8 +213,8 @@
                   "type": "string"
                 },
                 "code": {
-                  "minLength": 10,
-                  "maxLength": 128,
+                  "minLength": 32,
+                  "maxLength": 1000,
                   "title": "Authorization code",
                   "description": "Authorization code issued by the authorization endpoint of the IndieAuth server. It should be a single-use, unguessable, random string.",
                   "type": "string"
@@ -350,8 +350,8 @@
                   "type": "string"
                 },
                 "code": {
-                  "minLength": 10,
-                  "maxLength": 128,
+                  "minLength": 32,
+                  "maxLength": 1000,
                   "title": "Authorization code",
                   "description": "Authorization code issued by the authorization endpoint of the IndieAuth server. It should be a single-use, unguessable, random string.",
                   "type": "string"

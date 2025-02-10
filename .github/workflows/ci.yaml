@@ -48,6 +48,7 @@ jobs:
 
       - run: npm run build:ts
       - run: npm run vendor
+      - run: npm run copy:webc
       
       - run: npm run test:ci -w @repo/error-handlers
       - run: npm run test:ci -w @jackdbd/canonical-url

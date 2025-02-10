@@ -1,4 +1,4 @@
-import { describe, it, todo } from 'node:test'
+import { describe, it } from 'node:test'
 import Fastify from 'fastify'
 import { nanoid } from 'nanoid'
 import { codeChallenge, codeVerifier } from '@jackdbd/pkce'
@@ -10,12 +10,11 @@ import {
 } from '@repo/stdlib/test-utils'
 import authorizationEndpoint from '../lib/index.js'
 
-const code_valid = nanoid()
-const code_invalid = nanoid()
+const code_valid = nanoid(32)
+const code_invalid = nanoid(32)
 const code_verifier_valid = codeVerifier({ len: 43, seed: 123 })
 const code_verifier_invalid = codeVerifier({ len: 43, seed: 456 })
 
-const host = '0.0.0.0'
 const port = 8080
 const client_id = `http://localhost:${port}/id`
 const client_name = 'Test client'
@@ -144,8 +143,7 @@ describe('authorization-endpoint plugin', () => {
       t.assert.strictEqual(res.state, state)
     })
 
-    // TODO: this test fails ONLY on the GitHub Actions CI
-    it.skip('returns an HTML page with a consent screen and information about the IndieAuth client, when the IndieAuth client exists', async (t) => {
+    it('returns an HTML page with a consent screen and information about the IndieAuth client, when the IndieAuth client exists', async (t) => {
       const fastify = Fastify()
 
       await fastify.register(authorizationEndpoint, {
@@ -165,7 +163,7 @@ describe('authorization-endpoint plugin', () => {
         })
       })
 
-      await fastify.listen({ host, port })
+      await fastify.listen({ port })
 
       const code_challenge_method = 'S256'
       const code_challenge = codeChallenge({
