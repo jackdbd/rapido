@@ -2,6 +2,7 @@ import type { SharedConfig } from './config.js'
 import { BASE_URL, REF } from './defaults.js'
 import { internalServerError } from './errors.js'
 import { defHeaders } from './headers.js'
+import { defaultLog, type Log } from './log.js'
 
 export interface GetResponseBody {
   name: string
@@ -23,6 +24,8 @@ export interface GetResponseBody {
 }
 
 export interface GetOptions extends SharedConfig {
+  log?: Log
+
   /**
    * If you omit the path parameter, you will receive the contents of the repository's root directory.
    */
@@ -36,6 +39,7 @@ export interface GetOptions extends SharedConfig {
 
 const defaults: Partial<GetOptions> = {
   base_url: BASE_URL,
+  log: defaultLog,
   path: '',
   ref: REF
 }
@@ -48,27 +52,29 @@ const defaults: Partial<GetOptions> = {
 export const get = async (options: GetOptions) => {
   const config = Object.assign({}, defaults, options) as Required<GetOptions>
 
-  const { base_url, owner, path, ref, repo, token } = config
+  const { base_url, log, owner, path, ref, repo, token } = config
 
   const endpoint = `/repos/${owner}/${repo}/contents/${path}`
   const url = `${base_url}${endpoint}?ref=${ref}`
 
   let response: Response
   try {
+    log.debug(`GET ${url}`)
     response = await fetch(url, {
       method: 'GET',
       headers: defHeaders({ token })
     })
-  } catch (err: any) {
+  } catch (ex: any) {
+    log.error(`GET ${url} errored: ${ex.message}`)
     return {
-      error: internalServerError(err)
+      error: internalServerError(ex)
     }
   }
 
-  if (response.status !== 200) {
+  if (!response.ok) {
     return {
       error: {
-        error_description: `could not retrieve ${config.path} from repo ${owner}/${repo}, ref=${ref}`,
+        error_description: `cannot retrieve ${config.path} from repo ${owner}/${repo}, ref=${ref}`,
         status_code: response.status,
         status_text: response.statusText
       }
@@ -77,7 +83,8 @@ export const get = async (options: GetOptions) => {
 
   try {
     const body: GetResponseBody = await response.json()
-
+    // TODO: maybe consider returning just the link/url/permalink/location
+    // instead of the entire response body.
     return {
       value: {
         summary: `retrieved ${config.path} from repo ${owner}/${repo}, ref=${ref}`,
@@ -86,9 +93,10 @@ export const get = async (options: GetOptions) => {
         status_text: response.statusText
       }
     }
-  } catch (err: any) {
+  } catch (ex: any) {
+    log.error(`cannot parse JSON response: ${ex.message}`)
     return {
-      error: internalServerError(err)
+      error: internalServerError(ex)
     }
   }
 }
