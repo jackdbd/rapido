@@ -1,5 +1,16 @@
 # @jackdbd/github-content-store
 
+## 0.2.0-canary.10
+
+### Minor Changes
+
+- ddd4660: Add logging statements.
+
+### Patch Changes
+
+- Updated dependencies [ddd4660]
+  - @jackdbd/github-contents-api@0.2.0-canary.10
+
 ## 0.2.0-canary.9
 
 ### Minor Changes
