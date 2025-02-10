@@ -1,5 +1,16 @@
 # @jackdbd/github-content-store
 
+## 0.2.0-canary.11
+
+### Minor Changes
+
+- 2c383bb: Add tests and cleanup.
+
+### Patch Changes
+
+- Updated dependencies [2c383bb]
+  - @jackdbd/github-contents-api@0.2.0-canary.11
+
 ## 0.2.0-canary.10
 
 ### Minor Changes
