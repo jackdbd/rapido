@@ -1,5 +1,11 @@
 # @jackdbd/unwrap
 
+## 1.0.0-canary.8
+
+### Major Changes
+
+- dbeae73: Change `onError` / `onUndefinedValue` handlers from `process.exit(1)` to `throw`.
+
 ## 0.2.0-canary.7
 
 ### Minor Changes

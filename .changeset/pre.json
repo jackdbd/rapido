@@ -33,6 +33,8 @@
     "@jackdbd/unwrap": "0.2.0-canary.7"
   },
   "changesets": [
-    "popular-clocks-smell"
+    "popular-clocks-smell",
+    "thin-points-breathe",
+    "violet-radios-suffer"
   ]
 }
