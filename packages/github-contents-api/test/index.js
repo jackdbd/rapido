@@ -59,7 +59,7 @@ describe('GitHub contents API', { timeout: TIMEOUT_MS }, () => {
 
       const content = value.body.content
       test_note_sha = content.sha
-      assert.equal(error, undefined, error.error_description)
+      assert.equal(error, undefined)
       assert.notEqual(test_note_sha, undefined)
       console.log(`created note ${test_note_path}`)
     },
