@@ -1,5 +1,11 @@
 # @jackdbd/fastify-authorization-endpoint
 
+## 1.3.0-canary.15
+
+### Minor Changes
+
+- c7fd730: Increase `minLength` and `maxLength` in `authorization_code` schema.
+
 ## 1.3.0-canary.14
 
 ### Minor Changes
