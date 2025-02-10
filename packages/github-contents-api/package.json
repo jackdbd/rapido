@@ -24,9 +24,25 @@
       "types": "./lib/index.d.ts",
       "import": "./lib/index.js"
     },
+    "./create-or-update": {
+      "types": "./lib/create-or-update.d.ts",
+      "import": "./lib/create-or-update.js"
+    },
     "./defaults": {
       "types": "./lib/defaults.d.ts",
       "import": "./lib/defaults.js"
+    },
+    "./delete": {
+      "types": "./lib/delete.d.ts",
+      "import": "./lib/delete.js"
+    },
+    "./get": {
+      "types": "./lib/get.d.ts",
+      "import": "./lib/get.js"
+    },
+    "./move": {
+      "types": "./lib/move.d.ts",
+      "import": "./lib/move.js"
     },
     "./package.json": "./package.json"
   },

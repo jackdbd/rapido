@@ -13,6 +13,8 @@ export {
 
 export { hardDelete, type DeleteOptions } from './delete.js'
 
+export { base64ToUtf8, utf8ToBase64 } from './encoding.js'
+
 export { get } from './get.js'
 export type { GetOptions, GetResponseBody } from './get.js'
 

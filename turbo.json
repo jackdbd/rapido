@@ -28,7 +28,7 @@
     },
     "dev": {
       "cache": false,
-      "env": ["JWKS"],
+      "env": ["CONTENTS_API_GITHUB_TOKEN", "JWKS"],
       "persistent": true
     },
     "lint": {
@@ -40,16 +40,16 @@
     },
     "test": {
       "dependsOn": ["build:ts"],
-      "env": ["JWKS"]
+      "env": ["CONTENTS_API_GITHUB_TOKEN", "JWKS"]
     },
     "test:ci": {
       "dependsOn": ["build:ts"],
-      "env": ["JWKS"],
+      "env": ["CONTENTS_API_GITHUB_TOKEN", "JWKS"],
       "outputs": ["coverage/**"]
     },
     "test:watch": {
       "dependsOn": ["^test:watch"],
-      "env": ["JWKS"],
+      "env": ["CONTENTS_API_GITHUB_TOKEN", "JWKS"],
       "persistent": true
     }
     //  "vendor": {

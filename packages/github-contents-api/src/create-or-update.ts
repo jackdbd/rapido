@@ -67,13 +67,6 @@ export const createOrUpdate = async (options: CreateOrUpdateOptions) => {
     body = { ...shared, message: `create ${path}` }
   }
 
-  console.log(`=== debug github-contents-api create-or-update ===`, {
-    body,
-    token,
-    url,
-    sha
-  })
-
   let response: Response
   try {
     log.debug(`PUT ${url}`)
@@ -93,7 +86,7 @@ export const createOrUpdate = async (options: CreateOrUpdateOptions) => {
     log.error(`sha=${sha} and response.status=${response.status}`)
     return {
       error: {
-        error_description: `could not update ${config.path} in repo ${owner}/${repo}`,
+        error_description: `cannot update ${config.path} in repo ${owner}/${repo}`,
         status_code: response.status,
         status_text: response.statusText
       }
@@ -104,7 +97,7 @@ export const createOrUpdate = async (options: CreateOrUpdateOptions) => {
     log.error(`response.status=${response.status} and sha is undefined`)
     return {
       error: {
-        error_description: `could not create ${config.path} in repo ${owner}/${repo}`,
+        error_description: `cannot create ${config.path} in repo ${owner}/${repo}`,
         status_code: response.status,
         status_text: response.statusText
       }
@@ -119,7 +112,6 @@ export const createOrUpdate = async (options: CreateOrUpdateOptions) => {
   }
 
   try {
-    log.debug(`parse JSON response from ${url}`)
     const body = await response.json()
     // TODO: maybe consider returning just the link/url/permalink/location
     // instead of the entire response body.

@@ -3,11 +3,13 @@ import { BASE_URL, REF } from './defaults.js'
 import { internalServerError } from './errors.js'
 import { get } from './get.js'
 import { defHeaders } from './headers.js'
+import { defaultLog, type Log } from './log.js'
 
 export interface DeleteOptions extends SharedConfig {
   author?: AuthorOrCommitter
   branch?: string
   committer: AuthorOrCommitter
+  log?: Log
   path?: string
   sha: string
 }
@@ -15,6 +17,7 @@ export interface DeleteOptions extends SharedConfig {
 const defaults: Partial<DeleteOptions> = {
   base_url: BASE_URL,
   branch: REF,
+  log: defaultLog,
   path: ''
 }
 
@@ -26,7 +29,7 @@ const defaults: Partial<DeleteOptions> = {
 export const hardDelete = async (options: DeleteOptions) => {
   const config = Object.assign({}, defaults, options) as Required<DeleteOptions>
 
-  const { base_url, branch, committer, owner, path, repo, token } = config
+  const { base_url, branch, committer, log, owner, path, repo, token } = config
   const author = config.author || committer
 
   let sha: string
@@ -67,21 +70,23 @@ export const hardDelete = async (options: DeleteOptions) => {
 
   let response: Response
   try {
+    log.debug(`DELETE ${url}`)
     response = await fetch(url, {
       method: 'DELETE',
       body: JSON.stringify(body),
       headers: defHeaders({ token })
     })
-  } catch (err: any) {
+  } catch (ex: any) {
+    log.error(`DELETE ${url} errored: ${ex.message}`)
     return {
-      error: internalServerError(err)
+      error: internalServerError(ex)
     }
   }
 
-  if (response.status !== 200) {
+  if (!response.ok) {
     return {
       error: {
-        error_description: `could not delete ${path} from repo ${owner}/${repo}, branch=${branch}`,
+        error_description: `cannot delete ${path} from repo ${owner}/${repo}, branch=${branch}`,
         status_code: response.status,
         status_text: response.statusText
       }
@@ -90,7 +95,6 @@ export const hardDelete = async (options: DeleteOptions) => {
 
   try {
     const body = await response.json()
-
     return {
       value: {
         summary: `deleted ${path} in repo ${owner}/${repo}, branch=${branch}`,
@@ -99,9 +103,10 @@ export const hardDelete = async (options: DeleteOptions) => {
         status_text: response.statusText
       }
     }
-  } catch (err: any) {
+  } catch (ex: any) {
+    log.error(`cannot parse JSON response: ${ex.message}`)
     return {
-      error: internalServerError(err)
+      error: internalServerError(ex)
     }
   }
 }

@@ -23,7 +23,7 @@ in {
   env = {
     BASE_URL = "http://localhost:${config.env.PORT}";
     # GITHUB_TOKEN = semantic_release_bot_github_token;
-    # GITHUB_TOKEN = builtins.readFile /run/secrets/github-tokens/crud_contents_api;
+    CONTENTS_API_GITHUB_TOKEN = builtins.readFile /run/secrets/github-tokens/crud_contents_api;
     JWKS = builtins.readFile /home/jack/repos/micropub/secrets/jwks.txt;
     NODE_ENV = "development";
     NPM_TOKEN = builtins.readFile /run/secrets/npm-tokens/semantic_release_bot;

@@ -12,6 +12,7 @@ jobs:
     name: Build and test all packages on ${{ matrix.os }}, Node ${{ matrix.node }}, Fastify ${{ matrix.fastify }}
     runs-on: ${{ matrix.os }}
     env:
+      CONTENTS_API_GITHUB_TOKEN: ${{ secrets.CONTENTS_API_GITHUB_TOKEN }}
       JWKS: ${{ secrets.JWKS }}
     strategy:
       matrix:

@@ -56,6 +56,7 @@ jobs:
           # https://turbo.build/repo/docs/guides/publishing-libraries#using-changesets-with-turborepo
           publish: npm run publish-packages
         env:
+          CONTENTS_API_GITHUB_TOKEN: ${{ secrets.CONTENTS_API_GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_GITHUB_TOKEN }}
           JWKS: ${{ secrets.JWKS }}
           NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_NPM_TOKEN }}
