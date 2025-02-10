@@ -1,5 +1,11 @@
 # @jackdbd/fastify-introspection-endpoint
 
+## 1.3.0-canary.17
+
+### Patch Changes
+
+- 5044fa3: Add log prefix.
+
 ## 1.3.0-canary.16
 
 ### Minor Changes
