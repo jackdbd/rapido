@@ -1,5 +1,16 @@
 # @jackdbd/fastify-hooks
 
+## 0.2.0-canary.12
+
+### Minor Changes
+
+- 38a277f: Bump packages that depend on `@jackdbd/indieauth`.
+
+### Patch Changes
+
+- Updated dependencies [c56656a]
+  - @jackdbd/indieauth@0.2.0-canary.11
+
 ## 0.2.0-canary.11
 
 ### Minor Changes
