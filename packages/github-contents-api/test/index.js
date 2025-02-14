@@ -16,7 +16,7 @@ const TIMEOUT_MS = 10_000
 
 const token = process.env.CONTENTS_API_GITHUB_TOKEN
 const owner = 'jackdbd'
-const repo = 'giacomodebidda-content'
+const repo = 'test-content'
 const ref = 'main'
 const committer = {
   name: 'Giacomo Debidda',
@@ -37,8 +37,6 @@ describe('GitHub contents API', { timeout: TIMEOUT_MS }, () => {
       const open_api_spec = YAML.parse(yaml)
       schemas = open_api_spec.components.schemas
 
-      console.log(`create note ${test_note_path}`)
-
       const jf2 = {
         h: 'entry',
         content: `This test note was created at ${rfc3339()}`,
@@ -47,6 +45,7 @@ describe('GitHub contents API', { timeout: TIMEOUT_MS }, () => {
         visibility: 'public'
       }
 
+      console.log(`trying to create note ${test_note_path}`)
       const { error, value } = await createOrUpdate({
         branch: ref,
         committer,
@@ -56,6 +55,13 @@ describe('GitHub contents API', { timeout: TIMEOUT_MS }, () => {
         repo,
         token
       })
+
+      if (error) {
+        const message =
+          error.error_description ||
+          `cannot create ${test_note_path} in ${repo}`
+        throw new Error(message)
+      }
 
       const content = value.body.content
       test_note_sha = content.sha
@@ -68,7 +74,7 @@ describe('GitHub contents API', { timeout: TIMEOUT_MS }, () => {
 
   after(
     async () => {
-      console.log(`delete note ${test_note_path}`)
+      console.log(`trying to delete note ${test_note_path}`)
       const { error } = await hardDelete({
         committer,
         owner,
@@ -76,6 +82,14 @@ describe('GitHub contents API', { timeout: TIMEOUT_MS }, () => {
         repo,
         token
       })
+
+      if (error) {
+        const message =
+          error.error_description ||
+          `cannot delete ${test_note_path} in ${repo}`
+        throw new Error(message)
+      }
+
       assert.equal(error, undefined)
       console.log(`deleted note ${test_note_path}`)
     },
