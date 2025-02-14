@@ -35,11 +35,11 @@ const run = async () => {
   // const github_username = npm_scope.replace('@', '') as string
   const project_started_in_year = parseInt(values.started_in_year)
 
-  const pkg = JSON.parse(
+  const root_pkg = JSON.parse(
     readFileSync(path.join(REPO_ROOT, 'package.json'), 'utf-8')
   )
 
-  const repo_name = pkg.name
+  const repo_name = root_pkg.name
   console.log(`Building ${output} for repository ${repo_name}`)
 
   const items = readdirSync(path.join(REPO_ROOT, 'packages'))
@@ -47,11 +47,21 @@ const run = async () => {
     .map((unscoped_pkg_name) => {
       const pkg_href = `https://github.com/${github_username}/${repo_name}/tree/${git_ref}/packages/${unscoped_pkg_name}`
       const scoped_pkg_name = `${npm_scope}/${unscoped_pkg_name}`
+
+      const pkg = JSON.parse(
+        readFileSync(
+          path.join(REPO_ROOT, 'packages', unscoped_pkg_name, 'package.json'),
+          'utf-8'
+        )
+      )
+
+      const version = pkg.version
+
       const home = link(scoped_pkg_name, pkg_href)
 
       const typedoc = link(
         'Docs',
-        `https://${github_username}.github.io/${repo_name}/${unscoped_pkg_name}/index.html`
+        `https://${github_username}.github.io/${repo_name}/${unscoped_pkg_name}/${version}`
       )
 
       const npm_version = link(
@@ -93,7 +103,7 @@ const run = async () => {
   const current_year = new Date().getFullYear()
 
   const transcluded = transcludeFile(path.join(REPO_ROOT, 'tpl.readme.md'), {
-    user: pkg.author,
+    user: root_pkg.author,
     templates: {
       // 'callout.esmOnly': callout({
       //   // emoji: '[!IMPORTANT]',
@@ -105,7 +115,7 @@ const run = async () => {
         `All packages of this monorepo are published to npmjs.com as ECMAScript modules **only** (i.e. there are no CJS builds).`
       ]),
 
-      'pkg.description': pkg.description,
+      'pkg.description': root_pkg.description,
 
       'pkg.license': ({ user }) => {
         const copyright =
@@ -119,7 +129,7 @@ const run = async () => {
           `${copyright} ${link(
             user.name,
             'https://www.giacomodebidda.com/'
-          )} // ${licenseLink(pkg.license)}`
+          )} // ${licenseLink(root_pkg.license)}`
         ]
         return lines.join('')
       },

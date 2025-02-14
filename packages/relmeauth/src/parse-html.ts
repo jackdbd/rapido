@@ -47,7 +47,6 @@ const collectMeHrefs = (nodes: Node[]) => {
 }
 
 export const htmlToLinkHrefs = (html: string) => {
-  // const rel = 'me'
   let nodes: Node[] = []
   try {
     nodes = parser(html)

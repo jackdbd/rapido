@@ -70,10 +70,7 @@ const run = async () => {
       // monorepo is under a subdirectory of the docs/ directory.
       const home = link(scoped_pkg_name, pkg_href)
 
-      const typedoc = link(
-        'Docs',
-        `./${unscoped_pkg_name}/${version}/index.html`
-      )
+      const typedoc = link('Docs', `./${unscoped_pkg_name}/${version}`)
 
       const npm_version = link(
         image(

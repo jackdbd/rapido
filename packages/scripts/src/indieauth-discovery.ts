@@ -1,25 +1,26 @@
 import { fileURLToPath } from 'node:url'
 import { parseArgs } from 'node:util'
-import canonicalUrl from '@jackdbd/canonical-url'
 import { metadataEndpoint, serverMetadata } from '@jackdbd/indieauth'
-import { ME } from '../../stdlib/lib/test-utils.js'
+import { exitOne } from '@repo/stdlib/test-utils'
 
 const __filename = fileURLToPath(import.meta.url)
 const prefix = `[${__filename}] `
+
+// TIP: you can type --me giacomodebidda.com instead of writing the full URL
+// because the metadataEndpoint function will canonicalize the URL
 
 const run = async () => {
   const { values } = parseArgs({
     allowPositionals: false,
     options: {
-      me: { type: 'string', default: ME },
-      verbose: { type: 'boolean' }
+      me: { type: 'string' }
     }
   })
 
-  const { me: me_given, verbose } = values
+  const { me } = values
 
-  if (verbose) {
-    console.log(`${prefix}ensuring given profile URL is a canonical URL`)
+  if (!me) {
+    return exitOne(`${prefix}--me is required`)
   }
 
   // const me = 'https://aaronparecki.com/'
@@ -32,13 +33,10 @@ const run = async () => {
   // const me = 'https://keithjgrant.com/' // no indieauth metadata endpoint
   // const me = 'https://waterpigs.co.uk/' // no indieauth metadata endpoint
 
-  const me = canonicalUrl(me_given)
-
   const { error, value: metadata_endpoint } = await metadataEndpoint(me)
 
   if (error) {
-    console.error(error)
-    process.exit(1)
+    return exitOne(`${prefix}${error.message}`)
   }
 
   console.log(`Metadata endpoint for ${me}: ${metadata_endpoint}`)
@@ -47,8 +45,7 @@ const run = async () => {
     await serverMetadata(metadata_endpoint)
 
   if (metadata_error) {
-    console.error(metadata_error)
-    process.exit(1)
+    return exitOne(`${prefix}${metadata_error?.message}`)
   }
 
   console.log(`Server metadata for ${me}`)
