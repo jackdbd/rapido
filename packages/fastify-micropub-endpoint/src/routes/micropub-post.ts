@@ -226,8 +226,11 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
     }
 
     const validate = request.getValidationFunction('body')
-    validate(request_body)
-    console.log('=== validate.errors ===', validate.errors)
+    // If we did not set a schema for the body, validate will be undefined.
+    if (validate) {
+      validate(request_body)
+      console.log('=== validate.errors ===', validate.errors)
+    }
 
     // If `url` is undefined, it's because action is 'create' (i.e. we need to
     // create the Micropub post).
@@ -238,7 +241,11 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
     // creating and storing the post immediately, it MUST return an HTTP 202
     // Accepted status code, and MUST also return the Location header.
     // https://micropub.spec.indieweb.org/#create
+
     // TODO: how to know the URL of the created post?
+    // I think need a user-provided function which is specular to
+    // websiteUrlToStorageLocation. Something like storageLocationToWebsiteUrl.
+
     switch (jf2.h) {
       case 'card': {
         const location = 'https://example.com/cards'
