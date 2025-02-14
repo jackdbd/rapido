@@ -1,5 +1,18 @@
 # @jackdbd/fastify-introspection-endpoint
 
+## 1.3.0-canary.18
+
+### Minor Changes
+
+- 38a277f: Bump packages that depend on `@jackdbd/indieauth`.
+
+### Patch Changes
+
+- Updated dependencies [38a277f]
+- Updated dependencies [c56656a]
+  - @jackdbd/fastify-hooks@0.2.0-canary.12
+  - @jackdbd/indieauth@0.2.0-canary.11
+
 ## 1.3.0-canary.17
 
 ### Patch Changes
