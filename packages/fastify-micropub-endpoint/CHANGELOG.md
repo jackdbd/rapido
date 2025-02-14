@@ -1,5 +1,11 @@
 # @jackdbd/fastify-micropub-endpoint
 
+## 0.2.0-canary.19
+
+### Minor Changes
+
+- 77ae567: Avoid validating request body at route POST /micropub
+
 ## 0.2.0-canary.18
 
 ### Minor Changes
