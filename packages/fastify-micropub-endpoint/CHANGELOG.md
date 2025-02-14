@@ -1,5 +1,11 @@
 # @jackdbd/fastify-micropub-endpoint
 
+## 0.2.0-canary.20
+
+### Minor Changes
+
+- 2de8ec7: Avoid calling validate function when it's undefined.
+
 ## 0.2.0-canary.19
 
 ### Minor Changes
