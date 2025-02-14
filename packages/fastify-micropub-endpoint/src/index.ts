@@ -13,6 +13,7 @@ import { unixTimestampInSeconds } from '@jackdbd/indieauth'
 import * as jf2 from '@jackdbd/microformats2'
 import { conformResult } from '@jackdbd/schema-validators'
 import { defErrorHandler } from '@repo/error-handlers'
+// import { Type } from '@sinclair/typebox'
 import { Ajv, type Plugin as AjvPlugin } from 'ajv'
 import addFormats from 'ajv-formats'
 import type { FastifyPluginCallback } from 'fastify'
@@ -23,7 +24,7 @@ import { defMicropubGet } from './routes/micropub-get.js'
 import { defMicropubPost } from './routes/micropub-post.js'
 import {
   micropub_get_request_querystring,
-  micropub_post_request_body_jf2,
+  // micropub_post_request_body_jf2,
   options as options_schema
 } from './schemas/index.js'
 import type { Options } from './schemas/index.js'
@@ -205,7 +206,12 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
         validateAccessTokenNotRevoked
       ],
       schema: {
-        body: micropub_post_request_body_jf2,
+        // By default @fastify/multipart does not populate request.body. It can
+        // do it by configuring attachFieldsToBody. See here:
+        // https://github.com/fastify/fastify-multipart?tab=readme-ov-file#parse-all-fields-and-assign-them-to-the-body
+        // It's probably better to validate in the request handler, when we know
+        // whether we are dealing with a multipart request or not.
+        // body: Type.Union([Type.Undefined(), micropub_post_request_body_jf2]),
         response: {
           // 200: micropub_response_body_success,
           '4xx': error_response,
