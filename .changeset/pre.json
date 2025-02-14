@@ -32,5 +32,7 @@
     "@repo/typescript-config": "0.1.1",
     "@jackdbd/unwrap": "1.0.0-canary.8"
   },
-  "changesets": []
+  "changesets": [
+    "kind-pears-know"
+  ]
 }
