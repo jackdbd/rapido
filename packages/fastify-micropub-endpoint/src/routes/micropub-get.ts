@@ -20,7 +20,10 @@ export const defMicropubGet = (config: MicropubGetConfig) => {
     // If we reached this handler, I guess Fastify has already validated the
     // querystring against the schema.
     const validate = request.getValidationFunction('querystring')
-    validate(request.query)
+    // If we did not set a schema for the querystring, validate will be undefined.
+    if (validate) {
+      validate(request.query)
+    }
 
     // In alternative:
     // const { error, value } = conformResult(
