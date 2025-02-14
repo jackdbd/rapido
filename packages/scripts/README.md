@@ -2,6 +2,20 @@
 
 Scripts for managing the project.
 
+Compile a script, then launch it. For example:
+
+```sh
+npm run build -w @repo/scripts
+
+node packages/scripts/dist/indieauth-client-metadata.js --client-id https://indiebookclub.biz/id
+```
+
+If you don't want to compile a TypeScript first, you can launch it using [tsm](https://github.com/lukeed/tsm). For example:
+
+```sh
+npx tsm packages/scripts/src/indieauth-client-metadata.ts --client-id https://indiebookclub.biz/id
+```
+
 > [!WARNING]
 > This is an [internal package](https://turbo.build/repo/docs/core-concepts/internal-packages).
 >
