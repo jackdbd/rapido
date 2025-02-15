@@ -71,14 +71,20 @@ export const defRender = (config: Config) => {
     // const m = WebC.getComponentsMap(['**/*.webc'])
     // console.log('=== ComponentsMap ===', m)
 
-    // this.log.debug(`${logPrefix}compiling ${file}`)
+    this.log.debug(data, `${logPrefix}compiling ${file}`)
     // const { html, css, js } = await page.compile({ data })
+    const { html } = await page.compile({ data })
 
     // const mode = page.getRenderingMode(html)
     // this.log.debug(`rendering mode: ${mode}`)
 
-    this.log.debug(`${logPrefix}streaming ${file}`)
-    const { html } = await page.stream({ data })
+    // TODO: streaming mode works for the template authorize.webc, but not for
+    // the template error.webc. The template is rendered and all dynamic
+    // attributes are correctly passed (e.g. :foo="1+2"), BUT no webc RESERVED
+    // PROP reaches the template (e.g. if we write <p @text="error_uri"></p> we
+    // get an empty <p></p>).
+    // this.log.debug(data, `${logPrefix}streaming ${file}`)
+    // const { html } = await page.stream({ data })
 
     // Fastify supports sending Node.js Readable streams as responses. So we can
     // just call reply.send(string | Readable stream)
