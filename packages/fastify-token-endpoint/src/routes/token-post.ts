@@ -92,6 +92,9 @@ export const defTokenPost = (config: TokenPostConfig) => {
     if (grant_type === 'refresh_token') {
       const { client_id, refresh_token, scope } = request.body
 
+      // Require authentication for refresh token requests.
+      // https://datatracker.ietf.org/doc/html/rfc6749#section-3.2.1
+
       // The section "Refreshing an Access Token" of the OAuth 2.0 RFC does not
       // mention that the request body should contain the client_id. However,
       // IndieAuth does require client_id to be present in the request body.
@@ -264,9 +267,11 @@ export const defTokenPost = (config: TokenPostConfig) => {
         const payload = revoke_error_refresh.payload({
           include_error_description
         })
-        request.log.error(
-          `${log_prefix}cannot revoke refresh token ${refresh_token}: ${payload.error_description}`
-        )
+        const preamble = `Cannot revoke refresh token ${refresh_token}`
+        if (payload.error_description) {
+          payload.error_description = `${preamble}: ${payload.error_description}`
+        }
+        request.log.error(`${log_prefix}${payload.error_description}`)
         return reply.code(revoke_error_refresh.statusCode).send(payload)
       }
 
@@ -293,9 +298,11 @@ export const defTokenPost = (config: TokenPostConfig) => {
           const payload = revoke_error_access.payload({
             include_error_description
           })
-          request.log.error(
-            `${log_prefix}cannot revoke access token: ${payload.error_description}`
-          )
+          const preamble = `Cannot revoke access token ${access_token}`
+          if (payload.error_description) {
+            payload.error_description = `${preamble}: ${payload.error_description}`
+          }
+          request.log.error(`${log_prefix}${payload.error_description}`)
           return reply.code(revoke_error_access.statusCode).send(payload)
         }
 
@@ -325,14 +332,12 @@ export const defTokenPost = (config: TokenPostConfig) => {
 
       if (verify_error) {
         const payload = verify_error.payload({ include_error_description })
-        request.log.error(
-          `${log_prefix}cannot verify authorization code ${code}: ${payload.error_description}`
-        )
+        const preamble = `Cannot verify authorization code ${code}`
+        if (payload.error_description) {
+          payload.error_description = `${preamble}: ${payload.error_description}`
+        }
+        request.log.error(`${log_prefix}${payload.error_description}`)
         return reply.code(verify_error.statusCode).send(payload)
-      }
-
-      if (!verify_value) {
-        throw new Error(`cannot verify authorization code ${code}`)
       }
 
       const { me, scope } = verify_value
@@ -438,14 +443,12 @@ export const defTokenPost = (config: TokenPostConfig) => {
       })
 
       if (profile_error) {
-        const payload = profile_error.payload({
-          include_error_description
-        })
-        let message = `Cannot retrieve profile info`
+        const payload = profile_error.payload({ include_error_description })
+        const preamble = `Cannot retrieve profile info`
         if (payload.error_description) {
-          message = `${message}: ${payload.error_description}`
+          payload.error_description = `${preamble}: ${payload.error_description}`
         }
-        request.log.error(`${log_prefix}${message}`)
+        request.log.error(`${log_prefix}${payload.error_description}`)
         return reply.code(profile_error.statusCode).send(payload)
       }
 
