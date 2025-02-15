@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/fastify-syndicate-endpoint",
-  "version": "0.2.0-canary.14",
+  "version": "0.2.0-canary.15",
   "description": "Fastify plugin that adds a `syndicate` endpoint to a Fastify server.",
   "author": {
     "name": "Giacomo Debidda",
@@ -72,8 +72,8 @@
     "@fastify/formbody": "^8.0.2",
     "@fastify/response-validation": "^3.0.3",
     "@jackdbd/canonical-url": "0.2.0-canary.8",
-    "@jackdbd/fastify-hooks": "0.2.0-canary.12",
-    "@jackdbd/indieauth": "0.2.0-canary.11",
+    "@jackdbd/fastify-hooks": "0.2.0-canary.13",
+    "@jackdbd/indieauth": "0.2.0-canary.12",
     "@jackdbd/micropub": "0.2.0-canary.10",
     "@jackdbd/oauth2-error-responses": "0.2.0-canary.8",
     "@paulrobertlloyd/mf2tojf2": "^2.4.0",

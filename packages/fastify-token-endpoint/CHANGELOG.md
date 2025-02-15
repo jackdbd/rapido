@@ -1,5 +1,16 @@
 # @jackdbd/fastify-token-endpoint
 
+## 1.3.0-canary.19
+
+### Minor Changes
+
+- cc4a499: Improve error responses. Add tests.
+
+### Patch Changes
+
+- Updated dependencies [0e82d17]
+  - @jackdbd/indieauth@0.2.0-canary.12
+
 ## 1.3.0-canary.18
 
 ### Minor Changes

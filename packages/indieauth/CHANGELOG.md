@@ -1,5 +1,11 @@
 # @jackdbd/indieauth
 
+## 0.2.0-canary.12
+
+### Minor Changes
+
+- 0e82d17: Improve `error_description` in `errorResponseFromJSONResponse` when URL is not found (404).
+
 ## 0.2.0-canary.11
 
 ### Minor Changes

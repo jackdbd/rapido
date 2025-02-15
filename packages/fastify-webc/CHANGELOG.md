@@ -1,5 +1,11 @@
 # @jackdbd/fastify-webc
 
+## 0.2.0-canary.8
+
+### Minor Changes
+
+- d5ac731: Avoid using streaming mode for webc templates.
+
 ## 0.2.0-canary.7
 
 ### Minor Changes
