@@ -14,15 +14,6 @@ import {
 } from '@jackdbd/pkce'
 import { Static, Type } from '@sinclair/typebox'
 
-export const response_type = Type.Union(
-  [Type.Literal('code'), Type.Literal('token')],
-  {
-    title: 'OAuth 2.0 response_type',
-    description: 'Tells the authorization server which grant to execute.',
-    default: 'code'
-  }
-)
-
 /**
  * Query string of the Authorization Request.
  *
@@ -60,9 +51,12 @@ export const authorization_request_querystring = Type.Object(
     redirect_uri,
 
     /**
-     * The value MUST be one of "code" for requesting an authorization code.
+     * Tells the authorization server which grant to execute.
+     * The value MUST be "code" for requesting an authorization code.
+     *
+     * @see [Authorization Request - The OAuth 2.0 Authorization Framework (RFC 6749)](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1.1)
      */
-    response_type,
+    response_type: Type.Literal('code', { default: 'code' }),
 
     scope: Type.Optional(scope),
 

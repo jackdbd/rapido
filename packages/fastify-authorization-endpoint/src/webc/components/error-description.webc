@@ -1,0 +1,4 @@
+<div>
+    <h2>Error description</h2>
+    <p @text="error_description" class="error-description"></p>
+</div>

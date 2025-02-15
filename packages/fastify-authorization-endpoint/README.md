@@ -102,7 +102,7 @@ When the end user accesses the authorization endpoint, they are presented with a
 |**code\_challenge\_method**<br/>(PKCE code challenge method)||The hashing method used to calculate the code challenge in the PKCE OAuth 2.0 flow. See [Client Creates the Code Challenge](https://datatracker.ietf.org/doc/html/rfc7636#section-4.2).<br/>|yes|
 |**me**|||yes|
 |**redirect\_uri**|`string`|Holds a URL. A successful response from this endpoint results in a redirect to this URL.<br/>Format: `"uri"`<br/>|yes|
-|**response\_type**<br/>(OAuth 2\.0 response\_type)||Tells the authorization server which grant to execute.<br/>Default: `"code"`<br/>|yes|
+|**response\_type**|`string`|Default: `"code"`<br/>Constant Value: `"code"`<br/>|yes|
 |**scope**<br/>(OAuth 2\.0 scope \(scopes\) claim)|`string`|Scope values. See [RFC8693 scope claim](https://www.rfc-editor.org/rfc/rfc8693.html#name-scope-scopes-claim)<br/>Minimal Length: `1`<br/>|no|
 |**state**<br/>(OAuth 2\.0 state parameter \(CSRF token\))|`string`|An opaque value used by the client to maintain state between the request and callback. The parameter SHOULD be used for preventing cross-site request forgery. See [OAuth 2.0 Authorization Request](https://www.rfc-editor.org/rfc/rfc6749#section-4.1.1).<br/>Minimal Length: `1`<br/>|yes|
 
@@ -138,8 +138,8 @@ To verify that the authorization code is valid, the token endpoint of the author
 | [@fastify/response-validation](https://www.npmjs.com/package/@fastify/response-validation) | `^3.0.3` |
 | [@hapi/hoek](https://www.npmjs.com/package/@hapi/hoek) | `^11.0.7` |
 | [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `^0.2.0-canary.8` |
-| [@jackdbd/fastify-webc](https://www.npmjs.com/package/@jackdbd/fastify-webc) | `^0.2.0-canary.7` |
-| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `0.2.0-canary.10` |
+| [@jackdbd/fastify-webc](https://www.npmjs.com/package/@jackdbd/fastify-webc) | `*` |
+| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `0.2.0-canary.11` |
 | [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `^0.2.0-canary.8` |
 | [@jackdbd/pkce](https://www.npmjs.com/package/@jackdbd/pkce) | `^0.2.0-canary.7` |
 | [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `^0.2.0-canary.11` |

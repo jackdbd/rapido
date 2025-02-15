@@ -1,0 +1,4 @@
+<div>
+    <h2>Error URI</h2>
+    <a @text="error_uri" :href="error_uri" target="_blank" class="error-uri" rel="noopener noreferrer"></a>
+</div>
