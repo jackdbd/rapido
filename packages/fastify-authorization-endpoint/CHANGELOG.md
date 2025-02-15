@@ -1,5 +1,18 @@
 # @jackdbd/fastify-authorization-endpoint
 
+## 1.3.0-canary.17
+
+### Minor Changes
+
+- 14f0369: Add template `error.webc` to show errors at the authorization endpoint.
+
+### Patch Changes
+
+- Updated dependencies [d5ac731]
+- Updated dependencies [0e82d17]
+  - @jackdbd/fastify-webc@0.2.0-canary.8
+  - @jackdbd/indieauth@0.2.0-canary.12
+
 ## 1.3.0-canary.16
 
 ### Minor Changes
