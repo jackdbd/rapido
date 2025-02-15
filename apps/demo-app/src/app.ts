@@ -217,3 +217,21 @@ export const defFastify = (config: Config) => {
 
   return fastify
 }
+
+// invalid request (no query string)
+// http://localhost:3001/auth
+
+// invalid request (response_type != code)
+// http://localhost:3001/auth?client_id=https://example.com/id&code_challenge=1234567890123456789012345678901234567890123&code_challenge_method=S256&me=giacomodebidda.com&redirect_uri=https://example.com/auth/callback&state=foo&response_type=token
+
+// invalid request (client app does not exist)
+// http://localhost:3001/auth?client_id=https://example.com/id&code_challenge=1234567890123456789012345678901234567890123&code_challenge_method=S256&me=giacomodebidda.com&redirect_uri=https://example.com/auth/callback&state=foo
+
+// invalid request (redirect_uri does not match the one defined by the client app)
+// http://localhost:3001/auth?client_id=https://micropub.fly.dev/id&code_challenge=1234567890123456789012345678901234567890123&code_challenge_method=S256&me=giacomodebidda.com&redirect_uri=https://example.com/auth/callback&state=foo
+
+// invalid request (valid at the authorization endpoint, but invalid at the consent screen because it has no scope)
+// http://localhost:3001/auth?client_id=https://micropub.fly.dev/id&code_challenge=1234567890123456789012345678901234567890123&code_challenge_method=S256&me=giacomodebidda.com&redirect_uri=https://micropub.fly.dev/auth/callback&state=foo
+
+// valid request
+// http://localhost:3001/auth?client_id=https://micropub.fly.dev/id&code_challenge=1234567890123456789012345678901234567890123&code_challenge_method=S256&me=giacomodebidda.com&redirect_uri=https://micropub.fly.dev/auth/callback&state=foo&scope=create
