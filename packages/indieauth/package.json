@@ -52,7 +52,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "run-s 'build:ts' 'build:docs' 'build:readme' --print-label",
+    "build": "run-s 'build:ts' 'build:readme' --print-label",
     "build:docs": "node ../scripts/dist/docs.js --package indieauth",
     "build:readme": "node ../scripts/dist/readme.js --package indieauth",
     "build:ts": "tsc -p tsconfig.json",
@@ -62,7 +62,7 @@
     "lint": "eslint --config ../../eslint.config.mjs --fix",
     "publint": "publint run .",
     "size": "pkg-size ./lib --sort-by=brotli --ignore-files {*.d.ts,*.map}",
-    "test": "node --test --experimental-test-coverage",
+    "test": "node --test",
     "test:ci": "node --test --test-reporter=@reporters/github --test-reporter-destination=stdout --test-reporter=spec --test-reporter-destination=stdout",
     "test:watch": "node --test --watch"
   },
