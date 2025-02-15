@@ -18,7 +18,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "run-s build:ts build:docs build:readme copy:webc build:docs:root build:readme:root --print-label",
+    "build": "run-s build:ts build:readme copy:webc build:readme:root --print-label",
     "build:app": "turbo build --filter @repo/demo-app",
     "build:docs": "npm run build:docs --workspaces --if-present",
     "build:docs:root": "node ./packages/scripts/dist/docs-root.js",
@@ -40,6 +40,7 @@
     "publish-packages": "npm run build:ts && npm run vendor && npm run build:readme && npm run copy:webc && npm run publint && npm run test:ci && changeset publish",
     "size": "npm run size --workspaces --if-present",
     "start:app": "npm run start -w @repo/demo-app",
+    "test": "npm run test --workspaces --if-present",
     "test:ci": "npm run test:ci --workspaces --if-present",
     "vendor": "npm run vendor --workspaces --if-present",
     "webserver": "npx http-server --port 8080"
