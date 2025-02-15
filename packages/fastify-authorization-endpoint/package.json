@@ -72,7 +72,7 @@
     "size": "pkg-size ./lib --sort-by=brotli --ignore-files {*.d.ts,*.map}",
     "test": "node --test",
     "test:ci": "node --test --test-reporter=@reporters/github --test-reporter-destination=stdout --test-reporter=spec --test-reporter-destination=stdout",
-    "test:coverage": "node --test --experimental-test-coverage",
+    "test:coverage": "node --test",
     "test:watch": "node --test --watch",
     "vendor": "node ../scripts/dist/vendor.js --package fastify-authorization-endpoint"
   },
