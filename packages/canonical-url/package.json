@@ -52,7 +52,7 @@
     "lint": "eslint --config ../../eslint.config.mjs --fix",
     "publint": "publint run .",
     "size": "pkg-size ./lib --sort-by=brotli --ignore-files {*.d.ts,*.map}",
-    "test": "node --test --experimental-test-coverage",
+    "test": "node --test",
     "test:ci": "node --test --test-reporter=@reporters/github --test-reporter-destination=stdout --test-reporter=spec --test-reporter-destination=stdout",
     "test:watch": "node --test --watch"
   },
