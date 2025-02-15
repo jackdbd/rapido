@@ -93,13 +93,21 @@ export const defHandleAction = (config: Config) => {
     })
 
     if (state !== auth.state) {
-      const error_description = `The state (CSRF token) returned by the authorization response URL does not match the state sent by client ${client_id}`
+      const error_description = `The state (CSRF token) returned by the authorization response URL does not match the state sent by the client application ${client_id}.`
       // TODO: create HTML page for error_uri
       const error_uri = undefined
+      // Which error response to return here? server_error? invalid_request? access_denied?
+      // https://datatracker.ietf.org/doc/html/rfc6749#section-4.1.2.1
       const err = new ServerError({ error_description, error_uri, state })
-      return reply
-        .code(err.statusCode)
-        .send(err.payload({ include_error_description }))
+
+      const data = {
+        ...err.payload({ include_error_description }),
+        description: `Authorization endpoint error: ${err.error}`,
+        title: `Error: ${err.error}`
+      }
+
+      request.log.error(`${log_prefix}${error_description}`)
+      return reply.code(err.statusCode).render('error.webc', data)
     }
 
     const { code, iss, redirect_url } = auth
@@ -131,15 +139,17 @@ export const defHandleAction = (config: Config) => {
       if (ex && ex.message) {
         error_description = `${error_description} Here is the original error message: ${ex.message}`
       }
-      request.log.error(`${log_prefix}${error_description}`)
       const error_uri = undefined
       const err = new ServerError({ error_description, error_uri })
-      return reply
-        .code(err.statusCode)
-        .send(err.payload({ include_error_description }))
-      // TODO: redirect to an error page when the user-provided handler throws
-      // an exception. Do not return a JSON response.
-      // reply.redirect(redirect_url)
+
+      const data = {
+        ...err.payload({ include_error_description }),
+        description: `Authorization endpoint error: ${err.error}`,
+        title: `Error: ${err.error}`
+      }
+
+      request.log.error(`${log_prefix}${error_description}`)
+      return reply.code(err.statusCode).render('error.webc', data)
     }
 
     request.log.debug(

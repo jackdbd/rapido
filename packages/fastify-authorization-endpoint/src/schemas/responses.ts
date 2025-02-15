@@ -44,15 +44,8 @@ export type AuthorizationResponseQuerystring = Static<
   typeof authorization_response_querystring
 >
 
-/**
- * Response body to a successful Authorization Request.
- *
- * If the user approves the request, the authorization endpoint generates an
- * authorization code and builds the redirect back to the client.
- *
- * @see [Authorization Response - IndieAuth](https://indieauth.spec.indieweb.org/#authorization-response)
- * @see [Authorization Response - The OAuth 2.0 Authorization Framework (RFC 6749)](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1.2)
- */
+// This is the response body to a request that asks to validate an authorization
+// code. I can't find the link to the appropriate terminology
 export const authorization_response_body_success = Type.Object({
   me: me_after_url_canonicalization,
   scope: Type.Optional(scope)

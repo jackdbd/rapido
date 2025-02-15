@@ -55,44 +55,53 @@ export const defAuthorizePage = (config: Config) => {
       state
     } = request.query
 
+    // The querystring schema enforces response_type to be 'code'. However, the
+    // plugin might be launched with validation switched off.
     if (response_type !== 'code') {
-      const error_description = `This authorization endpoint only supports the 'code' response type.`
-      // TODO: create HTML page for error_uri
-      const error_uri = undefined
-      const err = new InvalidRequestError({
-        error_description,
-        error_uri,
-        state
-      })
-      return reply
-        .code(err.statusCode)
-        .send(err.payload({ include_error_description }))
+      const error_description = `This authorization endpoint supports only the 'code' response type.`
+      const err = new InvalidRequestError({ error_description, state })
+
+      const data = {
+        ...err.payload({ include_error_description }),
+        description: `Authorization endpoint error: ${err.error}`,
+        title: `Error: ${err.error}`
+      }
+
+      return reply.code(err.statusCode).render('error.webc', data)
     }
 
     // The authorization endpoint SHOULD fetch the client_id URL to retrieve
     // application information and the client's registered redirect URLs.
     request.log.debug(`${log_prefix}fetch metadata for client ${client_id}`)
-    // This function already canonicalizes the client_id URL.
+    // This function canonicalizes the client_id URL, so there is no need to do it here.
     const { error: client_metadata_error, value: client_metadata } =
       await clientMetadata(client_id)
 
     if (client_metadata_error) {
       const original = client_metadata_error.message
-      const error_description = `Failed to fetch metadata for client ${client_id}: ${original}.`
+      const error_description = `Cannot retrieve metadata of client application ${client_id} (original error message: ${original}).`
       // TODO: create HTML page for error_uri
       const error_uri = undefined
-      // Which one is the most appropriate here? InvalidRequestError / InvalidClientError / ServerError
+      // According to what RFC 6749 says, it seems that in this case
+      // InvalidRequestError is the most appropriate error response to return.
+      // https://datatracker.ietf.org/doc/html/rfc6749#section-4.1.2.1
       const err = new InvalidRequestError({
         error_description,
         error_uri,
         state
       })
-      return reply
-        .code(err.statusCode)
-        .send(err.payload({ include_error_description }))
+
+      const data = {
+        ...err.payload({ include_error_description }),
+        description: `Authorization endpoint error: ${err.error}`,
+        title: `Error: ${err.error}`
+      }
+
+      request.log.warn(`${log_prefix}${error_description}`)
+      return reply.code(err.statusCode).render('error.webc', data)
     }
 
-    request.log.debug(client_metadata, 'retrieved IndieAuth client metadata')
+    request.log.debug(client_metadata, 'retrieved client metadata')
     const { client_name, client_uri, logo_uri, redirect_uris } = client_metadata
 
     if (!redirect_uris) {
@@ -105,9 +114,15 @@ export const defAuthorizePage = (config: Config) => {
         error_uri,
         state
       })
-      return reply
-        .code(err.statusCode)
-        .send(err.payload({ include_error_description }))
+
+      const data = {
+        ...err.payload({ include_error_description }),
+        description: `Authorization endpoint error: ${err.error}`,
+        title: `Error: ${err.error}`
+      }
+
+      request.log.warn(`${log_prefix}${error_description}`)
+      return reply.code(err.statusCode).render('error.webc', data)
     }
 
     // TODO: what to do if there are multiple redirect URIs? Re-read the
@@ -136,9 +151,15 @@ export const defAuthorizePage = (config: Config) => {
         error_uri,
         state
       })
-      return reply
-        .code(err.statusCode)
-        .send(err.payload({ include_error_description }))
+
+      const data = {
+        ...err.payload({ include_error_description }),
+        description: `Authorization endpoint error: ${err.error}`,
+        title: `Error: ${err.error}`
+      }
+
+      request.log.warn(`${log_prefix}${error_description}`)
+      return reply.code(err.statusCode).render('error.webc', data)
     }
 
     // URL where the IndieAuth/Micropub client is redirected to by the

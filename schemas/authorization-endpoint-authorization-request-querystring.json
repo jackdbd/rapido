@@ -53,19 +53,9 @@
       "type": "string"
     },
     "response_type": {
-      "title": "OAuth 2.0 response_type",
-      "description": "Tells the authorization server which grant to execute.",
       "default": "code",
-      "anyOf": [
-        {
-          "const": "code",
-          "type": "string"
-        },
-        {
-          "const": "token",
-          "type": "string"
-        }
-      ]
+      "const": "code",
+      "type": "string"
     },
     "scope": {
       "description": "Scope values. See [RFC8693 scope claim](https://www.rfc-editor.org/rfc/rfc8693.html#name-scope-scopes-claim)",

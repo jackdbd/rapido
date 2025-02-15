@@ -4,9 +4,12 @@ import formbody from '@fastify/formbody'
 import { applyToDefaults } from '@hapi/hoek'
 import responseValidation from '@fastify/response-validation'
 import webc from '@jackdbd/fastify-webc'
+import {
+  InvalidRequestError,
+  ServerError
+} from '@jackdbd/oauth2-error-responses'
 import { error_response } from '@jackdbd/indieauth/schemas'
 import { code_challenge, code_challenge_method } from '@jackdbd/pkce'
-import { defErrorHandler } from '@repo/error-handlers'
 import { conformResult } from '@jackdbd/schema-validators'
 import { Type } from '@sinclair/typebox'
 import { Ajv, type Plugin as AjvPlugin } from 'ajv'
@@ -55,21 +58,23 @@ declare module 'fastify' {
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+const webc_components_root = path.join(__dirname, 'webc', 'components')
 
 const defaults = {
   authorizationCodeExpiration: DEFAULT.AUTHORIZATION_CODE_EXPIRATION,
   // TODO: allow the user to pass WebC helper functions and transforms (the user
   // might have implemented WebC components that call those helpers/transforms)
   components: {
-    'consent-form': path.join(
-      __dirname,
-      'webc',
-      'components',
-      'consent-form.webc'
+    'consent-form': path.join(webc_components_root, 'consent-form.webc'),
+    'error-description': path.join(
+      webc_components_root,
+      'error-description.webc'
     ),
-    'scope-list': path.join(__dirname, 'webc', 'components', 'scope-list.webc'),
-    'the-footer': path.join(__dirname, 'webc', 'components', 'the-footer.webc'),
-    'the-header': path.join(__dirname, 'webc', 'components', 'the-header.webc')
+    'error-uri': path.join(webc_components_root, 'error-uri.webc'),
+    'scope-list': path.join(webc_components_root, 'scope-list.webc'),
+    'the-footer': path.join(webc_components_root, 'the-footer.webc'),
+    'the-header': path.join(webc_components_root, 'the-header.webc'),
+    'the-state': path.join(webc_components_root, 'the-state.webc')
   },
   includeErrorDescription: DEFAULT.INCLUDE_ERROR_DESCRIPTION,
   logPrefix: DEFAULT.LOG_PREFIX,
@@ -78,12 +83,24 @@ const defaults = {
   templates: [path.join(__dirname, 'webc', 'templates')]
 }
 
+const REQUIRED = [
+  'onAuthorizationCodeVerified',
+  'onUserApprovedRequest',
+  'retrieveAuthorizationCode'
+] as const
+
 const authorizationEndpoint: FastifyPluginCallback<Options> = (
   fastify,
   options,
   done
 ) => {
   const config = applyToDefaults(defaults, options as Partial<Options>)
+
+  REQUIRED.forEach((k) => {
+    if (!config[k]) {
+      return done(new Error(`${config.logPrefix}option ${k} is required`))
+    }
+  })
 
   // Recommended setup for Ajv when using TypeBox
   // https://github.com/sinclairzx81/typebox?tab=readme-ov-file#ajv
@@ -218,12 +235,91 @@ const authorizationEndpoint: FastifyPluginCallback<Options> = (
     })
   )
 
-  fastify.setErrorHandler(
-    defErrorHandler({
-      includeErrorDescription: include_error_description,
-      logPrefix
-    })
-  )
+  // If the request fails due to a missing, invalid, or mismatching redirection
+  // URI, or if the client identifier is missing or invalid, the authorization
+  // server SHOULD inform the resource owner of the error and MUST NOT
+  // automatically redirect the user-agent to the invalid redirection URI.
+  // https://datatracker.ietf.org/doc/html/rfc6749#section-4.1.2.1
+  //
+  // For example, the authorization server redirects the user-agent by sending
+  // the following HTTP response:
+  // HTTP/1.1 302 Found
+  // Location: https://client.example.com/cb?error=access_denied&state=xyz
+  fastify.setErrorHandler((error, request, reply) => {
+    const reqh = request.headers
+    const code = error.statusCode
+
+    if (code && code >= 400 && code < 500) {
+      request.log.warn(
+        `${logPrefix}client error catched by error handler: ${error.message}`
+      )
+    } else {
+      request.log.error(
+        `${logPrefix}server error catched by error handler: ${error.message}`
+      )
+    }
+
+    // const send_html = request.method ==='GET' && request.url ==='/auth'
+
+    let send_html = false
+    if (reqh.accept && reqh.accept.includes('text/html')) {
+      send_html = true
+    }
+
+    let err: InvalidRequestError | ServerError | undefined
+
+    if (error.validation && error.validationContext) {
+      if (code && code >= 400 && code < 500) {
+        const messages = error.validation.map((ve) => {
+          const allowed_values: any = []
+          for (const [k, val] of Object.entries(ve.params)) {
+            if (k === 'allowedValue') {
+              allowed_values.push(val)
+            }
+          }
+
+          const details: string[] = []
+          if (allowed_values.length > 0) {
+            details.push(`Allowed values: ${allowed_values.join(', ')}`)
+          }
+
+          if (details.length > 0) {
+            return `${error.validationContext}${ve.instancePath} ${ve.message} (${details})`
+          } else {
+            return `${error.validationContext}${ve.instancePath} ${ve.message}`
+          }
+        })
+
+        err = new InvalidRequestError({
+          error_description: messages.join('; '),
+          error_uri:
+            'https://datatracker.ietf.org/doc/html/rfc6749#section-4.1.2.1'
+        })
+      }
+    }
+
+    // If it's not a client error, is it always a generic Internal Server Error?
+    // Probably we can return a HTTP 503 Service Unavailable (maybe use
+    // @fastify/under-pressure).
+    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses
+
+    if (!err) {
+      err = new ServerError({ error_description: error.message })
+    }
+
+    if (send_html) {
+      const data = {
+        ...err.payload({ include_error_description }),
+        description: `Authorization endpoint error: ${err.error}`,
+        title: `Error: ${err.error}`
+      }
+      return reply.code(err.statusCode).render('error.webc', data)
+    } else {
+      return reply
+        .code(err.statusCode)
+        .send(err.payload({ include_error_description }))
+    }
+  })
 
   done()
 }

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" :content="description || 'Authorization endpoint error page'">
+	<!-- <meta name="description" :content="tap(description || 'Authorization endpoint error page')"> -->
+
+	<title @text="title || 'Error'"></title>
+	<!-- <title @text="tap(title || 'Error')"></title> -->
+
+	<link rel="stylesheet" href="https://unpkg.com/mvp.css">
+	<link rel="stylesheet" href="/styles/layout.css">
+	<link rel="stylesheet" href="/styles/utils.css">
+
+	<!-- <style>
+	body {
+		--color-alabaster: #F2F0E6;
+	}
+	</style> -->
+</head>
+
+<body>
+	<div id="wrapper-for-sticky-footer">
+		<the-header></the-header>
+		<main class="wrapper">
+			<div class="flow region">
+				<div>
+					<h1 webc:if="error" @text="'Error: ' + error" class="error"></h1>
+					<h1 webc:else @text="'Error'" class="error"></h1>
+
+					<error-description webc:if="error_description" :error_description="error_description">
+					</error-description>
+
+					<error-uri webc:if="error_uri" :error_uri="error_uri">
+					</error-uri>
+
+					<the-state webc:if="state" :state="state"></the-state>
+				</div>
+			</div>
+		</main>
+		<the-footer></the-footer>
+	</div>
+</body>
+
+</html>

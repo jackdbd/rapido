@@ -1,0 +1,4 @@
+<div class="state">
+    <h2>State</h2>
+    <code @text="state"></code>
+</div>
