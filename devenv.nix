@@ -22,6 +22,7 @@ in {
 
   env = {
     BASE_URL = "http://localhost:${config.env.PORT}";
+    CODECOV_TOKEN = builtins.readFile /run/secrets/codecov/token;
     CONTENTS_API_GITHUB_TOKEN = builtins.readFile /run/secrets/github-tokens/crud_contents_api;
     JWKS = builtins.readFile /home/jack/repos/micropub/secrets/jwks.txt;
     NODE_ENV = "development";
