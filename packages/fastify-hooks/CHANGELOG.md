@@ -1,5 +1,12 @@
 # @jackdbd/fastify-hooks
 
+## 0.2.0-canary.13
+
+### Patch Changes
+
+- Updated dependencies [0e82d17]
+  - @jackdbd/indieauth@0.2.0-canary.12
+
 ## 0.2.0-canary.12
 
 ### Minor Changes
