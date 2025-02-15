@@ -32,14 +32,14 @@ const { client_id, me, issuer, redirect_uri } = defConfig(3001)
 
 export const create: CreatePost = async (jf2) => {
   console.log(`[${logPrefix}create] jf2`, jf2)
-  // throw new Error("create not implemented");
+  // throw new Error(`simulate runtime exception in create`);
   return { message: 'post created' }
 }
 
 export const deleteContentOrMedia: DeletePost = async (url) => {
   console.log(`[${logPrefix}deleteContentOrMedia] url: ${url}`)
   // return { error: new Error("Not implemented") };
-  // throw new Error("delete not implemented");
+  // throw new Error(`simulate runtime exception in deleteContentOrMedia`);
   return { message: `deleted post at url ${url} ` }
 }
 
@@ -47,7 +47,7 @@ export const isAccessTokenRevoked: IsAccessTokenRevoked = async (jti) => {
   console.log(
     `[${logPrefix}isAccessTokenRevoked] checking whether access token jti=${jti} is revoked`
   )
-  // throw new Error(`fake database connection failed`);
+  // throw new Error(`simulate runtime exception in isAccessTokenRevoked`);
   return false
   // return true;
 }
@@ -56,6 +56,7 @@ export const onAuthorizationCodeVerified: OnAuthorizationCodeVerified = async (
   code
 ) => {
   console.log(`[${logPrefix}onAuthorizationCodeVerified] code: ${code}`)
+  throw new Error(`simulate runtime exception in onAuthorizationCodeVerified`)
 }
 
 export const onIssuedTokens: OnIssuedTokens = async (info) => {
@@ -64,6 +65,7 @@ export const onIssuedTokens: OnIssuedTokens = async (info) => {
 
 export const onUserApprovedRequest: OnUserApprovedRequest = async (props) => {
   console.log(`[${logPrefix}OnUserApprovedRequest] props`, props)
+  throw new Error(`simulate runtime exception in onUserApprovedRequest`)
 }
 
 export const retrieveAccessToken: RetrieveAccessToken = async (jti) => {
@@ -79,6 +81,7 @@ export const retrieveAuthorizationCode: RetrieveAuthorizationCode = async (
   console.log(
     `[${logPrefix}retrieveAuthorizationCode] retrieving authorization code: ${code}`
   )
+  throw new Error(`simulate runtime exception in retrieveAuthorizationCode`)
   // client_id: https://micropub.fly.dev/id
   return {
     client_id,
@@ -142,12 +145,12 @@ export const revokeRefreshToken: RevokeRefreshToken = async (props) => {
 export const undelete: UndeletePost = async (url) => {
   console.log(`[${logPrefix}undelete] url: ${url}`)
   // return { error: new Error("Not implemented") };
-  // throw new Error("undeleted not implemented");
+  // throw new Error(`simulate runtime exception in undelete`);
   return { message: `undeleted post at url ${url} ` }
 }
 
 export const update: UpdatePost = async (url, patch) => {
   console.log(`[${logPrefix}update] url: ${url}`, patch)
-  // throw new Error("update not implemented");
+  // throw new Error(`simulate runtime exception in update`);
   return { message: `updated post at url ${url} ` }
 }
