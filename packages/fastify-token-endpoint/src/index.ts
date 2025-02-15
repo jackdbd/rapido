@@ -8,8 +8,6 @@ import { Ajv, type Plugin as AjvPlugin } from 'ajv'
 import addFormats from 'ajv-formats'
 import type { FastifyPluginCallback } from 'fastify'
 import fp from 'fastify-plugin'
-
-// import { defRedirectWhenNotAuthenticated } from '../../lib/fastify-hooks/index.js'
 import { DEFAULT, NAME } from './constants.js'
 import { defTokenPost } from './routes/token-post.js'
 import {
@@ -41,6 +39,14 @@ const defaults = {
   reportAllAjvErrors: DEFAULT.REPORT_ALL_AJV_ERRORS
 }
 
+const REQUIRED = [
+  'isAccessTokenRevoked',
+  'onIssuedTokens',
+  'retrieveRefreshToken',
+  'authorizationEndpoint',
+  'issuer'
+] as const
+
 /**
  * Adds an IndieAuth Token Endpoint to a Fastify server.
  */
@@ -50,6 +56,12 @@ const tokenEndpoint: FastifyPluginCallback<Options> = (
   done
 ) => {
   const config = Object.assign({}, defaults, options)
+
+  REQUIRED.forEach((k) => {
+    if (!config[k]) {
+      return done(new Error(`${config.logPrefix}option ${k} is required`))
+    }
+  })
 
   let ajv: Ajv
   if (config.ajv) {
@@ -119,20 +131,6 @@ const tokenEndpoint: FastifyPluginCallback<Options> = (
   fastify.post(
     '/token',
     {
-      preHandler: function (_request, _reply, done) {
-        // const { grant_type } = request.body
-        // console.log('=== preHandler request.body ===', request.body)
-        // Require authentication for refresh token requests.
-        // https://datatracker.ietf.org/doc/html/rfc6749#section-3.2.1
-        // if (grant_type === 'refresh_token') {
-        // request.log.warn(
-        //   `${logPrefix}require authentication for refresh token requests`
-        // )
-        // TODO: do NOT redirect here. This is an API endpoint! A redirect
-        // might be ok for browser clients, but not for API clients (e.g. Bruno).
-        // }
-        done()
-      },
       schema: {
         body: Type.Union([access_token_request_body, refresh_request_body]),
         response: {
