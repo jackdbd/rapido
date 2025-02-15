@@ -26,6 +26,12 @@ export const errorResponseFromJSONResponse = async (
 ): Promise<ErrorResponseFromJSON> => {
   const body: ErrorResponseBody = await response.json()
 
+  if (response.status === 404) {
+    body.error = 'not_found' // or 'invalid_request'
+    body.error_description = `${response.url} not found.`
+    // body.error_uri = `URL to a page explaining that we tried to fetch a nonexistent URL.`
+  }
+
   return {
     statusCode: response.status,
     payload: (options) => {
