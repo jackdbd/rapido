@@ -44,7 +44,7 @@ in {
     entr # run arbitrary commands when files change
     git
     gnused
-    nodejs
+    nodejs_23
     rsync
     sd # sed replacement
   ];
@@ -102,6 +102,10 @@ in {
       # npm run vendor
       npm run copy:webc
       npm run dev -w @repo/demo-app
+    '';
+    search.exec = ''
+      # search nixpkgs for packages (e.g. nix search nixpkgs nodejs)
+      nix search nixpkgs $1
     '';
     serve.exec = ''
       echo "serve directory $1"

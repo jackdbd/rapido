@@ -1,4 +1,4 @@
-import type { FastifyError } from '@fastify/error'
+import { FastifyError } from '@fastify/error'
 
 export interface ErrorData {
   error_description: string
@@ -32,7 +32,7 @@ export interface ErrorResponseFromJSON {
  *
  * @see [Error Response - The OAuth 2.0 Authorization Framework (RFC 6749)]()
  */
-class BaseError extends Error implements FastifyError {
+export default class BaseError extends Error implements FastifyError {
   public readonly code: string
   public readonly statusCode: number
   public readonly error: string
