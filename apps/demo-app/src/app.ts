@@ -18,6 +18,7 @@ import {
   create,
   deleteContentOrMedia,
   isAccessTokenRevoked,
+  isRefreshTokenRevoked,
   onAuthorizationCodeVerified,
   onIssuedTokens,
   onUserApprovedRequest,
@@ -96,6 +97,7 @@ export const defFastify = (config: Config) => {
   fastify.register(introspectionEndpoint, {
     includeErrorDescription,
     isAccessTokenRevoked,
+    isRefreshTokenRevoked,
     issuer,
     me,
     jwksUrl,
