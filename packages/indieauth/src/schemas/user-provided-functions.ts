@@ -44,6 +44,17 @@ export const isAccessTokenRevoked = Type.Function(
  */
 export type IsAccessTokenRevoked = Static<typeof isAccessTokenRevoked>
 
+export const isRefreshTokenRevoked = Type.Function(
+  [refresh_token],
+  Type.Promise(Type.Boolean()),
+  {
+    title: 'isRefreshTokenRevoked',
+    description: `Predicate function that returns true if a refresh token is revoked.`
+  }
+)
+
+export type IsRefreshTokenRevoked = Static<typeof isRefreshTokenRevoked>
+
 /**
  * Handler that runs after an authorization code has been verified.
  * You should use this handler to inform your storage backend that the
