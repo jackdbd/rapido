@@ -140,6 +140,7 @@ export type {
 
 export {
   isAccessTokenRevoked,
+  isRefreshTokenRevoked,
   onAuthorizationCodeVerified,
   onIssuedTokens,
   onUserApprovedRequest,
@@ -154,6 +155,7 @@ export {
 } from './user-provided-functions.js'
 export type {
   IsAccessTokenRevoked,
+  IsRefreshTokenRevoked,
   OnAuthorizationCodeVerified,
   OnIssuedTokens,
   OnUserApprovedRequest,
