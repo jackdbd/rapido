@@ -55,8 +55,9 @@
     "lint": "eslint --config ../../eslint.config.mjs --fix",
     "publint": "publint run .",
     "size": "pkg-size ./lib --sort-by=brotli --ignore-files {*.d.ts,*.map}",
-    "test": "node --test",
+    "test": "node --test --test-reporter=spec --test-reporter-destination=stdout",
     "test:ci": "node --test --test-reporter=@reporters/github --test-reporter-destination=stdout --test-reporter=spec --test-reporter-destination=stdout",
+    "test:coverage": "node --test --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=lcov.info --test-reporter=spec --test-reporter-destination=stdout",
     "test:watch": "node --test --watch"
   },
   "dependencies": {},

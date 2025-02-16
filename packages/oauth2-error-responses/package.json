@@ -43,7 +43,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "run-s 'build:ts' 'build:docs' 'build:readme' --print-label",
+    "build": "run-s 'build:ts' 'build:readme' --print-label",
     "build:docs": "node ../scripts/dist/docs.js --package oauth2-error-responses",
     "build:readme": "node ../scripts/dist/readme.js --package oauth2-error-responses",
     "build:ts": "tsc -p tsconfig.json",
@@ -53,8 +53,9 @@
     "lint": "eslint --config ../../eslint.config.mjs --fix",
     "publint": "publint run .",
     "size": "pkg-size ./lib --sort-by=brotli --ignore-files {*.d.ts,*.map}",
-    "test": "node --test",
+    "test": "node --test --test-reporter=spec --test-reporter-destination=stdout",
     "test:ci": "node --test --test-reporter=@reporters/github --test-reporter-destination=stdout --test-reporter=spec --test-reporter-destination=stdout",
+    "test:coverage": "node --test --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=lcov.info --test-reporter=spec --test-reporter-destination=stdout",
     "test:watch": "node --test --watch"
   },
   "dependencies": {},
