@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.3.0-canary.19
+
+### Patch Changes
+
+- Updated dependencies [5be2e95]
+  - @jackdbd/indieauth@0.2.0-canary.13
+  - @jackdbd/fastify-hooks@0.2.0-canary.14
+
 ## 1.3.0-canary.18
 
 ### Patch Changes
