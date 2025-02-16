@@ -6,7 +6,7 @@ import { token_type_hint } from './common.js'
  * Introspection Request.
  *
  * @see [Access Token Verification Request - IndieAuth ](https://indieauth.spec.indieweb.org/#x6-1-access-token-verification-request)
- * @see [OAuth 2.0 Token Introspection (RFC 7662)](https://www.rfc-editor.org/rfc/rfc7662#section-2.1)
+ * @see [Introspection Request - OAuth 2.0 Token Introspection (RFC 7662)](https://www.rfc-editor.org/rfc/rfc7662#section-2.1)
  */
 export const introspection_request_body = Type.Object(
   {

@@ -18,20 +18,24 @@ import { DEFAULT, NAME } from './constants.js'
 import { defIntrospectPost } from './routes/introspect-post.js'
 import {
   introspection_request_body,
-  introspection_response_body_success,
+  introspection_response_body_when_token_is_retrieved,
+  introspection_response_body_when_token_is_not_retrieved,
   options as options_schema
 } from './schemas/index.js'
 import type { Options } from './schemas/index.js'
+import { Type } from '@sinclair/typebox'
 
 export {
   introspection_request_body,
-  introspection_response_body_success,
+  introspection_response_body_when_token_is_retrieved,
+  introspection_response_body_when_token_is_not_retrieved,
   options as plugin_options
 } from './schemas/index.js'
 export type {
   IntrospectPostConfig,
   IntrospectionRequestBody,
-  IntrospectionResponseBodySuccess,
+  IntrospectionResponseBodyWhenTokenIsRetrieved,
+  IntrospectionResponseBodyWhenTokenIsNotRetrieved,
   Options as PluginOptions
 } from './schemas/index.js'
 
@@ -41,12 +45,25 @@ const defaults = {
   reportAllAjvErrors: DEFAULT.REPORT_ALL_AJV_ERRORS
 }
 
+const REQUIRED = [
+  'isAccessTokenRevoked',
+  'isRefreshTokenRevoked',
+  'retrieveAccessToken',
+  'retrieveRefreshToken'
+] as const
+
 const introspectionEndpoint: FastifyPluginCallback<Options> = (
   fastify,
   options,
   done
 ) => {
   const config = Object.assign({}, defaults, options)
+
+  REQUIRED.forEach((k) => {
+    if (!config[k]) {
+      return done(new Error(`${config.logPrefix}option ${k} is required`))
+    }
+  })
 
   let ajv: Ajv
   if (config.ajv) {
@@ -73,6 +90,7 @@ const introspectionEndpoint: FastifyPluginCallback<Options> = (
   const {
     includeErrorDescription: include_error_description,
     isAccessTokenRevoked,
+    isRefreshTokenRevoked,
     issuer,
     jwksUrl: jwks_url,
     logPrefix,
@@ -154,7 +172,10 @@ const introspectionEndpoint: FastifyPluginCallback<Options> = (
       schema: {
         body: introspection_request_body,
         response: {
-          200: introspection_response_body_success,
+          200: Type.Union([
+            introspection_response_body_when_token_is_retrieved,
+            introspection_response_body_when_token_is_not_retrieved
+          ]),
           '4xx': error_response,
           '5xx': error_response
         }
@@ -164,6 +185,7 @@ const introspectionEndpoint: FastifyPluginCallback<Options> = (
       ajv,
       includeErrorDescription: include_error_description,
       isAccessTokenRevoked,
+      isRefreshTokenRevoked,
       issuer,
       jwks_url,
       logPrefix,

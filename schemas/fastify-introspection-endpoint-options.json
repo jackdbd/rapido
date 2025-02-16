@@ -31,6 +31,23 @@
         }
       }
     },
+    "isRefreshTokenRevoked": {
+      "title": "isRefreshTokenRevoked",
+      "description": "Predicate function that returns true if a refresh token is revoked.",
+      "type": "Function",
+      "parameters": [
+        {
+          "minLength": 1,
+          "type": "string"
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "item": {
+          "type": "boolean"
+        }
+      }
+    },
     "issuer": {
       "description": "The authorization server's issuer identifier. It's a URL that uses the \"https\" scheme and has no query or fragment components. It MUST also be a prefix of the indieauth-metadata URL.",
       "format": "uri",
@@ -566,6 +583,7 @@
   },
   "required": [
     "isAccessTokenRevoked",
+    "isRefreshTokenRevoked",
     "issuer",
     "jwksUrl",
     "me",
