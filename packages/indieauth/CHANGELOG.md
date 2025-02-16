@@ -1,5 +1,11 @@
 # @jackdbd/indieauth
 
+## 0.2.0-canary.13
+
+### Minor Changes
+
+- 5be2e95: Define function `isRefreshTokenRevoked`.
+
 ## 0.2.0-canary.12
 
 ### Minor Changes

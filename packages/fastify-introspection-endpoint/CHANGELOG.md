@@ -1,5 +1,17 @@
 # @jackdbd/fastify-introspection-endpoint
 
+## 1.3.0-canary.20
+
+### Minor Changes
+
+- cf9a50a: Implemented introspection of refresh tokens. Add tests.
+
+### Patch Changes
+
+- Updated dependencies [5be2e95]
+  - @jackdbd/indieauth@0.2.0-canary.13
+  - @jackdbd/fastify-hooks@0.2.0-canary.14
+
 ## 1.3.0-canary.19
 
 ### Patch Changes
