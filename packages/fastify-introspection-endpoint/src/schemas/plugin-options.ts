@@ -6,11 +6,13 @@ import {
 } from '@jackdbd/indieauth/schemas'
 import {
   isAccessTokenRevoked,
+  isRefreshTokenRevoked,
   retrieveAccessToken,
   retrieveRefreshToken
 } from '@jackdbd/indieauth/schemas/user-provided-functions'
 import type {
   IsAccessTokenRevoked,
+  IsRefreshTokenRevoked,
   RetrieveAccessToken,
   RetrieveRefreshToken
 } from '@jackdbd/indieauth/schemas/user-provided-functions'
@@ -30,6 +32,8 @@ export const options = Type.Object(
     includeErrorDescription: Type.Optional(include_error_description),
 
     isAccessTokenRevoked,
+
+    isRefreshTokenRevoked,
 
     issuer,
 
@@ -60,6 +64,7 @@ export const options = Type.Object(
 export interface Options extends Static<typeof options> {
   ajv?: Ajv
   isAccessTokenRevoked: IsAccessTokenRevoked
+  isRefreshTokenRevoked: IsRefreshTokenRevoked
   retrieveAccessToken: RetrieveAccessToken
   retrieveRefreshToken: RetrieveRefreshToken
 }

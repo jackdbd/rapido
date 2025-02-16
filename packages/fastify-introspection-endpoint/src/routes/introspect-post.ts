@@ -1,24 +1,14 @@
 import type { RouteGenericInterface, RouteHandler } from 'fastify'
-import { isExpired, safeDecode, verify } from '@jackdbd/indieauth'
-import type { AccessTokenClaims } from '@jackdbd/indieauth'
-import type {
-  AccessTokenImmutableRecord,
-  AccessTokenMutableRecord
-} from '@jackdbd/indieauth/schemas'
-import {
-  InvalidRequestError,
-  InvalidTokenError,
-  ServerError
-} from '@jackdbd/oauth2-error-responses'
-import { conformResult, throwWhenNotConform } from '@jackdbd/schema-validators'
-import {
-  introspect_post_config,
-  introspection_response_body_success
-} from '../schemas/index.js'
+import { InvalidRequestError } from '@jackdbd/oauth2-error-responses'
+import { throwWhenNotConform } from '@jackdbd/schema-validators'
+import { introspect_post_config } from '../schemas/index.js'
 import type {
   IntrospectionRequestBody,
+  IntrospectionResponseBodyWhenTokenIsRetrieved,
   IntrospectPostConfig
 } from '../schemas/index.js'
+import { accessTokenResult } from './access-token-result.js'
+import { refreshTokenResult } from './refresh-token-result.js'
 
 interface RouteGeneric extends RouteGenericInterface {
   Body: IntrospectionRequestBody
@@ -53,12 +43,13 @@ export const defIntrospectPost = (config: IntrospectPostConfig) => {
   const {
     includeErrorDescription: include_error_description,
     isAccessTokenRevoked,
+    isRefreshTokenRevoked,
     issuer,
     jwks_url,
     logPrefix: log_prefix,
     // max_access_token_age: max_token_age,
-    retrieveAccessToken
-    // retrieveRefreshToken,
+    retrieveAccessToken,
+    retrieveRefreshToken
   } = config
 
   const introspectPost: RouteHandler<RouteGeneric> = async (request, reply) => {
@@ -70,138 +61,124 @@ export const defIntrospectPost = (config: IntrospectPostConfig) => {
         .send(err.payload({ include_error_description }))
     }
 
-    const { token: jwt, token_type_hint } = request.body
+    const { token } = request.body
 
-    // TODO: allow to introspect refresh tokens?
-    if (token_type_hint === 'refresh_token') {
-      const error_description = `Introspecting refresh tokens is not supported by this introspection endpoint.`
+    if (!token) {
+      const error_description = 'The `token` parameter is missing.'
+      request.log.warn(`${log_prefix}${error_description}`)
       const err = new InvalidRequestError({ error_description })
       return reply
         .code(err.statusCode)
         .send(err.payload({ include_error_description }))
     }
 
-    if (!jwt) {
-      const error_description = 'The `token` parameter is missing.'
-      const err = new InvalidTokenError({ error_description })
-      return reply
-        .code(err.statusCode)
-        .send(err.payload({ include_error_description }))
-    }
+    // If the user does not provide a token_type_hint, this endpoint assumes
+    // it's an access token. We could also use an heuristic to guess whether we
+    // received an access token or a refresh token (e.g. a string longer than
+    // 35-40 characters is most likely an access token).
+    const token_type_hint = request.body.token_type_hint || 'access_token'
 
-    // const header = jose.decodeProtectedHeader(jwt)
-    // request.log.debug(header, `JWT protected header`)
+    // Regardless of token_type_hint, we might end up searching all token types.
+    // This is what the Token Introspection says:
+    // If the server is unable to locate the token using the given hint, it MUST
+    // extend its search across all of its supported token types.
+    // https://www.rfc-editor.org/rfc/rfc7662#section-2.1
 
-    // SECURITY CONSIDERATIONS
-    // https://www.rfc-editor.org/rfc/rfc7662#section-4
+    let response_body: IntrospectionResponseBodyWhenTokenIsRetrieved | undefined
+    if (token_type_hint === 'access_token') {
+      request.log.debug(`${log_prefix}search among access tokens`)
+      const res_one = await accessTokenResult({
+        issuer,
+        jwks_url,
+        jwt: token,
+        retrieveAccessToken,
+        isAccessTokenRevoked
+      })
 
-    // RFC 7662 says that if the token has been signed, the authorization server
-    // MUST validate the signature. This means that just decoding the token is
-    // not enough. We need to verify it.
-    const { value: verified_claims } = await verify<AccessTokenClaims>({
-      issuer,
-      jwks_url,
-      jwt
-      // max_token_age
-    })
+      if (res_one.error) {
+        request.log.error(`${log_prefix}${res_one.error.message}`)
+      }
 
-    const { error: decode_error, value: decoded_claims } =
-      await safeDecode<AccessTokenClaims>(jwt)
+      if (res_one.value && res_one.value.found) {
+        response_body = res_one.value.found
+      }
 
-    let claims: AccessTokenClaims
-    if (verified_claims) {
-      claims = verified_claims
+      if (!response_body) {
+        request.log.debug(
+          `${log_prefix}search among refresh tokens because token was not found among access tokens`
+        )
+        const res_two = await refreshTokenResult({
+          retrieveRefreshToken,
+          isRefreshTokenRevoked,
+          token
+        })
+
+        if (res_two.error) {
+          request.log.error(`${log_prefix}${res_two.error.message}`)
+        }
+
+        if (res_two.value && res_two.value.found) {
+          response_body = res_two.value.found
+        }
+      }
+    } else if (token_type_hint === 'refresh_token') {
+      request.log.debug(`${log_prefix}search among refresh tokens`)
+      const res_one = await refreshTokenResult({
+        retrieveRefreshToken,
+        isRefreshTokenRevoked,
+        token
+      })
+
+      if (res_one.error) {
+        request.log.error(`${log_prefix}${res_one.error.message}`)
+      }
+
+      if (res_one.value && res_one.value.found) {
+        response_body = res_one.value.found
+      }
+
+      if (!response_body) {
+        request.log.debug(
+          `${log_prefix}search among access tokens because token was not found among refresh tokens`
+        )
+        const res_two = await accessTokenResult({
+          issuer,
+          jwks_url,
+          jwt: token,
+          retrieveAccessToken,
+          isAccessTokenRevoked
+        })
+
+        if (res_two.error) {
+          request.log.error(`${log_prefix}${res_two.error.message}`)
+        }
+
+        if (res_two.value && res_two.value.found) {
+          response_body = res_two.value.found
+        }
+      }
     } else {
-      if (decoded_claims) {
-        claims = decoded_claims
-      } else {
-        // Having a verify_error is fine. E.g. if the token in the request body
-        // is expired, we get a verify_error but NOT a decode_error.
-        const error_description = decode_error.message
-        const err = new InvalidTokenError({ error_description })
-        return reply
-          .code(err.statusCode)
-          .send(err.payload({ include_error_description }))
-      }
-    }
-
-    const { exp, jti } = claims
-
-    let record:
-      | AccessTokenImmutableRecord
-      | AccessTokenMutableRecord
-      | undefined
-    try {
-      record = await retrieveAccessToken(jti)
-    } catch (ex: any) {
-      const error_description = `The provided retrieveAccessToken threw an exception: ${ex.message}`
-      const err = new ServerError({ error_description })
+      const error_description = `This endpoint does not support requests that have token_type_hint=${token_type_hint}.`
+      request.log.warn(`${log_prefix}${error_description}`)
+      const err = new InvalidRequestError({ error_description })
       return reply
         .code(err.statusCode)
         .send(err.payload({ include_error_description }))
     }
 
-    if (!record) {
-      const error_description = `The provided retrieveAccessToken could not find an access token that has jti=${jti}`
-      const err = new ServerError({ error_description })
-      return reply
-        .code(err.statusCode)
-        .send(err.payload({ include_error_description }))
+    // NOTE: no error response /////////////////////////////////////////////////
+    // A properly formed and authorized query for an inactive or otherwise
+    // invalid token (or a token the protected resource is not allowed to know
+    // about) is not considered an error response by this specification.
+    // In these cases, the authorization server MUST instead respond with an
+    // introspection response with the "active" field set to "false" as
+    // described in Section 2.2.
+    // https://www.rfc-editor.org/rfc/rfc7662#section-2.3
+    if (response_body) {
+      return reply.code(200).send(response_body)
+    } else {
+      return reply.code(200).send({ active: false })
     }
-
-    // RFC 7662 says that if the token can expire, the authorization server MUST
-    // determine whether or not the token has expired.
-    let expired = false
-    if (exp) {
-      expired = isExpired(exp)
-    }
-
-    // RFC 7662 says that if the token can be revoked after it was issued, the
-    // authorization server MUST determine whether or not such a revocation has
-    // taken place.
-    let revoked = false
-    if (jti) {
-      request.log.debug(
-        `${log_prefix}check whether access token jti=${jti} is revoked`
-      )
-      try {
-        revoked = await isAccessTokenRevoked(jti)
-      } catch (ex: any) {
-        const error_description = `Cannot determine whether access token jti=${jti} is revoked or not: ${ex.message}`
-        const err = new ServerError({ error_description })
-        return reply
-          .code(err.statusCode)
-          .send(err.payload({ include_error_description }))
-      }
-    }
-
-    const active = !expired && !revoked ? true : false
-    const client_id = record.client_id
-
-    const response_body = { ...claims, active, client_id }
-
-    const { error: conform_error } = conformResult(
-      {
-        ajv,
-        schema: introspection_response_body_success,
-        data: response_body
-      },
-      {
-        basePath: 'introspection-endpoint-response-body-success',
-        validationErrorsSeparator: ';'
-      }
-    )
-
-    if (conform_error) {
-      const preface = `The response the server was about to send to the client does not conform to the expected schema. This is probably a bug. Here are the details of the error:`
-      const error_description = `${preface} ${conform_error.message}`
-      const err = new ServerError({ error_description })
-      return reply
-        .code(err.statusCode)
-        .send(err.payload({ include_error_description }))
-    }
-
-    return reply.code(200).send(response_body)
   }
 
   return introspectPost

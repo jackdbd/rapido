@@ -52,7 +52,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "run-s 'build:ts' 'vendor' 'build:docs' 'build:readme' --print-label",
+    "build": "run-s 'build:ts' 'vendor' 'build:readme' --print-label",
     "build:docs": "node ../scripts/dist/docs.js --package fastify-introspection-endpoint",
     "build:readme": "node ../scripts/dist/readme.js --package fastify-introspection-endpoint",
     "build:ts": "tsc -p tsconfig.json",
@@ -73,7 +73,7 @@
     "@fastify/response-validation": "^3.0.3",
     "@jackdbd/canonical-url": "0.2.0-canary.8",
     "@jackdbd/fastify-hooks": "0.2.0-canary.13",
-    "@jackdbd/indieauth": "0.2.0-canary.12",
+    "@jackdbd/indieauth": "*",
     "@jackdbd/oauth2-error-responses": "^0.2.0-canary.8",
     "@jackdbd/schema-validators": "^0.2.0-canary.11",
     "@sinclair/typebox": "^0.34.14",
