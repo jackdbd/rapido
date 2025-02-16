@@ -1,6 +1,6 @@
-import type { Jf2 } from '@paulrobertlloyd/mf2tojf2'
+import type { JF2 } from './schemas/jf2.js'
 
-export const isBookmark = (jf2: Jf2) => {
+export const isBookmark = (jf2: JF2) => {
   if (isEntry(jf2) && jf2['bookmark-of']) {
     return true
   } else {
@@ -8,8 +8,8 @@ export const isBookmark = (jf2: Jf2) => {
   }
 }
 
-export const isCard = (jf2: Jf2) => {
-  if (jf2.h === 'card') {
+export const isCard = (jf2: JF2) => {
+  if (jf2.type === 'card') {
     return true
   } else {
     return false
@@ -19,7 +19,7 @@ export const isCard = (jf2: Jf2) => {
 /**
  * @see https://indieweb.org/checkin
  */
-export const isCheckin = (jf2: Jf2) => {
+export const isCheckin = (jf2: JF2) => {
   if (isEntry(jf2) && jf2['checkin']) {
     return true
   } else {
@@ -27,24 +27,24 @@ export const isCheckin = (jf2: Jf2) => {
   }
 }
 
-export const isCite = (jf2: Jf2) => {
-  if (jf2.h === 'cite') {
+export const isCite = (jf2: JF2) => {
+  if (jf2.type === 'cite') {
     return true
   } else {
     return false
   }
 }
 
-export const isEntry = (jf2: Jf2) => {
-  if (jf2.h === 'entry') {
+export const isEntry = (jf2: JF2) => {
+  if (jf2.type === 'entry') {
     return true
   } else {
     return false
   }
 }
 
-export const isEvent = (jf2: Jf2) => {
-  if (jf2.h === 'event') {
+export const isEvent = (jf2: JF2) => {
+  if (jf2.type === 'event') {
     return true
   } else {
     return false
@@ -54,7 +54,7 @@ export const isEvent = (jf2: Jf2) => {
 /**
  * @see https://indieweb.org/issue
  */
-export const isIssue = (jf2: Jf2) => {
+export const isIssue = (jf2: JF2) => {
   if (isEntry(jf2) && jf2['in-reply-to']) {
     if (jf2['in-reply-to'].includes('github.com')) {
       return true
@@ -64,7 +64,7 @@ export const isIssue = (jf2: Jf2) => {
   return false
 }
 
-export const isLike = (jf2: Jf2) => {
+export const isLike = (jf2: JF2) => {
   if (isEntry(jf2) && jf2['like-of']) {
     return true
   } else {
@@ -72,7 +72,7 @@ export const isLike = (jf2: Jf2) => {
   }
 }
 
-export const isNote = (jf2: Jf2) => {
+export const isNote = (jf2: JF2) => {
   if (!isEntry(jf2) || !jf2.content) {
     return false
   }
@@ -97,7 +97,7 @@ export const isNote = (jf2: Jf2) => {
 /**
  * @see https://indieweb.org/read
  */
-export const isRead = (jf2: Jf2) => {
+export const isRead = (jf2: JF2) => {
   if (!isEntry(jf2)) {
     return false
   }
@@ -118,7 +118,7 @@ export const isRead = (jf2: Jf2) => {
   }
 }
 
-export const isReply = (jf2: Jf2) => {
+export const isReply = (jf2: JF2) => {
   if (!isEntry(jf2)) {
     return false
   }
@@ -139,7 +139,7 @@ export const isReply = (jf2: Jf2) => {
 /**
  * @see https://indieweb.org/repost
  */
-export const isRepost = (jf2: Jf2) => {
+export const isRepost = (jf2: JF2) => {
   if (isEntry(jf2) && jf2['repost-of']) {
     return true
   } else {
@@ -150,7 +150,7 @@ export const isRepost = (jf2: Jf2) => {
 /**
  * @see https://indieweb.org/rsvp
  */
-export const isRsvp = (jf2: Jf2) => {
+export const isRsvp = (jf2: JF2) => {
   if (!isEntry(jf2)) {
     return false
   }

@@ -1,17 +1,28 @@
 import { requestContext } from '@fastify/request-context'
 import { rfc3339 } from '@jackdbd/indieauth'
 import { InvalidRequestError } from '@jackdbd/oauth2-error-responses'
-import type { Jf2 } from '@paulrobertlloyd/mf2tojf2'
 import type { RouteHandler, RouteGenericInterface } from 'fastify'
-import { mf2tTojf2, normalizeJf2 } from '@jackdbd/micropub'
-import type { Action, UpdatePatch } from '@jackdbd/micropub/schemas'
-import { isMf2 } from '../schemas/index.js'
+import {
+  mf2tTojf2,
+  normalizeJf2,
+  isJF2,
+  isMF2,
+  isMpUrlencodedRequestBody,
+  isParsedMF2,
+  jf2SafeToStore
+} from '@jackdbd/micropub'
+import type {
+  Action,
+  JF2,
+  UpdatePatch,
+  ParsedMF2
+} from '@jackdbd/micropub/schemas'
 import type { MicropubPostConfig, PostRequestBody } from '../schemas/index.js'
 import { defMultipartRequestBody } from './micropub-post-multipart.js'
 
 declare module '@fastify/request-context' {
   interface RequestContextData {
-    jf2?: Jf2
+    jf2?: JF2
   }
 }
 
@@ -79,9 +90,15 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
       request_body = request.body
     }
 
-    let jf2: Jf2
-    if (isMf2(request_body)) {
-      const { error, value } = await mf2tTojf2({ items: request_body.items })
+    let jf2: JF2
+    if (isMF2(request_body) || isParsedMF2(request_body)) {
+      let items: ParsedMF2[]
+      if (isMF2(request_body)) {
+        items = request_body.items
+      } else {
+        items = [request_body]
+      }
+      const { error, value } = await mf2tTojf2({ items })
 
       if (error) {
         const error_description = error.message
@@ -91,53 +108,71 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
           .code(err.statusCode)
           .send(err.payload({ include_error_description }))
       } else {
+        jf2 = value
         // We could end up with an access_token in the request body. It happed
         // to me when I made a request from Quill. But I don't think it's
         // Quill's fault. I think it's due to how the formbody plugin works.
-        const {
-          access_token: _,
-          action,
-          h,
-          type: _type,
-          visibility,
-          ...rest
-        } = value
-        jf2 = {
-          ...rest,
-          // The default action is to create posts (I couldn't find it in the
-          // Micropub specs though).
-          action: action || 'create',
-          date: rfc3339(),
-          // If no type is specified (using `h`), the default type [h-entry]
-          // SHOULD be used.
-          // https://micropub.spec.indieweb.org/#create
-          h: h || 'entry',
-          visibility: visibility || 'public'
-        }
+        // const {
+        //   access_token: _,
+        //   action,
+        //   h,
+        //   type: _type,
+        //   visibility,
+        //   ...rest
+        // } = value
+        // jf2 = {
+        //   ...rest,
+        //   // The default action is to create posts (I couldn't find it in the
+        //   // Micropub specs though).
+        //   action: action || 'create',
+        //   date: rfc3339(),
+        //   // If no type is specified (using `h`), the default type [h-entry]
+        //   // SHOULD be used.
+        //   // https://micropub.spec.indieweb.org/#create
+        //   h: h || 'entry',
+        //   visibility: visibility || 'public'
+        // }
       }
+    } else if (isMpUrlencodedRequestBody(request.body)) {
+      // If the Micropub client sent us a urlencoded request, we need to normalize
+      // fields like syndicate-to[][0], syndicate-to[][1] into actual JS arrays.
+      // Same thing if we uploaded more than one file to the Media endpoint. In
+      // that case we might have audio[], video[], and photo[] fields.
+      jf2 = normalizeJf2(request.body)
+    } else if (isJF2(request.body)) {
+      jf2 = request.body
     } else {
-      const {
-        access_token: _,
-        action,
-        h,
-        type: _type,
-        visibility,
-        ...rest
-      } = request_body as Jf2
-      jf2 = {
-        ...rest,
-        action: action || 'create',
-        date: rfc3339(),
-        h: h || 'entry',
-        visibility: visibility || 'public'
-      }
+      const error_description = `Received an object whose format is none of the following: MF2, parsed MF2, JF2, Micropub urlencoded request body parsed.`
+      request.log.error({ request_body }, `${logPrefix}${error_description}`)
+      const err = new InvalidRequestError({ error_description })
+      return reply
+        .code(err.statusCode)
+        .send(err.payload({ include_error_description }))
+      // const {
+      //   access_token: _,
+      //   action,
+      //   h,
+      //   type: _type,
+      //   visibility,
+      //   ...rest
+      // } = request_body as Jf2
+      // jf2 = {
+      //   ...rest,
+      //   action: action || 'create',
+      //   date: rfc3339(),
+      //   h: h || 'entry',
+      //   visibility: visibility || 'public'
+      // }
     }
 
-    // If the Micropub client sent us a urlencoded request, we need to normalize
-    // fields like syndicate-to[][0], syndicate-to[][1] into actual JS arrays.
-    // Same thing if we uploaded more than one file to the Media endpoint. In
-    // that case we might have audio[], video[], and photo[] fields.
-    jf2 = normalizeJf2(jf2)
+    // The default action is to create posts (I couldn't find it in the Micropub
+    // specs though).
+    jf2.action = jf2.action ?? 'create'
+    jf2.date = rfc3339()
+    jf2.visibility = jf2.visibility ?? 'public'
+    // If no type is specified, the default type [h-entry] SHOULD be used.
+    // https://micropub.spec.indieweb.org/#create
+    jf2.type = jf2.type ?? 'entry'
 
     // We store the jf2 object in the request context, so if there is a server
     // error we can access it in the error handler.
@@ -156,7 +191,8 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
     // URL in the HTTP Location header.
     // https://micropub.spec.indieweb.org/#delete
     const action = jf2.action as Action
-    const url = jf2.url
+    const post_type = jf2.type
+    // const url = jf2.url
 
     // TODO: do this in a hook, before entering the route handler.
     // if (!hasScope(request, action)) {
@@ -168,20 +204,22 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
     //     .send(err.payload({ include_error_description }));
     // }
 
+    jf2 = jf2SafeToStore(jf2)
+
     // The create/update/delete/undelete functions are provided by the user and
     // might throw exceptions. We can either try/catch them here, or let them
     // bubble up and catch them in the error handler set by this plugin with
     // fastify.setErrorHandler. I don't think catching the exceptions here adds
     // much value. It seems better to just handle them in ther error handler.
 
-    if (url) {
+    if (jf2.url) {
       switch (action) {
         case 'delete': {
           // The server MUST respond to successful delete and undelete requests
           // with HTTP 200, 201 or 204.
           // https://micropub.spec.indieweb.org/#delete
-          await deleteContent(url)
-          return reply.code(200).send({ message: `Deleted ${url}` })
+          await deleteContent(jf2.url)
+          return reply.code(200).send({ message: `Deleted ${jf2.url}` })
         }
 
         case 'undelete': {
@@ -192,8 +230,8 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
               .code(err.statusCode)
               .send(err.payload({ include_error_description }))
           } else {
-            await undelete(url)
-            return reply.code(200).send({ message: `Undeleted ${url}` })
+            await undelete(jf2.url)
+            return reply.code(200).send({ message: `Undeleted ${jf2.url}` })
           }
         }
 
@@ -208,7 +246,7 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
           // JSON object describing the changes that were made.
           // https://micropub.spec.indieweb.org/#update
           // TODO: return correct response upon successful update operation.
-          const { action: _action, h: _h, type: _type, ...rest } = jf2
+          const { url, ...rest } = jf2
           const patch = rest as UpdatePatch
           await update(url, patch)
           return reply.code(200).send({ message: `Updated ${url}`, patch })
@@ -246,7 +284,7 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
     // I think need a user-provided function which is specular to
     // websiteUrlToStorageLocation. Something like storageLocationToWebsiteUrl.
 
-    switch (jf2.h) {
+    switch (post_type) {
       case 'card': {
         const location = 'https://example.com/cards'
         await create(jf2)
@@ -284,7 +322,7 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
       }
 
       default: {
-        const error_description = `Post h=${jf2.h} is not supported by this Micropub server.`
+        const error_description = `Post type=${post_type} is not supported by this Micropub server.`
         request.log.error({ action, jf2 }, `${logPrefix}${error_description}`)
         const err = new InvalidRequestError({ error_description })
         return reply

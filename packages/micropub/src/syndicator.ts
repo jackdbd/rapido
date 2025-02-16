@@ -1,4 +1,4 @@
-import { Jf2 } from '@paulrobertlloyd/mf2tojf2'
+import type { JF2 } from './schemas/jf2.js'
 
 export interface BaseValueSyndicate {
   /**
@@ -31,5 +31,5 @@ export interface Syndicator<
   E extends Error = Error
 > {
   uid: string
-  syndicate: (url: string, jf2: Jf2) => Promise<Result<E, V>>
+  syndicate: (url: string, jf2: JF2) => Promise<Result<E, V>>
 }

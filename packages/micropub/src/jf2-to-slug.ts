@@ -1,4 +1,4 @@
-import type { Jf2 } from '@paulrobertlloyd/mf2tojf2'
+import type { JF2 } from './schemas/jf2.js'
 import slugifyFn from 'slugify'
 
 const replacement_character = '-'
@@ -9,7 +9,7 @@ const slugify_options = {
   remove: /[*+~.·,()'"`´%!?¿:@\/]/g
 }
 
-const sanitize = (str: string) => {
+export const sanitize = (str: string) => {
   return str
     .replace(/^https?:\/\//, '')
     .replaceAll(/\//g, replacement_character)
@@ -28,7 +28,11 @@ const sanitize = (str: string) => {
  *
  * @see https://indieweb.org/Micropub-extensions#Slug
  */
-export const jf2ToSlug = (jf2: Jf2) => {
+export const jf2ToSlug = (jf2: JF2) => {
+  if (!jf2) {
+    throw new Error(`cannot generate slug of ${jf2}`)
+  }
+
   let str = jf2['mp-slug']
   if (str) {
     return str.toLowerCase()
@@ -54,12 +58,28 @@ export const jf2ToSlug = (jf2: Jf2) => {
       str = jf2.content.html || jf2.content.text
     }
   } else {
-    // If we received a JF2 object that has no mp-slug, no content, no like-of,
-    // no repost-of... what else can we do?
-    str = 'no-content'
+    const props = [
+      'mp-slug',
+      'name',
+      'summary',
+      'bookmark-of',
+      'in-reply-to',
+      'like-of',
+      'repost-of',
+      'content',
+      'content.html',
+      'content.tex'
+    ]
+    throw new Error(
+      `object has none of these properties that could be used to generate a slug: ${props.join(', ')}`
+    )
+  }
+
+  if (!str) {
+    throw new Error(`cannot generate empty slug`)
   }
 
   // I have no idea why tsc tells me "This expression is not callable."
   // return slugifyFn(str, slugify_options);
-  return (slugifyFn as any)(str, slugify_options)
+  return (slugifyFn as any)(str.replace(/^www-/, ''), slugify_options)
 }

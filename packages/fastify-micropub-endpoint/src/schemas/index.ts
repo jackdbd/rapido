@@ -1,7 +1,6 @@
 export { options, type Options } from './plugin-options.js'
 
 export {
-  isMf2,
   micropub_get_request_querystring,
   micropub_post_request_body_jf2
 } from './requests.js'

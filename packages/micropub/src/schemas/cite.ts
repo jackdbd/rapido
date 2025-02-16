@@ -6,8 +6,6 @@ export const mp_cite = Type.Object(
   {
     ...h_cite.properties,
 
-    h: Type.Literal('cite'),
-
     'mp-slug': Type.Optional(
       Type.Unsafe<Static<typeof mp_slug>>(Type.Ref(mp_slug.$id!))
     ),
@@ -15,11 +13,7 @@ export const mp_cite = Type.Object(
       Type.Unsafe<Static<typeof mp_syndicate_to>>(
         Type.Ref(mp_syndicate_to.$id!)
       )
-    ),
-
-    // Since in Micropub we use `h` to indicate the type of the object, we don't
-    // need `type` to be present. But if it is, it must be 'cite'.
-    type: Type.Optional(Type.Literal('cite'))
+    )
   },
   { $id: 'micropub-cite', title: 'Micropub h=cite' }
 )

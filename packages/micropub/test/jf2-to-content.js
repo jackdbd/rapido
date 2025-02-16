@@ -1,14 +1,43 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert'
-import { jf2ToContentWithFrontmatter } from '../lib/index.js'
+import { jf2SafeToStore, jf2ToContentWithFrontmatter } from '../lib/index.js'
+
+describe('jf2SafeToStore', () => {
+  it('removes access_token, action, h, type, mp-slug', () => {
+    const input = {
+      access_token: 'ey...xyz',
+      action: 'create',
+      content: 'Hello world',
+      category: ['foo', 'bar'],
+      h: 'entry',
+      'mp-slug': 'hello-world',
+      type: 'entry'
+    }
+
+    const output = jf2SafeToStore(input)
+
+    assert.equal(output.content, input.content)
+    assert.equal(output.category[0], input.category[0])
+    assert.equal(output.category[1], input.category[1])
+
+    assert.equal(output.access_token, undefined)
+    assert.equal(output.action, undefined)
+    assert.equal(output.h, undefined)
+    assert.equal(output['mp-slug'], undefined)
+    assert.equal(output.type, undefined)
+  })
+})
 
 describe('jf2ToContentWithFrontmatter', () => {
-  it('strips away access_token and type', () => {
+  it('removes access_token, action, h, type, mp-slug', () => {
     const jf2 = {
       access_token: 'ey...xyz',
-      h: 'entry',
+      action: 'create',
       content: 'Hello world',
-      category: ['foo', 'bar']
+      category: ['foo', 'bar'],
+      h: 'entry',
+      'mp-slug': 'hello-world',
+      type: 'entry'
     }
 
     const str = jf2ToContentWithFrontmatter(jf2)
@@ -19,10 +48,12 @@ describe('jf2ToContentWithFrontmatter', () => {
 
     assert.ok(!str.includes(jf2.access_token))
     assert.ok(!str.includes(jf2.h))
+    assert.ok(!str.includes(jf2['mp-slug']))
+    assert.ok(!str.includes(jf2.type))
   })
 
   it('returns content as plain text', () => {
-    const jf2 = { content: 'Hello world' }
+    const jf2 = { type: 'entry', content: 'Hello world' }
 
     const str = jf2ToContentWithFrontmatter(jf2)
     const lines = str.split('\n')
@@ -33,7 +64,7 @@ describe('jf2ToContentWithFrontmatter', () => {
   })
 
   it('returns content as HTML with no frontmatter', () => {
-    const jf2 = { content: { html: '<p>Hello world</p>' } }
+    const jf2 = { type: 'entry', content: { html: '<p>Hello world</p>' } }
 
     const str = jf2ToContentWithFrontmatter(jf2)
 

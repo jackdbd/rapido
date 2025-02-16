@@ -1,6 +1,6 @@
 import { h_card, h_cite, h_entry, h_event } from '@jackdbd/microformats2'
 // import { mp_card, mp_cite, mp_entry, mp_event } from "@jackdbd/micropub";
-import type { Mf2 } from '@paulrobertlloyd/mf2tojf2'
+import type { MF2 } from '@jackdbd/micropub/schemas'
 import { Static, Type } from '@sinclair/typebox'
 
 // https://micropub.spec.indieweb.org/#querying
@@ -40,8 +40,4 @@ export type MicropubPostRequestBodyJF2 = Static<
 
 // export interface PostRequestBody extends Jf2, Mf2 {}
 // export interface PostRequestBody extends MicropubRequestBody, Mf2 {}
-export type PostRequestBody = MicropubPostRequestBodyJF2 | Mf2
-
-export function isMf2(body: MicropubPostRequestBodyJF2 | Mf2): body is Mf2 {
-  return (body as Mf2).items !== undefined
-}
+export type PostRequestBody = MicropubPostRequestBodyJF2 | MF2

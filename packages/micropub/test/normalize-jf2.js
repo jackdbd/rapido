@@ -2,7 +2,20 @@ import { describe, it } from 'node:test'
 import assert from 'node:assert'
 import { normalizeJf2 } from '../lib/index.js'
 
-describe('normalizeJf2', () => {
+describe('normalizeJf2 (input is a parsed application/x-www-form-urlencoded request body)', () => {
+  it('replaces `h` with `type`', () => {
+    const input = {
+      h: 'entry',
+      content: 'A simple note.'
+    }
+
+    const output = normalizeJf2(input)
+
+    assert.strictEqual(output.h, undefined)
+    assert.strictEqual(output.type, 'entry')
+    assert.strictEqual(output.content, 'A simple note.')
+  })
+
   it('can process category[]', () => {
     const input = {
       h: 'entry',

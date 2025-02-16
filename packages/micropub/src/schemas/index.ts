@@ -12,9 +12,13 @@ export { mp_entry, type MP_Entry } from './entry.js'
 
 export { mp_event, type MP_Event } from './event.js'
 
-export { jf2, type JF2 } from './jf2.js'
+export { jf2, mp_urlencoded_request_body } from './jf2.js'
+export type { JF2, MP_UrlencodedRequestBody } from './jf2.js'
 
 export { location, type Location } from './location.js'
+
+export { mf2_item_type, parsed_mf2_json } from './mf2.js'
+export type { MF2, MF2ItemType, ParsedMF2 } from './mf2.js'
 
 export {
   access_token,

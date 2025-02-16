@@ -1,8 +1,7 @@
-import type { Jf2 } from '@paulrobertlloyd/mf2tojf2'
-import type { Location } from './schemas/location.js'
+import type { JF2, Location } from './schemas/index.js'
 
 export interface Predicate {
-  store: (jf2: Jf2) => boolean
+  store: (jf2: JF2) => boolean
   website: (url: string) => boolean
 }
 

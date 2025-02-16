@@ -30,8 +30,6 @@ export const mp_entry = Type.Object(
       Type.Unsafe<Static<typeof audio>>(Type.Ref(audio.$id!))
     ),
 
-    h: Type.Optional(Type.Literal('entry', { default: 'entry' })),
-
     limit: Type.Optional(
       Type.Unsafe<Static<typeof mp_limit>>(Type.Ref(mp_limit.$id!))
     ),
@@ -57,10 +55,6 @@ export const mp_entry = Type.Object(
     published: Type.Optional(
       Type.Unsafe<Static<typeof date_time>>(Type.Ref(date_time.$id!))
     ),
-
-    // Since in Micropub we use `h` to indicate the type of the object, we don't
-    // need `type` to be present. But if it is, it must be 'entry'.
-    type: Type.Optional(Type.Literal('entry')),
 
     updated: Type.Optional(
       Type.Unsafe<Static<typeof date_time>>(Type.Ref(date_time.$id!))

@@ -77,7 +77,7 @@
     "@jackdbd/fastify-utils": "0.2.0-canary.10",
     "@jackdbd/indieauth": "0.2.0-canary.13",
     "@jackdbd/microformats2": "0.2.0-canary.8",
-    "@jackdbd/micropub": "0.2.0-canary.10",
+    "@jackdbd/micropub": "*",
     "@jackdbd/oauth2-error-responses": "0.2.0-canary.8",
     "@jackdbd/schema-validators": "^0.2.0-canary.11",
     "@paulrobertlloyd/mf2tojf2": "^2.4.0",

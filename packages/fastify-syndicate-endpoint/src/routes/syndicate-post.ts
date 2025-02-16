@@ -1,5 +1,5 @@
 import { normalizeJf2 } from '@jackdbd/micropub'
-import type { Syndicator } from '@jackdbd/micropub'
+import type { JF2, Syndicator } from '@jackdbd/micropub'
 import type {
   RetrievePost,
   UpdatePost,
@@ -10,7 +10,6 @@ import {
   InvalidRequestError,
   ServerError
 } from '@jackdbd/oauth2-error-responses'
-import { Jf2 } from '@paulrobertlloyd/mf2tojf2'
 import type { RouteHandler } from 'fastify'
 import { XMLParser } from 'fast-xml-parser'
 
@@ -79,7 +78,7 @@ export const defSyndicatePost = (config: Config) => {
     }
     // ====================================================================== //
 
-    let jf2: Jf2
+    let jf2: JF2
     try {
       const value = await get(loc)
       jf2 = value.jf2

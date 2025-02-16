@@ -5,9 +5,8 @@ import {
   REF
 } from '@jackdbd/github-contents-api'
 import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
-import type { Publication } from '@jackdbd/micropub'
+import type { JF2, Publication } from '@jackdbd/micropub'
 import type { UpdatePost } from '@jackdbd/micropub/schemas/user-provided-functions'
-import type { Jf2 } from '@paulrobertlloyd/mf2tojf2'
 import { rfc3339 } from './date.js'
 import { jf2ToContent } from './jf2-to-content.js'
 import type { Log } from './log.js'
@@ -65,7 +64,7 @@ export const defUpdate = (options?: Options) => {
 
     // should we support updating a deleted post (loc.store_deleted)? Probably not.
 
-    let jf2: Jf2
+    let jf2: JF2
     let sha: string
     try {
       const value = await retrieveContent(loc)

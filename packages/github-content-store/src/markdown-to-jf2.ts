@@ -1,9 +1,9 @@
-import type { Jf2 } from '@paulrobertlloyd/mf2tojf2'
+import type { JF2 } from '@jackdbd/micropub/schemas'
 import matter from 'gray-matter'
 import { htmlToText } from 'html-to-text'
 import { markdownToHtml } from './markdown-to-html.js'
 
-export const markdownToJf2 = (md: string): Jf2 => {
+export const markdownToJf2 = (md: string): JF2 => {
   const parsed = matter(md)
 
   // Bookmarks, likes, reposts often have no text content.

@@ -13,17 +13,268 @@
       "type": "Function",
       "parameters": [
         {
-          "additionalProperties": true,
           "type": "object",
           "properties": {
             "action": {
               "type": "string"
             },
-            "date": {
+            "audio": {
+              "anyOf": [
+                {
+                  "$id": "u-url",
+                  "title": "URL of the card, entry, event, etc.",
+                  "description": "URL to use in h-card, h-entry, h-event, etc.",
+                  "format": "uri",
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$id": "u-url",
+                    "title": "URL of the card, entry, event, etc.",
+                    "description": "URL to use in h-card, h-entry, h-event, etc.",
+                    "format": "uri",
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "author": {},
+            "bookmark-of": {
+              "format": "uri",
               "type": "string"
             },
-            "h": {
+            "category": {
+              "anyOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "checkin": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "content": {
+              "anyOf": [
+                {
+                  "$id": "p-content",
+                  "description": "Some plain text content",
+                  "title": "content",
+                  "minLength": 0,
+                  "type": "string"
+                },
+                {
+                  "$id": "e-content",
+                  "title": "content with `html` and optional `text`",
+                  "type": "object",
+                  "properties": {
+                    "html": {
+                      "description": "The text/html version of the containing object. `html` MUST be a single string value only.",
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "text": {
+                      "description": "The text/plain version of the containing object. `text` MUST be a single string value only.",
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "html"
+                  ]
+                }
+              ]
+            },
+            "date": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "in-reply-to": {
+              "format": "uri",
+              "type": "string"
+            },
+            "like-of": {
+              "format": "uri",
+              "type": "string"
+            },
+            "mp-channel": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "mp-destination": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "mp-limit": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "mp-photo-alt": {
+              "anyOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "mp-slug": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "mp-syndicate-to": {
+              "anyOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "name": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "photo": {},
+            "post-status": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "published": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "read-of": {
+              "format": "uri",
+              "type": "string"
+            },
+            "read-status": {
+              "anyOf": [
+                {
+                  "const": "to-read",
+                  "type": "string"
+                },
+                {
+                  "const": "reading",
+                  "type": "string"
+                },
+                {
+                  "const": "finished",
+                  "type": "string"
+                }
+              ]
+            },
+            "repost-of": {
+              "format": "uri",
+              "type": "string"
+            },
+            "rsvp": {
+              "anyOf": [
+                {
+                  "const": "yes",
+                  "type": "string"
+                },
+                {
+                  "const": "no",
+                  "type": "string"
+                },
+                {
+                  "const": "maybe",
+                  "type": "string"
+                },
+                {
+                  "const": "interested",
+                  "type": "string"
+                }
+              ]
+            },
+            "summary": {
+              "$id": "p-summary",
+              "title": "Summary",
+              "description": "Summary to use in h-entry, h-recipe, h-resume.",
+              "minLength": 1,
+              "type": "string"
+            },
+            "syndication": {
+              "$id": "u-syndication",
+              "title": "Syndication",
+              "description": "URL(s) of syndicated copies of this post. The property equivalent of rel-syndication.",
+              "anyOf": [
+                {
+                  "description": "syndication target",
+                  "format": "uri",
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "description": "syndication target",
+                    "format": "uri",
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "updated": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "url": {
+              "$id": "u-url",
+              "title": "URL of the card, entry, event, etc.",
+              "description": "URL to use in h-card, h-entry, h-event, etc.",
+              "format": "uri",
+              "type": "string"
+            },
+            "video": {
+              "anyOf": [
+                {
+                  "$id": "u-url",
+                  "title": "URL of the card, entry, event, etc.",
+                  "description": "URL to use in h-card, h-entry, h-event, etc.",
+                  "format": "uri",
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$id": "u-url",
+                    "title": "URL of the card, entry, event, etc.",
+                    "description": "URL to use in h-card, h-entry, h-event, etc.",
+                    "format": "uri",
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "visibility": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": {
               "default": "entry",
+              "title": "JF2 item type",
               "anyOf": [
                 {
                   "const": "card",
@@ -42,12 +293,6 @@
                   "type": "string"
                 }
               ]
-            },
-            "mp-syndicate-to": {},
-            "syndication": {},
-            "updated": {
-              "minLength": 1,
-              "type": "string"
             }
           }
         }

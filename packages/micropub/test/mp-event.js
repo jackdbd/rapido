@@ -51,7 +51,7 @@ const validate = ajv.compile(mp_event)
 describe('mp-event', () => {
   it('can have start/end, location, a suggested slug and two syndication targets', () => {
     const valid = validate({
-      h: 'event',
+      type: 'event',
       location: 'Some bar in SF',
       name: 'Microformats Meetup',
       start: '2013-06-30 12:00:00-07:00',

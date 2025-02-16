@@ -6,8 +6,6 @@ export const mp_event = Type.Object(
   {
     ...h_event.properties,
 
-    h: Type.Literal('event'),
-
     'mp-slug': Type.Optional(
       Type.Unsafe<Static<typeof mp_slug>>(Type.Ref(mp_slug.$id!))
     ),
@@ -15,18 +13,14 @@ export const mp_event = Type.Object(
       Type.Unsafe<Static<typeof mp_syndicate_to>>(
         Type.Ref(mp_syndicate_to.$id!)
       )
-    ),
-
-    // Since in Micropub we use `h` to indicate the type of the object, we don't
-    // need `type` to be present. But if it is, it must be 'event'.
-    type: Type.Optional(Type.Literal('event'))
+    )
   },
   {
     $id: 'micropub-event',
     title: 'Micropub h=event',
     examples: [
       {
-        h: 'event',
+        type: 'event',
         location: 'Some bar in SF',
         name: 'Microformats Meetup',
         start: '2013-06-30 12:00:00-07:00',

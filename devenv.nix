@@ -31,7 +31,7 @@ in {
     PORT = "3001";
     TELEGRAM_CHAT_ID = telegram.chat_id;
     TELEGRAM_TOKEN = telegram.token;
-    TEST_FILE_TO_DEBUG = "packages/fastify-token-endpoint/test/route-token-post.js";
+    TEST_FILE_TO_DEBUG = "packages/micropub/test/jf2-predicates.js";
     TURSO_DATABASE_TOKEN = turso.database_token;
     TURSO_DATABASE_URL = "libsql://micropub-jackdbd.turso.io";
   };
