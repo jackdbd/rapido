@@ -41,7 +41,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "run-s 'build:ts' 'build:docs' 'build:readme' --print-label",
+    "build": "run-s 'build:ts' 'build:readme' --print-label",
     "build:docs": "node ../scripts/dist/docs.js --package github-content-store",
     "build:readme": "node ../scripts/dist/readme.js --package github-content-store",
     "build:ts": "tsc -p tsconfig.json",

@@ -1,6 +1,7 @@
 import { unixTimestampInSeconds } from '@jackdbd/indieauth'
 import type {
   IsAccessTokenRevoked,
+  IsRefreshTokenRevoked,
   OnIssuedTokens,
   OnAuthorizationCodeVerified,
   OnUserApprovedRequest,
@@ -48,6 +49,17 @@ export const isAccessTokenRevoked: IsAccessTokenRevoked = async (jti) => {
     `[${logPrefix}isAccessTokenRevoked] checking whether access token jti=${jti} is revoked`
   )
   // throw new Error(`simulate runtime exception in isAccessTokenRevoked`);
+  return false
+  // return true;
+}
+
+export const isRefreshTokenRevoked: IsRefreshTokenRevoked = async (
+  refresh_token
+) => {
+  console.log(
+    `[${logPrefix}isRefreshTokenRevoked] checking whether refresh token ${refresh_token} is revoked`
+  )
+  // throw new Error(`simulate runtime exception in isRefreshTokenRevoked`);
   return false
   // return true;
 }

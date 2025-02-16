@@ -69,7 +69,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "run-s 'build:ts' 'build:docs' 'build:readme' --print-label",
+    "build": "run-s 'build:ts' 'build:readme' --print-label",
     "build:docs": "node ../scripts/dist/docs.js --package fastify-hooks",
     "build:readme": "node ../scripts/dist/readme.js --package fastify-hooks",
     "build:ts": "tsc -p tsconfig.json",

@@ -138,8 +138,8 @@ To verify that the authorization code is valid, the token endpoint of the author
 | [@fastify/response-validation](https://www.npmjs.com/package/@fastify/response-validation) | `^3.0.3` |
 | [@hapi/hoek](https://www.npmjs.com/package/@hapi/hoek) | `^11.0.7` |
 | [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `^0.2.0-canary.8` |
-| [@jackdbd/fastify-webc](https://www.npmjs.com/package/@jackdbd/fastify-webc) | `*` |
-| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `0.2.0-canary.11` |
+| [@jackdbd/fastify-webc](https://www.npmjs.com/package/@jackdbd/fastify-webc) | `0.2.0-canary.8` |
+| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `0.2.0-canary.12` |
 | [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `^0.2.0-canary.8` |
 | [@jackdbd/pkce](https://www.npmjs.com/package/@jackdbd/pkce) | `^0.2.0-canary.7` |
 | [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `^0.2.0-canary.11` |
