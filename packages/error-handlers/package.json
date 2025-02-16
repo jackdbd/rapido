@@ -37,7 +37,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "run-s 'build:ts' 'build:docs' 'build:readme' --print-label",
+    "build": "run-s 'build:ts' 'build:readme' --print-label",
     "build:docs": "node ../scripts/dist/docs.js --package error-handlers",
     "build:readme": "node ../scripts/dist/readme.js --package error-handlers",
     "build:ts": "tsc -p tsconfig.json",
@@ -53,7 +53,7 @@
     "test:watch": "node --test --watch"
   },
   "dependencies": {
-    "@jackdbd/oauth2-error-responses": "*"
+    "@jackdbd/oauth2-error-responses": "0.2.0-canary.8"
   },
   "devDependencies": {}
 }

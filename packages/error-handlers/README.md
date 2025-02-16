@@ -26,7 +26,7 @@ npm install @repo/error-handlers
 
 | Package | Version |
 |---|---|
-| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `*` |
+| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `0.2.0-canary.8` |
 
 ## License
 
