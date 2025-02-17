@@ -1,5 +1,12 @@
 import { describe, it } from 'node:test'
-import { InvalidRequestError, ServerError } from '../lib/index.js'
+import { nanoid } from 'nanoid'
+import {
+  InvalidRequestError,
+  InvalidScopeError,
+  ServerError,
+  TemporaryUnavailableError,
+  oauth2ErrorFromErrorString
+} from '../lib/index.js'
 
 describe('InvalidRequestError', () => {
   it('has status code 400', (t) => {
@@ -36,5 +43,33 @@ describe('ServerError', () => {
     const err = new ServerError({ error_description })
 
     t.assert.equal(err.statusCode, 500)
+  })
+})
+
+describe('oauth2ErrorFromErrorString', () => {
+  it(`returns an instance of InvalidScopeError if the error string is 'invalid_scope'`, (t) => {
+    const err = oauth2ErrorFromErrorString('invalid_scope')
+    t.assert.ok(err instanceof InvalidScopeError)
+  })
+
+  it(`has the expected status code and error string, and the provided error_description, error_uri and state`, (t) => {
+    const error = 'temporarily_unavailable'
+    const error_description =
+      'Down for maintenance. Please try again in a few seconds.'
+    const error_uri = `https://example.com/${nanoid()}`
+    const state = nanoid()
+
+    const err = oauth2ErrorFromErrorString(error, {
+      error_description,
+      error_uri,
+      state
+    })
+
+    t.assert.ok(err instanceof TemporaryUnavailableError)
+    t.assert.strictEqual(err.statusCode, 503)
+    t.assert.strictEqual(err.error, error)
+    t.assert.strictEqual(err.error_description, error_description)
+    t.assert.strictEqual(err.error_uri, error_uri)
+    t.assert.strictEqual(err.state, state)
   })
 })
