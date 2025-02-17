@@ -1,0 +1,22 @@
+meta {
+  name: create minimal note (JF2)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{micropub_endpoint}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "content": "hello",
+    "__mp-slug": "foo-bar"
+  }
+}

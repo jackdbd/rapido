@@ -1,7 +1,7 @@
 meta {
-  name: exchange authorization code with access token
+  name: exchange auth code for access token (no media)
   type: http
-  seq: 2
+  seq: 3
 }
 
 post {
@@ -13,7 +13,7 @@ post {
 body:form-urlencoded {
   grant_type: authorization_code
   client_id: {{client_id}}
-  code: {{code}}
+  code: {{code_no_media_scope}}
   code_verifier: {{code_verifier}}
   redirect_uri: {{redirect_uri}}
 }

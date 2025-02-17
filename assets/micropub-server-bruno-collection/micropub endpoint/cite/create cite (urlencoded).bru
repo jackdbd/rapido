@@ -1,0 +1,23 @@
+meta {
+  name: create cite (urlencoded)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{micropub_endpoint}}
+  body: formUrlEncoded
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:form-urlencoded {
+  h: cite
+  name: The Correspondence of Isaac Newton: Volume 5
+  author: Isaac Newton
+  content: If I have seen further it is by standing on the shoulders of Giants.
+  mp-slug: test-cite
+}

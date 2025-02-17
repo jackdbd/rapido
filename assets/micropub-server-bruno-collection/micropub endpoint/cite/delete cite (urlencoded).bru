@@ -1,0 +1,20 @@
+meta {
+  name: delete cite (urlencoded)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{micropub_endpoint}}
+  body: formUrlEncoded
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:form-urlencoded {
+  action: delete
+  url: {{test_cite_url}}
+}

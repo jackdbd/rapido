@@ -1,0 +1,6 @@
+{
+  "type": ["h-entry"],
+  "properties": {
+    "content": ["A minimal MF2 JSON note"]
+  }
+}

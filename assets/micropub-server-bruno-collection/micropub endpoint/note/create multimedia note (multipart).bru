@@ -1,0 +1,30 @@
+meta {
+  name: create multimedia note (multipart)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{micropub_endpoint}}
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:multipart-form {
+  content: This is a test note with 2 audio files, 2 photo files and 2 video files
+  mp-slug: test-note-multimedia
+  category[][0]: Bruno
+  category[][1]: test
+  author: Giacomo Debidda
+  mp-syndicate-to[][0]: {{syndication_uid_mastodon}}
+  mp-syndicate-to[][1]: {{syndication_uid_telegram}}
+  audio[][0]: @file(/home/jack/repos/rapido/assets/audio/example_700KB.mp3)
+  audio[][1]: @file(/home/jack/repos/rapido/assets/audio/example_700KB.mp3)
+  photo[][0]: @file(/home/jack/repos/rapido/assets/photo/866-200x300.jpg)
+  photo[][1]: @file(/home/jack/repos/rapido/assets/photo/hulk.png)
+  video[][0]: @file(/home/jack/repos/rapido/assets/video/file_example_WEBM_480_900KB.webm)
+}

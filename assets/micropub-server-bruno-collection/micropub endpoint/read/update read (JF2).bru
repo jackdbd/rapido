@@ -1,0 +1,42 @@
+meta {
+  name: update read (JF2)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{micropub_endpoint}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "action": "update",
+    "url": "{{test_read_url}}",
+    "add": {
+      "category": ["bruno", "test"]
+    },
+    "replace": {
+      "read-status": "finished"
+    }
+  }
+}
+
+body:form-urlencoded {
+  h: entry
+  name: Horus Rising
+  content: The first book in the Horus Heresy series.
+  read-of: https://wh40k.lexicanum.com/wiki/Horus_Rising_(Novel)
+  read-status: reading
+  category[][0]: test
+  category[][1]: indiepass
+  category[][2]: 40k
+  published: 2024-12-02T18:22:00+0100
+  post-status: published
+  mp-syndicate-to: {{syndication_uid_telegram}}
+}

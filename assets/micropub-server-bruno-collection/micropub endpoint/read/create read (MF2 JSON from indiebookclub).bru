@@ -1,0 +1,39 @@
+meta {
+  name: create read (MF2 JSON from indiebookclub)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{micropub_endpoint}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "type": ["h-entry"],
+    "properties": {
+      "summary": ["Currently reading: The Wealth of Nations by Adam Smith"],
+      "read-status": ["reading"],
+      "read-of": [
+        {
+          "type": ["h-cite"],
+          "properties": {
+            "name": ["The Wealth of Nations"],
+            "author": ["Adam Smith"],
+            "uid": ["isbn:ISBN"]
+          }
+        }
+      ],
+      "post-status": ["published"],
+      "published": ["2025-02-16 17:41:00+0000"],
+      "visibility": ["public"]
+    }
+  }
+  
+}

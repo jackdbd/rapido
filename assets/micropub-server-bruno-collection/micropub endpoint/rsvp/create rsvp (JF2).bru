@@ -1,0 +1,29 @@
+meta {
+  name: create rsvp (JF2)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{micropub_endpoint}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "type": "entry",
+    "rsvp": "maybe",
+    "content": "I don't know if I can make it this time.",
+    "in-reply-to": "https://fosdem.org/2025/",
+    "category": ["test", "indiepass"],
+    "published": "2024-12-02T18:59:00+0100",
+    "post-status": "published",
+    "mp-syndicate-to": "https://t.me/+rQSrJsu5RtgzNjM0"
+  }
+  
+}

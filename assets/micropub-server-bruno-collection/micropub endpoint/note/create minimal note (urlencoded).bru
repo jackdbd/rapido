@@ -1,0 +1,20 @@
+meta {
+  name: create minimal note (urlencoded)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{micropub_endpoint}}
+  body: formUrlEncoded
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:form-urlencoded {
+  content: hello
+  ~mp-slug: foo-bar
+}

@@ -1,0 +1,21 @@
+meta {
+  name: create repost (urlencoded)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{micropub_endpoint}}
+  body: formUrlEncoded
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:form-urlencoded {
+  repost-of: https://mxb.dev/blog/the-indieweb-for-everyone/
+  content: Great article!
+  mp-slug: test-repost
+}

@@ -1,0 +1,19 @@
+meta {
+  name: exchange auth code for access token (no profile)
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{token_endpoint}}
+  body: formUrlEncoded
+  auth: none
+}
+
+body:form-urlencoded {
+  grant_type: authorization_code
+  client_id: {{client_id}}
+  code: {{code_no_profile_scope}}
+  code_verifier: {{code_verifier}}
+  redirect_uri: {{redirect_uri}}
+}

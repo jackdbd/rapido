@@ -1,0 +1,54 @@
+meta {
+  name: create read (urlencoded from indiepass)
+  type: http
+  seq: 2
+}
+
+post {
+  url: Great read!{{micropub_endpoint}}
+  body: formUrlEncoded
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "type": ["h-entry"],
+    "properties": {
+      "summary": ["Currently reading: The Wealth of Nations by Adam Smith"],
+      "read-status": ["reading"],
+      "read-of": [
+        {
+          "type": ["h-cite"],
+          "properties": {
+            "name": ["The Wealth of Nations"],
+            "author": ["Adam Smith"],
+            "uid": ["isbn:ISBN"]
+          }
+        }
+      ],
+      "post-status": ["published"],
+      "published": ["2025-02-16 17:41:00+0000"],
+      "visibility": ["public"]
+    }
+  }
+  
+}
+
+body:form-urlencoded {
+  h: entry
+  name: Horus Rising
+  content: The first book in the Horus Heresy series.
+  read-of: https://wh40k.lexicanum.com/wiki/Horus_Rising_(Novel)
+  read-status: reading
+  category[][0]: test
+  category[][1]: indiepass
+  category[][2]: 40k
+  published: 2024-12-02T18:22:00+0100
+  post-status: published
+  mp-syndicate-to: {{syndication_uid_telegram}}
+  mp-slug: test-read
+}

@@ -1,0 +1,7 @@
+{
+  "type": "entry",
+  "in-reply-to": "https://ohhelloana.blog/guestbook/",
+  "content": "Hi Ana! Your guestbook is so cool. Love it!",
+  "mp-slug": "test-reply",
+  "mp-syndicate-to": ["https://fosstodon.org/@jackdbd", "https://archive.org/"]
+}

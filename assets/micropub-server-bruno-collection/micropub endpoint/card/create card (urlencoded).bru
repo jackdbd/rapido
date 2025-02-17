@@ -1,0 +1,23 @@
+meta {
+  name: create card (urlencoded)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{micropub_endpoint}}
+  body: formUrlEncoded
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:form-urlencoded {
+  h: card
+  name: Isaac Newton
+  given_name: Isaac
+  family_name: Newton
+  mp-slug: test-card
+}

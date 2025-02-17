@@ -16,6 +16,16 @@ vars {
   test_bookmark_url: https://www.giacomodebidda.com/bookmarks/test-bookmark
   test_like_url: https://www.giacomodebidda.com/likes/test-like/
   test_note_url: https://www.giacomodebidda.com/notes/test-note/
+  syndication_uid_mastodon: https://fosstodon.org/@jackdbd
+  test_cite_url: https://www.giacomodebidda.com/quotes/test-cite/
+  test_card_url: https://www.giacomodebidda.com/cards/test-card/
+  test_event_url: https://www.giacomodebidda.com/events/test-event/
+  test_photo_url: https://github.com/jackdbd/giacomodebidda-content/blob/main/photos/calisthenics-on-the-beach.md
+  test_reply_url: https://www.giacomodebidda.com/replies/test-reply/
+  test_repost_url: https://www.giacomodebidda.com/reposts/test-repost/
+  syndication_uid_telegram: https://t.me/+rQSrJsu5RtgzNjM0
+  test_read_url: https://www.giacomodebidda.com/reads/test-read/
+  syndicate_endpoint: {{base_url}}/syndicate
 }
 vars:secret [
   refresh_token,
@@ -23,5 +33,7 @@ vars:secret [
   code,
   code_verifier,
   code_challenge,
-  access_token
+  access_token,
+  code_no_media_scope,
+  code_no_profile_scope
 ]

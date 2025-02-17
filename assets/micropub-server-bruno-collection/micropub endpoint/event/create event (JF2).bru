@@ -1,0 +1,32 @@
+meta {
+  name: create event (JF2)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{micropub_endpoint}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "type": "event",
+    "category": ["kitesurfing", "sports", "test"],
+    "content": {
+      "html": "<p>My <strong>test</strong> event</p>",
+      "text": "My test event"
+    },
+    "mp-slug": "kitesurfing-in-tenerife",
+    "photo": {
+      "alt": "View of El Médano in Tenerife. A few kitesurfers are in the water. A few other ones are on the beach, preparing their kites.",
+      "value": "https://content.giacomodebidda.com/media/photos/2024/10/18/el-medano-tenerife-2023.jpg"
+    }
+  }
+  
+}
