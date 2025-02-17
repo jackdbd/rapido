@@ -53,7 +53,7 @@
     "test:watch": "node --test --watch"
   },
   "dependencies": {
-    "@jackdbd/oauth2-error-responses": "0.2.0-canary.8"
+    "@jackdbd/oauth2-error-responses": "*"
   },
   "devDependencies": {}
 }
