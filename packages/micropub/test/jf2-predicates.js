@@ -3,7 +3,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { describe, it } from 'node:test'
 import { ASSETS_ROOT } from '@repo/stdlib'
-import { mf2tTojf2 } from '../lib/index.js'
+import { mf2tTojf2, normalizeJf2 } from '../lib/index.js'
 import {
   isBookmark,
   isCheckin,
@@ -25,23 +25,25 @@ const indiebookclub_read = JSON.parse(
   fs.readFileSync(path.join(indiebookclub_root, 'read.json'), 'utf-8')
 )
 
-const note_simplified = JSON.parse(
-  fs.readFileSync(path.join(jf2_spec_root, 'note-simplified.json'), 'utf-8')
-)
-
-const note_not_simplified = JSON.parse(
+const note_jf2 = JSON.parse(
   fs.readFileSync(
-    path.join(jf2_spec_root, 'note-parsed-microformats.json'),
+    path.join(
+      jf2_spec_root,
+      'note-jf2-with-content-html-and-content-text.json'
+    ),
     'utf-8'
   )
 )
 
-const note_with_mp_syndicate_to = JSON.parse(
-  fs.readFileSync(path.join(quill_root, 'note.json'), 'utf-8')
+const note_mf2 = JSON.parse(
+  fs.readFileSync(path.join(jf2_spec_root, 'note-mf2.json'), 'utf-8')
 )
 
-const h_entry_reply = JSON.parse(
-  fs.readFileSync(path.join(quill_root, 'reply.json'), 'utf-8')
+const note_jf2_mp_syndicate_to = JSON.parse(
+  fs.readFileSync(
+    path.join(quill_root, 'note-jf2-mp-syndicate-to.json'),
+    'utf-8'
+  )
 )
 
 describe('isBookmark', () => {
@@ -104,12 +106,12 @@ describe('isNote', () => {
     assert.ok(isNote(jf2))
   })
 
-  it('is true for note-simplified.json (https://jf2.spec.indieweb.org/#simplified-json)', () => {
-    assert.ok(isNote(note_simplified))
+  it('is true for note-jf2-with-content-html-and-content-text.json (https://jf2.spec.indieweb.org/#simplified-json)', () => {
+    assert.ok(isNote(note_jf2))
   })
 
-  it('is false for note-parsed-microformats.json (https://jf2.spec.indieweb.org/#parsed-microformats-json)', () => {
-    assert.equal(isNote(note_not_simplified), false)
+  it('is false for note-mf2.json (https://jf2.spec.indieweb.org/#parsed-microformats-json)', () => {
+    assert.equal(isNote(note_mf2), false)
   })
 
   it('is false if it has a `read-of` property', () => {
@@ -141,7 +143,7 @@ describe('isNote', () => {
   })
 
   it('is true for a note that has mp-syndicate-to', () => {
-    assert.ok(isNote(note_with_mp_syndicate_to))
+    assert.ok(isNote(note_jf2_mp_syndicate_to))
   })
 })
 
@@ -178,8 +180,18 @@ describe('isReply', () => {
     assert.ok(isReply(jf2))
   })
 
-  it('is true for a reply sent by Quill', () => {
-    assert.ok(isReply(h_entry_reply))
+  it('is true for a reply (urlencoded converted to JF2)', () => {
+    const urlencoded = {
+      h: 'entry',
+      content:
+        '%40BarnabyWalters+My+favorite+for+that+use+case+is+Redis.+It%27s+easy+to+set+up+and+use%2C+I+often+use+it+to+move+data+between+apps+written+in+different+languages+too.',
+      'in-reply-to': 'http://waterpigs.co.uk/notes/4S0LMw/',
+      'mp-syndicate-to': 'https://myfavoritesocialnetwork.example/aaronpk'
+    }
+    const jf2 = normalizeJf2(urlencoded)
+
+    assert.equal(isReply(urlencoded), false)
+    assert.equal(isReply(jf2), true)
   })
 })
 

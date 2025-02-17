@@ -1,9 +1,13 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert'
-import { jf2SafeToStore, jf2ToContentWithFrontmatter } from '../lib/index.js'
+import {
+  jf2WithNoSensitiveProps,
+  jf2WithNoUselessProps,
+  jf2ToContentWithFrontmatter
+} from '../lib/index.js'
 
-describe('jf2SafeToStore', () => {
-  it('removes access_token, action, h, type, mp-slug', () => {
+describe('jf2WithNoSensitiveProps', () => {
+  it('removes from input: access_token', () => {
     const input = {
       access_token: 'ey...xyz',
       action: 'create',
@@ -14,13 +18,39 @@ describe('jf2SafeToStore', () => {
       type: 'entry'
     }
 
-    const output = jf2SafeToStore(input)
+    const output = jf2WithNoSensitiveProps(input)
 
     assert.equal(output.content, input.content)
     assert.equal(output.category[0], input.category[0])
     assert.equal(output.category[1], input.category[1])
 
     assert.equal(output.access_token, undefined)
+    assert.equal(output.action, input.action)
+    assert.equal(output.h, input.h)
+    assert.equal(output['mp-slug'], input['mp-slug'])
+    assert.equal(output.type, input.type)
+  })
+})
+
+describe('jf2WithNoUselessProps', () => {
+  it('removes from input: action, h, type, mp-slug', () => {
+    const input = {
+      access_token: 'ey...xyz',
+      action: 'create',
+      content: 'Hello world',
+      category: ['foo', 'bar'],
+      h: 'entry',
+      'mp-slug': 'hello-world',
+      type: 'entry'
+    }
+
+    const output = jf2WithNoUselessProps(input)
+
+    assert.equal(output.content, input.content)
+    assert.equal(output.category[0], input.category[0])
+    assert.equal(output.category[1], input.category[1])
+
+    assert.equal(output.access_token, input.access_token)
     assert.equal(output.action, undefined)
     assert.equal(output.h, undefined)
     assert.equal(output['mp-slug'], undefined)

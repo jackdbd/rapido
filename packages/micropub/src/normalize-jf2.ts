@@ -1,5 +1,5 @@
 import assert from 'node:assert'
-import type { JF2 } from './schemas/jf2.js'
+import type { JF2, MP_UrlencodedRequestBody } from './schemas/jf2.js'
 
 // type Value = number | string | Photo | number[] | string[] | Photo[]
 type Value = number | string | any[]
@@ -21,7 +21,7 @@ type Acc = Record<string, Value>
  *
  * If `input` is already a JF2 object, this function will not alter it.
  */
-export const normalizeJf2 = (input: JF2): JF2 => {
+export const normalizeJf2 = (input: MP_UrlencodedRequestBody): JF2 => {
   const tmp = Object.entries(input).reduce((acc, entry) => {
     const [key, value] = entry as Entry
 

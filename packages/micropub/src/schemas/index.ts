@@ -17,7 +17,7 @@ export type { JF2, MP_UrlencodedRequestBody } from './jf2.js'
 
 export { location, type Location } from './location.js'
 
-export { mf2_item_type, parsed_mf2_json } from './mf2.js'
+export { mf2, mf2_item_type, parsed_mf2_json } from './mf2.js'
 export type { MF2, MF2ItemType, ParsedMF2 } from './mf2.js'
 
 export {
@@ -38,26 +38,32 @@ export { photo, type Photo } from './photo.js'
 
 export {
   createPost,
+  deleteMedia,
   deletePost,
+  jf2ToWebsiteUrl,
+  outcome_delete,
+  outcome_upload,
   retrievePost,
   undeletePost,
   update_patch,
   updatePost,
   upload_config,
   uploadMedia,
-  uploadMediaReturnValue,
   websiteUrlToStoreLocation
 } from './user-provided-functions.js'
 export type {
   CreatePost,
+  DeleteMedia,
   DeletePost,
+  Jf2ToWebsiteUrl,
+  OutcomeDelete,
+  OutcomeUpload,
   RetrievePost,
   UndeletePost,
   UpdatePatch,
   UpdatePost,
   UploadConfig,
   UploadMedia,
-  UploadMediaReturnValue,
   WebsiteUrlToStoreLocation
 } from './user-provided-functions.js'
 

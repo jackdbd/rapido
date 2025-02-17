@@ -1,9 +1,6 @@
 export * as jf2_predicates from './jf2-predicates.js'
 
-export {
-  jf2SafeToStore,
-  jf2ToContentWithFrontmatter
-} from './jf2-to-content.js'
+export { jf2ToContentWithFrontmatter } from './jf2-to-content.js'
 
 export { jf2ToSlug } from './jf2-to-slug.js'
 
@@ -12,6 +9,11 @@ export { mf2tTojf2 } from './mf2-to-jf2.js'
 export { normalizeJf2 } from './normalize-jf2.js'
 
 export type { Item, Predicate, Publication } from './publication.js'
+
+export {
+  jf2WithNoSensitiveProps,
+  jf2WithNoUselessProps
+} from './sanitize-jf2.js'
 
 export * from './schemas/index.js'
 export type {
@@ -33,24 +35,30 @@ export type {
 
 export {
   createPost,
+  deleteMedia,
   deletePost,
+  jf2ToWebsiteUrl,
+  outcome_delete,
+  outcome_upload,
   retrievePost,
   update_patch,
   updatePost,
   upload_config,
   uploadMedia,
-  uploadMediaReturnValue,
   websiteUrlToStoreLocation
 } from './schemas/user-provided-functions.js'
 export type {
   CreatePost,
+  DeleteMedia,
   DeletePost,
+  Jf2ToWebsiteUrl,
+  OutcomeDelete,
+  OutcomeUpload,
   RetrievePost,
   UpdatePatch,
   UpdatePost,
   UploadConfig,
   UploadMedia,
-  UploadMediaReturnValue,
   WebsiteUrlToStoreLocation
 } from './schemas/user-provided-functions.js'
 
@@ -65,4 +73,4 @@ export {
   isParsedMF2
 } from './type-guards.js'
 
-export * as website_predicates from './website-predicates.js'
+export * as url_predicates from './url-predicates.js'

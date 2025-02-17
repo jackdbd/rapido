@@ -55,7 +55,7 @@ export const jf2ToSlug = (jf2: JF2) => {
       // If the source of the post was written as string, we treat it as plain text.
       str = jf2.content
     } else {
-      str = jf2.content.html || jf2.content.text
+      str = jf2.content.text || jf2.content.html
     }
   } else {
     const props = [

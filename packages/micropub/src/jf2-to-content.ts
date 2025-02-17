@@ -1,35 +1,15 @@
 import sanitizeHtml from 'sanitize-html'
 import yaml from 'yaml'
 import type { JF2 } from './schemas/jf2.js'
+import {
+  jf2WithNoSensitiveProps,
+  jf2WithNoUselessProps
+} from './sanitize-jf2.js'
 
-/**
- * Properties that should be discarded from a JF2 object before persisting to
- * storage the information the JF2 object contains.
- * - `access_token`: the information contained in the JF2 object could be
- *   publicly available (e.g. users might use a public GitHub repository as
- *   their content store), so we make sure we don't store any access token.
- * - `action`: no point in storing it in a content store.
- * - `h`: no point in storing it in a content store.
- * - `type`: no point in storing it in a content store.
- * - `mp-slug`: it's a Micropub server command, so we don't need to store it in
- * a content store.
- */
-const DROP_PROPS = new Set(['access_token', 'action', 'h', 'mp-slug', 'type'])
+export const jf2ToContentWithFrontmatter = (input: JF2) => {
+  const jf2 = jf2WithNoSensitiveProps(input)
 
-export const jf2SafeToStore = (input: JF2) => {
-  const output: JF2 = Object.entries(input).reduce((acc, [key, value]) => {
-    if (DROP_PROPS.has(key)) {
-      return acc
-    } else {
-      return { ...acc, [key]: value }
-    }
-  }, {})
-
-  return output
-}
-
-export const jf2ToContentWithFrontmatter = (jf2: JF2) => {
-  const { content, ...frontmatter } = jf2SafeToStore(jf2)
+  const { content, ...frontmatter } = jf2WithNoUselessProps(jf2)
 
   let fm: string | undefined
   if (Object.keys(frontmatter).length !== 0) {

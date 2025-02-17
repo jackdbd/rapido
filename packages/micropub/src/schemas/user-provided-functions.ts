@@ -4,16 +4,22 @@ import { location } from './location.js'
 
 export const sha = Type.String({ minLength: 1 })
 
-export const url = Type.String({
-  description: 'A URL',
-  format: 'uri'
+export const url = Type.String({ format: 'uri' })
+
+const summary = Type.String({
+  minLength: 1,
+  title: 'Summary',
+  description: 'Summary of the operation.'
 })
 
-// These functions are provided by the user, so I don't think we can draw any
-// conclusions about their return type. We can only say that they return a
-// promise.
+const detail = Type.String({
+  minLength: 1,
+  description: 'Some detail of the operation.'
+})
 
-export const createPost = Type.Function([jf2], Type.Promise(Type.Any()), {
+const details = Type.Optional(Type.Array(detail))
+
+export const createPost = Type.Function([jf2], Type.Promise(Type.Void()), {
   title: 'Create post',
   description:
     '[Creates](https://micropub.spec.indieweb.org/#create) a post on the Micropub server.'
@@ -22,17 +28,36 @@ export const createPost = Type.Function([jf2], Type.Promise(Type.Any()), {
 /**
  * Creates a post on the Micropub server.
  *
- * @see [Create - Micropub](https://micropub.spec.indieweb.org/#create)
+ * @see [Create - Micropub spec](https://micropub.spec.indieweb.org/#create)
  */
 export type CreatePost = Static<typeof createPost>
 
-export const deletePost = Type.Function([url], Type.Promise(Type.Any()), {
+/**
+ * Outcome of a delete/undelete operation at the Micropub/Media endpoint.
+ */
+export const outcome_delete = Type.Object({ details, summary })
+
+export type OutcomeDelete = Static<typeof outcome_delete>
+
+export const deletePost = Type.Function([url], Type.Promise(outcome_delete), {
   title: 'Delete post',
   description:
     '[Deletes](https://micropub.spec.indieweb.org/#delete) a post published at a URL.'
 })
 
+/**
+ * Deletes a post published at a URL.
+ *
+ * @see [Delete - Micropub spec](https://micropub.spec.indieweb.org/#delete)
+ */
 export type DeletePost = Static<typeof deletePost>
+
+export const deleteMedia = Type.Function([url], Type.Promise(outcome_delete), {
+  title: 'Delete media',
+  description: 'Deletes a file published at a URL.'
+})
+
+export type DeleteMedia = Static<typeof deleteMedia>
 
 export const retrievePost = Type.Function(
   [location],
@@ -50,12 +75,17 @@ export const retrievePost = Type.Function(
 
 export type RetrievePost = Static<typeof retrievePost>
 
-export const undeletePost = Type.Function([url], Type.Promise(Type.Any()), {
+export const undeletePost = Type.Function([url], Type.Promise(outcome_delete), {
   title: 'Undelete post',
   description:
     '[Undeletes](https://micropub.spec.indieweb.org/#delete) a post published at a URL.'
 })
 
+/**
+ * Undeletes a post published at a URL.
+ *
+ * @see [Delete - Micropub spec](https://micropub.spec.indieweb.org/#delete)
+ */
 export type UndeletePost = Static<typeof undeletePost>
 
 export const update_patch = Type.Object({
@@ -68,7 +98,7 @@ export type UpdatePatch = Static<typeof update_patch>
 
 export const updatePost = Type.Function(
   [url, update_patch],
-  Type.Promise(Type.Any()),
+  Type.Promise(Type.Void()),
   {
     title: 'Update post',
     description:
@@ -76,6 +106,11 @@ export const updatePost = Type.Function(
   }
 )
 
+/**
+ * Updates a post published at a URL.
+ *
+ * @see [Update - Micropub spec](https://micropub.spec.indieweb.org/#update)
+ */
 export type UpdatePost = Static<typeof updatePost>
 
 export const upload_config = Type.Object({
@@ -94,18 +129,16 @@ export interface UploadConfig extends Static<typeof upload_config> {
   body: Buffer
 }
 
-export const uploadMediaReturnValue = Type.Object({
-  url: Type.String({
-    description: 'URL of the uploaded file.',
-    format: 'uri'
-  })
-})
+/**
+ * Outcome of an upload operation at the Media endpoint.
+ */
+export const outcome_upload = Type.Object({ details, summary, url })
 
-export type UploadMediaReturnValue = Static<typeof uploadMediaReturnValue>
+export type OutcomeUpload = Static<typeof outcome_upload>
 
 export const uploadMedia = Type.Function(
   [upload_config],
-  Type.Promise(uploadMediaReturnValue),
+  Type.Promise(outcome_upload),
   {
     title: 'Upload file',
     description:
@@ -113,7 +146,24 @@ export const uploadMedia = Type.Function(
   }
 )
 
+/**
+ * Uploads a file to the Micropub server.
+ *
+ * @see [Uploading Files - Micropub spec](https://micropub.spec.indieweb.org/#uploading-files)
+ */
 export type UploadMedia = Static<typeof uploadMedia>
+
+export const jf2ToWebsiteUrl = Type.Function([jf2], url, {
+  title: 'JF2 to website URL',
+  description:
+    "Maps a JF2 object to a URL published on (or that it will be published to) the user's website."
+})
+
+/**
+ * Maps a JF2 object to a URL published on (or that it will be published to) the
+ * user's website.
+ */
+export type Jf2ToWebsiteUrl = Static<typeof jf2ToWebsiteUrl>
 
 export const websiteUrlToStoreLocation = Type.Function([url], location, {
   title: 'Website URL to store location',
@@ -121,4 +171,13 @@ export const websiteUrlToStoreLocation = Type.Function([url], location, {
     "Maps a URL published on the user's website to a location on the user's store (e.g. a table in a database, a path in a git repository, a URL in a public bucket of an object storage service like AWS S3)."
 })
 
+/**
+ * Maps a URL published on the user's website to a location on the user's store.
+ *
+ * The store in question could be:
+ *
+ * - a table in a database (URL -> record)
+ * - a git repository (URL -> path)
+ * - a public bucket of an object storage service like AWS S3 (URL -> URL)
+ */
 export type WebsiteUrlToStoreLocation = Static<typeof websiteUrlToStoreLocation>

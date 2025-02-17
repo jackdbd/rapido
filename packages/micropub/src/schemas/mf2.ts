@@ -28,6 +28,6 @@ export const parsed_mf2_json = Type.Object(
 
 export type ParsedMF2 = Static<typeof parsed_mf2_json>
 
-export interface MF2 {
-  items: ParsedMF2[]
-}
+export const mf2 = Type.Object({ items: Type.Array(parsed_mf2_json) })
+
+export type MF2 = Static<typeof mf2>

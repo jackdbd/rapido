@@ -2,6 +2,7 @@ import assert from 'node:assert'
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, it } from 'node:test'
+import { nanoid } from 'nanoid'
 import { ASSETS_ROOT } from '@repo/stdlib'
 import { jf2_predicates, jf2ToSlug, mf2tTojf2 } from '../lib/index.js'
 
@@ -15,8 +16,14 @@ const indiebookclub_read = JSON.parse(
   fs.readFileSync(path.join(indiebookclub_root, 'read.json'), 'utf-8')
 )
 
-const note_simplified = JSON.parse(
-  fs.readFileSync(path.join(jf2_spec_root, 'note-simplified.json'), 'utf-8')
+const note_jf2 = JSON.parse(
+  fs.readFileSync(
+    path.join(
+      jf2_spec_root,
+      'note-jf2-with-content-html-and-content-text.json'
+    ),
+    'utf-8'
+  )
 )
 
 describe('jf2ToSlug', () => {
@@ -55,9 +62,10 @@ describe('jf2ToSlug', () => {
   })
 
   it('uses `name` in a note that has the `name` property', () => {
+    const name = nanoid()
     const jf2 = {
       type: 'entry',
-      name: 'Hello World',
+      name,
       summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
       content: {
         html: '<p>Donec dapibus enim lacus, <i>a vehicula magna bibendum non</i>. Phasellus id lacinia felis, vitae pellentesque enim. Sed at quam dui. Suspendisse accumsan, est id pulvinar consequat, urna ex tincidunt enim, nec sodales lectus nulla et augue. Cras venenatis vehicula molestie. Donec sagittis elit orci, sit amet egestas ex pharetra in.</p>',
@@ -67,9 +75,9 @@ describe('jf2ToSlug', () => {
 
     assert.ok(isNote(jf2))
 
-    const slug = jf2ToSlug(note_simplified)
+    const slug = jf2ToSlug(jf2)
 
-    assert.strictEqual(slug, 'hello-world')
+    assert.strictEqual(slug, name.toLowerCase())
   })
 
   it('uses `bookmark-of` in a bookmark', () => {
