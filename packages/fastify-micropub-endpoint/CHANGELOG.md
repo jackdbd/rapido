@@ -1,5 +1,17 @@
 # @jackdbd/fastify-micropub-endpoint
 
+## 0.2.0-canary.24
+
+### Minor Changes
+
+- 938e473: Update fastify-micropub-endpoint for the changes in packages micropub and github-content-store.
+
+### Patch Changes
+
+- Updated dependencies [2e51989]
+- Updated dependencies [ffc3401]
+  - @jackdbd/micropub@0.2.0-canary.12
+
 ## 0.2.0-canary.23
 
 ### Minor Changes

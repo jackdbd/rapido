@@ -1,5 +1,13 @@
 # @jackdbd/r2-media-store
 
+## 0.2.0-canary.16
+
+### Patch Changes
+
+- Updated dependencies [2e51989]
+- Updated dependencies [ffc3401]
+  - @jackdbd/micropub@0.2.0-canary.12
+
 ## 0.2.0-canary.15
 
 ### Minor Changes
