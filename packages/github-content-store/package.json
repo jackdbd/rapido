@@ -24,6 +24,14 @@
       "types": "./lib/index.d.ts",
       "import": "./lib/index.js"
     },
+    "./jf2-to-location": {
+      "types": "./lib/jf2-to-location.d.ts",
+      "import": "./lib/jf2-to-location.js"
+    },
+    "./website-url-to-store-location": {
+      "types": "./lib/website-url-to-store-location.d.ts",
+      "import": "./lib/website-url-to-store-location.js"
+    },
     "./package.json": "./package.json"
   },
   "typesVersions": {
