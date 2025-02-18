@@ -1,7 +1,9 @@
 import { S3Client } from '@aws-sdk/client-s3'
 import { defHardDeleteMedia } from './delete.js'
 import { defUpload } from './upload.js'
+import { defaultLog, type Log } from './log.js'
 
+// allow configuring this with 1-2 environment variables?
 export interface Credentials {
   accessKeyId: string
   secretAccessKey: string
@@ -27,6 +29,8 @@ export interface Config {
 
   ignore_filename?: boolean
 
+  log?: Log
+
   /**
    * The base URL at which your files will be publicly accessible.
    *
@@ -37,7 +41,8 @@ export interface Config {
 
 const defaults: Partial<Config> = {
   bucket_prefix: 'media/',
-  ignore_filename: false
+  ignore_filename: false,
+  log: defaultLog
 }
 
 /**
@@ -53,7 +58,8 @@ export const defR2 = (config: Config) => {
     bucket_name,
     bucket_prefix,
     credentials,
-    ignore_filename
+    ignore_filename,
+    log
   } = store_cfg
 
   const public_base_url = store_cfg.public_base_url.endsWith('/')
@@ -78,12 +84,13 @@ export const defR2 = (config: Config) => {
   const s3 = new S3Client({ region, endpoint, credentials })
 
   return {
-    delete: defHardDeleteMedia({ bucket_name, bucket_prefix, s3 }),
+    delete: defHardDeleteMedia({ bucket_name, bucket_prefix, log, s3 }),
     info,
     upload: defUpload({
       bucket_name,
       bucket_prefix,
       ignore_filename,
+      log,
       public_base_url,
       s3
     })

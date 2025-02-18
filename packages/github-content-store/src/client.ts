@@ -8,7 +8,7 @@ import { defCreatePost } from './create-content.js'
 import { defHardDelete } from './hard-delete.js'
 import { defJf2ToLocation } from './jf2-to-location.js'
 import { jf2ToContent } from './jf2-to-content.js'
-import type { Log } from './log.js'
+import { defaultLog, type Log } from './log.js'
 import { defRetrieveContent } from './retrieve-content.js'
 import { defSoftDelete } from './soft-delete.js'
 import { defUndelete } from './undelete.js'
@@ -38,12 +38,7 @@ export interface Config {
 const defaults: Partial<Config> = {
   branch: REF,
   github_api_base_url: GITHUB_API_BASE_URL,
-  log: {
-    debug: console.debug,
-    info: console.info,
-    warn: console.warn,
-    error: console.error
-  },
+  log: defaultLog,
   token: process.env.GITHUB_TOKEN
 }
 
@@ -111,6 +106,7 @@ export const defGitHub = (config: Config) => {
 
   const retrieveContent = defRetrieveContent({
     base_url,
+    log,
     owner,
     ref: branch,
     repo,

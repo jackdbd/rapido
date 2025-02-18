@@ -18,13 +18,19 @@ export const defWebsiteUrlToStoreLocation = (options?: Options) => {
   const { log, name, publication } = config
 
   if (!publication) {
-    throw new Error('publication is required')
+    throw new Error(`cannot create store '${name}': publication is required`)
   }
 
   const mp_posts = Object.keys(publication.items)
-  log.debug(
-    `store ${name} supports URL => store for these Micropub post types: ${mp_posts.join(', ')}`
-  )
+  if (mp_posts.length > 0) {
+    log.debug(
+      `store '${name}' supports mapping URL => store for ${mp_posts.length} Micropub post types: ${mp_posts.join(', ')}`
+    )
+  } else {
+    log.warn(
+      `store '${name}' supports mapping URL => store for NO Micropub post types`
+    )
+  }
 
   const websiteUrlToStoreLocation: WebsiteUrlToStoreLocation = (url) => {
     const [_domain, ...splits] = url.split('/').slice(2)

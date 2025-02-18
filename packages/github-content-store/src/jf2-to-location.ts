@@ -18,13 +18,13 @@ export const defJf2ToLocation = (options?: Options) => {
   const { log, name, publication } = config
 
   if (!publication) {
-    throw new Error('publication is required')
+    throw new Error(`cannot create store '${name}': publication is required`)
   }
 
   const mp_posts = Object.keys(publication.items)
   if (mp_posts.length > 0) {
     log.debug(
-      `store '${name}' supports mapping JF2 => Location (store,URL) for these Micropub post types: ${mp_posts.join(', ')}`
+      `store '${name}' supports mapping JF2 => Location (store,URL) for ${mp_posts.length} Micropub post types: ${mp_posts.join(', ')}`
     )
   } else {
     log.warn(

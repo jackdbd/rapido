@@ -45,6 +45,7 @@ export const defHardDelete = (options?: Options) => {
 
   const retrieveContent = defRetrieveContent({
     base_url,
+    log,
     owner,
     ref: branch,
     repo,

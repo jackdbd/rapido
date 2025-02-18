@@ -3,7 +3,7 @@ export type { Config as R2StoreConfig, Credentials } from './client.js'
 
 export {
   defHardDeleteMedia,
-  type Config as HardDeleteConfig
+  type Options as HardDeleteConfig
 } from './delete.js'
 
-export { defUpload, type Config as UploadConfig } from './upload.js'
+export { defUpload, type Options as UploadConfig } from './upload.js'

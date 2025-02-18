@@ -1,10 +1,12 @@
 import type { RetrievePost } from '@jackdbd/micropub/schemas/user-provided-functions'
 import { get, BASE_URL, GITHUB_TOKEN, REF } from '@jackdbd/github-contents-api'
 import { base64ToUtf8 } from './encoding.js'
+import { defaultLog, type Log } from './log.js'
 import { markdownToJf2 } from './markdown-to-jf2.js'
 
 export interface Options {
   base_url?: string
+  log?: Log
   owner?: string
   ref?: string
   repo?: string
@@ -13,6 +15,7 @@ export interface Options {
 
 const defaults: Partial<Options> = {
   base_url: BASE_URL,
+  log: defaultLog,
   ref: REF,
   token: GITHUB_TOKEN
 }
@@ -20,7 +23,7 @@ const defaults: Partial<Options> = {
 export const defRetrieveContent = (options?: Options) => {
   const config = Object.assign({}, defaults, options) as Required<Options>
 
-  const { base_url, owner, ref, repo, token } = config
+  const { base_url, log, owner, ref, repo, token } = config
 
   const retrieveContent: RetrievePost = async (loc) => {
     const result = await get({
@@ -33,7 +36,13 @@ export const defRetrieveContent = (options?: Options) => {
     })
 
     if (result.error) {
-      throw new Error(result.error.error_description)
+      const summary = `Cannot retrieve ${loc.store} from repository ${owner}/${repo}.`
+      const suggestions = [
+        `Make sure there is a file at that path.`,
+        `Make sure you are using a GitHub token that allows you to retrieve content from repository ${owner}/${repo}.`
+      ]
+      log.error(`${summary}. ${suggestions.join(' ')}`)
+      throw new Error(`${summary}. ${suggestions.join(' ')}`)
     } else {
       const { content: base64, sha } = result.value.body
       // This could become a parameter: contentToJf2
