@@ -35,7 +35,7 @@ Options for the Fastify micropub-endpoint plugin
 |**deletePost**<br/>(Delete post)|`Function`|[Deletes](https://micropub.spec.indieweb.org/#delete) a post published at a URL.<br/>|yes|
 |**includeErrorDescription**|`boolean`|Default: `false`<br/>|no|
 |**isAccessTokenRevoked**|`Function`|Predicate function that returns true if a jti (JSON Web Token ID) is revoked.<br/>|yes|
-|**jf2ToWebsiteUrl**<br/>(JF2 to website URL)|`Function`|Maps a JF2 object to a URL published on (or that it will be published to) the user's website.<br/>|yes|
+|**jf2ToLocation**<br/>(JF2 to store/website location)|`Function`|Maps a JF2 object to a location in the store and a URL published on (or that it will be published to) the user's website.<br/>|yes|
 |**logPrefix**|`string`|Default: `"[micropub-endpoint] "`<br/>|no|
 |**me**|||yes|
 |**mediaEndpoint**<br/>(Media endpoint)|`string`|Format: `"uri"`<br/>|no|
@@ -102,13 +102,13 @@ Options for the Fastify micropub-endpoint plugin
 | [@fastify/multipart](https://www.npmjs.com/package/@fastify/multipart) | `^9.0.3` |
 | [@fastify/response-validation](https://www.npmjs.com/package/@fastify/response-validation) | `^3.0.3` |
 | [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.2.0-canary.8` |
-| [@jackdbd/fastify-hooks](https://www.npmjs.com/package/@jackdbd/fastify-hooks) | `0.2.0-canary.14` |
+| [@jackdbd/fastify-hooks](https://www.npmjs.com/package/@jackdbd/fastify-hooks) | `0.2.0-canary.15` |
 | [@jackdbd/fastify-utils](https://www.npmjs.com/package/@jackdbd/fastify-utils) | `0.2.0-canary.10` |
 | [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `0.2.0-canary.13` |
 | [@jackdbd/microformats2](https://www.npmjs.com/package/@jackdbd/microformats2) | `0.2.0-canary.8` |
-| [@jackdbd/micropub](https://www.npmjs.com/package/@jackdbd/micropub) | `*` |
-| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `*` |
-| [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `^0.2.0-canary.11` |
+| [@jackdbd/micropub](https://www.npmjs.com/package/@jackdbd/micropub) | `0.2.0-canary.12` |
+| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `0.2.0-canary.9` |
+| [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `0.2.0-canary.11` |
 | [@paulrobertlloyd/mf2tojf2](https://www.npmjs.com/package/@paulrobertlloyd/mf2tojf2) | `^2.4.0` |
 | [@sinclair/typebox](https://www.npmjs.com/package/@sinclair/typebox) | `^0.34.14` |
 | [ajv](https://www.npmjs.com/package/ajv) | `^8.17.1` |
