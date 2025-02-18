@@ -26,6 +26,14 @@
       "types": "./lib/index.d.ts",
       "import": "./lib/index.js"
     },
+    "./delete": {
+      "types": "./lib/delete.d.ts",
+      "import": "./lib/delete.js"
+    },
+    "./upload": {
+      "types": "./lib/upload.d.ts",
+      "import": "./lib/upload.js"
+    },
     "./package.json": "./package.json"
   },
   "typesVersions": {
