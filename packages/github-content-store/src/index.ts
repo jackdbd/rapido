@@ -14,7 +14,7 @@ export {
 
 export { jf2ToContent } from './jf2-to-content.js'
 
-export { defJf2ToWebsiteUrl } from './jf2-to-website-url.js'
+export { defJf2ToLocation } from './jf2-to-location.js'
 
 export { markdownToHtml } from './markdown-to-html.js'
 

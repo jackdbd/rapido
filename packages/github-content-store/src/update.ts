@@ -5,13 +5,15 @@ import {
   REF
 } from '@jackdbd/github-contents-api'
 import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
-import type { JF2, Publication } from '@jackdbd/micropub'
-import type { UpdatePost } from '@jackdbd/micropub/schemas/user-provided-functions'
+import type { JF2 } from '@jackdbd/micropub'
+import type {
+  UpdatePost,
+  WebsiteUrlToStoreLocation
+} from '@jackdbd/micropub/schemas/user-provided-functions'
 import { rfc3339 } from './date.js'
 import { jf2ToContent } from './jf2-to-content.js'
 import type { Log } from './log.js'
 import { defRetrieveContent } from './retrieve-content.js'
-import { defWebsiteUrlToStoreLocation } from './website-url-to-store-location.js'
 
 export interface Options {
   author?: AuthorOrCommitter
@@ -20,9 +22,9 @@ export interface Options {
   committer: AuthorOrCommitter
   log?: Log
   owner?: string
-  publication: Publication
   repo?: string
   token?: string
+  websiteUrlToStoreLocation: WebsiteUrlToStoreLocation
 }
 
 const defaults: Partial<Options> = {
@@ -41,15 +43,10 @@ export const defUpdate = (options?: Options) => {
     committer,
     log,
     owner,
-    publication,
     repo,
-    token
+    token,
+    websiteUrlToStoreLocation
   } = config
-
-  const websiteUrlToStoreLocation = defWebsiteUrlToStoreLocation({
-    log,
-    publication
-  })
 
   const retrieveContent = defRetrieveContent({
     base_url,
@@ -78,6 +75,7 @@ export const defUpdate = (options?: Options) => {
     } catch (ex: any) {
       const tip = `Make sure the file exists and that you can fetch it from the repository.`
       const error_description = `Cannot update the post published at ${loc.website} because the file ${loc.store} could not be retrieved from repository ${owner}/${repo} (branch ${branch}). ${tip}`
+      log.error(error_description)
       throw new Error(error_description)
     }
 

@@ -5,9 +5,10 @@ import {
   REF
 } from '@jackdbd/github-contents-api'
 import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
-import { jf2ToSlug } from '@jackdbd/micropub'
-import type { Location, Publication } from '@jackdbd/micropub'
-import type { CreatePost } from '@jackdbd/micropub/schemas/user-provided-functions'
+import type {
+  CreatePost,
+  Jf2ToLocation
+} from '@jackdbd/micropub/schemas/user-provided-functions'
 import { jf2ToContent } from './jf2-to-content.js'
 import { defaultLog, type Log } from './log.js'
 
@@ -16,9 +17,9 @@ export interface Options {
   base_url?: string
   branch?: string
   committer: AuthorOrCommitter
+  jf2ToLocation: Jf2ToLocation
   log?: Log
   owner?: string
-  publication: Publication
   repo?: string
   token?: string
 }
@@ -38,35 +39,16 @@ export const defCreatePost = (options?: Options) => {
     base_url,
     branch,
     committer,
+    jf2ToLocation,
     log,
     owner,
-    publication,
     repo,
     token
   } = config
 
   const createPost: CreatePost = async (jf2) => {
+    const loc = jf2ToLocation(jf2)
     const content = jf2ToContent(jf2)
-    const slug = jf2ToSlug(jf2)
-    const filename = `${slug}.md`
-
-    const loc: Location = {
-      store: `${publication.default.location.store}${filename}`,
-      website: `${publication.default.location.website}${slug}/`
-    }
-
-    const keys = Object.keys(publication.items)
-    log.debug(`supported publications: ${keys.join(', ')}`)
-
-    for (const [key, item] of Object.entries(publication.items)) {
-      const { location, predicate } = item
-      if (predicate.store(jf2)) {
-        log.debug(`matched predicate: ${key}`)
-        loc.store = `${location.store}${filename}`
-        loc.website = `${location.website}${slug}/`
-        break
-      }
-    }
 
     // TODO: if the `me` website already has a post with the same slug as the
     // one suggested suggested with `mp-slug`, we could regenerate a new slug

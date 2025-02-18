@@ -36,6 +36,7 @@ export const defRetrieveContent = (options?: Options) => {
       throw new Error(result.error.error_description)
     } else {
       const { content: base64, sha } = result.value.body
+      // This could become a parameter: contentToJf2
       const jf2 = markdownToJf2(base64ToUtf8(base64))
       return { jf2, sha }
     }

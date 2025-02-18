@@ -5,11 +5,12 @@ import {
   GITHUB_TOKEN,
   REF
 } from '@jackdbd/github-contents-api'
-import type { Publication } from '@jackdbd/micropub'
-import type { DeletePost } from '@jackdbd/micropub/schemas/user-provided-functions'
+import type {
+  DeletePost,
+  WebsiteUrlToStoreLocation
+} from '@jackdbd/micropub/schemas/user-provided-functions'
 import type { Log } from './log.js'
 import { defRetrieveContent } from './retrieve-content.js'
-import { defWebsiteUrlToStoreLocation } from './website-url-to-store-location.js'
 
 export interface Options {
   base_url?: string
@@ -17,9 +18,9 @@ export interface Options {
   committer: AuthorOrCommitter
   log?: Log
   owner?: string
-  publication: Publication
   repo?: string
   token?: string
+  websiteUrlToStoreLocation: WebsiteUrlToStoreLocation
 }
 
 const defaults: Partial<Options> = {
@@ -31,13 +32,16 @@ const defaults: Partial<Options> = {
 export const defHardDelete = (options?: Options) => {
   const config = Object.assign({}, defaults, options) as Required<Options>
 
-  const { base_url, branch, committer, log, owner, publication, repo, token } =
-    config
-
-  const websiteUrlToStoreLocation = defWebsiteUrlToStoreLocation({
+  const {
+    base_url,
+    branch,
+    committer,
     log,
-    publication
-  })
+    owner,
+    repo,
+    token,
+    websiteUrlToStoreLocation
+  } = config
 
   const retrieveContent = defRetrieveContent({
     base_url,

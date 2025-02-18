@@ -6,7 +6,7 @@ import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
 import type { Publication } from '@jackdbd/micropub'
 import { defCreatePost } from './create-content.js'
 import { defHardDelete } from './hard-delete.js'
-import { defJf2ToWebsiteUrl } from './jf2-to-website-url.js'
+import { defJf2ToLocation } from './jf2-to-location.js'
 import { jf2ToContent } from './jf2-to-content.js'
 import type { Log } from './log.js'
 import { defRetrieveContent } from './retrieve-content.js'
@@ -40,6 +40,8 @@ const defaults: Partial<Config> = {
   github_api_base_url: GITHUB_API_BASE_URL,
   log: {
     debug: console.debug,
+    info: console.info,
+    warn: console.warn,
     error: console.error
   },
   token: process.env.GITHUB_TOKEN
@@ -71,7 +73,8 @@ export const defGitHub = (config: Config) => {
     publication
   }
 
-  const jf2ToWebsiteUrl = defJf2ToWebsiteUrl({
+  const jf2ToLocation = defJf2ToLocation({
+    log,
     name: store_name,
     publication
   })
@@ -87,9 +90,9 @@ export const defGitHub = (config: Config) => {
     base_url,
     branch,
     committer,
+    jf2ToLocation,
     log,
     owner,
-    publication,
     repo,
     token
   })
@@ -101,9 +104,9 @@ export const defGitHub = (config: Config) => {
     committer,
     log,
     owner,
-    publication,
     repo,
-    token
+    token,
+    websiteUrlToStoreLocation
   })
 
   const retrieveContent = defRetrieveContent({
@@ -120,9 +123,9 @@ export const defGitHub = (config: Config) => {
     committer,
     log,
     owner,
-    publication,
     repo,
-    token
+    token,
+    websiteUrlToStoreLocation
   })
 
   const softDelete = defSoftDelete({
@@ -130,9 +133,9 @@ export const defGitHub = (config: Config) => {
     committer,
     log,
     owner,
-    publication,
     repo,
-    token
+    token,
+    websiteUrlToStoreLocation
   })
 
   const undelete = defUndelete({
@@ -140,16 +143,16 @@ export const defGitHub = (config: Config) => {
     committer,
     log,
     owner,
-    publication,
     repo,
-    token
+    token,
+    websiteUrlToStoreLocation
   })
 
   return {
     create,
     delete: store_cfg.soft_delete ? softDelete : hardDelete,
     jf2ToContent,
-    jf2ToWebsiteUrl,
+    jf2ToLocation,
     info,
     retrieveContent,
     undelete: store_cfg.soft_delete ? undelete : undefined,
