@@ -5,6 +5,7 @@ import { describe, it } from 'node:test'
 import { ASSETS_ROOT } from '@repo/stdlib'
 import { mf2tTojf2, normalizeJf2 } from '../lib/index.js'
 import {
+  hasH,
   isBookmark,
   isCheckin,
   isIssue,
@@ -45,6 +46,31 @@ const note_jf2_mp_syndicate_to = JSON.parse(
     'utf-8'
   )
 )
+
+describe('hasH', () => {
+  it(`is true for an object that has an 'h' property`, () => {
+    const urlencoded = {
+      h: 'entry',
+      content:
+        '%40BarnabyWalters+My+favorite+for+that+use+case+is+Redis.+It%27s+easy+to+set+up+and+use%2C+I+often+use+it+to+move+data+between+apps+written+in+different+languages+too.',
+      'in-reply-to': 'http://waterpigs.co.uk/notes/4S0LMw/',
+      'mp-syndicate-to': 'https://myfavoritesocialnetwork.example/aaronpk'
+    }
+    assert.equal(hasH(urlencoded), true)
+  })
+
+  it(`is false for an object that had an 'h' property but was converted to JF2`, () => {
+    const urlencoded = {
+      h: 'entry',
+      content:
+        '%40BarnabyWalters+My+favorite+for+that+use+case+is+Redis.+It%27s+easy+to+set+up+and+use%2C+I+often+use+it+to+move+data+between+apps+written+in+different+languages+too.',
+      'in-reply-to': 'http://waterpigs.co.uk/notes/4S0LMw/',
+      'mp-syndicate-to': 'https://myfavoritesocialnetwork.example/aaronpk'
+    }
+    assert.equal(hasH(urlencoded), true)
+    assert.equal(hasH(normalizeJf2(urlencoded)), false)
+  })
+})
 
 describe('isBookmark', () => {
   it('is true if it has a `bookmark-of` property', () => {
@@ -87,6 +113,11 @@ describe('isLike', () => {
 })
 
 describe('isNote', () => {
+  it(`is true if 'content' is a string and there is no 'type'`, () => {
+    const jf2 = { content: 'The most minimal note.' }
+    assert.equal(isNote(jf2), true)
+  })
+
   it('is true if it has type=entry and content is a string', () => {
     const jf2 = {
       type: 'entry',
@@ -190,8 +221,9 @@ describe('isReply', () => {
     }
     const jf2 = normalizeJf2(urlencoded)
 
-    assert.equal(isReply(urlencoded), false)
     assert.equal(isReply(jf2), true)
+    assert.equal(hasH(urlencoded), true)
+    assert.equal(hasH(jf2), false)
   })
 })
 

@@ -160,17 +160,17 @@ export const uploadMedia = Type.Function(
  */
 export type UploadMedia = Static<typeof uploadMedia>
 
-export const jf2ToWebsiteUrl = Type.Function([jf2], url, {
-  title: 'JF2 to website URL',
+export const jf2ToLocation = Type.Function([jf2], location, {
+  title: 'JF2 to store/website location',
   description:
-    "Maps a JF2 object to a URL published on (or that it will be published to) the user's website."
+    "Maps a JF2 object to a location in the store and a URL published on (or that it will be published to) the user's website."
 })
 
 /**
- * Maps a JF2 object to a URL published on (or that it will be published to) the
- * user's website.
+ * Maps a JF2 object to a location in the store and a URL published on (or that
+ * it will be published to) the user's website.
  */
-export type Jf2ToWebsiteUrl = Static<typeof jf2ToWebsiteUrl>
+export type Jf2ToLocation = Static<typeof jf2ToLocation>
 
 export const websiteUrlToStoreLocation = Type.Function([url], location, {
   title: 'Website URL to store location',

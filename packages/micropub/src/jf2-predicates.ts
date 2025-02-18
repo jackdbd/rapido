@@ -1,7 +1,27 @@
 import type { JF2 } from './schemas/jf2.js'
 
+/**
+ * Predicate to check whether a JF2 object has an `h` property.
+ *
+ * This predicate can be useful when we want to make sure that in another
+ * predicate function we reject objects that have this property. For example:
+ *
+ * ```js
+ * if (hasH(jf2)) {
+ *   throw new Error(`received an object that has an 'h' property`)
+ * }
+ * ```
+ */
+export const hasH = (input: any) => {
+  if (input && input.h) {
+    return true
+  } else {
+    return false
+  }
+}
+
 export const isBookmark = (jf2: JF2) => {
-  if (isEntry(jf2) && jf2['bookmark-of']) {
+  if (jf2['bookmark-of']) {
     return true
   } else {
     return false
@@ -20,7 +40,7 @@ export const isCard = (jf2: JF2) => {
  * @see https://indieweb.org/checkin
  */
 export const isCheckin = (jf2: JF2) => {
-  if (isEntry(jf2) && jf2['checkin']) {
+  if (jf2['checkin']) {
     return true
   } else {
     return false
@@ -35,7 +55,15 @@ export const isCite = (jf2: JF2) => {
   }
 }
 
-export const isEntry = (jf2: JF2) => {
+/**
+ * Whether a `jf2` object has a `type` property set to `entry`.
+ *
+ * **NOTE**: It's better to name this predicate `hasEntry` instead of `isEntry`
+ * because the default type of a JF2 object is `entry`.
+ * This means that if other predicates check for the presence of the `type`
+ * property, should treat its absence` as the `jf2` object having `type: entry`.
+ */
+export const hasEntry = (jf2: JF2) => {
   if (jf2.type === 'entry') {
     return true
   } else {
@@ -55,7 +83,7 @@ export const isEvent = (jf2: JF2) => {
  * @see https://indieweb.org/issue
  */
 export const isIssue = (jf2: JF2) => {
-  if (isEntry(jf2) && jf2['in-reply-to']) {
+  if (jf2['in-reply-to']) {
     if (jf2['in-reply-to'].includes('github.com')) {
       return true
     }
@@ -65,7 +93,7 @@ export const isIssue = (jf2: JF2) => {
 }
 
 export const isLike = (jf2: JF2) => {
-  if (isEntry(jf2) && jf2['like-of']) {
+  if (jf2['like-of']) {
     return true
   } else {
     return false
@@ -73,13 +101,21 @@ export const isLike = (jf2: JF2) => {
 }
 
 export const isNote = (jf2: JF2) => {
-  if (!isEntry(jf2) || !jf2.content) {
+  // note is a very generic type. We can disambiguate it by checking if JF2 is
+  // NOT one of the more specific types.
+  if (
+    isBookmark(jf2) ||
+    isCheckin(jf2) ||
+    isLike(jf2) ||
+    isRead(jf2) ||
+    isReply(jf2) ||
+    isRepost(jf2) ||
+    isRsvp(jf2)
+  ) {
     return false
   }
 
-  // note is a very generic type. We can disambiguate it by checking if JF2 is
-  // NOT one of the more specific types.
-  if (isRead(jf2) || isReply(jf2) || isRepost(jf2) || isRsvp(jf2)) {
+  if (!jf2.content) {
     return false
   }
 
@@ -98,10 +134,6 @@ export const isNote = (jf2: JF2) => {
  * @see https://indieweb.org/read
  */
 export const isRead = (jf2: JF2) => {
-  if (!isEntry(jf2)) {
-    return false
-  }
-
   if (!jf2['read-of']) {
     return false
   }
@@ -119,10 +151,6 @@ export const isRead = (jf2: JF2) => {
 }
 
 export const isReply = (jf2: JF2) => {
-  if (!isEntry(jf2)) {
-    return false
-  }
-
   if (!jf2['in-reply-to']) {
     return false
   }
@@ -140,7 +168,7 @@ export const isReply = (jf2: JF2) => {
  * @see https://indieweb.org/repost
  */
 export const isRepost = (jf2: JF2) => {
-  if (isEntry(jf2) && jf2['repost-of']) {
+  if (jf2['repost-of']) {
     return true
   } else {
     return false
@@ -151,10 +179,6 @@ export const isRepost = (jf2: JF2) => {
  * @see https://indieweb.org/rsvp
  */
 export const isRsvp = (jf2: JF2) => {
-  if (!isEntry(jf2)) {
-    return false
-  }
-
   // rsvp is a subtype of reply
   if (!jf2['in-reply-to']) {
     return false
