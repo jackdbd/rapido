@@ -19,7 +19,14 @@ const detail = Type.String({
 
 const details = Type.Optional(Type.Array(detail))
 
-export const createPost = Type.Function([jf2], Type.Promise(Type.Void()), {
+/**
+ * Outcome of a create operation at the Micropub/Media endpoint.
+ */
+export const outcome_create = Type.Object({ details, summary })
+
+export type OutcomeCreate = Static<typeof outcome_create>
+
+export const createPost = Type.Function([jf2], Type.Promise(outcome_create), {
   title: 'Create post',
   description:
     '[Creates](https://micropub.spec.indieweb.org/#create) a post on the Micropub server.'

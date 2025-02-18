@@ -2,7 +2,10 @@ import { Static, Type } from '@sinclair/typebox'
 import {
   p_content,
   e_content,
+  h_adr,
   h_cite,
+  p_geo,
+  p_location,
   p_summary,
   u_syndication
   // u_url
@@ -64,6 +67,8 @@ const shared = Type.Object(
     'in-reply-to': Type.Optional(u_url),
 
     'like-of': Type.Optional(u_url),
+
+    location: Type.Optional(Type.Union([p_location, p_geo, h_adr])),
 
     'mp-channel': Type.Optional(Type.String({ minLength: 1 })),
 

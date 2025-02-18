@@ -68,7 +68,7 @@ export const jf2ToSlug = (jf2: JF2) => {
       'repost-of',
       'content',
       'content.html',
-      'content.tex'
+      'content.text'
     ]
     throw new Error(
       `object has none of these properties that could be used to generate a slug: ${props.join(', ')}`

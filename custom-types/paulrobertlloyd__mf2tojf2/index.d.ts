@@ -37,9 +37,9 @@ declare module '@paulrobertlloyd/mf2tojf2' {
   export type Location =
     | string
     | {
-        altitude?: string
-        latitude?: string
-        longitude?: string
+        altitude?: number
+        latitude?: number
+        longitude?: number
       }
 
   export type ReadStatus = 'to-read' | 'reading' | 'finished'
