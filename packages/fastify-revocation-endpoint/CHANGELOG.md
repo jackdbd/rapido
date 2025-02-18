@@ -1,5 +1,13 @@
 # @jackdbd/fastify-revocation-endpoint
 
+## 1.3.0-canary.19
+
+### Patch Changes
+
+- Updated dependencies [9221066]
+  - @jackdbd/oauth2-error-responses@0.2.0-canary.9
+  - @jackdbd/fastify-hooks@0.2.0-canary.15
+
 ## 1.3.0-canary.18
 
 ### Patch Changes

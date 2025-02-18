@@ -1,5 +1,11 @@
 # @jackdbd/oauth2-error-responses
 
+## 0.2.0-canary.9
+
+### Minor Changes
+
+- 9221066: Add function `oauth2ErrorFromErrorString`.
+
 ## 0.2.0-canary.8
 
 ### Minor Changes
