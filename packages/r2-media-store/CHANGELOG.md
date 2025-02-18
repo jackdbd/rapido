@@ -1,5 +1,11 @@
 # @jackdbd/r2-media-store
 
+## 0.2.0-canary.17
+
+### Minor Changes
+
+- de72e8c: Improve logging.
+
 ## 0.2.0-canary.16
 
 ### Patch Changes

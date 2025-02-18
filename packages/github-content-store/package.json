@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/github-content-store",
-  "version": "0.2.0-canary.13",
+  "version": "0.2.0-canary.14",
   "description": "Store Micropub posts in a GitHub repository.",
   "author": {
     "name": "Giacomo Debidda",
