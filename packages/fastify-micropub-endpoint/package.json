@@ -79,7 +79,7 @@
     "@jackdbd/microformats2": "0.2.0-canary.8",
     "@jackdbd/micropub": "0.2.0-canary.12",
     "@jackdbd/oauth2-error-responses": "0.2.0-canary.9",
-    "@jackdbd/schema-validators": "^0.2.0-canary.11",
+    "@jackdbd/schema-validators": "0.2.0-canary.11",
     "@paulrobertlloyd/mf2tojf2": "^2.4.0",
     "@sinclair/typebox": "^0.34.14",
     "ajv": "^8.17.1",
