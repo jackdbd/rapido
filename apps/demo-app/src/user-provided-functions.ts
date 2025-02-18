@@ -1,6 +1,6 @@
 import {
   defDefaultPublication,
-  defJf2ToWebsiteUrl,
+  defJf2ToLocation,
   defWebsiteUrlToStoreLocation
 } from '@jackdbd/github-content-store'
 import { unixTimestampInSeconds } from '@jackdbd/indieauth'
@@ -20,7 +20,7 @@ import type {
 import type {
   CreatePost,
   DeletePost,
-  Jf2ToWebsiteUrl,
+  Jf2ToLocation,
   UndeletePost,
   UpdatePost,
   UploadMedia
@@ -36,15 +36,15 @@ import {
 } from '../../../packages/stdlib/lib/test-utils.js'
 import { defConfig } from './config.js'
 
-const store_name = 'Fake GitHub repository'
+export const store_name = 'Fake GitHub repository'
 const domain = 'giacomodebidda.com'
 const subdomain = 'www'
-const publication = defDefaultPublication({ domain, subdomain })
+export const publication = defDefaultPublication({ domain, subdomain })
 
 const logPrefix = 'user-fx ' // user-provided side effect
 const { client_id, me, issuer, redirect_uri } = defConfig(3001)
 
-export const jf2ToWebsiteUrl = defJf2ToWebsiteUrl({
+export const jf2ToLocation = defJf2ToLocation({
   log: console,
   name: store_name,
   publication
@@ -60,6 +60,7 @@ export const createPost: CreatePost = async (jf2) => {
   console.log(`[${logPrefix}create] JF2`)
   console.log(JSON.stringify(jf2, null, 2))
   // throw new Error(`Simulate runtime exception in createPost.`)
+  return { summary: `Created post of type ${jf2.type}` }
 }
 
 export const deletePost: DeletePost = async (url) => {
@@ -240,8 +241,8 @@ export const revokeRefreshToken: RevokeRefreshToken = async (props) => {
   // throw new Error(`Simulate runtime exception in revokeRefreshToken.`)
 }
 
-export const jf2ToWebsiteUrl2: Jf2ToWebsiteUrl = (jf2) => {
-  console.log(`[${logPrefix}jf2ToWebsiteUrl2] jf2`, jf2)
+export const jf2ToLocationAlternative: Jf2ToLocation = (jf2) => {
+  console.log(`[${logPrefix}jf2ToLocation] jf2`, jf2)
   // throw new Error(`Simulate runtime exception in jf2ToWebsiteUrl2.`)
 
   let str = ''
@@ -267,7 +268,13 @@ export const jf2ToWebsiteUrl2: Jf2ToWebsiteUrl = (jf2) => {
     }
   }
 
-  return `https://${subdomain}.${domain}/${str}/${nanoid()}/`
+  const slug = nanoid().toLocaleLowerCase().replaceAll('-', '')
+
+  return {
+    store: `${str}/${slug}.md`,
+    store_deleted: `deleted/${str}/${slug}.md`,
+    website: `https://${subdomain}.${domain}/${str}/${slug}/`
+  }
 }
 
 export const undeletePost: UndeletePost = async (url) => {

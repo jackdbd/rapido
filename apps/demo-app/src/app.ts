@@ -14,13 +14,16 @@ import Fastify from 'fastify'
 import nunjucks from 'nunjucks'
 import type { Environment } from 'nunjucks'
 import { tap } from './nunjucks/filters.js'
+import { defJf2ToLocation } from '@jackdbd/github-content-store'
 import {
   createPost,
   deleteMedia,
   deletePost,
   isAccessTokenRevoked,
   isRefreshTokenRevoked,
-  jf2ToWebsiteUrl,
+  // jf2ToLocation,
+  publication,
+  store_name,
   onAuthorizationCodeVerified,
   onIssuedTokens,
   onUserApprovedRequest,
@@ -74,6 +77,21 @@ export const defFastify = (config: Config) => {
 
   const logPrefix = '[app] '
 
+  const jf2ToLocation = defJf2ToLocation({
+    // log: fastify.log, // does not work
+    // log: Object.assign({}, fastify.log), // does not work
+    log: {
+      // debug: fastify.log.debug, // does not work
+      // we need to explicitly bind to the fastify.log object
+      debug: fastify.log.debug.bind(fastify.log),
+      info: fastify.log.info.bind(fastify.log),
+      warn: fastify.log.warn.bind(fastify.log),
+      error: fastify.log.error.bind(fastify.log)
+    },
+    name: store_name,
+    publication
+  })
+
   const custom_header_filepath = path.join(
     __dirname,
     '..',
@@ -113,7 +131,7 @@ export const defFastify = (config: Config) => {
     deletePost,
     includeErrorDescription,
     isAccessTokenRevoked,
-    jf2ToWebsiteUrl,
+    jf2ToLocation,
     me,
     mediaEndpoint: media_endpoint,
     micropubEndpoint: micropub_endpoint,
