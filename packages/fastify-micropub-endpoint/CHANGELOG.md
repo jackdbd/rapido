@@ -1,5 +1,20 @@
 # @jackdbd/fastify-micropub-endpoint
 
+## 0.2.0-canary.23
+
+### Minor Changes
+
+- 8ecebc8: Update fastify plugins to use the new version of the micropub package.
+
+### Patch Changes
+
+- Updated dependencies [ea72c14]
+- Updated dependencies [48a0942]
+- Updated dependencies [9221066]
+  - @jackdbd/micropub@0.2.0-canary.11
+  - @jackdbd/oauth2-error-responses@0.2.0-canary.9
+  - @jackdbd/fastify-hooks@0.2.0-canary.15
+
 ## 0.2.0-canary.22
 
 ### Patch Changes

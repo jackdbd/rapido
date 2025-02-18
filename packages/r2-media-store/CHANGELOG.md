@@ -1,5 +1,17 @@
 # @jackdbd/r2-media-store
 
+## 0.2.0-canary.15
+
+### Minor Changes
+
+- 30f085c: Update content store and media store to use the newest version of the micropub package.
+
+### Patch Changes
+
+- Updated dependencies [ea72c14]
+- Updated dependencies [48a0942]
+  - @jackdbd/micropub@0.2.0-canary.11
+
 ## 0.2.0-canary.14
 
 ### Minor Changes

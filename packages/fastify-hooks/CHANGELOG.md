@@ -1,5 +1,12 @@
 # @jackdbd/fastify-hooks
 
+## 0.2.0-canary.15
+
+### Patch Changes
+
+- Updated dependencies [9221066]
+  - @jackdbd/oauth2-error-responses@0.2.0-canary.9
+
 ## 0.2.0-canary.14
 
 ### Patch Changes
