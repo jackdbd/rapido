@@ -1,5 +1,11 @@
 # @jackdbd/github-content-store
 
+## 0.2.0-canary.14
+
+### Minor Changes
+
+- de72e8c: Improve logging.
+
 ## 0.2.0-canary.13
 
 ### Minor Changes
