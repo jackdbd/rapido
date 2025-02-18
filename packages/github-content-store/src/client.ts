@@ -4,8 +4,9 @@ import {
 } from '@jackdbd/github-contents-api'
 import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
 import type { Publication } from '@jackdbd/micropub'
-import { defCreate } from './create-content.js'
+import { defCreatePost } from './create-content.js'
 import { defHardDelete } from './hard-delete.js'
+import { defJf2ToWebsiteUrl } from './jf2-to-website-url.js'
 import { jf2ToContent } from './jf2-to-content.js'
 import type { Log } from './log.js'
 import { defRetrieveContent } from './retrieve-content.js'
@@ -60,20 +61,27 @@ export const defGitHub = (config: Config) => {
 
   const author = config.author ?? committer
 
+  const store_name = `GitHub repository ${owner}/${repo}`
+
   const info = {
     author,
     branch,
     committer,
-    name: `GitHub repository ${owner}/${repo}`,
+    name: store_name,
     publication
   }
+
+  const jf2ToWebsiteUrl = defJf2ToWebsiteUrl({
+    name: store_name,
+    publication
+  })
 
   const websiteUrlToStoreLocation = defWebsiteUrlToStoreLocation({
     log,
     publication
   })
 
-  const create = defCreate({
+  const create = defCreatePost({
     author,
     base_url,
     branch,
@@ -140,6 +148,7 @@ export const defGitHub = (config: Config) => {
     create,
     delete: store_cfg.soft_delete ? softDelete : hardDelete,
     jf2ToContent,
+    jf2ToWebsiteUrl,
     info,
     retrieveContent,
     undelete: store_cfg.soft_delete ? undelete : undefined,

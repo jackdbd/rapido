@@ -88,9 +88,10 @@ export const defHardDelete = (options?: Options) => {
       log.error(`${summary}. ${suggestions.join(' ')}`)
       throw new Error(`${summary}. ${suggestions.join(' ')}`)
     } else {
-      const summary = `Deleted ${loc.store} in repository ${owner}/${repo} (branch ${branch}). That post was published at ${loc.website}.`
-      log.debug(summary)
-      return loc
+      const details = [
+        `The post was stored in repository ${owner}/${repo} (branch ${branch}) at ${loc.store}.`
+      ]
+      return { summary: `Deleted ${loc.website} (hard-delete).`, details }
     }
   }
 

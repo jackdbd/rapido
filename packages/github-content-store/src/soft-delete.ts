@@ -53,7 +53,11 @@ export const defSoftDelete = (options?: Options) => {
     if (result.error) {
       throw new Error(result.error.error_description)
     } else {
-      return loc
+      // Do we know the branch/ref in this function? In the hard-delete we do.
+      const details = [
+        `The post stored in repository ${owner}/${repo} was moved from ${loc.store} to ${loc.store_deleted}.`
+      ]
+      return { summary: `Deleted ${loc.website} (soft-delete).`, details }
     }
   }
 

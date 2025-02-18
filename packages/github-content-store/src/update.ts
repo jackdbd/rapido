@@ -124,12 +124,13 @@ export const defUpdate = (options?: Options) => {
 
     if (result.error) {
       throw new Error(result.error.error_description)
-    } else {
-      const { status_code, status_text } = result.value
-      const summary = `Updated ${loc.store} in repository ${owner}/${repo} (branch ${branch}). That post is published at ${loc.website}.`
-      const payload = { messages, patch }
-      return { status_code, status_text, summary, payload }
     }
+    // else {
+    //   const { status_code, status_text } = result.value
+    //   const summary = `Updated ${loc.store} in repository ${owner}/${repo} (branch ${branch}). That post is published at ${loc.website}.`
+    //   const payload = { messages, patch }
+    //   return { status_code, status_text, summary, payload }
+    // }
   }
 
   return update

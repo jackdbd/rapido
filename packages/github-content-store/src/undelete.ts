@@ -56,7 +56,10 @@ export const defUndelete = (options?: Options) => {
       const message = `Cannot undelete post published at ${loc.website}. ${original}`
       throw new Error(message)
     } else {
-      return loc
+      const details = [
+        `The post stored in repository ${owner}/${repo} was moved from ${loc.store_deleted} to ${loc.store}.`
+      ]
+      return { summary: `Undeleted ${loc.website}.`, details }
     }
   }
 

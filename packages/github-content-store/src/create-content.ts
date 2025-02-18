@@ -30,7 +30,7 @@ const defaults: Partial<Options> = {
   token: GITHUB_TOKEN
 }
 
-export const defCreate = (options?: Options) => {
+export const defCreatePost = (options?: Options) => {
   const config = Object.assign({}, defaults, options) as Required<Options>
 
   const {
@@ -45,7 +45,7 @@ export const defCreate = (options?: Options) => {
     token
   } = config
 
-  const create: CreatePost = async (jf2) => {
+  const createPost: CreatePost = async (jf2) => {
     const content = jf2ToContent(jf2)
     const slug = jf2ToSlug(jf2)
     const filename = `${slug}.md`
@@ -103,9 +103,8 @@ export const defCreate = (options?: Options) => {
     } else {
       const summary = `Post ot type '${jf2.type}' created at ${loc.store} in repo ${owner}/${repo} on branch ${branch}. Committed by ${committer.name} (${committer.email}). The post will be published at ${loc.website}.`
       log.debug(summary)
-      return loc
     }
   }
 
-  return create
+  return createPost
 }

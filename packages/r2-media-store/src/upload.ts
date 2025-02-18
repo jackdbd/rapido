@@ -18,6 +18,7 @@ export const defUpload = (config: Config) => {
   const upload: UploadMedia = async (cfg) => {
     const { body: Body, contentType: ContentType } = cfg
 
+    // TODO: extract this to a separate function, so it can be easily tested
     const filename = ignore_filename
       ? `${nanoid()}.${mime.getExtension(ContentType)}`
       : cfg.filename
@@ -32,35 +33,19 @@ export const defUpload = (config: Config) => {
       ContentType
     }
 
-    // try {
     const output = await s3.send(new PutObjectCommand(params))
     console.log('=== s3.send PutObjectCommand return value ===', output)
 
-    // const { ETag: etag, VersionId: version_id, $metadata: meta } = output;
+    const { ETag: etag, VersionId: version_id, $metadata: meta } = output
+    console.log('=== s3.send output metadata ===', meta)
     // const status_code = meta.httpStatusCode || 200;
     // const status_text = status_code === 201 ? "Created" : "Success";
-    // const summary = `File ${ContentType} uploaded to Cloudflare R2 bucket ${bucket_name} at ${bucket_path} and publicly available at ${public_url} (ETag: ${etag}, Version ID: ${version_id})`;
+    const summary = `File ${filename} is now hosted at ${public_url}.`
+    const details = [
+      `File ${ContentType} uploaded to Cloudflare R2 bucket ${bucket_name} at ${bucket_path} and publicly available at ${public_url} (ETag: ${etag}, Version ID: ${version_id})`
+    ]
 
-    // return {
-    //   value: {
-    //     status_code,
-    //     status_text,
-    //     summary,
-    //     payload: { etag, version_id },
-    //     url: public_url,
-    //   },
-    // };
-    return { url: public_url }
-
-    // } catch (err: any) {
-    //   // The error from the S3 SDK is not useful at all.
-    //   const error_description =
-    //     err.message ||
-    //     `Failed to upload file ${filename} to Cloudflare R2 bucket ${bucket_name} at ${bucket_path}`;
-    //   return {
-    //     error: new Error(error_description),
-    //   };
-    // }
+    return { url: public_url, summary, details }
   }
 
   return upload

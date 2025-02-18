@@ -1,13 +1,39 @@
 import * as jf2 from '@jackdbd/micropub/jf2-predicates'
-import * as web from '@jackdbd/micropub/website-predicates'
-import type { Publication } from '@jackdbd/micropub'
+import * as web from '@jackdbd/micropub/url-predicates'
+import type { Item, Publication } from '@jackdbd/micropub'
 
-interface Config {
+interface Options {
   domain: string
   subdomain: string
+  items?: Record<string, Item>
 }
 
-export const defDefaultPublication = (config: Config): Publication => {
+const defaults = {
+  items: {}
+}
+
+export const defPublication = (options?: Options): Publication => {
+  const config = Object.assign({}, defaults, options)
+
+  const { domain, subdomain, items } = config
+
+  const base_url = subdomain
+    ? `https://${subdomain}.${domain}`
+    : `https://${domain}`
+
+  return {
+    default: {
+      location: {
+        store: 'default/',
+        store_deleted: 'deleted/default/',
+        website: `${base_url}/default/`
+      }
+    },
+    items
+  }
+}
+
+export const defDefaultPublication = (config: Options): Publication => {
   const { domain, subdomain } = config
 
   const base_url = subdomain
@@ -79,6 +105,14 @@ export const defDefaultPublication = (config: Config): Publication => {
           store: `notes/`,
           store_deleted: 'deleted/notes/',
           website: `${base_url}/notes/`
+        }
+      },
+      quote: {
+        predicate: { store: jf2.isCite, website: web.isCite },
+        location: {
+          store: `quotes/`,
+          store_deleted: 'deleted/quotes/',
+          website: `${base_url}/quotes/`
         }
       },
       read: {

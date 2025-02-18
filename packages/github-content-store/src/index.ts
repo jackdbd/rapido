@@ -1,6 +1,9 @@
 export { defGitHub, type Config as GitHubStoreConfig } from './client.js'
 
-export { defCreate, type Options as CreateOptions } from './create-content.js'
+export {
+  defCreatePost,
+  type Options as CreateOptions
+} from './create-content.js'
 
 export { base64ToUtf8, utf8ToBase64 } from './encoding.js'
 
@@ -11,11 +14,13 @@ export {
 
 export { jf2ToContent } from './jf2-to-content.js'
 
+export { defJf2ToWebsiteUrl } from './jf2-to-website-url.js'
+
 export { markdownToHtml } from './markdown-to-html.js'
 
 export { markdownToJf2 } from './markdown-to-jf2.js'
 
-export { defDefaultPublication } from './publication.js'
+export { defDefaultPublication, defPublication } from './publication.js'
 
 export {
   defRetrieveContent,

@@ -46,7 +46,7 @@ const defaults: Partial<Config> = {
  * @see [S3 API compatibility](https://developers.cloudflare.com/r2/api/s3/api/)
  */
 export const defR2 = (config: Config) => {
-  const cfg = Object.assign({}, defaults, config) as Required<Config>
+  const store_cfg = Object.assign({}, defaults, config) as Required<Config>
 
   const {
     account_id,
@@ -54,32 +54,32 @@ export const defR2 = (config: Config) => {
     bucket_prefix,
     credentials,
     ignore_filename
-  } = cfg
+  } = store_cfg
 
-  const public_base_url = cfg.public_base_url.endsWith('/')
-    ? cfg.public_base_url
-    : `${cfg.public_base_url}/`
+  const public_base_url = store_cfg.public_base_url.endsWith('/')
+    ? store_cfg.public_base_url
+    : `${store_cfg.public_base_url}/`
 
   const region = 'auto'
   const endpoint = `https://${account_id}.r2.cloudflarestorage.com`
 
+  const store_name = `Cloudflare R2 bucket ${bucket_name} (region ${region})`
+
+  const info = {
+    account_id,
+    name: store_name,
+    bucket_name,
+    bucket_prefix,
+    endpoint,
+    ignore_filename,
+    public_base_url
+  }
+
   const s3 = new S3Client({ region, endpoint, credentials })
-
-  //   const name = `Cloudflare R2 bucket ${bucket_name} (prefix: ${bucket_prefix})`
-
-  //   const public_root_url = `${public_base_url}${bucket_prefix}`
-
-  //   const info = {
-  //     name,
-  //     bucket_name,
-  //     bucket_prefix,
-  //     public_root_url,
-  //     region,
-  //     endpoint
-  //   }
 
   return {
     delete: defHardDeleteMedia({ bucket_name, bucket_prefix, s3 }),
+    info,
     upload: defUpload({
       bucket_name,
       bucket_prefix,
