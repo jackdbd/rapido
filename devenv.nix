@@ -12,10 +12,14 @@
   turso = builtins.fromJSON (builtins.readFile /run/secrets/turso/micropub);
 in {
   enterShell = ''
-    # remind me of the versions of all the tools I use
+    echo "=== [BEGIN] enterShell ==="
+    echo "=== versions of the tools used in this repository ==="
     versions
-    # remind me which files are tracked by git lfs
+    echo "=== Files tracked by git LFS ==="
     git lfs track
+    echo "=== repository size ==="
+    git count-objects --human-readable --verbose
+    echo "=== [END] enterShell ==="
   '';
 
   enterTest = ''
@@ -132,10 +136,8 @@ in {
       npm run test:watch -w @jackdbd/$1
     '';
     versions.exec = ''
-      echo "=== Versions ==="
       git --version
       echo "Node.js $(node --version)"
-      echo "=== === ==="
     '';
   };
 }
