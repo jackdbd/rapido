@@ -1,3 +1,8 @@
+import {
+  defDefaultPublication,
+  defJf2ToWebsiteUrl,
+  defWebsiteUrlToStoreLocation
+} from '@jackdbd/github-content-store'
 import { unixTimestampInSeconds } from '@jackdbd/indieauth'
 import type {
   IsAccessTokenRevoked,
@@ -15,9 +20,12 @@ import type {
 import type {
   CreatePost,
   DeletePost,
+  Jf2ToWebsiteUrl,
   UndeletePost,
-  UpdatePost
+  UpdatePost,
+  UploadMedia
 } from '@jackdbd/micropub/schemas/user-provided-functions'
+import { codeChallenge } from '@jackdbd/pkce'
 import { nanoid } from 'nanoid'
 import {
   PROFILE_EMAIL,
@@ -28,27 +36,53 @@ import {
 } from '../../../packages/stdlib/lib/test-utils.js'
 import { defConfig } from './config.js'
 
+const store_name = 'Fake GitHub repository'
+const domain = 'giacomodebidda.com'
+const subdomain = 'www'
+const publication = defDefaultPublication({ domain, subdomain })
+
 const logPrefix = 'user-fx ' // user-provided side effect
 const { client_id, me, issuer, redirect_uri } = defConfig(3001)
 
-export const create: CreatePost = async (jf2) => {
-  console.log(`[${logPrefix}create] jf2`, jf2)
-  // throw new Error(`simulate runtime exception in create`);
-  return { message: 'post created' }
+export const jf2ToWebsiteUrl = defJf2ToWebsiteUrl({
+  log: console,
+  name: store_name,
+  publication
+})
+
+export const websiteUrlToStoreLocation = defWebsiteUrlToStoreLocation({
+  log: console,
+  name: store_name,
+  publication
+})
+
+export const createPost: CreatePost = async (jf2) => {
+  console.log(`[${logPrefix}create] JF2`)
+  console.log(JSON.stringify(jf2, null, 2))
+  // throw new Error(`Simulate runtime exception in createPost.`)
 }
 
-export const deleteContentOrMedia: DeletePost = async (url) => {
-  console.log(`[${logPrefix}deleteContentOrMedia] url: ${url}`)
-  // return { error: new Error("Not implemented") };
-  // throw new Error(`simulate runtime exception in deleteContentOrMedia`);
-  return { message: `deleted post at url ${url} ` }
+export const deletePost: DeletePost = async (url) => {
+  console.log(`[${logPrefix}deletePost] ${url} => location`)
+  const loc = websiteUrlToStoreLocation(url)
+  console.log(JSON.stringify(loc, null, 2))
+  // throw new Error(`Simulate runtime exception in deletePost.`)
+  return { summary: `Deleted ${url}` }
+}
+
+export const deleteMedia: DeletePost = async (url) => {
+  console.log(`[${logPrefix}deleteMedia] ${url} => location`)
+  const loc = websiteUrlToStoreLocation(url)
+  console.log(JSON.stringify(loc, null, 2))
+  // throw new Error(`Simulate runtime exception in deleteMedia.`)
+  return { summary: `Deleted ${url}` }
 }
 
 export const isAccessTokenRevoked: IsAccessTokenRevoked = async (jti) => {
   console.log(
     `[${logPrefix}isAccessTokenRevoked] checking whether access token jti=${jti} is revoked`
   )
-  // throw new Error(`simulate runtime exception in isAccessTokenRevoked`);
+  // throw new Error(`Simulate runtime exception in isAccessTokenRevoked.`);
   return false
   // return true;
 }
@@ -59,7 +93,7 @@ export const isRefreshTokenRevoked: IsRefreshTokenRevoked = async (
   console.log(
     `[${logPrefix}isRefreshTokenRevoked] checking whether refresh token ${refresh_token} is revoked`
   )
-  // throw new Error(`simulate runtime exception in isRefreshTokenRevoked`);
+  // throw new Error(`Simulate runtime exception in isRefreshTokenRevoked.`);
   return false
   // return true;
 }
@@ -68,7 +102,7 @@ export const onAuthorizationCodeVerified: OnAuthorizationCodeVerified = async (
   code
 ) => {
   console.log(`[${logPrefix}onAuthorizationCodeVerified] code: ${code}`)
-  throw new Error(`simulate runtime exception in onAuthorizationCodeVerified`)
+  // throw new Error(`Simulate runtime exception in onAuthorizationCodeVerified.`)
 }
 
 export const onIssuedTokens: OnIssuedTokens = async (info) => {
@@ -77,7 +111,7 @@ export const onIssuedTokens: OnIssuedTokens = async (info) => {
 
 export const onUserApprovedRequest: OnUserApprovedRequest = async (props) => {
   console.log(`[${logPrefix}OnUserApprovedRequest] props`, props)
-  throw new Error(`simulate runtime exception in onUserApprovedRequest`)
+  throw new Error(`Simulate runtime exception in onUserApprovedRequest.`)
 }
 
 export const retrieveAccessToken: RetrieveAccessToken = async (jti) => {
@@ -88,25 +122,73 @@ export const retrieveAccessToken: RetrieveAccessToken = async (jti) => {
 }
 
 export const retrieveAuthorizationCode: RetrieveAuthorizationCode = async (
-  code: string
+  authorization_code: string
 ) => {
   console.log(
-    `[${logPrefix}retrieveAuthorizationCode] retrieving authorization code: ${code}`
+    `[${logPrefix}retrieveAuthorizationCode] retrieving authorization code: ${authorization_code}`
   )
-  throw new Error(`simulate runtime exception in retrieveAuthorizationCode`)
-  // client_id: https://micropub.fly.dev/id
+
+  // throw new Error(`Simulate runtime exception in retrieveAuthorizationCode.`)
+
+  const code_verifier = process.env.CODE_VERIFIER!
+  if (!code_verifier) {
+    throw new Error(
+      'environment variable CODE_VERIFIER not set. Use the same value used in Bruno.'
+    )
+  }
+
+  const code_challenge_method = 'S256'
+
+  const code_challenge = codeChallenge({
+    code_verifier,
+    method: code_challenge_method
+  })
+
+  const code_no_media_scope = process.env.CODE_NO_MEDIA_SCOPE!
+  if (!code_no_media_scope) {
+    throw new Error(
+      'environment variable CODE_NO_MEDIA_SCOPE not set. Use the same value used in Bruno.'
+    )
+  }
+
+  const code_no_profile_scope = process.env.CODE_NO_PROFILE_SCOPE!
+  if (!code_no_profile_scope) {
+    throw new Error(
+      'environment variable CODE_NO_PROFILE_SCOPE not set. Use the same value used in Bruno.'
+    )
+  }
+
+  let code
+  let scope
+  switch (authorization_code) {
+    case code_no_media_scope: {
+      code = code_no_media_scope
+      scope = 'create update profile email delete undelete'
+      break
+    }
+    case code_no_profile_scope: {
+      code = code_no_profile_scope
+      scope = 'create update delete undelete media'
+      break
+    }
+    default: {
+      code = authorization_code
+      scope = 'create update profile email delete undelete media'
+    }
+  }
+
   return {
     client_id,
     code,
-    code_challenge: '',
-    code_challenge_method: '',
-    created_at: 456,
-    exp: 123,
+    code_challenge,
+    code_challenge_method,
+    created_at: unixTimestampInSeconds(),
+    exp: unixTimestampInSeconds() + 300,
     id: nanoid(),
     iss: issuer,
     me,
     redirect_uri,
-    scope: SCOPE
+    scope
   }
 }
 
@@ -147,22 +229,68 @@ export const retrieveUserProfile: RetrieveUserProfile = async (me) => {
 }
 
 export const revokeAccessToken: RevokeAccessToken = async (props) => {
-  console.log('=== revokeAccessToken props ===', props)
+  console.log(`[${logPrefix}revokeAccessToken] props`)
+  console.log(JSON.stringify(props, null, 2))
+  throw new Error(`Simulate runtime exception in revokeAccessToken.`)
 }
 
 export const revokeRefreshToken: RevokeRefreshToken = async (props) => {
-  console.log('=== revokeRefreshToken props ===', props)
+  console.log(`[${logPrefix}revokeRefreshToken] props`)
+  console.log(JSON.stringify(props, null, 2))
+  // throw new Error(`Simulate runtime exception in revokeRefreshToken.`)
 }
 
-export const undelete: UndeletePost = async (url) => {
-  console.log(`[${logPrefix}undelete] url: ${url}`)
-  // return { error: new Error("Not implemented") };
-  // throw new Error(`simulate runtime exception in undelete`);
-  return { message: `undeleted post at url ${url} ` }
+export const jf2ToWebsiteUrl2: Jf2ToWebsiteUrl = (jf2) => {
+  console.log(`[${logPrefix}jf2ToWebsiteUrl2] jf2`, jf2)
+  // throw new Error(`Simulate runtime exception in jf2ToWebsiteUrl2.`)
+
+  let str = ''
+  switch (jf2.type) {
+    case 'card': {
+      str = 'cards'
+      break
+    }
+    case 'cite': {
+      str = 'cites'
+      break
+    }
+    case 'entry': {
+      str = 'entries'
+      break
+    }
+    case 'event': {
+      str = 'events'
+      break
+    }
+    default: {
+      throw new Error(`Unsupported type: ${jf2.type}`)
+    }
+  }
+
+  return `https://${subdomain}.${domain}/${str}/${nanoid()}/`
 }
 
-export const update: UpdatePost = async (url, patch) => {
-  console.log(`[${logPrefix}update] url: ${url}`, patch)
-  // throw new Error(`simulate runtime exception in update`);
-  return { message: `updated post at url ${url} ` }
+export const undeletePost: UndeletePost = async (url) => {
+  console.log(`[${logPrefix}undeletePost] ${url} => location`)
+  const loc = websiteUrlToStoreLocation(url)
+  console.log(JSON.stringify(loc, null, 2))
+  // throw new Error(`Simulate runtime exception in undeletePost.`)
+  return { summary: `Undeleted ${url}` }
+}
+
+export const updatePost: UpdatePost = async (url, patch) => {
+  console.log(`[${logPrefix}updatePost] apply this update patch to ${url}`)
+  console.log(JSON.stringify(patch, null, 2))
+  // throw new Error(`Simulate runtime exception in updatePost.`)
+}
+
+export const uploadMedia: UploadMedia = async (props) => {
+  const { contentType, filename } = props
+  const url = `https://${subdomain}.${domain}/media/${nanoid()}/`
+  console.log(
+    `[${logPrefix}uploadMedia] uploading ${filename} (content-type: ${contentType}) to ${url}`
+  )
+  // const loc = websiteUrlToStoreLocation(url)
+  // throw new Error(`Simulate runtime exception in uploadMedia.`)
+  return { summary: `File ${filename} is now hosted at ${url}`, url }
 }

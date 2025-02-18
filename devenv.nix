@@ -12,7 +12,10 @@
   turso = builtins.fromJSON (builtins.readFile /run/secrets/turso/micropub);
 in {
   enterShell = ''
+    # remind me of the versions of all the tools I use
     versions
+    # remind me which files are tracked by git lfs
+    git lfs track
   '';
 
   enterTest = ''
@@ -22,6 +25,14 @@ in {
 
   env = {
     BASE_URL = "http://localhost:${config.env.PORT}";
+    # These authorization codes are used in demo-app. KEEP THEM SECRET.
+    CODE_NO_MEDIA_SCOPE = builtins.readFile /run/secrets/codecov/token;
+    CODE_NO_PROFILE_SCOPE = builtins.readFile /run/secrets/ngrok/auth_token;
+    # This is used in demo-app to verify an authorization code. It must be at
+    # least 43 characters long. Use the same value used in Bruno and KEEP THIS
+    # SECRET, otherwise anyone knowing the authorization code and this code
+    # verifier will be able to exchange the authorization code for an access token.
+    CODE_VERIFIER = builtins.readFile /run/secrets/github-tokens/crud_contents_api;
     CODECOV_TOKEN = builtins.readFile /run/secrets/codecov/token;
     CONTENTS_API_GITHUB_TOKEN = builtins.readFile /run/secrets/github-tokens/crud_contents_api;
     JWKS = builtins.readFile /home/jack/repos/micropub/secrets/jwks.txt;

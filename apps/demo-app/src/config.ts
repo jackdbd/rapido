@@ -22,6 +22,34 @@ export interface Config {
 export const defConfig = (port: number): Config => {
   const base_url = process.env.BASE_URL || `http://localhost:${port}`
 
+  let authorization_endpoint = ''
+  let client_id = ''
+  let media_endpoint = ''
+  let micropub_endpoint = ''
+  let redirect_uri = ''
+  let revocation_endpoint = ''
+  let token_endpoint = ''
+  let userinfo_endpoint = ''
+  if (base_url.includes(`localhost:${port}`)) {
+    authorization_endpoint = `${base_url}/auth`
+    client_id = `${base_url}/id`
+    media_endpoint = `${base_url}/media`
+    micropub_endpoint = `${base_url}/micropub`
+    redirect_uri = `${base_url}/auth/callback`
+    revocation_endpoint = `${base_url}/revoke`
+    token_endpoint = `${base_url}/token`
+    userinfo_endpoint = `${base_url}/userinfo`
+  } else {
+    authorization_endpoint = `https://micropub.fly.dev/id`
+    client_id = `https://micropub.fly.dev/id`
+    media_endpoint = `https://micropub.fly.dev/media`
+    micropub_endpoint = `https://micropub.fly.dev/micropub`
+    redirect_uri = `https://micropub.fly.dev/auth/callback`
+    revocation_endpoint = `https://micropub.fly.dev/revoke`
+    token_endpoint = `https://micropub.fly.dev/token`
+    userinfo_endpoint = `https://micropub.fly.dev/userinfo`
+  }
+
   // TODO: read syndication_to from a JSON file?
   const syndicate_to: SyndicateToItem[] = [
     {
@@ -58,21 +86,21 @@ export const defConfig = (port: number): Config => {
   ]
 
   return {
-    authorization_endpoint: `${base_url}/auth`,
-    client_id: 'https://micropub.fly.dev/id',
+    authorization_endpoint,
+    client_id,
     host: process.env.HOST || '0.0.0.0',
     includeErrorDescription: true,
-    issuer: base_url,
+    issuer: 'https://giacomodebidda.com/',
     log_level: process.env.PINO_LOG_LEVEL || 'info',
     me: 'https://giacomodebidda.com/',
-    media_endpoint: `${base_url}/media`,
-    micropub_endpoint: `${base_url}/micropub`,
+    media_endpoint,
+    micropub_endpoint,
     port,
-    redirect_uri: `${base_url}/auth/callback`,
+    redirect_uri,
     reportAllAjvErrors: true,
-    revocation_endpoint: `${base_url}/revoke`,
+    revocation_endpoint,
     syndicate_to,
-    token_endpoint: `${base_url}/token`,
-    userinfo_endpoint: `${base_url}/userinfo`
+    token_endpoint,
+    userinfo_endpoint
   }
 }

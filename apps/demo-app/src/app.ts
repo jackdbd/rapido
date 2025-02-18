@@ -4,7 +4,7 @@ import fastifyRequestContext from '@fastify/request-context'
 import view from '@fastify/view'
 import authorizationEndpoint from '@jackdbd/fastify-authorization-endpoint'
 import introspectionEndpoint from '@jackdbd/fastify-introspection-endpoint'
-// import mediaEndpoint from '@jackdbd/fastify-media-endpoint'
+import mediaEndpoint from '@jackdbd/fastify-media-endpoint'
 import micropubEndpoint from '@jackdbd/fastify-micropub-endpoint'
 import revocationEndpoint from '@jackdbd/fastify-revocation-endpoint'
 // import syndicateEndpoint from '@jackdbd/fastify-syndicate-endpoint'
@@ -15,10 +15,12 @@ import nunjucks from 'nunjucks'
 import type { Environment } from 'nunjucks'
 import { tap } from './nunjucks/filters.js'
 import {
-  create,
-  deleteContentOrMedia,
+  createPost,
+  deleteMedia,
+  deletePost,
   isAccessTokenRevoked,
   isRefreshTokenRevoked,
+  jf2ToWebsiteUrl,
   onAuthorizationCodeVerified,
   onIssuedTokens,
   onUserApprovedRequest,
@@ -28,8 +30,9 @@ import {
   retrieveUserProfile,
   revokeAccessToken,
   revokeRefreshToken,
-  undelete,
-  update
+  undeletePost,
+  updatePost,
+  uploadMedia
 } from './user-provided-functions.js'
 import {
   jwks,
@@ -106,17 +109,26 @@ export const defFastify = (config: Config) => {
   })
 
   fastify.register(micropubEndpoint, {
-    create,
-    delete: deleteContentOrMedia,
+    createPost,
+    deletePost,
     includeErrorDescription,
     isAccessTokenRevoked,
+    jf2ToWebsiteUrl,
     me,
     mediaEndpoint: media_endpoint,
     micropubEndpoint: micropub_endpoint,
     reportAllAjvErrors,
     syndicateTo: syndicate_to,
-    undelete,
-    update
+    undeletePost,
+    updatePost
+  })
+
+  fastify.register(mediaEndpoint, {
+    deleteMedia,
+    includeErrorDescription,
+    isAccessTokenRevoked,
+    me,
+    uploadMedia
   })
 
   fastify.register(revocationEndpoint, {
@@ -132,6 +144,7 @@ export const defFastify = (config: Config) => {
   })
 
   fastify.register(tokenEndpoint, {
+    accessTokenExpiration: '24 hours',
     authorizationEndpoint: authorization_endpoint,
     includeErrorDescription,
     isAccessTokenRevoked,
