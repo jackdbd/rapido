@@ -1,5 +1,13 @@
 # @jackdbd/fastify-media-endpoint
 
+## 0.2.0-canary.20
+
+### Patch Changes
+
+- Updated dependencies [2e51989]
+- Updated dependencies [ffc3401]
+  - @jackdbd/micropub@0.2.0-canary.12
+
 ## 0.2.0-canary.19
 
 ### Minor Changes
