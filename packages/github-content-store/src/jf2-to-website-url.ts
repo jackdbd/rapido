@@ -23,12 +23,12 @@ export const defJf2ToWebsiteUrl = (options?: Options) => {
 
   const mp_posts = Object.keys(publication.items)
   log.debug(
-    `store ${name} supports these Micropub post types: ${mp_posts.join(', ')}`
+    `store ${name} supports JF2 => URL for these Micropub post types: ${mp_posts.join(', ')}`
   )
 
   const jf2ToWebsiteUrl: Jf2ToWebsiteUrl = (jf2) => {
     const slug = jf2ToSlug(jf2)
-    log.debug(`slug: ${slug}`)
+    log.debug(`generated slug for store ${name}: ${slug}`)
     const filename = `${slug}.md`
 
     const loc: Location = {

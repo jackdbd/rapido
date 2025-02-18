@@ -78,7 +78,7 @@ export const defCreatePost = (options?: Options) => {
     // See also: https://indieweb.org/Micropub-extensions#Slug
 
     log.debug(
-      `trying to store ${jf2.type} as base64-encoded string at ${loc.store}`
+      `trying to store Micropub post type=${jf2.type} as base64-encoded string at ${loc.store}`
     )
 
     const result = await createOrUpdate({
@@ -101,8 +101,14 @@ export const defCreatePost = (options?: Options) => {
       log.error(`${summary}. ${suggestions.join(' ')}`)
       throw new Error(`${summary}. ${suggestions.join(' ')}`)
     } else {
-      const summary = `Post ot type '${jf2.type}' created at ${loc.store} in repo ${owner}/${repo} on branch ${branch}. Committed by ${committer.name} (${committer.email}). The post will be published at ${loc.website}.`
+      const summary = `Post created. It will be published at ${loc.website}.`
+      const details = [
+        `Micropub post type=${jf2.type} created at ${loc.store} in repo ${owner}/${repo} on branch ${branch}.`,
+        `Committed by ${committer.name} (${committer.email}).`
+      ]
       log.debug(summary)
+      details.forEach(log.debug)
+      return { summary, details }
     }
   }
 

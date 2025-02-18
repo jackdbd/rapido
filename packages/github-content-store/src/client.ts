@@ -59,7 +59,7 @@ export const defGitHub = (config: Config) => {
     token
   } = store_cfg
 
-  const author = config.author ?? committer
+  const author = config.author || committer
 
   const store_name = `GitHub repository ${owner}/${repo}`
 
@@ -78,6 +78,7 @@ export const defGitHub = (config: Config) => {
 
   const websiteUrlToStoreLocation = defWebsiteUrlToStoreLocation({
     log,
+    name: store_name,
     publication
   })
 

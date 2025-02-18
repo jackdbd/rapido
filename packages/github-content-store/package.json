@@ -58,7 +58,7 @@
   },
   "dependencies": {
     "@jackdbd/github-contents-api": "0.2.0-canary.11",
-    "@jackdbd/micropub": "0.2.0-canary.11",
+    "@jackdbd/micropub": "*",
     "@paulrobertlloyd/mf2tojf2": "^2.4.0",
     "dayjs": "^1.11.13",
     "dayjs-plugin-utc": "^0.1.2",

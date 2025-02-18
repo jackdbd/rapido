@@ -23,7 +23,7 @@ export const defWebsiteUrlToStoreLocation = (options?: Options) => {
 
   const mp_posts = Object.keys(publication.items)
   log.debug(
-    `store ${name} supports these Micropub post types: ${mp_posts.join(', ')}`
+    `store ${name} supports URL => store for these Micropub post types: ${mp_posts.join(', ')}`
   )
 
   const websiteUrlToStoreLocation: WebsiteUrlToStoreLocation = (url) => {
