@@ -71,7 +71,7 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
     ajv,
     createPost,
     deletePost,
-    jf2ToWebsiteUrl,
+    jf2ToLocation,
     logPrefix,
     mediaEndpoint,
     micropubEndpoint,
@@ -305,7 +305,7 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
     // This code is the same for card/cite/entry/event the different post types.
     // But we might want to validate each JF2 object differently and return a
     // different response payload.
-    const location = jf2ToWebsiteUrl({
+    const loc = jf2ToLocation({
       ...jf2,
       'mp-slug': mp_slug,
       type: post_type
@@ -313,34 +313,34 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
 
     // await create(jf2)
 
+    const message = `Stored post at ${loc.store}. Will be published at ${loc.website}`
+
     const payload =
-      uploaded_media.length > 0
-        ? { message: `Created post at url ${location}`, uploaded_media }
-        : { message: `Created post at url ${location}` }
+      uploaded_media.length > 0 ? { message, uploaded_media } : { message }
 
     switch (post_type) {
       case 'card': {
         // TODO: validate card schema
         await createPost(jf2)
-        return reply.code(201).header('Location', location).send(payload)
+        return reply.code(201).header('Location', loc.website).send(payload)
       }
 
       case 'cite': {
         // TODO: validate cite schema
         await createPost(jf2)
-        return reply.code(201).header('Location', location).send(payload)
+        return reply.code(201).header('Location', loc.website).send(payload)
       }
 
       case 'entry': {
         // TODO: validate entry schema
         await createPost(jf2)
-        return reply.code(201).header('Location', location).send(payload)
+        return reply.code(201).header('Location', loc.website).send(payload)
       }
 
       case 'event': {
         // TODO: validate event schema
         await createPost(jf2)
-        return reply.code(201).header('Location', location).send(payload)
+        return reply.code(201).header('Location', loc.website).send(payload)
       }
 
       default: {

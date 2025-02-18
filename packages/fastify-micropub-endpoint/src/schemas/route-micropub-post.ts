@@ -5,14 +5,14 @@ import {
 import {
   createPost,
   deletePost,
-  jf2ToWebsiteUrl,
+  jf2ToLocation,
   undeletePost,
   updatePost
 } from '@jackdbd/micropub/schemas/user-provided-functions'
 import type {
   CreatePost,
   DeletePost,
-  Jf2ToWebsiteUrl,
+  Jf2ToLocation,
   UndeletePost,
   UpdatePost
 } from '@jackdbd/micropub/schemas/user-provided-functions'
@@ -26,7 +26,7 @@ export const micropub_post_config = Type.Object(
     createPost,
     deletePost,
     isAccessTokenRevoked,
-    jf2ToWebsiteUrl,
+    jf2ToLocation,
     logPrefix: log_prefix,
     mediaEndpoint: media_endpoint,
     micropubEndpoint: micropub_endpoint,
@@ -45,7 +45,7 @@ export interface MicropubPostConfig
   createPost: CreatePost
   deletePost: DeletePost
   isAccessTokenRevoked: IsAccessTokenRevoked
-  jf2ToWebsiteUrl: Jf2ToWebsiteUrl
+  jf2ToLocation: Jf2ToLocation
   undeletePost?: UndeletePost
   updatePost: UpdatePost
 }

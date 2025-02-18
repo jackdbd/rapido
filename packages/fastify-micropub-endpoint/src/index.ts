@@ -51,7 +51,7 @@ const REQUIRED = [
   'me',
   'updatePost',
   'deletePost',
-  'jf2ToWebsiteUrl'
+  'jf2ToLocation'
 ] as const
 
 const micropubEndpoint: FastifyPluginCallback<Options> = (
@@ -80,7 +80,11 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
         schemas: [
           jf2.dt_accessed,
           jf2.dt_published,
+          jf2.h_geo,
           jf2.p_author,
+          jf2.p_altitude,
+          jf2.p_latitude,
+          jf2.p_longitude,
           jf2.p_name,
           jf2.p_publication,
           jf2.u_uid,
@@ -128,7 +132,7 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
     deletePost,
     includeErrorDescription,
     isAccessTokenRevoked,
-    jf2ToWebsiteUrl,
+    jf2ToLocation,
     logPrefix,
     me,
     mediaEndpoint,
@@ -259,7 +263,7 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
       createPost,
       deletePost,
       isAccessTokenRevoked,
-      jf2ToWebsiteUrl,
+      jf2ToLocation,
       logPrefix,
       mediaEndpoint,
       micropubEndpoint,

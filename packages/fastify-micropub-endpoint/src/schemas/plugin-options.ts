@@ -7,14 +7,14 @@ import type { IsAccessTokenRevoked } from '@jackdbd/indieauth/schemas/user-provi
 import {
   createPost,
   deletePost,
-  jf2ToWebsiteUrl,
+  jf2ToLocation,
   undeletePost,
   updatePost
 } from '@jackdbd/micropub/schemas/user-provided-functions'
 import type {
   CreatePost,
   DeletePost,
-  Jf2ToWebsiteUrl,
+  Jf2ToLocation,
   UndeletePost,
   UpdatePost
 } from '@jackdbd/micropub/schemas/user-provided-functions'
@@ -43,7 +43,7 @@ export const options = Type.Object(
 
     isAccessTokenRevoked,
 
-    jf2ToWebsiteUrl,
+    jf2ToLocation,
 
     logPrefix: Type.Optional(Type.String({ default: DEFAULT.LOG_PREFIX })),
 
@@ -87,7 +87,7 @@ export interface Options extends Static<typeof options> {
   createPost: CreatePost
   deletePost: DeletePost
   isAccessTokenRevoked: IsAccessTokenRevoked
-  jf2ToWebsiteUrl: Jf2ToWebsiteUrl
+  jf2ToLocation: Jf2ToLocation
   undeletePost?: UndeletePost
   updatePost: UpdatePost
 }
