@@ -6,32 +6,22 @@ import type {
   UpdatePatch,
   WebsiteUrlToStoreLocation
 } from '@jackdbd/micropub/schemas/user-provided-functions'
-import {
-  InvalidRequestError,
-  ServerError
-} from '@jackdbd/oauth2-error-responses'
+import { InvalidRequestError } from '@jackdbd/oauth2-error-responses'
 import type { RouteHandler } from 'fastify'
 import { XMLParser } from 'fast-xml-parser'
 
 export interface Config {
-  get: RetrievePost
-  includeErrorDescription: boolean
   logPrefix: string
-  publishedUrlToStorageLocation: WebsiteUrlToStoreLocation
+  retrievePost: RetrievePost
   syndicators: { [uid: string]: Syndicator }
-  update: UpdatePost
+  updatePost: UpdatePost
+  websiteUrlToStoreLocation: WebsiteUrlToStoreLocation
 }
 
 const parser = new XMLParser()
 
 export const defSyndicatePost = (config: Config) => {
-  const {
-    get,
-    includeErrorDescription: include_error_description,
-    logPrefix,
-    syndicators,
-    update
-  } = config
+  const { logPrefix, retrievePost, syndicators, updatePost } = config
 
   const syndicatePost: RouteHandler = async (request, reply) => {
     // TODO: decide what request body to expect. For example:
@@ -80,14 +70,11 @@ export const defSyndicatePost = (config: Config) => {
 
     let jf2: JF2
     try {
-      const value = await get(loc)
+      const value = await retrievePost(loc)
       jf2 = value.jf2
     } catch (ex: any) {
       const error_description = `The post published at ${loc.website} is not stored at ${loc.store}.`
-      const err = new InvalidRequestError({ error_description })
-      return reply
-        .code(err.statusCode)
-        .send(err.payload({ include_error_description }))
+      throw new InvalidRequestError({ error_description })
     }
 
     // We assume all content retrieved from the store to be untrusted data, so
@@ -181,15 +168,7 @@ export const defSyndicatePost = (config: Config) => {
     }
     // request.log.warn(patch, `=== update patch ===`)
 
-    const result_update = await update(loc.website, patch)
-
-    if (result_update.error) {
-      const error_description = result_update.error.message
-      const err = new ServerError({ error_description })
-      return reply
-        .code(err.statusCode)
-        .send(err.payload({ include_error_description }))
-    }
+    await updatePost(loc.website, patch)
 
     // request.log.warn(result_update, `=== syndication update ===`)
 

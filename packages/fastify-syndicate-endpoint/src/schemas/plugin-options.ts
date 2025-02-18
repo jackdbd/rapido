@@ -30,27 +30,18 @@ import {
 export const options = Type.Object(
   {
     ajv: Type.Optional(ajv),
-
-    get: retrievePost,
-
     includeErrorDescription: Type.Optional(include_error_description),
-
     isAccessTokenRevoked,
-
     logPrefix: Type.Optional(Type.String({ default: DEFAULT.LOG_PREFIX })),
-
     me: Type.Union([
       me_before_url_canonicalization,
       me_after_url_canonicalization
     ]),
-
-    publishedUrlToStorageLocation: websiteUrlToStoreLocation,
-
+    websiteUrlToStoreLocation,
     reportAllAjvErrors: Type.Optional(report_all_ajv_errors),
-
+    retrievePost,
     syndicators: Type.Any(),
-
-    update: updatePost
+    updatePost
   },
   {
     $id: 'fastify-syndicate-endpoint-options',
@@ -61,8 +52,8 @@ export const options = Type.Object(
 
 export interface Options extends Static<typeof options> {
   ajv?: Ajv
-  get: RetrievePost
   isAccessTokenRevoked: IsAccessTokenRevoked
-  publishedUrlToStorageLocation: WebsiteUrlToStoreLocation
-  update: UpdatePost
+  retrievePost: RetrievePost
+  updatePost: UpdatePost
+  websiteUrlToStoreLocation: WebsiteUrlToStoreLocation
 }

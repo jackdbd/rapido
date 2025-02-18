@@ -7,7 +7,7 @@
     "ajv": {
       "description": "Instance of Ajv"
     },
-    "create": {
+    "createPost": {
       "title": "Create post",
       "description": "[Creates](https://micropub.spec.indieweb.org/#create) a post on the Micropub server.",
       "type": "Function",
@@ -21,7 +21,6 @@
             "audio": {
               "anyOf": [
                 {
-                  "$id": "u-url",
                   "title": "URL of the card, entry, event, etc.",
                   "description": "URL to use in h-card, h-entry, h-event, etc.",
                   "format": "uri",
@@ -30,7 +29,6 @@
                 {
                   "type": "array",
                   "items": {
-                    "$id": "u-url",
                     "title": "URL of the card, entry, event, etc.",
                     "description": "URL to use in h-card, h-entry, h-event, etc.",
                     "format": "uri",
@@ -41,6 +39,8 @@
             },
             "author": {},
             "bookmark-of": {
+              "title": "URL of the card, entry, event, etc.",
+              "description": "URL to use in h-card, h-entry, h-event, etc.",
               "format": "uri",
               "type": "string"
             },
@@ -99,10 +99,14 @@
               "type": "string"
             },
             "in-reply-to": {
+              "title": "URL of the card, entry, event, etc.",
+              "description": "URL to use in h-card, h-entry, h-event, etc.",
               "format": "uri",
               "type": "string"
             },
             "like-of": {
+              "title": "URL of the card, entry, event, etc.",
+              "description": "URL to use in h-card, h-entry, h-event, etc.",
               "format": "uri",
               "type": "string"
             },
@@ -166,8 +170,60 @@
               "type": "string"
             },
             "read-of": {
-              "format": "uri",
-              "type": "string"
+              "anyOf": [
+                {
+                  "title": "URL of the card, entry, event, etc.",
+                  "description": "URL to use in h-card, h-entry, h-event, etc.",
+                  "format": "uri",
+                  "type": "string"
+                },
+                {
+                  "$id": "h-cite",
+                  "title": "microformats2 h-cite",
+                  "description": "h-cite is a simple, open format for publishing citations and references to online and other publications.",
+                  "examples": [
+                    {
+                      "author": "Isaac Newton",
+                      "name": "The Correspondence of Isaac Newton: Volume 5",
+                      "content": "If I have seen further it is by standing on the shoulders of Giants."
+                    }
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "accessed": {
+                      "$ref": "dt-accessed"
+                    },
+                    "author": {
+                      "$ref": "p-author"
+                    },
+                    "content": {
+                      "$ref": "p-content"
+                    },
+                    "name": {
+                      "$ref": "p-name"
+                    },
+                    "publication": {
+                      "$ref": "p-publication"
+                    },
+                    "published": {
+                      "$ref": "dt-published"
+                    },
+                    "type": {
+                      "const": "cite",
+                      "type": "string"
+                    },
+                    "uid": {
+                      "$ref": "u-uid"
+                    },
+                    "url": {
+                      "$ref": "u-url"
+                    }
+                  },
+                  "required": [
+                    "type"
+                  ]
+                }
+              ]
             },
             "read-status": {
               "anyOf": [
@@ -186,6 +242,8 @@
               ]
             },
             "repost-of": {
+              "title": "URL of the card, entry, event, etc.",
+              "description": "URL to use in h-card, h-entry, h-event, etc.",
               "format": "uri",
               "type": "string"
             },
@@ -241,7 +299,6 @@
               "type": "string"
             },
             "url": {
-              "$id": "u-url",
               "title": "URL of the card, entry, event, etc.",
               "description": "URL to use in h-card, h-entry, h-event, etc.",
               "format": "uri",
@@ -250,7 +307,6 @@
             "video": {
               "anyOf": [
                 {
-                  "$id": "u-url",
                   "title": "URL of the card, entry, event, etc.",
                   "description": "URL to use in h-card, h-entry, h-event, etc.",
                   "format": "uri",
@@ -259,7 +315,6 @@
                 {
                   "type": "array",
                   "items": {
-                    "$id": "u-url",
                     "title": "URL of the card, entry, event, etc.",
                     "description": "URL to use in h-card, h-entry, h-event, etc.",
                     "format": "uri",
@@ -299,23 +354,45 @@
       ],
       "returns": {
         "type": "Promise",
-        "item": {}
+        "item": {
+          "type": "void"
+        }
       }
     },
-    "delete": {
+    "deletePost": {
       "title": "Delete post",
       "description": "[Deletes](https://micropub.spec.indieweb.org/#delete) a post published at a URL.",
       "type": "Function",
       "parameters": [
         {
-          "description": "A URL",
           "format": "uri",
           "type": "string"
         }
       ],
       "returns": {
         "type": "Promise",
-        "item": {}
+        "item": {
+          "type": "object",
+          "properties": {
+            "details": {
+              "type": "array",
+              "items": {
+                "minLength": 1,
+                "description": "Some detail of the operation.",
+                "type": "string"
+              }
+            },
+            "summary": {
+              "minLength": 1,
+              "title": "Summary",
+              "description": "Summary of the operation.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "summary"
+          ]
+        }
       }
     },
     "includeErrorDescription": {
@@ -339,6 +416,356 @@
         "item": {
           "type": "boolean"
         }
+      }
+    },
+    "jf2ToWebsiteUrl": {
+      "title": "JF2 to website URL",
+      "description": "Maps a JF2 object to a URL published on (or that it will be published to) the user's website.",
+      "type": "Function",
+      "parameters": [
+        {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string"
+            },
+            "audio": {
+              "anyOf": [
+                {
+                  "title": "URL of the card, entry, event, etc.",
+                  "description": "URL to use in h-card, h-entry, h-event, etc.",
+                  "format": "uri",
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "title": "URL of the card, entry, event, etc.",
+                    "description": "URL to use in h-card, h-entry, h-event, etc.",
+                    "format": "uri",
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "author": {},
+            "bookmark-of": {
+              "title": "URL of the card, entry, event, etc.",
+              "description": "URL to use in h-card, h-entry, h-event, etc.",
+              "format": "uri",
+              "type": "string"
+            },
+            "category": {
+              "anyOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "checkin": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "content": {
+              "anyOf": [
+                {
+                  "$id": "p-content",
+                  "description": "Some plain text content",
+                  "title": "content",
+                  "minLength": 0,
+                  "type": "string"
+                },
+                {
+                  "$id": "e-content",
+                  "title": "content with `html` and optional `text`",
+                  "type": "object",
+                  "properties": {
+                    "html": {
+                      "description": "The text/html version of the containing object. `html` MUST be a single string value only.",
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "text": {
+                      "description": "The text/plain version of the containing object. `text` MUST be a single string value only.",
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "html"
+                  ]
+                }
+              ]
+            },
+            "date": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "in-reply-to": {
+              "title": "URL of the card, entry, event, etc.",
+              "description": "URL to use in h-card, h-entry, h-event, etc.",
+              "format": "uri",
+              "type": "string"
+            },
+            "like-of": {
+              "title": "URL of the card, entry, event, etc.",
+              "description": "URL to use in h-card, h-entry, h-event, etc.",
+              "format": "uri",
+              "type": "string"
+            },
+            "mp-channel": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "mp-destination": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "mp-limit": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "mp-photo-alt": {
+              "anyOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "mp-slug": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "mp-syndicate-to": {
+              "anyOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "name": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "photo": {},
+            "post-status": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "published": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "read-of": {
+              "anyOf": [
+                {
+                  "title": "URL of the card, entry, event, etc.",
+                  "description": "URL to use in h-card, h-entry, h-event, etc.",
+                  "format": "uri",
+                  "type": "string"
+                },
+                {
+                  "$id": "h-cite",
+                  "title": "microformats2 h-cite",
+                  "description": "h-cite is a simple, open format for publishing citations and references to online and other publications.",
+                  "examples": [
+                    {
+                      "author": "Isaac Newton",
+                      "name": "The Correspondence of Isaac Newton: Volume 5",
+                      "content": "If I have seen further it is by standing on the shoulders of Giants."
+                    }
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "accessed": {
+                      "$ref": "dt-accessed"
+                    },
+                    "author": {
+                      "$ref": "p-author"
+                    },
+                    "content": {
+                      "$ref": "p-content"
+                    },
+                    "name": {
+                      "$ref": "p-name"
+                    },
+                    "publication": {
+                      "$ref": "p-publication"
+                    },
+                    "published": {
+                      "$ref": "dt-published"
+                    },
+                    "type": {
+                      "const": "cite",
+                      "type": "string"
+                    },
+                    "uid": {
+                      "$ref": "u-uid"
+                    },
+                    "url": {
+                      "$ref": "u-url"
+                    }
+                  },
+                  "required": [
+                    "type"
+                  ]
+                }
+              ]
+            },
+            "read-status": {
+              "anyOf": [
+                {
+                  "const": "to-read",
+                  "type": "string"
+                },
+                {
+                  "const": "reading",
+                  "type": "string"
+                },
+                {
+                  "const": "finished",
+                  "type": "string"
+                }
+              ]
+            },
+            "repost-of": {
+              "title": "URL of the card, entry, event, etc.",
+              "description": "URL to use in h-card, h-entry, h-event, etc.",
+              "format": "uri",
+              "type": "string"
+            },
+            "rsvp": {
+              "anyOf": [
+                {
+                  "const": "yes",
+                  "type": "string"
+                },
+                {
+                  "const": "no",
+                  "type": "string"
+                },
+                {
+                  "const": "maybe",
+                  "type": "string"
+                },
+                {
+                  "const": "interested",
+                  "type": "string"
+                }
+              ]
+            },
+            "summary": {
+              "$id": "p-summary",
+              "title": "Summary",
+              "description": "Summary to use in h-entry, h-recipe, h-resume.",
+              "minLength": 1,
+              "type": "string"
+            },
+            "syndication": {
+              "$id": "u-syndication",
+              "title": "Syndication",
+              "description": "URL(s) of syndicated copies of this post. The property equivalent of rel-syndication.",
+              "anyOf": [
+                {
+                  "description": "syndication target",
+                  "format": "uri",
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "description": "syndication target",
+                    "format": "uri",
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "updated": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "url": {
+              "title": "URL of the card, entry, event, etc.",
+              "description": "URL to use in h-card, h-entry, h-event, etc.",
+              "format": "uri",
+              "type": "string"
+            },
+            "video": {
+              "anyOf": [
+                {
+                  "title": "URL of the card, entry, event, etc.",
+                  "description": "URL to use in h-card, h-entry, h-event, etc.",
+                  "format": "uri",
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "title": "URL of the card, entry, event, etc.",
+                    "description": "URL to use in h-card, h-entry, h-event, etc.",
+                    "format": "uri",
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "visibility": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": {
+              "default": "entry",
+              "title": "JF2 item type",
+              "anyOf": [
+                {
+                  "const": "card",
+                  "type": "string"
+                },
+                {
+                  "const": "cite",
+                  "type": "string"
+                },
+                {
+                  "const": "entry",
+                  "type": "string"
+                },
+                {
+                  "const": "event",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "returns": {
+        "format": "uri",
+        "type": "string"
       }
     },
     "logPrefix": {
@@ -439,29 +866,48 @@
         ]
       }
     },
-    "undelete": {
+    "undeletePost": {
       "title": "Undelete post",
       "description": "[Undeletes](https://micropub.spec.indieweb.org/#delete) a post published at a URL.",
       "type": "Function",
       "parameters": [
         {
-          "description": "A URL",
           "format": "uri",
           "type": "string"
         }
       ],
       "returns": {
         "type": "Promise",
-        "item": {}
+        "item": {
+          "type": "object",
+          "properties": {
+            "details": {
+              "type": "array",
+              "items": {
+                "minLength": 1,
+                "description": "Some detail of the operation.",
+                "type": "string"
+              }
+            },
+            "summary": {
+              "minLength": 1,
+              "title": "Summary",
+              "description": "Summary of the operation.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "summary"
+          ]
+        }
       }
     },
-    "update": {
+    "updatePost": {
       "title": "Update post",
       "description": "[Updates](https://micropub.spec.indieweb.org/#update) a post published at a URL.",
       "type": "Function",
       "parameters": [
         {
-          "description": "A URL",
           "format": "uri",
           "type": "string"
         },
@@ -479,15 +925,18 @@
       ],
       "returns": {
         "type": "Promise",
-        "item": {}
+        "item": {
+          "type": "void"
+        }
       }
     }
   },
   "required": [
-    "create",
-    "delete",
+    "createPost",
+    "deletePost",
     "isAccessTokenRevoked",
+    "jf2ToWebsiteUrl",
     "me",
-    "update"
+    "updatePost"
   ]
 }

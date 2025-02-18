@@ -11,9 +11,8 @@ import {
 import type { RouteHandler } from 'fastify'
 
 interface Config {
-  delete: DeletePost
-  include_error_description: boolean
-  upload: UploadMedia
+  deleteMedia: DeletePost
+  uploadMedia: UploadMedia
 }
 
 /**
@@ -36,7 +35,7 @@ interface Config {
  * @see [Uploading Files](https://micropub.spec.indieweb.org/#uploading-files)
  */
 export const defMediaPost = (config: Config) => {
-  const { delete: deleteMedia, include_error_description, upload } = config
+  const { deleteMedia, uploadMedia } = config
 
   // TODO: refactr this
   // const errorIfActionNotAllowed = defErrorIfActionNotAllowed();
@@ -47,27 +46,19 @@ export const defMediaPost = (config: Config) => {
 
       if (action !== 'delete') {
         const error_description = `Action '${action}' is not supported by this media endpoint.`
-        const err = new InvalidRequestError({ error_description })
-        return reply
-          .code(err.statusCode)
-          .send(err.payload({ include_error_description }))
+        throw new InvalidRequestError({ error_description })
       }
 
       // We should also check the presence of a 'media' scope in the access token
       // claims.
-      // const scope_error = errorIfActionNotAllowed(request, action)
-      // if (scope_error) {
-      //   return reply
-      //     .code(scope_error.statusCode)
-      //     .send(scope_error.payload({ include_error_description }))
-      // }
+      // throw errorIfActionNotAllowed(request, action)
 
       const url = (request.body as any).url as string
 
       try {
         const value = await deleteMedia(url)
         request.log.warn(value, '====== deleteMedia return value ======')
-        // const code = 200
+        // const code = 200 // or 204?
         // const url = result.value.url || ''
         // const summary = `${url} deleted`
         // const payload = result.value.payload
@@ -75,10 +66,7 @@ export const defMediaPost = (config: Config) => {
       } catch (ex: any) {
         const original = ex.message
         const error_description = `Cannot delete ${url} from media store: ${original}.`
-        const err = new ServerError({ error_description })
-        return reply
-          .code(err.statusCode)
-          .send(err.payload({ include_error_description }))
+        throw new ServerError({ error_description })
       }
     } else {
       let data: MultipartFile | undefined
@@ -87,18 +75,12 @@ export const defMediaPost = (config: Config) => {
         request.log.warn({ data }, '====== request.file return value ======')
       } catch (ex: any) {
         const error_description = ex.message
-        const err = new InvalidRequestError({ error_description })
-        return reply
-          .code(err.statusCode)
-          .send(err.payload({ include_error_description }))
+        throw new InvalidRequestError({ error_description })
       }
 
       if (!data) {
         const error_description = 'Multi-part request has no file.'
-        const err = new InvalidRequestError({ error_description })
-        return reply
-          .code(err.statusCode)
-          .send(err.payload({ include_error_description }))
+        throw new InvalidRequestError({ error_description })
       }
 
       let filename: string
@@ -109,10 +91,7 @@ export const defMediaPost = (config: Config) => {
         filename = value.value
       } else {
         const error_description = `Request has no field 'filename'.`
-        const err = new InvalidRequestError({ error_description })
-        return reply
-          .code(err.statusCode)
-          .send(err.payload({ include_error_description }))
+        throw new InvalidRequestError({ error_description })
       }
 
       const contentType = data.mimetype
@@ -124,15 +103,12 @@ export const defMediaPost = (config: Config) => {
         const error_description = ex.message
         // I am not sure it's actually the client's fault if we can't obtain the
         // buffer from the multipart request.
-        const err = new InvalidRequestError({ error_description })
-        return reply
-          .code(err.statusCode)
-          .send(err.payload({ include_error_description }))
+        throw new InvalidRequestError({ error_description })
       }
 
       try {
-        const value = await upload({ body, contentType, filename })
-        request.log.warn(value, '====== upload return value ======')
+        const value = await uploadMedia({ body, contentType, filename })
+        request.log.warn(value, '====== uploadMedia return value ======')
         const code = 202 // or 201
         const url = value.url
         reply.header('Location', url)
@@ -140,10 +116,7 @@ export const defMediaPost = (config: Config) => {
       } catch (ex: any) {
         const original = ex.message
         const error_description = `Cannot upload file ${filename} to media store: ${original}`
-        const err = new ServerError({ error_description })
-        return reply
-          .code(err.statusCode)
-          .send(err.payload({ include_error_description }))
+        throw new ServerError({ error_description })
       }
     }
   }

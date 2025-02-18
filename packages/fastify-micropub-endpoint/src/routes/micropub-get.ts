@@ -8,11 +8,7 @@ import type { MicropubGetConfig } from '../schemas/route-micropub-get.js'
  * @see [Querying - Micropub](https://micropub.spec.indieweb.org/#querying)
  */
 export const defMicropubGet = (config: MicropubGetConfig) => {
-  const {
-    includeErrorDescription: include_error_description,
-    mediaEndpoint,
-    syndicateTo
-  } = config
+  const { mediaEndpoint, syndicateTo } = config
 
   const micropubGet: RouteHandler = (request, reply) => {
     const basePath = 'micropub-get-request-querystring'
@@ -35,13 +31,7 @@ export const defMicropubGet = (config: MicropubGetConfig) => {
       const errors = validate.errors.map((ve) => {
         return `${ve.message} (basePath: ${basePath}, instancePath: ${ve.instancePath}, schemaPath: ${ve.schemaPath})`
       })
-      const err = new InvalidRequestError({
-        error_description: errors.join('; ')
-      })
-
-      return reply
-        .code(err.statusCode)
-        .send(err.payload({ include_error_description }))
+      throw new InvalidRequestError({ error_description: errors.join('; ') })
     }
 
     return reply.code(200).send({

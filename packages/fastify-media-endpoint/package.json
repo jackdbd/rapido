@@ -77,7 +77,7 @@
     "@jackdbd/fastify-utils": "0.2.0-canary.10",
     "@jackdbd/indieauth": "0.2.0-canary.13",
     "@jackdbd/micropub": "0.2.0-canary.10",
-    "@jackdbd/oauth2-error-responses": "^0.2.0-canary.8",
+    "@jackdbd/oauth2-error-responses": "*",
     "@jackdbd/schema-validators": "^0.2.0-canary.11",
     "@sinclair/typebox": "^0.34.14",
     "ajv": "^8.17.1",

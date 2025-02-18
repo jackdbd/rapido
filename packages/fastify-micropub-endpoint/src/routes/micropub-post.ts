@@ -5,24 +5,32 @@ import type { RouteHandler, RouteGenericInterface } from 'fastify'
 import {
   mf2tTojf2,
   normalizeJf2,
-  isJF2,
   isMF2,
   isMpUrlencodedRequestBody,
   isParsedMF2,
-  jf2SafeToStore
+  jf2WithNoSensitiveProps,
+  jf2WithNoUselessProps
 } from '@jackdbd/micropub'
+import { jf2 as jf2_schema } from '@jackdbd/micropub/schemas'
 import type {
   Action,
   JF2,
+  MP_UrlencodedRequestBody,
   UpdatePatch,
   ParsedMF2
 } from '@jackdbd/micropub/schemas'
+import { conformResult } from '@jackdbd/schema-validators'
 import type { MicropubPostConfig, PostRequestBody } from '../schemas/index.js'
-import { defMultipartRequestBody } from './micropub-post-multipart.js'
+import {
+  defProcessMultipartRequest,
+  type UploadedMedia
+} from './micropub-post-multipart.js'
 
 declare module '@fastify/request-context' {
   interface RequestContextData {
+    action?: string
     jf2?: JF2
+    post_type?: string
   }
 }
 
@@ -60,17 +68,18 @@ interface PostRouteGeneric extends RouteGenericInterface {
  */
 export const defMicropubPost = (config: MicropubPostConfig) => {
   const {
-    create,
-    delete: deleteContent,
-    includeErrorDescription: include_error_description,
+    ajv,
+    createPost,
+    deletePost,
+    jf2ToWebsiteUrl,
     logPrefix,
     mediaEndpoint,
     micropubEndpoint,
-    undelete,
-    update
+    undeletePost,
+    updatePost
   } = config
 
-  const multipartRequestBody = defMultipartRequestBody({
+  const processMultipartRequest = defProcessMultipartRequest({
     mediaEndpoint,
     micropubEndpoint,
     logPrefix: `${logPrefix}multipart `
@@ -80,131 +89,102 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
     request,
     reply
   ) => {
-    console.log('=== request.body ===', request.body)
+    // console.log('=== request.body (stringified) ===')
+    // console.log(JSON.stringify(request.body, null, 2))
 
+    let uploaded_media: UploadedMedia[] = []
+    let jf2: JF2
     let request_body: PostRequestBody
     if (request.isMultipart()) {
-      console.log('=== multipart request ===')
-      request_body = await multipartRequestBody(request)
+      const result = await processMultipartRequest(request)
+      request_body = result.jf2 as PostRequestBody
+      uploaded_media = result.uploaded
     } else {
       request_body = request.body
     }
 
-    let jf2: JF2
     if (isMF2(request_body) || isParsedMF2(request_body)) {
       let items: ParsedMF2[]
       if (isMF2(request_body)) {
+        request.log.debug(`${logPrefix}convert MF2 => JF2`)
         items = request_body.items
       } else {
+        request.log.debug(`${logPrefix}convert MF2 JSON => JF2`)
         items = [request_body]
       }
       const { error, value } = await mf2tTojf2({ items })
 
       if (error) {
-        const error_description = error.message
-        request.log.error({ request_body }, `${logPrefix}${error_description}`)
-        const err = new InvalidRequestError({ error_description })
-        return reply
-          .code(err.statusCode)
-          .send(err.payload({ include_error_description }))
+        throw new InvalidRequestError({ error_description: error.message })
       } else {
         jf2 = value
-        // We could end up with an access_token in the request body. It happed
-        // to me when I made a request from Quill. But I don't think it's
-        // Quill's fault. I think it's due to how the formbody plugin works.
-        // const {
-        //   access_token: _,
-        //   action,
-        //   h,
-        //   type: _type,
-        //   visibility,
-        //   ...rest
-        // } = value
-        // jf2 = {
-        //   ...rest,
-        //   // The default action is to create posts (I couldn't find it in the
-        //   // Micropub specs though).
-        //   action: action || 'create',
-        //   date: rfc3339(),
-        //   // If no type is specified (using `h`), the default type [h-entry]
-        //   // SHOULD be used.
-        //   // https://micropub.spec.indieweb.org/#create
-        //   h: h || 'entry',
-        //   visibility: visibility || 'public'
-        // }
       }
-    } else if (isMpUrlencodedRequestBody(request.body)) {
-      // If the Micropub client sent us a urlencoded request, we need to normalize
-      // fields like syndicate-to[][0], syndicate-to[][1] into actual JS arrays.
-      // Same thing if we uploaded more than one file to the Media endpoint. In
-      // that case we might have audio[], video[], and photo[] fields.
-      jf2 = normalizeJf2(request.body)
-    } else if (isJF2(request.body)) {
-      jf2 = request.body
+    } else if (
+      isMpUrlencodedRequestBody(request_body, request.headers['content-type'])
+    ) {
+      // If we received an urlencoded request, we need to normalize properties
+      // like syndicate-to[][0], syndicate-to[][1] into actual JS arrays.
+      // For example, this occurs when uploading more than one file to the Media
+      // endpoint. In that case we might have audio[], video[], and photo[].
+      request.log.debug(`${logPrefix}convert urlencoded request => JF2`)
+      const h = (request_body as MP_UrlencodedRequestBody).h || 'entry'
+      jf2 = normalizeJf2({ ...request_body, h })
     } else {
-      const error_description = `Received an object whose format is none of the following: MF2, parsed MF2, JF2, Micropub urlencoded request body parsed.`
-      request.log.error({ request_body }, `${logPrefix}${error_description}`)
-      const err = new InvalidRequestError({ error_description })
-      return reply
-        .code(err.statusCode)
-        .send(err.payload({ include_error_description }))
-      // const {
-      //   access_token: _,
-      //   action,
-      //   h,
-      //   type: _type,
-      //   visibility,
-      //   ...rest
-      // } = request_body as Jf2
-      // jf2 = {
-      //   ...rest,
-      //   action: action || 'create',
-      //   date: rfc3339(),
-      //   h: h || 'entry',
-      //   visibility: visibility || 'public'
-      // }
+      // Even when request_body is empty, it's still a valid JF2. See here:
+      // https://validator.jf2.rocks/
+      jf2 = request_body as JF2
+
+      // I think that for the following defaults using a logical OR is more
+      // appropriate than using the nullish coalescing operator, because
+      // whenever we find an empty string, we should replace it with the default
+      // value.
+
+      // If no type is specified, the default type [h-entry] SHOULD be used.
+      // https://micropub.spec.indieweb.org/#create
+      jf2.type = jf2.type || 'entry'
     }
 
     // The default action is to create posts (I couldn't find it in the Micropub
     // specs though).
-    jf2.action = jf2.action ?? 'create'
-    jf2.date = rfc3339()
-    jf2.visibility = jf2.visibility ?? 'public'
-    // If no type is specified, the default type [h-entry] SHOULD be used.
-    // https://micropub.spec.indieweb.org/#create
-    jf2.type = jf2.type ?? 'entry'
+    jf2.action = jf2.action || 'create'
 
-    // We store the jf2 object in the request context, so if there is a server
-    // error we can access it in the error handler.
+    // I can't find a link to the microformats2/jf2/micropub spec section
+    // that explains which data formats should be accepted.
+    jf2.date = jf2.date || rfc3339()
+
+    jf2.visibility = jf2.visibility || 'public'
+
+    // We store the jf2 object in the request context, so if an exception is
+    // thrown, we can retrieve the jf2 object in the error handler (and maybe
+    // add it to the OAuth2 error response).
+    // TODO: decide about this:
+    // Security consideration: it's probably safer to save jf2 to requestContext
+    // AFTER having called jf2SafeToStore.
     if (requestContext) {
       requestContext.set('jf2', jf2)
-      request.log.debug(`${logPrefix}set jf2 (normalized) in requestContext`)
+      request.log.debug(`${logPrefix}set jf2 in requestContext`)
     } else {
-      request.log.warn(
-        `${logPrefix}cannot set jf2 in requestContext (requestContext is not available)`
-      )
+      request.log.warn(`${logPrefix}cannot set in requestContext: jf2`)
     }
 
-    // The server MUST respond to successful delete and undelete requests with
-    // HTTP 200, 201 or 204. If the undelete operation caused the URL of the
-    // post to change, the server MUST respond with HTTP 201 and include the new
-    // URL in the HTTP Location header.
-    // https://micropub.spec.indieweb.org/#delete
+    // We want to make sure no sensitive property end up in the content store
+    jf2 = jf2WithNoSensitiveProps(jf2)
+
+    // We also don't want to store a few other non-sensitive properties. They
+    // are of no use in the content store.
     const action = jf2.action as Action
     const post_type = jf2.type
-    // const url = jf2.url
+    const mp_slug = jf2['mp-slug']
+    jf2 = jf2WithNoUselessProps(jf2)
 
-    // TODO: do this in a hook, before entering the route handler.
+    // TODO: maybe verify scope in a hook, before entering the route handler.
+    // But we do need to parse the request body to know the action, and since
+    // the request body can be MF2, JF2, etc, it's probably easier to validate
+    // the scope here.
     // if (!hasScope(request, action)) {
     //   const error_description = `Action '${action}' not allowed, since access token has no scope '${action}'.`;
     //   request.log.warn(`${logPrefix}${error_description}`);
-    //   const err = new InsufficientScopeError({ error_description });
-    //   return reply
-    //     .code(err.statusCode)
-    //     .send(err.payload({ include_error_description }));
-    // }
-
-    jf2 = jf2SafeToStore(jf2)
+    //   throw new InsufficientScopeError({ error_description });
 
     // The create/update/delete/undelete functions are provided by the user and
     // might throw exceptions. We can either try/catch them here, or let them
@@ -216,21 +196,25 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
       switch (action) {
         case 'delete': {
           // The server MUST respond to successful delete and undelete requests
-          // with HTTP 200, 201 or 204.
+          // with HTTP 200, 201 or 204. If the undelete operation (I think also
+          // the delete operation in case of a soft delete) caused the URL of
+          // the post to change, the server MUST respond with HTTP 201 and
+          // include the new URL in the HTTP Location header.
           // https://micropub.spec.indieweb.org/#delete
-          await deleteContent(jf2.url)
+          request.log.debug(`${logPrefix}trying to delete ${jf2.url}`)
+          await deletePost(jf2.url)
+          request.log.debug(`${logPrefix}deleted ${jf2.url}`)
           return reply.code(200).send({ message: `Deleted ${jf2.url}` })
         }
 
         case 'undelete': {
-          if (!undelete) {
+          if (!undeletePost) {
             const error_description = `Action 'undelete' not supported by this Micropub server.`
-            const err = new InvalidRequestError({ error_description })
-            return reply
-              .code(err.statusCode)
-              .send(err.payload({ include_error_description }))
+            throw new InvalidRequestError({ error_description })
           } else {
-            await undelete(jf2.url)
+            request.log.debug(`${logPrefix}trying to undelete ${jf2.url}`)
+            await undeletePost(jf2.url)
+            request.log.debug(`${logPrefix}undeleted ${jf2.url}`)
             return reply.code(200).send({ message: `Undeleted ${jf2.url}` })
           }
         }
@@ -248,30 +232,42 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
           // TODO: return correct response upon successful update operation.
           const { url, ...rest } = jf2
           const patch = rest as UpdatePatch
-          await update(url, patch)
+          request.log.debug(`${logPrefix}trying to update ${jf2.url}`)
+          await updatePost(url, patch)
+          request.log.debug(`${logPrefix}updated ${jf2.url}`)
           return reply.code(200).send({ message: `Updated ${url}`, patch })
         }
 
         default: {
+          if (request.requestContext) {
+            request.requestContext.set('action', action)
+            request.requestContext.set('jf2', jf2)
+            request.requestContext.set('post_type', post_type)
+          } else {
+            request.log.warn(
+              `${logPrefix}cannot set in requestContext: action, jf2, post_type`
+            )
+          }
           const error_description = `Action '${action}' is not supported by this Micropub server.`
-          request.log.error({ action, jf2 }, `${logPrefix}${error_description}`)
-          const err = new InvalidRequestError({ error_description })
-          return reply
-            .code(err.statusCode)
-            .send(err.payload({ include_error_description }))
+          throw new InvalidRequestError({ error_description })
         }
+      }
+    } else {
+      if (action !== 'create') {
+        if (request.requestContext) {
+          request.requestContext.set('action', action)
+          request.requestContext.set('jf2', jf2)
+          request.requestContext.set('post_type', post_type)
+        } else {
+          request.log.warn(
+            `${logPrefix}cannot set in requestContext: action, jf2, post_type`
+          )
+        }
+        const error_description = `JF2 has no 'url' property and the 'action' property is not 'create'. Action '${action}' is not supported by this Micropub server.`
+        throw new InvalidRequestError({ error_description })
       }
     }
 
-    const validate = request.getValidationFunction('body')
-    // If we did not set a schema for the body, validate will be undefined.
-    if (validate) {
-      validate(request_body)
-      console.log('=== validate.errors ===', validate.errors)
-    }
-
-    // If `url` is undefined, it's because action is 'create' (i.e. we need to
-    // create the Micropub post).
     // When the post is created, the Micropub endpoint MUST return either an
     // HTTP 201 Created status code or HTTP 202 Accepted code, and MUST return a
     // Location header indicating the URL of the created post.
@@ -284,50 +280,81 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
     // I think need a user-provided function which is specular to
     // websiteUrlToStorageLocation. Something like storageLocationToWebsiteUrl.
 
+    // We have already returned a response for delete/undelete/update, so this
+    // validate function validates a micropub post that we want to CREATE.
+    // const validate = request.getValidationFunction('body')
+    // If we did not set a schema for the body, validate will be undefined.
+    // if (validate) {
+    //   validate(request_body)
+    //   console.log('=== validate.errors ===', validate.errors)
+    // }
+
+    const { error: conform_error } = conformResult(
+      {
+        ajv,
+        schema: jf2_schema,
+        data: jf2
+      },
+      { basePath: 'jf2' }
+    )
+
+    if (conform_error) {
+      throw conform_error
+    }
+
+    // This code is the same for card/cite/entry/event the different post types.
+    // But we might want to validate each JF2 object differently and return a
+    // different response payload.
+    const location = jf2ToWebsiteUrl({
+      ...jf2,
+      'mp-slug': mp_slug,
+      type: post_type
+    })
+
+    // await create(jf2)
+
+    const payload =
+      uploaded_media.length > 0
+        ? { message: `Created post at url ${location}`, uploaded_media }
+        : { message: `Created post at url ${location}` }
+
     switch (post_type) {
       case 'card': {
-        const location = 'https://example.com/cards'
-        await create(jf2)
-        return reply
-          .code(201)
-          .header('Location', location)
-          .send({ message: `Created card at url ${location}` })
+        // TODO: validate card schema
+        await createPost(jf2)
+        return reply.code(201).header('Location', location).send(payload)
       }
 
       case 'cite': {
-        const location = 'https://example.com/cites'
-        await create(jf2)
-        return reply
-          .code(201)
-          .header('Location', location)
-          .send({ message: `Created cite at url ${location}` })
+        // TODO: validate cite schema
+        await createPost(jf2)
+        return reply.code(201).header('Location', location).send(payload)
       }
 
       case 'entry': {
-        const location = 'https://example.com/entries'
-        await create(jf2)
-        return reply
-          .code(201)
-          .header('Location', location)
-          .send({ message: `Created entry at url ${location}` })
+        // TODO: validate entry schema
+        await createPost(jf2)
+        return reply.code(201).header('Location', location).send(payload)
       }
 
       case 'event': {
-        const location = 'https://example.com/events'
-        await create(jf2)
-        return reply
-          .code(201)
-          .header('Location', location)
-          .send({ message: `Created event at url ${location}` })
+        // TODO: validate event schema
+        await createPost(jf2)
+        return reply.code(201).header('Location', location).send(payload)
       }
 
       default: {
+        if (request.requestContext) {
+          request.requestContext.set('action', action)
+          request.requestContext.set('jf2', jf2)
+          request.requestContext.set('post_type', post_type)
+        } else {
+          request.log.warn(
+            `${logPrefix}cannot set in requestContext: action, jf2, post_type`
+          )
+        }
         const error_description = `Post type=${post_type} is not supported by this Micropub server.`
-        request.log.error({ action, jf2 }, `${logPrefix}${error_description}`)
-        const err = new InvalidRequestError({ error_description })
-        return reply
-          .code(err.statusCode)
-          .send(err.payload({ include_error_description }))
+        throw new InvalidRequestError({ error_description })
       }
     }
   }

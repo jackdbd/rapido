@@ -13,18 +13,16 @@ import { unixTimestampInSeconds } from '@jackdbd/indieauth'
 import * as jf2 from '@jackdbd/microformats2'
 import { conformResult } from '@jackdbd/schema-validators'
 import { defErrorHandler } from '@repo/error-handlers'
-// import { Type } from '@sinclair/typebox'
 import { Ajv, type Plugin as AjvPlugin } from 'ajv'
 import addFormats from 'ajv-formats'
 import type { FastifyPluginCallback } from 'fastify'
 import fp from 'fastify-plugin'
 
-import { DEFAULT, NAME } from './constants.js'
+import { DEFAULT, NAME, SHORT_NAME } from './constants.js'
 import { defMicropubGet } from './routes/micropub-get.js'
 import { defMicropubPost } from './routes/micropub-post.js'
 import {
   micropub_get_request_querystring,
-  // micropub_post_request_body_jf2,
   options as options_schema
 } from './schemas/index.js'
 import type { Options } from './schemas/index.js'
@@ -47,12 +45,27 @@ const defaults = {
   syndicateTo: DEFAULT.SYNDICATE_TO
 }
 
+const REQUIRED = [
+  'isAccessTokenRevoked',
+  'createPost',
+  'me',
+  'updatePost',
+  'deletePost',
+  'jf2ToWebsiteUrl'
+] as const
+
 const micropubEndpoint: FastifyPluginCallback<Options> = (
   fastify,
   options,
   done
 ) => {
   const config = Object.assign({}, defaults, options)
+
+  REQUIRED.forEach((k) => {
+    if (!config[k]) {
+      return done(new Error(`${config.logPrefix}option ${k} is required`))
+    }
+  })
 
   let ajv: Ajv
   if (config.ajv) {
@@ -62,7 +75,18 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
     // In JavaScript, Ajv and addFormats can be imported without any of this mess.
     const addFormatsPlugin = addFormats as any as AjvPlugin<string[]>
     ajv = addFormatsPlugin(
-      new Ajv({ allErrors: config.reportAllAjvErrors, schemas: [] }),
+      new Ajv({
+        allErrors: config.reportAllAjvErrors,
+        schemas: [
+          jf2.dt_accessed,
+          jf2.dt_published,
+          jf2.p_author,
+          jf2.p_name,
+          jf2.p_publication,
+          jf2.u_uid,
+          jf2.u_url
+        ]
+      }),
       ['date', 'date-time', 'duration', 'email', 'uri']
     )
   }
@@ -100,18 +124,19 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
   }
 
   const {
-    create,
-    delete: deleteContent,
-    includeErrorDescription: include_error_description,
+    createPost,
+    deletePost,
+    includeErrorDescription,
     isAccessTokenRevoked,
+    jf2ToWebsiteUrl,
     logPrefix,
     me,
     mediaEndpoint,
     micropubEndpoint,
     multipartFormDataMaxFileSize,
     syndicateTo,
-    undelete,
-    update
+    undeletePost,
+    updatePost
   } = value.validated as Required<Options>
 
   // === PLUGINS ============================================================ //
@@ -146,11 +171,12 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
   })
 
   const decodeAccessToken = defDecodeAccessToken({
-    includeErrorDescription: include_error_description
+    includeErrorDescription,
+    logPrefix: `[${SHORT_NAME}/decode-access-token] `
   })
 
   const logClaims = defLogClaims({
-    logPrefix: '[micropub-endpoint/log-claims] '
+    logPrefix: `[${SHORT_NAME}/log-claims] `
   })
 
   const validateClaimExp = defValidateClaim(
@@ -159,7 +185,10 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
       op: '>',
       value: unixTimestampInSeconds
     },
-    { includeErrorDescription: include_error_description }
+    {
+      includeErrorDescription,
+      logPrefix: `[${SHORT_NAME}/validate-claim-exp] `
+    }
   )
 
   const validateClaimMe = defValidateClaim(
@@ -168,12 +197,16 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
       op: '==',
       value: canonicalUrl(me)
     },
-    { includeErrorDescription: include_error_description }
+    {
+      includeErrorDescription,
+      logPrefix: `[${SHORT_NAME}/validate-claim-me] `
+    }
   )
 
   const validateAccessTokenNotRevoked = defValidateNotRevoked({
-    includeErrorDescription: include_error_description,
-    isAccessTokenRevoked
+    includeErrorDescription,
+    isAccessTokenRevoked,
+    logPrefix: `[${SHORT_NAME}/validate-access-token-not-revoked] `
   })
 
   // === ROUTES ============================================================= //
@@ -188,11 +221,7 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
         }
       }
     },
-    defMicropubGet({
-      includeErrorDescription: include_error_description,
-      mediaEndpoint,
-      syndicateTo
-    })
+    defMicropubGet({ mediaEndpoint, syndicateTo })
   )
 
   fastify.post(
@@ -209,9 +238,15 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
         // By default @fastify/multipart does not populate request.body. It can
         // do it by configuring attachFieldsToBody. See here:
         // https://github.com/fastify/fastify-multipart?tab=readme-ov-file#parse-all-fields-and-assign-them-to-the-body
-        // It's probably better to validate in the request handler, when we know
-        // whether we are dealing with a multipart request or not.
-        // body: Type.Union([Type.Undefined(), micropub_post_request_body_jf2]),
+        // It's probably better to validate in the request handler, after we
+        // have converted the request body to JF2. Remember that the micropub
+        // endpoint could receive: MF2, MF2 JSON, JF2, urlencoded requests.
+        // body: Type.Union([
+        //   Type.Undefined(),
+        //   mf2,
+        //   parsed_mf2_json,
+        //   micropub_post_request_body_jf2
+        // ]),
         response: {
           // 200: micropub_response_body_success,
           '4xx': error_response,
@@ -220,22 +255,23 @@ const micropubEndpoint: FastifyPluginCallback<Options> = (
       }
     },
     defMicropubPost({
-      create,
-      delete: deleteContent,
-      includeErrorDescription: include_error_description,
+      ajv,
+      createPost,
+      deletePost,
       isAccessTokenRevoked,
+      jf2ToWebsiteUrl,
       logPrefix,
       mediaEndpoint,
       micropubEndpoint,
-      undelete,
-      update
+      undeletePost,
+      updatePost
     })
   )
 
   fastify.setErrorHandler(
     defErrorHandler({
-      includeErrorDescription: include_error_description,
-      logPrefix
+      includeErrorDescription,
+      logPrefix: `[${SHORT_NAME}/error-handler] `
     })
   )
 

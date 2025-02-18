@@ -5,14 +5,16 @@ import {
 import { isAccessTokenRevoked } from '@jackdbd/indieauth/schemas/user-provided-functions'
 import type { IsAccessTokenRevoked } from '@jackdbd/indieauth/schemas/user-provided-functions'
 import {
-  // createPost,
+  createPost,
   deletePost,
+  jf2ToWebsiteUrl,
   undeletePost,
   updatePost
 } from '@jackdbd/micropub/schemas/user-provided-functions'
 import type {
-  // CreatePost,
+  CreatePost,
   DeletePost,
+  Jf2ToWebsiteUrl,
   UndeletePost,
   UpdatePost
 } from '@jackdbd/micropub/schemas/user-provided-functions'
@@ -26,21 +28,22 @@ import {
   report_all_ajv_errors
 } from './common.js'
 import { syndicate_to_item } from './syndicate-to.js'
-import { createPost, type CreatePost } from './route-micropub-post.js'
 
 export const options = Type.Object(
   {
     ajv: Type.Optional(ajv),
 
-    create: createPost,
+    createPost,
 
-    delete: deletePost,
+    deletePost,
 
     includeErrorDescription: Type.Optional(
       Type.Boolean({ default: DEFAULT.INCLUDE_ERROR_DESCRIPTION })
     ),
 
     isAccessTokenRevoked,
+
+    jf2ToWebsiteUrl,
 
     logPrefix: Type.Optional(Type.String({ default: DEFAULT.LOG_PREFIX })),
 
@@ -68,9 +71,9 @@ export const options = Type.Object(
       Type.Array(syndicate_to_item, { default: DEFAULT.SYNDICATE_TO })
     ),
 
-    undelete: Type.Optional(undeletePost),
+    undeletePost: Type.Optional(undeletePost),
 
-    update: updatePost
+    updatePost
   },
   {
     $id: 'fastify-micropub-endpoint-options',
@@ -81,9 +84,10 @@ export const options = Type.Object(
 
 export interface Options extends Static<typeof options> {
   ajv?: Ajv
-  create: CreatePost
-  delete: DeletePost
+  createPost: CreatePost
+  deletePost: DeletePost
   isAccessTokenRevoked: IsAccessTokenRevoked
-  undelete?: UndeletePost
-  update: UpdatePost
+  jf2ToWebsiteUrl: Jf2ToWebsiteUrl
+  undeletePost?: UndeletePost
+  updatePost: UpdatePost
 }

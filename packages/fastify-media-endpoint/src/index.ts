@@ -17,7 +17,7 @@ import addFormats from 'ajv-formats'
 import type { FastifyPluginCallback } from 'fastify'
 import fp from 'fastify-plugin'
 
-import { DEFAULT, NAME } from './constants.js'
+import { DEFAULT, NAME, SHORT_NAME } from './constants.js'
 import { defMediaPost } from './routes/media-post.js'
 import { options as options_schema, type Options } from './schemas/index.js'
 
@@ -31,12 +31,25 @@ const defaults: Partial<Options> = {
   reportAllAjvErrors: DEFAULT.REPORT_ALL_AJV_ERRORS
 }
 
+const REQUIRED = [
+  'isAccessTokenRevoked',
+  'deleteMedia',
+  'me',
+  'uploadMedia'
+] as const
+
 const mediaEndpoint: FastifyPluginCallback<Options> = (
   fastify,
   options,
   done
 ) => {
   const config = Object.assign({}, defaults, options)
+
+  REQUIRED.forEach((k) => {
+    if (!config[k]) {
+      return done(new Error(`${config.logPrefix}option ${k} is required`))
+    }
+  })
 
   let ajv: Ajv
   if (config.ajv) {
@@ -61,13 +74,13 @@ const mediaEndpoint: FastifyPluginCallback<Options> = (
   }
 
   const {
-    delete: deleteMedia,
-    includeErrorDescription: include_error_description,
+    deleteMedia,
+    includeErrorDescription,
     isAccessTokenRevoked,
     logPrefix,
     me,
     multipartFormDataMaxFileSize,
-    upload
+    uploadMedia
   } = value.validated as Required<Options>
 
   // === PLUGINS ============================================================ //
@@ -95,10 +108,13 @@ const mediaEndpoint: FastifyPluginCallback<Options> = (
   })
 
   const decodeAccessToken = defDecodeAccessToken({
-    includeErrorDescription: include_error_description
+    includeErrorDescription,
+    logPrefix: `[${SHORT_NAME}/decode-access-token] `
   })
 
-  const logClaims = defLogClaims({ logPrefix: '[media-endpoint/log-claims] ' })
+  const logClaims = defLogClaims({
+    logPrefix: `[${SHORT_NAME}/log-claims] `
+  })
 
   const validateClaimExp = defValidateClaim(
     {
@@ -106,7 +122,10 @@ const mediaEndpoint: FastifyPluginCallback<Options> = (
       op: '>',
       value: unixTimestampInSeconds
     },
-    { includeErrorDescription: include_error_description }
+    {
+      includeErrorDescription,
+      logPrefix: `[${SHORT_NAME}/validate-claim-exp] `
+    }
   )
 
   const validateClaimMe = defValidateClaim(
@@ -115,14 +134,19 @@ const mediaEndpoint: FastifyPluginCallback<Options> = (
       op: '==',
       value: canonicalUrl(me)
     },
-    { includeErrorDescription: include_error_description }
+    { includeErrorDescription, logPrefix: `[${SHORT_NAME}/validate-claim-me] ` }
   )
 
-  const validateScopeMedia = defValidateScope({ scope: 'media' })
+  const validateScopeMedia = defValidateScope({
+    scope: 'media',
+    includeErrorDescription,
+    logPrefix: `[${SHORT_NAME}/validate-scope-media] `
+  })
 
   const validateAccessTokenNotRevoked = defValidateNotRevoked({
-    includeErrorDescription: include_error_description,
-    isAccessTokenRevoked
+    includeErrorDescription,
+    isAccessTokenRevoked,
+    logPrefix: `[${SHORT_NAME}/validate-access-token-not-revoked] `
   })
 
   // === ROUTES ============================================================= //
@@ -146,17 +170,13 @@ const mediaEndpoint: FastifyPluginCallback<Options> = (
         }
       }
     },
-    defMediaPost({
-      delete: deleteMedia,
-      include_error_description,
-      upload
-    })
+    defMediaPost({ deleteMedia, uploadMedia })
   )
 
   fastify.setErrorHandler(
     defErrorHandler({
-      includeErrorDescription: include_error_description,
-      logPrefix
+      includeErrorDescription,
+      logPrefix: `[${SHORT_NAME}/error-handler] `
     })
   )
 

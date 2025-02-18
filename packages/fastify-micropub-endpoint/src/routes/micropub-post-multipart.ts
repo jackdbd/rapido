@@ -1,8 +1,13 @@
 import assert from 'node:assert'
 import { isAudio, isVideo } from '@jackdbd/fastify-utils'
+import { normalizeJf2 } from '@jackdbd/micropub'
+import {
+  InvalidRequestError,
+  oauth2ErrorFromErrorString,
+  ServerError
+} from '@jackdbd/oauth2-error-responses'
 import { FastifyRequest } from 'fastify'
 import formAutoContent from 'form-auto-content'
-import type { PostRequestBody } from '../schemas/index.js'
 
 // Regarding formAutoContent of form-auto-content, I get "This expression is not
 // callable" if I use this combination of module and moduleResolution in
@@ -19,7 +24,7 @@ interface Config {
 type Value = number | string | any[]
 type Data = Record<string, Value>
 
-interface UploadedMedia {
+export interface UploadedMedia {
   // mimetype of a file uploaded to the Media endpoint.
   mimetype: string
   // URL of a file uploaded to the Media endpoint.
@@ -41,18 +46,19 @@ export const areSameOrigin = (src: string, dest: string) => {
  * even try to call my Micropub endpoint and failed with a runtime error.
  * @see https://github.com/aaronpk/Quill/blob/8ecaed3d2f5a19bf1a5c4cb077658e1bd3bc8438/lib/helpers.php#L402
  */
-export const defMultipartRequestBody = (config: Config) => {
+export const defProcessMultipartRequest = (config: Config) => {
   const { logPrefix, mediaEndpoint, micropubEndpoint } = config
 
-  const multipartRequestBody = async (request: FastifyRequest) => {
+  const processMultipartRequest = async (request: FastifyRequest) => {
     assert.ok(request.headers['content-type']!.includes('multipart/form-data'))
 
     const data: Data = {}
-
     // A single multipart request to the Micropub endpoint can result in N
     // requests to the Media endpoint (e.g. a multi-photo post).
     // https://indieweb.org/multi-photo
     const uploaded: UploadedMedia[] = []
+
+    request.log.debug(`${logPrefix}started processing multipart request`)
 
     for await (const part of request.parts()) {
       if (part.type === 'field') {
@@ -112,10 +118,6 @@ export const defMultipartRequestBody = (config: Config) => {
             { forceMultiPart: true }
           )
 
-          // TODO: error handling.
-          // What if the media endpoint returns a 4xx or 5xx status code?
-          // Or, even worse, if it throws an exception?
-
           const response = await request.server.inject({
             url: mediaEndpoint,
             method: 'POST',
@@ -125,6 +127,34 @@ export const defMultipartRequestBody = (config: Config) => {
             },
             payload: form.payload
           })
+
+          if (
+            response.statusCode !== 200 &&
+            response.statusCode !== 201 &&
+            response.statusCode !== 202 &&
+            response.statusCode !== 204
+          ) {
+            const error_description = 'Cannot upload file to media endpoint.'
+
+            const rb = JSON.parse(response.body)
+            if (rb.error) {
+              if (rb.error_description) {
+                throw oauth2ErrorFromErrorString(rb.error, {
+                  error_description: `${error_description} ${rb.error_description}`
+                })
+              } else {
+                throw oauth2ErrorFromErrorString(rb.error, {
+                  error_description
+                })
+              }
+            } else {
+              if (response.statusCode >= 400 && response.statusCode < 500) {
+                throw new InvalidRequestError({ error_description })
+              } else {
+                throw new ServerError({ error_description })
+              }
+            }
+          }
 
           const location = response.headers.location
           if (location) {
@@ -148,7 +178,9 @@ export const defMultipartRequestBody = (config: Config) => {
             { forceMultiPart: true }
           )
 
-          // I am afraid this fetch is not correct
+          // I am afraid this fetch is not correct. I should try having a
+          // micropub endpoint running on one port, and a media endpoint running
+          // on a different port, and see if this fetch works.
           const response = await fetch(mediaEndpoint, {
             method: 'POST',
             headers: {
@@ -159,6 +191,29 @@ export const defMultipartRequestBody = (config: Config) => {
             },
             body: await part.toBuffer()
           })
+
+          if (!response.ok) {
+            const error_description = 'Cannot upload file to media endpoint.'
+            const rb = await response.json()
+
+            if (rb.error) {
+              if (rb.error_description) {
+                throw oauth2ErrorFromErrorString(rb.error, {
+                  error_description: `${error_description} ${rb.error_description}`
+                })
+              } else {
+                throw oauth2ErrorFromErrorString(rb.error, {
+                  error_description
+                })
+              }
+            } else {
+              if (response.status >= 400 && response.status < 500) {
+                throw new InvalidRequestError({ error_description })
+              } else {
+                throw new ServerError({ error_description })
+              }
+            }
+          }
 
           const location = response.headers.get('location') || undefined
           if (location) {
@@ -195,13 +250,11 @@ export const defMultipartRequestBody = (config: Config) => {
       }
     }
 
+    request.log.debug(`${logPrefix}done processing multipart request`)
     // Since we might have added audio[], video[], and photo[] fields, we need
-    // to convert them into JS arrays. But since we have to do it anyway later
-    // on in the POST /micropub handler, it's not necessary to do it here.
-    // const jf2 = normalizeJf2(data)
-
-    return data as PostRequestBody
+    // to convert them into JS arrays.
+    return { jf2: normalizeJf2(data), uploaded }
   }
 
-  return multipartRequestBody
+  return processMultipartRequest
 }

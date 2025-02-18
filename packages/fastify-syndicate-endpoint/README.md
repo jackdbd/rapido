@@ -30,15 +30,15 @@ Options for the Fastify syndicate-endpoint plugin
 |Name|Type|Description|Required|
 |----|----|-----------|--------|
 |**ajv**||Instance of Ajv<br/>|no|
-|**get**<br/>(retrieveContent)|`Function`|Retrieves a post from the Micropub server.<br/>|yes|
 |**includeErrorDescription**|`boolean`|Whether to include an `error_description` property in all error responses. This is meant to assist the client developer in understanding the error. This is NOT meant to be shown to the end user.<br/>Default: `false`<br/>|no|
 |**isAccessTokenRevoked**|`Function`|Predicate function that returns true if a jti (JSON Web Token ID) is revoked.<br/>|yes|
 |**logPrefix**|`string`|Default: `"[syndicate-endpoint] "`<br/>|no|
 |**me**|||yes|
-|**publishedUrlToStorageLocation**<br/>(Website URL to store location)|`Function`|Maps a URL published on the user's website to a location on the user's store (e.g. a table in a database, a path in a git repository, a URL in a public bucket of an object storage service like AWS S3).<br/>|yes|
+|**websiteUrlToStoreLocation**<br/>(Website URL to store location)|`Function`|Maps a URL published on the user's website to a location on the user's store (e.g. a table in a database, a path in a git repository, a URL in a public bucket of an object storage service like AWS S3).<br/>|yes|
 |**reportAllAjvErrors**<br/>(report all AJV errors)|`boolean`|Whether to report all AJV validation errors.<br/>Default: `false`<br/>|no|
+|**retrievePost**<br/>(retrieveContent)|`Function`|Retrieves a post from the Micropub server.<br/>|yes|
 |**syndicators**|||yes|
-|**update**<br/>(Update post)|`Function`|[Updates](https://micropub.spec.indieweb.org/#update) a post published at a URL.<br/>|yes|
+|**updatePost**<br/>(Update post)|`Function`|[Updates](https://micropub.spec.indieweb.org/#update) a post published at a URL.<br/>|yes|
 
 **Example**
 
@@ -57,8 +57,8 @@ Options for the Fastify syndicate-endpoint plugin
 | [@fastify/formbody](https://www.npmjs.com/package/@fastify/formbody) | `^8.0.2` |
 | [@fastify/response-validation](https://www.npmjs.com/package/@fastify/response-validation) | `^3.0.3` |
 | [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.2.0-canary.8` |
-| [@jackdbd/fastify-hooks](https://www.npmjs.com/package/@jackdbd/fastify-hooks) | `0.2.0-canary.13` |
-| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `0.2.0-canary.12` |
+| [@jackdbd/fastify-hooks](https://www.npmjs.com/package/@jackdbd/fastify-hooks) | `0.2.0-canary.14` |
+| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `0.2.0-canary.13` |
 | [@jackdbd/micropub](https://www.npmjs.com/package/@jackdbd/micropub) | `0.2.0-canary.10` |
 | [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `0.2.0-canary.8` |
 | [@paulrobertlloyd/mf2tojf2](https://www.npmjs.com/package/@paulrobertlloyd/mf2tojf2) | `^2.4.0` |

@@ -7,20 +7,40 @@
     "ajv": {
       "description": "Instance of Ajv"
     },
-    "delete": {
+    "deleteMedia": {
       "title": "Delete post",
       "description": "[Deletes](https://micropub.spec.indieweb.org/#delete) a post published at a URL.",
       "type": "Function",
       "parameters": [
         {
-          "description": "A URL",
           "format": "uri",
           "type": "string"
         }
       ],
       "returns": {
         "type": "Promise",
-        "item": {}
+        "item": {
+          "type": "object",
+          "properties": {
+            "details": {
+              "type": "array",
+              "items": {
+                "minLength": 1,
+                "description": "Some detail of the operation.",
+                "type": "string"
+              }
+            },
+            "summary": {
+              "minLength": 1,
+              "title": "Summary",
+              "description": "Summary of the operation.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "summary"
+          ]
+        }
       }
     },
     "includeErrorDescription": {
@@ -80,7 +100,7 @@
       "default": false,
       "type": "boolean"
     },
-    "upload": {
+    "uploadMedia": {
       "title": "Upload file",
       "description": "[Uploads a file](https://micropub.spec.indieweb.org/#uploading-files) to the Micropub server.",
       "type": "Function",
@@ -112,13 +132,27 @@
         "item": {
           "type": "object",
           "properties": {
+            "details": {
+              "type": "array",
+              "items": {
+                "minLength": 1,
+                "description": "Some detail of the operation.",
+                "type": "string"
+              }
+            },
+            "summary": {
+              "minLength": 1,
+              "title": "Summary",
+              "description": "Summary of the operation.",
+              "type": "string"
+            },
             "url": {
-              "description": "URL of the uploaded file.",
               "format": "uri",
               "type": "string"
             }
           },
           "required": [
+            "summary",
             "url"
           ]
         }
@@ -126,9 +160,9 @@
     }
   },
   "required": [
-    "delete",
+    "deleteMedia",
     "isAccessTokenRevoked",
     "me",
-    "upload"
+    "uploadMedia"
   ]
 }

@@ -16,7 +16,7 @@ import addFormats from 'ajv-formats'
 import type { FastifyPluginCallback } from 'fastify'
 import fp from 'fastify-plugin'
 
-import { DEFAULT, NAME } from './constants.js'
+import { DEFAULT, NAME, SHORT_NAME } from './constants.js'
 import { defSyndicatePost } from './routes/syndicate-post.js'
 import {
   // syndicate_post_request_body,
@@ -63,14 +63,14 @@ const syndicateEndpoint: FastifyPluginCallback<Options> = (
   }
 
   const {
-    get,
-    includeErrorDescription: include_error_description,
+    includeErrorDescription,
     isAccessTokenRevoked,
     logPrefix,
     me,
-    publishedUrlToStorageLocation,
+    retrievePost,
     syndicators,
-    update
+    updatePost,
+    websiteUrlToStoreLocation
   } = value.validated as Required<Options>
 
   // === PLUGINS ============================================================ //
@@ -96,11 +96,12 @@ const syndicateEndpoint: FastifyPluginCallback<Options> = (
   })
 
   const decodeAccessToken = defDecodeAccessToken({
-    includeErrorDescription: include_error_description
+    includeErrorDescription,
+    logPrefix: `[${SHORT_NAME}/decode-access-token] `
   })
 
   const logClaims = defLogClaims({
-    logPrefix: '[micropub-endpoint/log-claims] '
+    logPrefix: `[${SHORT_NAME}/log-claims] `
   })
 
   const validateClaimExp = defValidateClaim(
@@ -109,7 +110,10 @@ const syndicateEndpoint: FastifyPluginCallback<Options> = (
       op: '>',
       value: unixTimestampInSeconds
     },
-    { includeErrorDescription: include_error_description }
+    {
+      includeErrorDescription,
+      logPrefix: `[${SHORT_NAME}/validate-claim-exp] `
+    }
   )
 
   const validateClaimMe = defValidateClaim(
@@ -118,14 +122,15 @@ const syndicateEndpoint: FastifyPluginCallback<Options> = (
       op: '==',
       value: canonicalUrl(me)
     },
-    { includeErrorDescription: include_error_description }
+    { includeErrorDescription, logPrefix: `[${SHORT_NAME}/validate-claim-me] ` }
   )
 
   // const validateClaimJti = defValidateClaim({ claim: 'jti' })
 
   const validateAccessTokenNotRevoked = defValidateNotRevoked({
-    includeErrorDescription: include_error_description,
-    isAccessTokenRevoked
+    includeErrorDescription,
+    isAccessTokenRevoked,
+    logPrefix: `[${SHORT_NAME}/validate-access-token-not-revoked] `
   })
 
   // === ROUTES ============================================================= //
@@ -149,19 +154,18 @@ const syndicateEndpoint: FastifyPluginCallback<Options> = (
       }
     },
     defSyndicatePost({
-      get,
-      includeErrorDescription: include_error_description,
       logPrefix,
-      publishedUrlToStorageLocation,
+      retrievePost,
       syndicators,
-      update
+      updatePost,
+      websiteUrlToStoreLocation
     })
   )
 
   fastify.setErrorHandler(
     defErrorHandler({
-      includeErrorDescription: include_error_description,
-      logPrefix
+      includeErrorDescription,
+      logPrefix: `[${SHORT_NAME}/error-handler] `
     })
   )
 

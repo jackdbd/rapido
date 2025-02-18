@@ -7,7 +7,89 @@
     "ajv": {
       "description": "Instance of Ajv"
     },
-    "get": {
+    "includeErrorDescription": {
+      "description": "Whether to include an `error_description` property in all error responses. This is meant to assist the client developer in understanding the error. This is NOT meant to be shown to the end user.",
+      "default": false,
+      "type": "boolean"
+    },
+    "isAccessTokenRevoked": {
+      "title": "isAccessTokenRevoked",
+      "description": "Predicate function that returns true if a jti (JSON Web Token ID) is revoked.",
+      "type": "Function",
+      "parameters": [
+        {
+          "description": "Unique identifier for the JWT",
+          "minLength": 1,
+          "title": "\"jti\" (JWT ID) Claim",
+          "type": "string"
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "item": {
+          "type": "boolean"
+        }
+      }
+    },
+    "logPrefix": {
+      "default": "[syndicate-endpoint] ",
+      "type": "string"
+    },
+    "me": {
+      "anyOf": [
+        {
+          "description": "Profile URL (before URL Canonicalization)",
+          "minLength": 1,
+          "title": "me (not canonicalized)",
+          "type": "string"
+        },
+        {
+          "description": "Profile URL (after URL Canonicalization)",
+          "format": "uri",
+          "title": "me (canonicalized)",
+          "type": "string"
+        }
+      ]
+    },
+    "websiteUrlToStoreLocation": {
+      "title": "Website URL to store location",
+      "description": "Maps a URL published on the user's website to a location on the user's store (e.g. a table in a database, a path in a git repository, a URL in a public bucket of an object storage service like AWS S3).",
+      "type": "Function",
+      "parameters": [
+        {
+          "format": "uri",
+          "type": "string"
+        }
+      ],
+      "returns": {
+        "type": "object",
+        "properties": {
+          "store": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "store_deleted": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "website": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "store",
+          "website"
+        ]
+      }
+    },
+    "reportAllAjvErrors": {
+      "description": "Whether to report all AJV validation errors.",
+      "title": "report all AJV errors",
+      "default": false,
+      "type": "boolean"
+    },
+    "retrievePost": {
       "title": "retrieveContent",
       "description": "Retrieves a post from the Micropub server.",
       "type": "Function",
@@ -48,7 +130,6 @@
                 "audio": {
                   "anyOf": [
                     {
-                      "$id": "u-url",
                       "title": "URL of the card, entry, event, etc.",
                       "description": "URL to use in h-card, h-entry, h-event, etc.",
                       "format": "uri",
@@ -57,7 +138,6 @@
                     {
                       "type": "array",
                       "items": {
-                        "$id": "u-url",
                         "title": "URL of the card, entry, event, etc.",
                         "description": "URL to use in h-card, h-entry, h-event, etc.",
                         "format": "uri",
@@ -68,6 +148,8 @@
                 },
                 "author": {},
                 "bookmark-of": {
+                  "title": "URL of the card, entry, event, etc.",
+                  "description": "URL to use in h-card, h-entry, h-event, etc.",
                   "format": "uri",
                   "type": "string"
                 },
@@ -126,10 +208,14 @@
                   "type": "string"
                 },
                 "in-reply-to": {
+                  "title": "URL of the card, entry, event, etc.",
+                  "description": "URL to use in h-card, h-entry, h-event, etc.",
                   "format": "uri",
                   "type": "string"
                 },
                 "like-of": {
+                  "title": "URL of the card, entry, event, etc.",
+                  "description": "URL to use in h-card, h-entry, h-event, etc.",
                   "format": "uri",
                   "type": "string"
                 },
@@ -193,8 +279,60 @@
                   "type": "string"
                 },
                 "read-of": {
-                  "format": "uri",
-                  "type": "string"
+                  "anyOf": [
+                    {
+                      "title": "URL of the card, entry, event, etc.",
+                      "description": "URL to use in h-card, h-entry, h-event, etc.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "$id": "h-cite",
+                      "title": "microformats2 h-cite",
+                      "description": "h-cite is a simple, open format for publishing citations and references to online and other publications.",
+                      "examples": [
+                        {
+                          "author": "Isaac Newton",
+                          "name": "The Correspondence of Isaac Newton: Volume 5",
+                          "content": "If I have seen further it is by standing on the shoulders of Giants."
+                        }
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "accessed": {
+                          "$ref": "dt-accessed"
+                        },
+                        "author": {
+                          "$ref": "p-author"
+                        },
+                        "content": {
+                          "$ref": "p-content"
+                        },
+                        "name": {
+                          "$ref": "p-name"
+                        },
+                        "publication": {
+                          "$ref": "p-publication"
+                        },
+                        "published": {
+                          "$ref": "dt-published"
+                        },
+                        "type": {
+                          "const": "cite",
+                          "type": "string"
+                        },
+                        "uid": {
+                          "$ref": "u-uid"
+                        },
+                        "url": {
+                          "$ref": "u-url"
+                        }
+                      },
+                      "required": [
+                        "type"
+                      ]
+                    }
+                  ]
                 },
                 "read-status": {
                   "anyOf": [
@@ -213,6 +351,8 @@
                   ]
                 },
                 "repost-of": {
+                  "title": "URL of the card, entry, event, etc.",
+                  "description": "URL to use in h-card, h-entry, h-event, etc.",
                   "format": "uri",
                   "type": "string"
                 },
@@ -268,7 +408,6 @@
                   "type": "string"
                 },
                 "url": {
-                  "$id": "u-url",
                   "title": "URL of the card, entry, event, etc.",
                   "description": "URL to use in h-card, h-entry, h-event, etc.",
                   "format": "uri",
@@ -277,7 +416,6 @@
                 "video": {
                   "anyOf": [
                     {
-                      "$id": "u-url",
                       "title": "URL of the card, entry, event, etc.",
                       "description": "URL to use in h-card, h-entry, h-event, etc.",
                       "format": "uri",
@@ -286,7 +424,6 @@
                     {
                       "type": "array",
                       "items": {
-                        "$id": "u-url",
                         "title": "URL of the card, entry, event, etc.",
                         "description": "URL to use in h-card, h-entry, h-event, etc.",
                         "format": "uri",
@@ -334,97 +471,13 @@
         }
       }
     },
-    "includeErrorDescription": {
-      "description": "Whether to include an `error_description` property in all error responses. This is meant to assist the client developer in understanding the error. This is NOT meant to be shown to the end user.",
-      "default": false,
-      "type": "boolean"
-    },
-    "isAccessTokenRevoked": {
-      "title": "isAccessTokenRevoked",
-      "description": "Predicate function that returns true if a jti (JSON Web Token ID) is revoked.",
-      "type": "Function",
-      "parameters": [
-        {
-          "description": "Unique identifier for the JWT",
-          "minLength": 1,
-          "title": "\"jti\" (JWT ID) Claim",
-          "type": "string"
-        }
-      ],
-      "returns": {
-        "type": "Promise",
-        "item": {
-          "type": "boolean"
-        }
-      }
-    },
-    "logPrefix": {
-      "default": "[syndicate-endpoint] ",
-      "type": "string"
-    },
-    "me": {
-      "anyOf": [
-        {
-          "description": "Profile URL (before URL Canonicalization)",
-          "minLength": 1,
-          "title": "me (not canonicalized)",
-          "type": "string"
-        },
-        {
-          "description": "Profile URL (after URL Canonicalization)",
-          "format": "uri",
-          "title": "me (canonicalized)",
-          "type": "string"
-        }
-      ]
-    },
-    "publishedUrlToStorageLocation": {
-      "title": "Website URL to store location",
-      "description": "Maps a URL published on the user's website to a location on the user's store (e.g. a table in a database, a path in a git repository, a URL in a public bucket of an object storage service like AWS S3).",
-      "type": "Function",
-      "parameters": [
-        {
-          "description": "A URL",
-          "format": "uri",
-          "type": "string"
-        }
-      ],
-      "returns": {
-        "type": "object",
-        "properties": {
-          "store": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "store_deleted": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "website": {
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "required": [
-          "store",
-          "website"
-        ]
-      }
-    },
-    "reportAllAjvErrors": {
-      "description": "Whether to report all AJV validation errors.",
-      "title": "report all AJV errors",
-      "default": false,
-      "type": "boolean"
-    },
     "syndicators": {},
-    "update": {
+    "updatePost": {
       "title": "Update post",
       "description": "[Updates](https://micropub.spec.indieweb.org/#update) a post published at a URL.",
       "type": "Function",
       "parameters": [
         {
-          "description": "A URL",
           "format": "uri",
           "type": "string"
         },
@@ -442,16 +495,18 @@
       ],
       "returns": {
         "type": "Promise",
-        "item": {}
+        "item": {
+          "type": "void"
+        }
       }
     }
   },
   "required": [
-    "get",
     "isAccessTokenRevoked",
     "me",
-    "publishedUrlToStorageLocation",
+    "websiteUrlToStoreLocation",
+    "retrievePost",
     "syndicators",
-    "update"
+    "updatePost"
   ]
 }

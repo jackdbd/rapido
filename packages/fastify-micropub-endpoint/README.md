@@ -31,10 +31,11 @@ Options for the Fastify micropub-endpoint plugin
 |Name|Type|Description|Required|
 |----|----|-----------|--------|
 |**ajv**||Instance of Ajv<br/>|no|
-|**create**<br/>(Create post)|`Function`|[Creates](https://micropub.spec.indieweb.org/#create) a post on the Micropub server.<br/>|yes|
-|**delete**<br/>(Delete post)|`Function`|[Deletes](https://micropub.spec.indieweb.org/#delete) a post published at a URL.<br/>|yes|
+|**createPost**<br/>(Create post)|`Function`|[Creates](https://micropub.spec.indieweb.org/#create) a post on the Micropub server.<br/>|yes|
+|**deletePost**<br/>(Delete post)|`Function`|[Deletes](https://micropub.spec.indieweb.org/#delete) a post published at a URL.<br/>|yes|
 |**includeErrorDescription**|`boolean`|Default: `false`<br/>|no|
 |**isAccessTokenRevoked**|`Function`|Predicate function that returns true if a jti (JSON Web Token ID) is revoked.<br/>|yes|
+|**jf2ToWebsiteUrl**<br/>(JF2 to website URL)|`Function`|Maps a JF2 object to a URL published on (or that it will be published to) the user's website.<br/>|yes|
 |**logPrefix**|`string`|Default: `"[micropub-endpoint] "`<br/>|no|
 |**me**|||yes|
 |**mediaEndpoint**<br/>(Media endpoint)|`string`|Format: `"uri"`<br/>|no|
@@ -42,8 +43,8 @@ Options for the Fastify micropub-endpoint plugin
 |**multipartFormDataMaxFileSize**<br/>(multipart/form\-data max file size)|`number`|Max file size (in bytes) for multipart/form-data requests.<br/>Default: `10000000`<br/>Minimum: `0`<br/>|no|
 |**reportAllAjvErrors**<br/>(report all AJV errors)|`boolean`|Whether to report all AJV validation errors.<br/>Default: `false`<br/>|no|
 |[**syndicateTo**](#syndicateto)|`object[]`|Default: <br/>|no|
-|**undelete**<br/>(Undelete post)|`Function`|[Undeletes](https://micropub.spec.indieweb.org/#delete) a post published at a URL.<br/>|no|
-|**update**<br/>(Update post)|`Function`|[Updates](https://micropub.spec.indieweb.org/#update) a post published at a URL.<br/>|yes|
+|**undeletePost**<br/>(Undelete post)|`Function`|[Undeletes](https://micropub.spec.indieweb.org/#delete) a post published at a URL.<br/>|no|
+|**updatePost**<br/>(Update post)|`Function`|[Updates](https://micropub.spec.indieweb.org/#update) a post published at a URL.<br/>|yes|
 
 **Example**
 
@@ -101,12 +102,12 @@ Options for the Fastify micropub-endpoint plugin
 | [@fastify/multipart](https://www.npmjs.com/package/@fastify/multipart) | `^9.0.3` |
 | [@fastify/response-validation](https://www.npmjs.com/package/@fastify/response-validation) | `^3.0.3` |
 | [@jackdbd/canonical-url](https://www.npmjs.com/package/@jackdbd/canonical-url) | `0.2.0-canary.8` |
-| [@jackdbd/fastify-hooks](https://www.npmjs.com/package/@jackdbd/fastify-hooks) | `0.2.0-canary.13` |
+| [@jackdbd/fastify-hooks](https://www.npmjs.com/package/@jackdbd/fastify-hooks) | `0.2.0-canary.14` |
 | [@jackdbd/fastify-utils](https://www.npmjs.com/package/@jackdbd/fastify-utils) | `0.2.0-canary.10` |
-| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `0.2.0-canary.12` |
+| [@jackdbd/indieauth](https://www.npmjs.com/package/@jackdbd/indieauth) | `0.2.0-canary.13` |
 | [@jackdbd/microformats2](https://www.npmjs.com/package/@jackdbd/microformats2) | `0.2.0-canary.8` |
-| [@jackdbd/micropub](https://www.npmjs.com/package/@jackdbd/micropub) | `0.2.0-canary.10` |
-| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `0.2.0-canary.8` |
+| [@jackdbd/micropub](https://www.npmjs.com/package/@jackdbd/micropub) | `*` |
+| [@jackdbd/oauth2-error-responses](https://www.npmjs.com/package/@jackdbd/oauth2-error-responses) | `*` |
 | [@jackdbd/schema-validators](https://www.npmjs.com/package/@jackdbd/schema-validators) | `^0.2.0-canary.11` |
 | [@paulrobertlloyd/mf2tojf2](https://www.npmjs.com/package/@paulrobertlloyd/mf2tojf2) | `^2.4.0` |
 | [@sinclair/typebox](https://www.npmjs.com/package/@sinclair/typebox) | `^0.34.14` |

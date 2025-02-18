@@ -29,7 +29,7 @@ export const options = Type.Object(
   {
     ajv: Type.Optional(ajv),
 
-    delete: deletePost,
+    deleteMedia: deletePost,
 
     includeErrorDescription: Type.Optional(include_error_description),
 
@@ -53,7 +53,7 @@ export const options = Type.Object(
 
     reportAllAjvErrors: Type.Optional(report_all_ajv_errors),
 
-    upload: uploadMedia
+    uploadMedia
   },
   {
     $id: 'fastify-media-endpoint-options',
@@ -64,7 +64,7 @@ export const options = Type.Object(
 
 export interface Options extends Static<typeof options> {
   ajv?: Ajv
-  delete: DeletePost
+  deleteMedia: DeletePost
   isAccessTokenRevoked: IsAccessTokenRevoked
-  upload: UploadMedia
+  uploadMedia: UploadMedia
 }

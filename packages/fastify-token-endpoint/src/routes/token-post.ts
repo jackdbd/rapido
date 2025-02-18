@@ -284,7 +284,9 @@ export const defTokenPost = (config: TokenPostConfig) => {
       const { value: access_token } = accessTokenFromRequest(request)
 
       if (access_token) {
-        request.log.debug(`${log_prefix}revoking current access token`)
+        request.log.debug(
+          `${log_prefix}refresh request has an access token, revoking it now`
+        )
 
         const { error: revoke_error_access } = await revokeToken({
           access_token: refreshed_access_token,
@@ -308,6 +310,10 @@ export const defTokenPost = (config: TokenPostConfig) => {
 
         request.log.debug(
           `${log_prefix}revoked access token with revocation_reason: ${revocation_reason}`
+        )
+      } else {
+        request.log.debug(
+          `${log_prefix}no access token to revoke, since this refresh request does not have one`
         )
       }
 

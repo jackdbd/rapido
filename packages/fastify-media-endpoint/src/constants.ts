@@ -1,6 +1,9 @@
 export const NAME = 'fastify-media-endpoint'
 // export const NAME = '@jackdbd/fastify-media-endpoint'
 
+export const SHORT_NAME = 'mp-media'
+export const SHORTEST_NAME = 'media'
+
 export const DEFAULT = {
   INCLUDE_ERROR_DESCRIPTION: false,
   LOG_PREFIX: '[media-endpoint] ',
