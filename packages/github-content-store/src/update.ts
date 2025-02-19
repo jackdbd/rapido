@@ -5,14 +5,14 @@ import {
   REF
 } from '@jackdbd/github-contents-api'
 import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
-import type { JF2 } from '@jackdbd/micropub'
+// import type { JF2 } from '@jackdbd/micropub'
 import type {
   UpdatePost,
   WebsiteUrlToStoreLocation
 } from '@jackdbd/micropub/schemas/user-provided-functions'
 import { rfc3339 } from './date.js'
 import { jf2ToContent } from './jf2-to-content.js'
-import type { Log } from './log.js'
+import { defaultLog, type Log } from './log.js'
 import { defRetrieveContent } from './retrieve-content.js'
 
 export interface Options {
@@ -21,8 +21,9 @@ export interface Options {
   branch?: string
   committer: AuthorOrCommitter
   log?: Log
-  owner?: string
-  repo?: string
+  name?: string
+  owner: string
+  repo: string
   token?: string
   websiteUrlToStoreLocation: WebsiteUrlToStoreLocation
 }
@@ -30,11 +31,28 @@ export interface Options {
 const defaults: Partial<Options> = {
   base_url: BASE_URL,
   branch: REF,
+  log: defaultLog,
+  name: 'GitHub repository',
   token: GITHUB_TOKEN
 }
 
+const REQUIRED = [
+  'committer',
+  'log',
+  'owner',
+  'repo',
+  'token',
+  'websiteUrlToStoreLocation'
+] as const
+
 export const defUpdate = (options?: Options) => {
   const config = Object.assign({}, defaults, options) as Required<Options>
+
+  REQUIRED.forEach((k) => {
+    if (!config[k]) {
+      throw new Error(`parameter '${k}' is required`)
+    }
+  })
 
   const {
     author,
@@ -42,11 +60,20 @@ export const defUpdate = (options?: Options) => {
     branch,
     committer,
     log,
+    name,
     owner,
     repo,
     token,
     websiteUrlToStoreLocation
   } = config
+
+  if (!log) {
+    throw new Error(`parameter 'log' for store '${name}' not set`)
+  }
+
+  if (!token) {
+    throw new Error(`parameter 'token' for store '${name}' not set`)
+  }
 
   const retrieveContent = defRetrieveContent({
     base_url,
@@ -62,23 +89,14 @@ export const defUpdate = (options?: Options) => {
 
     // should we support updating a deleted post (loc.store_deleted)? Probably not.
 
-    let jf2: JF2
-    let sha: string
-    try {
-      const value = await retrieveContent(loc)
-      if (!value.sha) {
-        throw new Error(
-          `Content retrieved from ${loc.store} in repository ${owner}/${repo} (branch ${branch}) does not have a sha.`
-        )
-      }
-      jf2 = value.jf2
-      sha = value.sha
-    } catch (ex: any) {
-      const tip = `Make sure the file exists and that you can fetch it from the repository.`
-      const error_description = `Cannot update the post published at ${loc.website} because the file ${loc.store} could not be retrieved from repository ${owner}/${repo} (branch ${branch}). ${tip}`
-      log.error(error_description)
-      throw new Error(error_description)
+    const value = await retrieveContent(loc)
+    if (!value.sha) {
+      throw new Error(
+        `Content retrieved from ${loc.store} in repository ${owner}/${repo} (branch ${branch}) does not have a sha.`
+      )
     }
+    let jf2 = value.jf2
+    const sha = value.sha
 
     const messages: string[] = []
 
@@ -122,8 +140,15 @@ export const defUpdate = (options?: Options) => {
     // https://micropub.spec.indieweb.org/#response-0-p-1
 
     if (result.error) {
-      throw new Error(result.error.error_description)
+      const summary = `Cannot update ${loc.store} in repository ${owner}/${repo} (branch ${branch}).`
+      const suggestions = [
+        `Make sure the file exists.`,
+        `Make sure you are using a GitHub token that allows you to write content in repository ${owner}/${repo}.`
+      ]
+      log.error(`${summary} ${suggestions.join(' ')}`)
+      throw new Error(`${summary} ${suggestions.join(' ')}`)
     }
+    // TODO: return at least a summary, maybe also the updated jf2
     // else {
     //   const { status_code, status_text } = result.value
     //   const summary = `Updated ${loc.store} in repository ${owner}/${repo} (branch ${branch}). That post is published at ${loc.website}.`

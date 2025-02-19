@@ -36,7 +36,11 @@ export const defWebsiteUrlToStoreLocation = (options?: Options) => {
     const [_domain, ...splits] = url.split('/').slice(2)
     const slug = splits.filter((s) => s !== '').at(-1)
 
-    const loc = publication.default.location
+    // We need to create a new object each time.
+    const loc = { ...publication.default.location }
+    // This is not correct, because `loc` would be just a reference to the
+    // `publication.default.location` object
+    // const loc = publication.default.location
 
     let matched = false
     for (const [key, item] of Object.entries(publication.items)) {

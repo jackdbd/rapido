@@ -98,6 +98,7 @@ export const defGitHub = (config: Config) => {
     branch,
     committer,
     log,
+    name: store_name,
     owner,
     repo,
     token,
@@ -107,6 +108,7 @@ export const defGitHub = (config: Config) => {
   const retrieveContent = defRetrieveContent({
     base_url,
     log,
+    name: store_name,
     owner,
     ref: branch,
     repo,
