@@ -1,6 +1,7 @@
 import type { Publication } from '@jackdbd/micropub'
 import type { WebsiteUrlToStoreLocation } from '@jackdbd/micropub/schemas/user-provided-functions'
-import { defaultLog, type Log } from './log.js'
+import { DEFAULT } from './defaults.js'
+import type { Log } from './log.js'
 
 interface Options {
   log?: Log
@@ -9,17 +10,24 @@ interface Options {
 }
 
 const defaults: Partial<Options> = {
-  log: defaultLog,
-  name: 'GitHub repository'
+  log: DEFAULT.log,
+  name: DEFAULT.name
 }
 
-export const defWebsiteUrlToStoreLocation = (options?: Options) => {
+const REQUIRED = ['log', 'name', 'publication'] as const
+
+export const defUrlToLocation = (options?: Options) => {
   const config = Object.assign({}, defaults, options) as Required<Options>
+
   const { log, name, publication } = config
 
-  if (!publication) {
-    throw new Error(`cannot create store '${name}': publication is required`)
-  }
+  REQUIRED.forEach((k) => {
+    if (!config[k]) {
+      throw new Error(
+        `parameter '${k}' for '${name}' url-to-location is not set`
+      )
+    }
+  })
 
   const mp_posts = Object.keys(publication.items)
   if (mp_posts.length > 0) {
@@ -32,7 +40,7 @@ export const defWebsiteUrlToStoreLocation = (options?: Options) => {
     )
   }
 
-  const websiteUrlToStoreLocation: WebsiteUrlToStoreLocation = (url) => {
+  const urlToLocation: WebsiteUrlToStoreLocation = (url) => {
     const [_domain, ...splits] = url.split('/').slice(2)
     const slug = splits.filter((s) => s !== '').at(-1)
 
@@ -75,5 +83,5 @@ export const defWebsiteUrlToStoreLocation = (options?: Options) => {
     return loc
   }
 
-  return websiteUrlToStoreLocation
+  return urlToLocation
 }

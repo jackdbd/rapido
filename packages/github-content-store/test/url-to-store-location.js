@@ -1,23 +1,18 @@
 import { describe, it } from 'node:test'
-import {
-  defDefaultPublication,
-  defWebsiteUrlToStoreLocation
-} from '../lib/index.js'
+import { defDefaultPublication, defUrlToLocation } from '../lib/index.js'
 
 const domain = 'giacomodebidda.com'
 const subdomain = 'www'
 const publication = defDefaultPublication({ domain, subdomain })
 
-const websiteUrlToStoreLocation = defWebsiteUrlToStoreLocation({
-  publication
-})
+const urlToLocation = defUrlToLocation({ publication })
 
-describe('websiteUrlToStoreLocation', () => {
+describe('urlToLocation', () => {
   it('maps the URL of a bookmark published on a website, to the location of that bookmark in the content store', (t) => {
     const url =
       'https://www.giacomodebidda.com/bookmarks/inline-caches-in-javascript-engines/'
 
-    const loc = websiteUrlToStoreLocation(url)
+    const loc = urlToLocation(url)
 
     t.assert.strictEqual(
       loc.store,
@@ -33,7 +28,7 @@ describe('websiteUrlToStoreLocation', () => {
   it('maps the URL of a note published on a website, to the location of that note in the content store', (t) => {
     const url = 'https://www.giacomodebidda.com/notes/test-note-multimedia/'
 
-    const loc = websiteUrlToStoreLocation(url)
+    const loc = urlToLocation(url)
 
     t.assert.strictEqual(loc.store, 'notes/test-note-multimedia.md')
     t.assert.strictEqual(

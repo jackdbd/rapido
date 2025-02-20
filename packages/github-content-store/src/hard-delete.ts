@@ -1,14 +1,10 @@
 import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
-import {
-  hardDelete,
-  BASE_URL,
-  GITHUB_TOKEN,
-  REF
-} from '@jackdbd/github-contents-api'
+import { hardDelete } from '@jackdbd/github-contents-api'
 import type {
   DeletePost,
   WebsiteUrlToStoreLocation
-} from '@jackdbd/micropub/schemas/user-provided-functions'
+} from '@jackdbd/micropub/schemas/index'
+import { DEFAULT } from './defaults.js'
 import type { Log } from './log.js'
 import { defRetrieveContent } from './retrieve-content.js'
 
@@ -17,17 +13,29 @@ export interface Options {
   branch?: string
   committer: AuthorOrCommitter
   log?: Log
-  owner?: string
-  repo?: string
+  name?: string
+  owner: string
+  repo: string
   token?: string
-  websiteUrlToStoreLocation: WebsiteUrlToStoreLocation
+  urlToLocation: WebsiteUrlToStoreLocation
 }
 
 const defaults: Partial<Options> = {
-  base_url: BASE_URL,
-  branch: REF,
-  token: GITHUB_TOKEN
+  base_url: DEFAULT.base_url,
+  branch: DEFAULT.branch,
+  name: DEFAULT.name,
+  token: DEFAULT.token
 }
+
+const REQUIRED = [
+  'committer',
+  'log',
+  'name',
+  'owner',
+  'repo',
+  'token',
+  'urlToLocation'
+] as const
 
 export const defHardDelete = (options?: Options) => {
   const config = Object.assign({}, defaults, options) as Required<Options>
@@ -37,15 +45,23 @@ export const defHardDelete = (options?: Options) => {
     branch,
     committer,
     log,
+    name,
     owner,
     repo,
     token,
-    websiteUrlToStoreLocation
+    urlToLocation
   } = config
+
+  REQUIRED.forEach((k) => {
+    if (!config[k]) {
+      throw new Error(`parameter '${k}' for '${name}' hard-delete is not set`)
+    }
+  })
 
   const retrieveContent = defRetrieveContent({
     base_url,
     log,
+    name,
     owner,
     ref: branch,
     repo,
@@ -53,26 +69,16 @@ export const defHardDelete = (options?: Options) => {
   })
 
   const hardDeleteContent: DeletePost = async (url) => {
-    const loc = websiteUrlToStoreLocation(url)
+    const loc = urlToLocation(url)
 
-    let sha: string | undefined
-    try {
-      const value = await retrieveContent(loc) // as GetResponseBody
-      sha = value.sha
-    } catch (ex: any) {
-      // In this case the original error message from the GitHub Contents API is
-      // not that useful.
-      // const { error_description: original } = result_get.error
-      const tip = `Please make sure the post exists in the repository.`
-      const error_description = `Cannot delete post published at ${loc.website} because it could not be retrieved from location ${loc.store} in repository ${owner}/${repo} (branch ${branch}). ${tip}`
-      throw new Error(error_description)
-    }
-
-    if (!sha) {
+    const value = await retrieveContent(loc)
+    if (!value.metadata || !value.metadata.sha) {
       throw new Error(
-        `Content retrieved from ${loc.store} in repository ${owner}/${repo} (branch ${branch}) does not have a sha.`
+        `Content retrieved from file ${loc.store} in repository ${owner}/${repo} (branch ${branch}) does not have a sha.`
       )
     }
+
+    const sha = value.metadata.sha
 
     const result = await hardDelete({
       base_url,
@@ -93,10 +99,11 @@ export const defHardDelete = (options?: Options) => {
       log.error(`${summary}. ${suggestions.join(' ')}`)
       throw new Error(`${summary}. ${suggestions.join(' ')}`)
     } else {
+      const summary = `Deleted ${loc.website} (hard-delete).`
       const details = [
         `The post was stored in repository ${owner}/${repo} (branch ${branch}) at ${loc.store}.`
       ]
-      return { summary: `Deleted ${loc.website} (hard-delete).`, details }
+      return { summary, details }
     }
   }
 

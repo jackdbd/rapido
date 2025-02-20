@@ -1,7 +1,8 @@
-import type { RetrievePost } from '@jackdbd/micropub/schemas/user-provided-functions'
-import { get, BASE_URL, GITHUB_TOKEN, REF } from '@jackdbd/github-contents-api'
+import type { RetrievePost } from '@jackdbd/micropub/schemas/index'
+import { get } from '@jackdbd/github-contents-api'
+import { DEFAULT } from './defaults.js'
 import { base64ToUtf8 } from './encoding.js'
-import { defaultLog, type Log } from './log.js'
+import type { Log } from './log.js'
 import { markdownToJf2 } from './markdown-to-jf2.js'
 
 export interface Options {
@@ -15,33 +16,27 @@ export interface Options {
 }
 
 const defaults: Partial<Options> = {
-  base_url: BASE_URL,
-  log: defaultLog,
-  name: 'GitHub repository',
-  ref: REF,
-  token: GITHUB_TOKEN
+  base_url: DEFAULT.base_url,
+  log: DEFAULT.log,
+  name: DEFAULT.name,
+  ref: DEFAULT.ref,
+  token: DEFAULT.token
 }
 
-const REQUIRED = ['log', 'owner', 'repo', 'token'] as const
+const REQUIRED = ['log', 'name', 'owner', 'repo', 'token'] as const
 
 export const defRetrieveContent = (options?: Options) => {
   const config = Object.assign({}, defaults, options) as Required<Options>
 
-  REQUIRED.forEach((k) => {
-    if (!config[k]) {
-      throw new Error(`parameter '${k}' is required`)
-    }
-  })
-
   const { base_url, log, name, owner, ref, repo, token } = config
 
-  if (!log) {
-    throw new Error(`parameter 'log' for store '${name}' not set`)
-  }
-
-  if (!token) {
-    throw new Error(`parameter 'token' for store '${name}' not set`)
-  }
+  REQUIRED.forEach((k) => {
+    if (!config[k]) {
+      throw new Error(
+        `parameter '${k}' for '${name}' retrieve-content is not set`
+      )
+    }
+  })
 
   const retrieveContent: RetrievePost = async (loc) => {
     const result = await get({
@@ -54,7 +49,7 @@ export const defRetrieveContent = (options?: Options) => {
     })
 
     if (result.error) {
-      const summary = `Cannot retrieve ${loc.store} from repository ${owner}/${repo}.`
+      const summary = `Cannot retrieve file ${loc.store} from repository ${owner}/${repo}.`
       const suggestions = [
         `Make sure there is a file at that path.`,
         `Make sure you are using a GitHub token that allows you to retrieve content from repository ${owner}/${repo}.`
@@ -62,10 +57,11 @@ export const defRetrieveContent = (options?: Options) => {
       log.error(`${summary} ${suggestions.join(' ')}`)
       throw new Error(`${summary} ${suggestions.join(' ')}`)
     } else {
+      const summary = `Retrieved file ${loc.store} from repository ${owner}/${repo}.`
       const { content: base64, sha } = result.value.body
-      // This could become a parameter: contentToJf2
+      // The next function could become a parameter: contentToJf2
       const jf2 = markdownToJf2(base64ToUtf8(base64))
-      return { jf2, sha }
+      return { jf2, summary, metadata: { sha } }
     }
   }
 

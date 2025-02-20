@@ -1,9 +1,6 @@
 export { defGitHub, type Config as GitHubStoreConfig } from './client.js'
 
-export {
-  defCreatePost,
-  type Options as CreateOptions
-} from './create-content.js'
+export { defCreate, type Options as CreateOptions } from './create.js'
 
 export { base64ToUtf8, utf8ToBase64 } from './encoding.js'
 
@@ -36,4 +33,4 @@ export { defUndelete, type Options as UndeleteOptions } from './undelete.js'
 
 export { defUpdate, type Options as UpdateOptions } from './update.js'
 
-export { defWebsiteUrlToStoreLocation } from './website-url-to-store-location.js'
+export { defUrlToLocation } from './url-to-location.js'

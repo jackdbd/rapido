@@ -1,6 +1,12 @@
-import { jf2ToSlug } from '@jackdbd/micropub'
-import type { Jf2ToLocation, Location, Publication } from '@jackdbd/micropub'
-import { defaultLog, type Log } from './log.js'
+import { jf2ToSlug, isMpUrlencodedRequestBody } from '@jackdbd/micropub'
+import type {
+  JF2ToLocation,
+  Location,
+  MP_Post_Type,
+  Publication
+} from '@jackdbd/micropub'
+import { DEFAULT } from './defaults.js'
+import type { Log } from './log.js'
 
 interface Options {
   log?: Log
@@ -9,17 +15,24 @@ interface Options {
 }
 
 const defaults: Partial<Options> = {
-  log: defaultLog,
-  name: 'GitHub repository'
+  log: DEFAULT.log,
+  name: DEFAULT.name
 }
+
+const REQUIRED = ['log', 'name', 'publication'] as const
 
 export const defJf2ToLocation = (options?: Options) => {
   const config = Object.assign({}, defaults, options) as Required<Options>
+
   const { log, name, publication } = config
 
-  if (!publication) {
-    throw new Error(`cannot create store '${name}': publication is required`)
-  }
+  REQUIRED.forEach((k) => {
+    if (!config[k]) {
+      throw new Error(
+        `parameter '${k}' for '${name}' jf2-to-location is not set`
+      )
+    }
+  })
 
   const mp_posts = Object.keys(publication.items)
   if (mp_posts.length > 0) {
@@ -32,7 +45,16 @@ export const defJf2ToLocation = (options?: Options) => {
     )
   }
 
-  const jf2ToLocation: Jf2ToLocation = (jf2) => {
+  const jf2ToLocation: JF2ToLocation = (input) => {
+    let post_type: MP_Post_Type
+    if (isMpUrlencodedRequestBody(input)) {
+      post_type = input.h || 'entry'
+    } else {
+      post_type = input.type || 'entry'
+    }
+
+    const jf2 = { ...input, type: post_type }
+
     const slug = jf2ToSlug(jf2)
     // log.debug(`store '${name}' generated this slug: ${slug}`)
     const filename = `${slug}.md`

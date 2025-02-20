@@ -1,18 +1,13 @@
-import {
-  createOrUpdate,
-  BASE_URL,
-  GITHUB_TOKEN,
-  REF
-} from '@jackdbd/github-contents-api'
+import { createOrUpdate } from '@jackdbd/github-contents-api'
 import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
-// import type { JF2 } from '@jackdbd/micropub'
 import type {
   UpdatePost,
   WebsiteUrlToStoreLocation
-} from '@jackdbd/micropub/schemas/user-provided-functions'
+} from '@jackdbd/micropub/schemas/index'
 import { rfc3339 } from './date.js'
+import { DEFAULT } from './defaults.js'
 import { jf2ToContent } from './jf2-to-content.js'
-import { defaultLog, type Log } from './log.js'
+import type { Log } from './log.js'
 import { defRetrieveContent } from './retrieve-content.js'
 
 export interface Options {
@@ -25,34 +20,29 @@ export interface Options {
   owner: string
   repo: string
   token?: string
-  websiteUrlToStoreLocation: WebsiteUrlToStoreLocation
+  urlToLocation: WebsiteUrlToStoreLocation
 }
 
 const defaults: Partial<Options> = {
-  base_url: BASE_URL,
-  branch: REF,
-  log: defaultLog,
-  name: 'GitHub repository',
-  token: GITHUB_TOKEN
+  base_url: DEFAULT.base_url,
+  branch: DEFAULT.branch,
+  log: DEFAULT.log,
+  name: DEFAULT.name,
+  token: DEFAULT.token
 }
 
 const REQUIRED = [
   'committer',
   'log',
+  'name',
   'owner',
   'repo',
   'token',
-  'websiteUrlToStoreLocation'
+  'urlToLocation'
 ] as const
 
 export const defUpdate = (options?: Options) => {
   const config = Object.assign({}, defaults, options) as Required<Options>
-
-  REQUIRED.forEach((k) => {
-    if (!config[k]) {
-      throw new Error(`parameter '${k}' is required`)
-    }
-  })
 
   const {
     author,
@@ -64,20 +54,19 @@ export const defUpdate = (options?: Options) => {
     owner,
     repo,
     token,
-    websiteUrlToStoreLocation
+    urlToLocation
   } = config
 
-  if (!log) {
-    throw new Error(`parameter 'log' for store '${name}' not set`)
-  }
-
-  if (!token) {
-    throw new Error(`parameter 'token' for store '${name}' not set`)
-  }
+  REQUIRED.forEach((k) => {
+    if (!config[k]) {
+      throw new Error(`parameter '${k}' for '${name}' update is not set`)
+    }
+  })
 
   const retrieveContent = defRetrieveContent({
     base_url,
     log,
+    name,
     owner,
     ref: branch,
     repo,
@@ -85,23 +74,24 @@ export const defUpdate = (options?: Options) => {
   })
 
   const update: UpdatePost = async (url, patch) => {
-    const loc = websiteUrlToStoreLocation(url)
+    const loc = urlToLocation(url)
 
     // should we support updating a deleted post (loc.store_deleted)? Probably not.
 
     const value = await retrieveContent(loc)
-    if (!value.sha) {
+    if (!value.metadata || !value.metadata.sha) {
       throw new Error(
-        `Content retrieved from ${loc.store} in repository ${owner}/${repo} (branch ${branch}) does not have a sha.`
+        `Content retrieved from file ${loc.store} in repository ${owner}/${repo} (branch ${branch}) does not have a sha.`
       )
     }
+
     let jf2 = value.jf2
-    const sha = value.sha
+    const sha = value.metadata.sha
 
     const messages: string[] = []
 
     if (patch.delete) {
-      const { [patch.delete]: _, ...keep } = jf2 as any
+      const { [patch.delete]: _, ...keep } = jf2 as Record<string, unknown>
       messages.push(`deleted property ${patch.delete}`)
       jf2 = keep
     }
@@ -120,14 +110,12 @@ export const defUpdate = (options?: Options) => {
       jf2 = { ...jf2, updated: rfc3339() }
     }
 
-    const content = jf2ToContent(jf2)
-
     const result = await createOrUpdate({
       author,
       base_url,
       branch,
       committer,
-      content,
+      content: jf2ToContent(jf2),
       owner,
       path: loc.store,
       repo,
@@ -140,21 +128,27 @@ export const defUpdate = (options?: Options) => {
     // https://micropub.spec.indieweb.org/#response-0-p-1
 
     if (result.error) {
-      const summary = `Cannot update ${loc.store} in repository ${owner}/${repo} (branch ${branch}).`
+      const summary = `Cannot update file ${loc.store} in repository ${owner}/${repo} (branch ${branch}).`
       const suggestions = [
         `Make sure the file exists.`,
         `Make sure you are using a GitHub token that allows you to write content in repository ${owner}/${repo}.`
       ]
       log.error(`${summary} ${suggestions.join(' ')}`)
       throw new Error(`${summary} ${suggestions.join(' ')}`)
+    } else {
+      const contents_api_summary = result.value.summary
+      const contents_api_response_body = result.value.body
+      const summary = `Updated file ${loc.store} in repository ${owner}/${repo} (branch ${branch}).`
+      return {
+        summary,
+        details: messages,
+        other_details: {
+          contents_api_response_body,
+          contents_api_summary,
+          patch
+        }
+      }
     }
-    // TODO: return at least a summary, maybe also the updated jf2
-    // else {
-    //   const { status_code, status_text } = result.value
-    //   const summary = `Updated ${loc.store} in repository ${owner}/${repo} (branch ${branch}). That post is published at ${loc.website}.`
-    //   const payload = { messages, patch }
-    //   return { status_code, status_text, summary, payload }
-    // }
   }
 
   return update

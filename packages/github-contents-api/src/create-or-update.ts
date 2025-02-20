@@ -1,8 +1,8 @@
 import type { AuthorOrCommitter, SharedConfig } from './config.js'
-import { BASE_URL, REF } from './defaults.js'
+import { DEFAULT } from './defaults.js'
 import { internalServerError } from './errors.js'
 import { defHeaders } from './headers.js'
-import { defaultLog, type Log } from './log.js'
+import type { Log } from './log.js'
 
 export interface CreateOrUpdateOptions extends SharedConfig {
   author?: AuthorOrCommitter
@@ -15,10 +15,10 @@ export interface CreateOrUpdateOptions extends SharedConfig {
 }
 
 const defaults: Partial<CreateOrUpdateOptions> = {
-  base_url: BASE_URL,
-  branch: REF,
-  log: defaultLog,
-  path: ''
+  base_url: DEFAULT.base_url,
+  branch: DEFAULT.branch,
+  log: DEFAULT.log,
+  path: DEFAULT.path
 }
 
 /**

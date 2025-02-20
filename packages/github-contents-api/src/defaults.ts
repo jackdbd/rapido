@@ -1,9 +1,18 @@
-export const ACCEPT = 'application/vnd.github+json'
+import type { Log } from './log.js'
 
-export const BASE_URL = 'https://api.github.com'
+const log: Log = {
+  debug: () => {},
+  error: () => {}
+}
 
-export const GITHUB_API_VERSION = '2022-11-28'
-
-export const GITHUB_TOKEN = process.env.GITHUB_TOKEN
-
-export const REF = 'main'
+export const DEFAULT = {
+  accept: 'application/vnd.github+json',
+  // https://docs.github.com/en/rest/repos/contents?apiVersion=2022-11-28
+  api_version: '2022-11-28',
+  base_url: 'https://api.github.com',
+  branch: 'main',
+  log,
+  path: '',
+  ref: 'main',
+  token: process.env.GITHUB_TOKEN
+}

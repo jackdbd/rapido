@@ -1,37 +1,39 @@
-import {
-  createOrUpdate,
-  BASE_URL,
-  GITHUB_TOKEN,
-  REF
-} from '@jackdbd/github-contents-api'
+import { createOrUpdate } from '@jackdbd/github-contents-api'
 import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
+import { isMpUrlencodedRequestBody } from '@jackdbd/micropub'
 import type {
   CreatePost,
-  Jf2ToLocation
-} from '@jackdbd/micropub/schemas/user-provided-functions'
+  JF2ToLocation,
+  MP_Post_Type
+} from '@jackdbd/micropub/schemas/index'
+import { DEFAULT } from './defaults.js'
 import { jf2ToContent } from './jf2-to-content.js'
-import { defaultLog, type Log } from './log.js'
+import type { Log } from './log.js'
 
 export interface Options {
   author?: AuthorOrCommitter
   base_url?: string
   branch?: string
   committer: AuthorOrCommitter
-  jf2ToLocation: Jf2ToLocation
+  jf2ToLocation: JF2ToLocation
   log?: Log
-  owner?: string
-  repo?: string
+  name?: string
+  owner: string
+  repo: string
   token?: string
 }
 
 const defaults: Partial<Options> = {
-  base_url: BASE_URL,
-  branch: REF,
-  log: defaultLog,
-  token: GITHUB_TOKEN
+  base_url: DEFAULT.base_url,
+  branch: DEFAULT.branch,
+  log: DEFAULT.log,
+  name: DEFAULT.name,
+  token: DEFAULT.token
 }
 
-export const defCreatePost = (options?: Options) => {
+const REQUIRED = ['committer', 'log', 'name', 'owner', 'repo', 'token'] as const
+
+export const defCreate = (options?: Options) => {
   const config = Object.assign({}, defaults, options) as Required<Options>
 
   const {
@@ -41,12 +43,29 @@ export const defCreatePost = (options?: Options) => {
     committer,
     jf2ToLocation,
     log,
+    name,
     owner,
     repo,
     token
   } = config
 
-  const createPost: CreatePost = async (jf2) => {
+  REQUIRED.forEach((k) => {
+    if (!config[k]) {
+      throw new Error(
+        `parameter '${k}' for '${name}' create-content is not set`
+      )
+    }
+  })
+
+  const create: CreatePost = async (input) => {
+    let post_type: MP_Post_Type
+    if (isMpUrlencodedRequestBody(input)) {
+      post_type = input.h || 'entry'
+    } else {
+      post_type = input.type || 'entry'
+    }
+
+    const jf2 = { ...input, type: post_type }
     const loc = jf2ToLocation(jf2)
     const content = jf2ToContent(jf2)
 
@@ -94,5 +113,5 @@ export const defCreatePost = (options?: Options) => {
     }
   }
 
-  return createPost
+  return create
 }

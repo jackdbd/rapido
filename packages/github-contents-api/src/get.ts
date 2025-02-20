@@ -1,8 +1,8 @@
 import type { SharedConfig } from './config.js'
-import { BASE_URL, REF } from './defaults.js'
+import { DEFAULT } from './defaults.js'
 import { internalServerError } from './errors.js'
 import { defHeaders } from './headers.js'
-import { defaultLog, type Log } from './log.js'
+import type { Log } from './log.js'
 
 export interface GetResponseBody {
   name: string
@@ -38,10 +38,10 @@ export interface GetOptions extends SharedConfig {
 }
 
 const defaults: Partial<GetOptions> = {
-  base_url: BASE_URL,
-  log: defaultLog,
-  path: '',
-  ref: REF
+  base_url: DEFAULT.base_url,
+  log: DEFAULT.log,
+  path: DEFAULT.path,
+  ref: DEFAULT.ref
 }
 
 /**

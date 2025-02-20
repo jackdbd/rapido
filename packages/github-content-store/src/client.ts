@@ -1,19 +1,16 @@
-import {
-  BASE_URL as GITHUB_API_BASE_URL,
-  REF
-} from '@jackdbd/github-contents-api'
 import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
 import type { Publication } from '@jackdbd/micropub'
-import { defCreatePost } from './create-content.js'
+import { defCreate } from './create.js'
+import { DEFAULT } from './defaults.js'
 import { defHardDelete } from './hard-delete.js'
 import { defJf2ToLocation } from './jf2-to-location.js'
 import { jf2ToContent } from './jf2-to-content.js'
-import { defaultLog, type Log } from './log.js'
+import type { Log } from './log.js'
 import { defRetrieveContent } from './retrieve-content.js'
 import { defSoftDelete } from './soft-delete.js'
 import { defUndelete } from './undelete.js'
 import { defUpdate } from './update.js'
-import { defWebsiteUrlToStoreLocation } from './website-url-to-store-location.js'
+import { defUrlToLocation } from './url-to-location.js'
 
 /**
  * Configuration options for the GitHub store.
@@ -28,19 +25,30 @@ export interface Config {
   committer: AuthorOrCommitter
   github_api_base_url?: string
   log?: Log
+  name?: string
   owner: string
   publication: Publication
   repo: string
-  soft_delete: boolean
+  soft_delete?: boolean
   token?: string
 }
 
 const defaults: Partial<Config> = {
-  branch: REF,
-  github_api_base_url: GITHUB_API_BASE_URL,
-  log: defaultLog,
-  token: process.env.GITHUB_TOKEN
+  branch: DEFAULT.branch,
+  github_api_base_url: DEFAULT.base_url,
+  log: DEFAULT.log,
+  soft_delete: DEFAULT.soft_delete,
+  token: DEFAULT.token
 }
+
+const REQUIRED = [
+  'committer',
+  'log',
+  'owner',
+  'publication',
+  'repo',
+  'token'
+] as const
 
 export const defGitHub = (config: Config) => {
   const store_cfg = Object.assign({}, defaults, config) as Required<Config>
@@ -56,31 +64,37 @@ export const defGitHub = (config: Config) => {
     token
   } = store_cfg
 
+  REQUIRED.forEach((k) => {
+    if (!store_cfg[k]) {
+      throw new Error(`parameter '${k}' for GitHub client is not set`)
+    }
+  })
+
   const author = config.author || committer
 
-  const store_name = `GitHub repository ${owner}/${repo}`
+  const name = store_cfg.name || `GitHub repository ${owner}/${repo}`
 
   const info = {
     author,
     branch,
     committer,
-    name: store_name,
+    name,
     publication
   }
 
   const jf2ToLocation = defJf2ToLocation({
     log,
-    name: store_name,
+    name,
     publication
   })
 
-  const websiteUrlToStoreLocation = defWebsiteUrlToStoreLocation({
+  const urlToLocation = defUrlToLocation({
     log,
-    name: store_name,
+    name,
     publication
   })
 
-  const create = defCreatePost({
+  const create = defCreate({
     author,
     base_url,
     branch,
@@ -98,17 +112,17 @@ export const defGitHub = (config: Config) => {
     branch,
     committer,
     log,
-    name: store_name,
+    name,
     owner,
     repo,
     token,
-    websiteUrlToStoreLocation
+    urlToLocation
   })
 
   const retrieveContent = defRetrieveContent({
     base_url,
     log,
-    name: store_name,
+    name,
     owner,
     ref: branch,
     repo,
@@ -123,7 +137,7 @@ export const defGitHub = (config: Config) => {
     owner,
     repo,
     token,
-    websiteUrlToStoreLocation
+    urlToLocation
   })
 
   const softDelete = defSoftDelete({
@@ -133,7 +147,7 @@ export const defGitHub = (config: Config) => {
     owner,
     repo,
     token,
-    websiteUrlToStoreLocation
+    urlToLocation
   })
 
   const undelete = defUndelete({
@@ -143,7 +157,7 @@ export const defGitHub = (config: Config) => {
     owner,
     repo,
     token,
-    websiteUrlToStoreLocation
+    urlToLocation
   })
 
   return {
@@ -155,6 +169,6 @@ export const defGitHub = (config: Config) => {
     retrieveContent,
     undelete: store_cfg.soft_delete ? undelete : undefined,
     update,
-    websiteUrlToStoreLocation
+    urlToLocation
   }
 }

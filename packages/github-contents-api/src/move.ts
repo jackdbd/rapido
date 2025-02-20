@@ -1,6 +1,6 @@
 import type { AuthorOrCommitter, SharedConfig } from './config.js'
 import { createOrUpdate } from './create-or-update.js'
-import { BASE_URL, REF } from './defaults.js'
+import { DEFAULT } from './defaults.js'
 import { hardDelete } from './delete.js'
 import { get } from './get.js'
 
@@ -13,8 +13,8 @@ export interface MoveOptions extends SharedConfig {
 }
 
 const defaults: Partial<MoveOptions> = {
-  base_url: BASE_URL,
-  ref: REF
+  base_url: DEFAULT.base_url,
+  ref: DEFAULT.ref
 }
 
 export const move = async (options: MoveOptions) => {
@@ -30,6 +30,7 @@ export const move = async (options: MoveOptions) => {
     repo,
     token
   } = config
+
   const author = config.author || committer
 
   const result_get = await get({
