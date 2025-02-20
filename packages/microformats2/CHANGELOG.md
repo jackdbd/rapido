@@ -1,5 +1,11 @@
 # @jackdbd/microformats2
 
+## 0.2.0-canary.9
+
+### Minor Changes
+
+- 247ac46: Add microformats2 as both JF2 and MF2.
+
 ## 0.2.0-canary.8
 
 ### Minor Changes

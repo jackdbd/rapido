@@ -1,6 +1,6 @@
 {
   "name": "@jackdbd/microformats2",
-  "version": "0.2.0-canary.8",
+  "version": "0.2.0-canary.9",
   "description": "Schemas for [microformats2](https://microformats.org/wiki/microformats2) and [jf2](https://microformats.org/wiki/jf2).",
   "author": {
     "name": "Giacomo Debidda",

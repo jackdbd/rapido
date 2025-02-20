@@ -1,5 +1,19 @@
 # @jackdbd/fastify-syndicate-endpoint
 
+## 0.2.0-canary.19
+
+### Minor Changes
+
+- baf4d5b: Add `processFeedEntry` and update to newest micropub package.
+
+### Patch Changes
+
+- Updated dependencies [dda3be7]
+- Updated dependencies [36f0a2e]
+  - @jackdbd/micropub@0.2.0-canary.13
+  - @jackdbd/indieauth@0.2.0-canary.14
+  - @jackdbd/fastify-hooks@0.2.0-canary.16
+
 ## 0.2.0-canary.18
 
 ### Patch Changes

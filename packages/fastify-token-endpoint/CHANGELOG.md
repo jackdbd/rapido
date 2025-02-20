@@ -1,5 +1,13 @@
 # @jackdbd/fastify-token-endpoint
 
+## 1.3.0-canary.21
+
+### Patch Changes
+
+- Updated dependencies [8ec47a3]
+  - @jackdbd/schema-validators@0.2.0-canary.12
+  - @jackdbd/indieauth@0.2.0-canary.14
+
 ## 1.3.0-canary.20
 
 ### Patch Changes

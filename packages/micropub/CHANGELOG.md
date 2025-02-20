@@ -1,5 +1,17 @@
 # @jackdbd/micropub
 
+## 0.2.0-canary.13
+
+### Minor Changes
+
+- dda3be7: Add `syndicate` schema and cleanup.
+- 36f0a2e: Pin dependencies in micropub package.
+
+### Patch Changes
+
+- Updated dependencies [247ac46]
+  - @jackdbd/microformats2@0.2.0-canary.9
+
 ## 0.2.0-canary.12
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @jackdbd/schema-validators
 
+## 0.2.0-canary.12
+
+### Minor Changes
+
+- 8ec47a3: `conformResult` can now handle schemas that have functions inside array or objects (only one level nested).
+
 ## 0.2.0-canary.11
 
 ### Minor Changes

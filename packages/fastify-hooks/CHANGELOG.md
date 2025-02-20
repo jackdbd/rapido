@@ -1,5 +1,11 @@
 # @jackdbd/fastify-hooks
 
+## 0.2.0-canary.16
+
+### Patch Changes
+
+- @jackdbd/indieauth@0.2.0-canary.14
+
 ## 0.2.0-canary.15
 
 ### Patch Changes

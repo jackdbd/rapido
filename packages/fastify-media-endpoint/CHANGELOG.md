@@ -1,5 +1,17 @@
 # @jackdbd/fastify-media-endpoint
 
+## 0.2.0-canary.21
+
+### Patch Changes
+
+- Updated dependencies [8ec47a3]
+- Updated dependencies [dda3be7]
+- Updated dependencies [36f0a2e]
+  - @jackdbd/schema-validators@0.2.0-canary.12
+  - @jackdbd/micropub@0.2.0-canary.13
+  - @jackdbd/indieauth@0.2.0-canary.14
+  - @jackdbd/fastify-hooks@0.2.0-canary.16
+
 ## 0.2.0-canary.20
 
 ### Patch Changes
