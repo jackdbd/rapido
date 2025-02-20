@@ -2,8 +2,8 @@ import { Static, Type } from '@sinclair/typebox'
 
 export const p_publication = Type.String({
   $id: 'p-publication',
-  description: 'For citing articles, books, etc (used in h-cite)',
-  title: 'publication',
+  title: 'Publication',
+  description: 'Used for citing articles, books, etc (used in h-cite).',
   minLength: 1
 })
 

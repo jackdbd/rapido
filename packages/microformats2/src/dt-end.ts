@@ -1,10 +1,10 @@
 import { Static, Type } from '@sinclair/typebox'
-import { date, date_time } from './date.js'
+import { date } from './date.js'
 
-export const dt_end = Type.Union([date, date_time], {
+export const dt_end = Type.Union([date], {
   $id: 'dt-end',
   title: 'End at',
-  description: 'Date or date-time when something ends (e.g. an h-event)'
+  description: 'Date or date-time when something ends (e.g. an h-event).'
 })
 
 export type DT_End = Static<typeof dt_end>

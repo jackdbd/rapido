@@ -8,8 +8,8 @@ import { p_longitude } from './p-longitude.js'
  *
  * All properties are optional.
  *
- * @see https://microformats.org/wiki/h-geo
- * @see https://indieweb.org/h-geo
+ * @see [h-geo - microformats.org](https://microformats.org/wiki/h-geo)
+ * @see [h-geo - indieweb.org](https://indieweb.org/h-geo)
  */
 export const h_geo = Type.Object(
   {
@@ -31,4 +31,12 @@ export const h_geo = Type.Object(
   }
 )
 
+/**
+ * microformats2 h-geo.
+ *
+ * All properties are optional.
+ *
+ * @see [h-geo - microformats.org](https://microformats.org/wiki/h-geo)
+ * @see [h-geo - indieweb.org](https://indieweb.org/h-geo)
+ */
 export type H_Geo = Static<typeof h_geo>

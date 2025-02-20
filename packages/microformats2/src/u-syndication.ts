@@ -1,7 +1,8 @@
 import { type Static, Type } from '@sinclair/typebox'
 
 const u_syndication_item = Type.String({
-  description: 'syndication target',
+  title: 'Syndication target',
+  description: 'URL where the content was syndicated to.',
   format: 'uri'
 })
 

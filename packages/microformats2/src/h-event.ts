@@ -18,8 +18,8 @@ import { h_adr } from './h-adr.js'
  *
  * All properties are optional.
  *
- * @see https://microformats.org/wiki/h-event
- * @see https://developer.mozilla.org/en-US/docs/Web/HTML/microformats#h-event
+ * @see [h-event - microformats.org](https://microformats.org/wiki/h-event)
+ * @see [h-event - mozilla.org](https://developer.mozilla.org/en-US/docs/Web/HTML/microformats#h-event)
  */
 export const h_event = Type.Object(
   {
@@ -100,4 +100,12 @@ export const h_event = Type.Object(
   }
 )
 
+/**
+ * microformats2 h-event.
+ *
+ * All properties are optional.
+ *
+ * @see [h-event - microformats.org](https://microformats.org/wiki/h-event)
+ * @see [h-event - mozilla.org](https://developer.mozilla.org/en-US/docs/Web/HTML/microformats#h-event)
+ */
 export type H_Event = Static<typeof h_event>

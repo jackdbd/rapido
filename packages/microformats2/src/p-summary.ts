@@ -3,7 +3,7 @@ import { Static, Type } from '@sinclair/typebox'
 export const p_summary = Type.String({
   $id: 'p-summary',
   title: 'Summary',
-  description: 'Summary to use in h-entry, h-recipe, h-resume.',
+  description: 'Summary of an entry (to use in h-entry, h-recipe, h-resume).',
   minLength: 1
 })
 

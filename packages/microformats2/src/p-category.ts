@@ -6,8 +6,8 @@ export const p_category = Type.Union(
   [p_category_item, Type.Array(p_category_item)],
   {
     $id: 'p-category',
-    description: 'category/categories',
-    title: 'category'
+    title: 'Category',
+    description: 'Category or categories.'
   }
 )
 

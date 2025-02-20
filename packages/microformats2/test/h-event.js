@@ -23,6 +23,7 @@ import {
 } from '../lib/index.js'
 
 const ajv = defAjv({
+  allErrors: true,
   schemas: [
     dt_duration,
     dt_end,
@@ -62,14 +63,14 @@ describe('h_event', () => {
   })
 
   it('can have dates in the YYYY-MM-DD format', () => {
-    const x = {
+    const jf2 = {
       type: 'event',
       name: 'Microformats Meetup',
       start: '2013-06-30',
       location: 'Some bar in SF'
     }
 
-    const valid = validate(x)
+    const valid = validate(jf2)
 
     assert(valid)
     assert(validate.errors === null)

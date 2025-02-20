@@ -11,6 +11,7 @@ import {
 } from '../lib/index.js'
 
 const ajv = defAjv({
+  allErrors: true,
   schemas: [p_altitude, p_geo, h_geo, p_latitude, p_longitude, h_adr]
 })
 
@@ -27,7 +28,7 @@ describe('h_adr', () => {
   it('can have altitude, latitude, longitude', () => {
     const valid = validate({
       altitude: 100,
-      longitude: -43,
+      latitude: -43,
       longitude: 55
     })
     assert(valid)

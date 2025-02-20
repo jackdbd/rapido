@@ -2,7 +2,8 @@ import { type Static, Type } from '@sinclair/typebox'
 
 export const u_photo = Type.String({
   $id: 'u-photo',
-  description: 'URL of a photo',
+  title: 'Photo',
+  description: 'URL of a photo file.',
   format: 'uri'
 })
 

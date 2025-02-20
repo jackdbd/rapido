@@ -2,8 +2,8 @@ import { Static, Type } from '@sinclair/typebox'
 
 export const p_content = Type.String({
   $id: 'p-content',
-  description: 'Some plain text content',
-  title: 'content',
+  title: 'Content',
+  description: 'Some plain text content.',
   // p-content can be an empty string (e.g. in bookmarks, likes, reposts)
   minLength: 0
 })

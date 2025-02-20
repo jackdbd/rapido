@@ -89,23 +89,23 @@ h-entry is the microformats2 vocabulary for marking up blog posts on web sites. 
 |Name|Type|Description|Required|
 |----|----|-----------|--------|
 |**author**||||
-|**bookmark\-of**<br/>(URL of the card, entry, event, etc\.)|`string`|URL to use in h-card, h-entry, h-event, etc.<br/>Format: `"uri"`<br/>||
-|**category**||category/categories<br/>||
+|**bookmark\-of**<br/>(URL)|`string`|URL of the card, entry, event, etc.<br/>Format: `"uri"`<br/>||
+|**category**||Category or categories.<br/>||
 |**content**||||
-|**in\-reply\-to**<br/>(URL of the card, entry, event, etc\.)|`string`|URL to use in h-card, h-entry, h-event, etc.<br/>Format: `"uri"`<br/>||
-|**like\-of**<br/>(URL of the card, entry, event, etc\.)|`string`|URL to use in h-card, h-entry, h-event, etc.<br/>Format: `"uri"`<br/>||
+|**in\-reply\-to**<br/>(URL)|`string`|URL of the card, entry, event, etc.<br/>Format: `"uri"`<br/>||
+|**like\-of**<br/>(URL)|`string`|URL of the card, entry, event, etc.<br/>Format: `"uri"`<br/>||
 |**location**||Location of the entry.<br/>||
-|**name**<br/>(Name of the entry, event, item, product, etc\.)|`string`|Name to use in h-entry, h-event, h-item, h-product, h-recipe, h-review, h-review-aggregate.<br/>Minimal Length: `1`<br/>||
-|**published**<br/>(Published at)||Date or date-time of when something was published or will be published (e.g. h-entry, h-recipe)<br/>||
+|**name**|`string`|Name of the entry, event, item, product, etc (to use in h-entry, h-event, h-item, h-product, h-recipe, h-review, h-review-aggregate).<br/>Minimal Length: `1`<br/>||
+|**published**<br/>(Date)||Date formatted according to ISO 8601 or RFC 3339.<br/>||
 |**read\-of**||||
-|**repost\-of**<br/>(URL of the card, entry, event, etc\.)|`string`|URL to use in h-card, h-entry, h-event, etc.<br/>Format: `"uri"`<br/>||
+|**repost\-of**<br/>(URL)|`string`|URL of the card, entry, event, etc.<br/>Format: `"uri"`<br/>||
 |**rsvp**||An RSVP is a reply to an event that says whether the sender is attending, is not attending, might attend, or is merely interested.<br/>||
-|**summary**|`string`|Summary to use in h-entry, h-recipe, h-resume.<br/>Minimal Length: `1`<br/>||
+|**summary**|`string`|Summary of an entry (to use in h-entry, h-recipe, h-resume).<br/>Minimal Length: `1`<br/>||
 |**syndication**||URL(s) of syndicated copies of this post. The property equivalent of rel-syndication.<br/>||
 |**type**|`string`|Default: `"entry"`<br/>Constant Value: `"entry"`<br/>||
-|**updated**<br/>(Updated at)||Date or date-time of when something was updated or will be updated (e.g. h-entry)<br/>||
-|**uri**<br/>(UID)|`string`|URL/URI that uniquely/canonically identifies the object)<br/>Format: `"uri"`<br/>||
-|**url**<br/>(URL of the card, entry, event, etc\.)|`string`|URL to use in h-card, h-entry, h-event, etc.<br/>Format: `"uri"`<br/>||
+|**updated**<br/>(Date)||Date formatted according to ISO 8601 or RFC 3339.<br/>||
+|**uri**<br/>(UID)|`string`|URL/URI that uniquely/canonically identifies the object).<br/>Format: `"uri"`<br/>||
+|**url**|`string`|URL of the card, entry, event, etc.<br/>Format: `"uri"`<br/>||
 
 **Example**
 
@@ -173,17 +173,17 @@ h-event is the microformats2 vocabulary for marking up an event post on web site
 
 |Name|Type|Description|Required|
 |----|----|-----------|--------|
-|**category**||category/categories<br/>|no|
+|**category**||Category or categories.<br/>|no|
 |**content**|||no|
-|**description**|`string`|The description (use in h-event, h-product)<br/>Minimal Length: `1`<br/>|no|
-|**duration**|`string`|Duration formatted according to RFC3339<br/>Format: `"duration"`<br/>|no|
-|**end**<br/>(End at)||Date or date-time when something ends (e.g. an h-event)<br/>|no|
+|**description**|`string`|Description (use in h-event, h-product).<br/>Minimal Length: `1`<br/>|no|
+|**duration**|`string`|Duration, formatted according to RFC 3339 (to use in u-audio, u-video).<br/>Format: `"duration"`<br/>|no|
+|**end**<br/>(Date)||Date formatted according to ISO 8601 or RFC 3339.<br/>|no|
 |**location**||Location of the event.<br/>|no|
-|**name**<br/>(Name of the entry, event, item, product, etc\.)|`string`|Name to use in h-entry, h-event, h-item, h-product, h-recipe, h-review, h-review-aggregate.<br/>Minimal Length: `1`<br/>|no|
-|**start**<br/>(Start at)||Date or date-time when something starts (e.g. an h-event)<br/>|no|
-|**summary**|`string`|Summary to use in h-entry, h-recipe, h-resume.<br/>Minimal Length: `1`<br/>|no|
+|**name**|`string`|Name of the entry, event, item, product, etc (to use in h-entry, h-event, h-item, h-product, h-recipe, h-review, h-review-aggregate).<br/>Minimal Length: `1`<br/>|no|
+|**start**<br/>(Date)||Date formatted according to ISO 8601 or RFC 3339.<br/>|no|
+|**summary**|`string`|Summary of an entry (to use in h-entry, h-recipe, h-resume).<br/>Minimal Length: `1`<br/>|no|
 |**type**|`string`|Constant Value: `"event"`<br/>|yes|
-|**url**<br/>(URL of the card, entry, event, etc\.)|`string`|URL to use in h-card, h-entry, h-event, etc.<br/>Format: `"uri"`<br/>|no|
+|**url**|`string`|URL of the card, entry, event, etc.<br/>Format: `"uri"`<br/>|no|
 
 **Example**
 

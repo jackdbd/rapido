@@ -1,12 +1,12 @@
 /**
  * JSON schemas for microformats2 vocabularies.
  *
- * @see https://developer.mozilla.org/en-US/docs/Web/HTML/microformats
- * @see https://microformats.org/wiki/microformats2
- * @see https://indieweb.org/microformats2
+ * @see [microformats2 - mozilla.org](https://developer.mozilla.org/en-US/docs/Web/HTML/microformats)
+ * @see [microformats2 - microformats.org](https://microformats.org/wiki/microformats2)
+ * @see [microformats2 - indieweb.org](https://indieweb.org/microformats2)
  */
-export { date, date_time, date_or_date_time } from './date.js'
-export type { DateOrDateTime, DateTime } from './date.js'
+
+export { date, type Date } from './date.js'
 
 export { dt_accessed, type DT_Accessed } from './dt-accessed.js'
 export { dt_anniversary, type DT_Anniversary } from './dt-anniversary.js'
@@ -29,6 +29,27 @@ export { h_geo, type H_Geo } from './h-geo.js'
 export { h_item, type H_Item } from './h-item.js'
 export { h_resume, type H_Resume } from './h-resume.js'
 
+export { jf2, jf2_without_type, type JF2, type JF2WithoutType } from './jf2.js'
+
+export { jf2_feed, type JF2Feed } from './jf2-feed.js'
+
+export {
+  content_type,
+  html,
+  lang,
+  text,
+  jf2_type,
+  type JF2Type
+} from './jf2-reserved-properties.js'
+
+export {
+  jf2_feed_type,
+  type JF2FeedType
+} from './jf2-feed-reserved-properties.js'
+
+export { mf2, mf2_item_type, parsed_mf2_json } from './mf2.js'
+export type { MF2, MF2ItemType, ParsedMF2 } from './mf2.js'
+
 export { p_altitude, type P_Altitude } from './p-altitude.js'
 export { p_author, type P_Author } from './p-author.js'
 export { p_category, type P_Category } from './p-category.js'
@@ -43,19 +64,15 @@ export { p_publication, type P_Publication } from './p-publication.js'
 export { p_rsvp, type P_RSVP } from './p-rsvp.js'
 export { p_summary, type P_Summary } from './p-summary.js'
 
+export { u_audio, type U_Audio } from './u-audio.js'
+export { u_author, type U_Author } from './u-author.js'
 export { u_photo, type U_Photo } from './u-photo.js'
+export { u_syndication, type U_Syndication } from './u-syndication.js'
 export { u_uid, type U_UID } from './u-uid.js'
 export { u_url, type U_URL } from './u-url.js'
-export { u_syndication, type U_Syndication } from './u-syndication.js'
+export { u_video, type U_Video } from './u-video.js'
 
-export {
-  content_type,
-  html,
-  lang,
-  text,
-  jf2_type
-} from './jf2-reserved-properties.js'
-export { jf2_feed_type } from './jf2-feed-reserved-properties.js'
+export { isMF2, isParsedMF2 } from './type-guards.js'
 
 // https://micropub.spec.indieweb.org/#examples-of-creating-objects
 export type Jf2PostType = 'card' | 'cite' | 'entry' | 'event'

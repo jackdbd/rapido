@@ -3,7 +3,7 @@ import { Static, Type } from '@sinclair/typebox'
 export const u_uid = Type.String({
   $id: 'u-uid',
   title: 'UID',
-  description: 'URL/URI that uniquely/canonically identifies the object)',
+  description: 'URL/URI that uniquely/canonically identifies the object).',
   format: 'uri'
 })
 

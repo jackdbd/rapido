@@ -22,10 +22,10 @@ import { h_cite } from './h-cite.js'
  *
  * All properties are optional and may be plural.
  *
- * @see https://randomgeekery.org/post/2020/04/h-entry-microformat-for-indieweb-posts/
- * @see https://developer.mozilla.org/en-US/docs/Web/HTML/microformats#h-entry
- * @see https://microformats.org/wiki/h-entry
- * @see https://indieweb.org/h-entry
+ * @see [h-entry Microformat for Indieweb Posts - randomgeekery.org](https://randomgeekery.org/post/2020/04/h-entry-microformat-for-indieweb-posts/)
+ * @see [h-entry - mozilla.org](https://developer.mozilla.org/en-US/docs/Web/HTML/microformats#h-entry)
+ * @see [h-entry - microformats.org](https://microformats.org/wiki/h-entry)
+ * @see [h-entry - indieweb.org](https://indieweb.org/h-entry)
  */
 export const h_entry = Type.Object(
   {
@@ -200,4 +200,14 @@ export const h_entry = Type.Object(
   }
 )
 
+/**
+ * microformats2 h-entry.
+ *
+ * All properties are optional and may be plural.
+ *
+ * @see [h-entry Microformat for Indieweb Posts - randomgeekery.org](https://randomgeekery.org/post/2020/04/h-entry-microformat-for-indieweb-posts/)
+ * @see [h-entry - mozilla.org](https://developer.mozilla.org/en-US/docs/Web/HTML/microformats#h-entry)
+ * @see [h-entry - microformats.org](https://microformats.org/wiki/h-entry)
+ * @see [h-entry - indieweb.org](https://indieweb.org/h-entry)
+ */
 export type H_Entry = Static<typeof h_entry>

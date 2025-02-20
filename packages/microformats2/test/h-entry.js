@@ -22,6 +22,7 @@ import {
 } from '../lib/index.js'
 
 const ajv = defAjv({
+  allErrors: true,
   schemas: [
     dt_accessed,
     dt_published,

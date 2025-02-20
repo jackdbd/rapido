@@ -1,4 +1,4 @@
-import { Static, Type } from '@sinclair/typebox'
+import { type Static, Type } from '@sinclair/typebox'
 
 /**
  * Author of a post.
@@ -7,11 +7,11 @@ import { Static, Type } from '@sinclair/typebox'
  * @see [authorship-spec (authorship discovery algorithm) - indieweb.org](https://indieweb.org/authorship-spec)
  * @see [Authorship Rocks!](https://authorship.rocks/)
  */
-export const p_author = Type.String({
-  $id: 'p-author',
+export const u_author = Type.String({
+  $id: 'u-author',
   title: 'Author',
   description: 'Author of a post (to use in h-entry, h-recipe).',
-  minLength: 1
+  format: 'uri'
 })
 
-export type P_Author = Static<typeof p_author>
+export type U_Author = Static<typeof u_author>
