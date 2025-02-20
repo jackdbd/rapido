@@ -4,14 +4,16 @@
   "description": "URL(s) of syndicated copies of this post. The property equivalent of rel-syndication.",
   "anyOf": [
     {
-      "description": "syndication target",
+      "title": "Syndication target",
+      "description": "URL where the content was syndicated to.",
       "format": "uri",
       "type": "string"
     },
     {
       "type": "array",
       "items": {
-        "description": "syndication target",
+        "title": "Syndication target",
+        "description": "URL where the content was syndicated to.",
         "format": "uri",
         "type": "string"
       }

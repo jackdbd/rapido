@@ -32,6 +32,8 @@ export const defAjv = (options?: Options) => {
     'hostname',
     'ipv4',
     'ipv6',
+    'iso-date-time',
+    'iso-time',
     'json-pointer',
     'regex',
     'relative-json-pointer',

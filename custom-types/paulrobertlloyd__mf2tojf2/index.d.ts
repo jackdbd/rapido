@@ -54,7 +54,7 @@ declare module '@paulrobertlloyd/mf2tojf2' {
 
   export interface Jf2 {
     access_token?: string
-    action?: string
+    action?: 'create' | 'update' | 'delete' | 'undelete'
     audio?: string | string[]
     author?: string
     'bookmark-of'?: string
@@ -62,13 +62,13 @@ declare module '@paulrobertlloyd/mf2tojf2' {
     checkin?: string
     content?: string | { html: string; text: string }
     date?: string
-    // h?: Jf2Type;
+    end?: string
     'in-reply-to'?: string
     'like-of'?: string
     location?: Location
     'mp-channel'?: string
     'mp-destination'?: string
-    'mp-limit'?: string
+    'mp-limit'?: number
     // IndiePass send this when making a multipart request to the Micropub
     // endpoint that includes one or more photo with alternate text.
     'mp-photo-alt'?: string | string[]
@@ -82,13 +82,14 @@ declare module '@paulrobertlloyd/mf2tojf2' {
     'read-status'?: ReadStatus
     'repost-of'?: string
     rsvp?: RSVP
+    start?: string
     summary?: string
     syndication?: string | string[]
     updated?: string
     type?: Jf2Type
     url?: string
     video?: string | string[]
-    visibility?: string
+    visibility?: 'private' | 'public' | 'unlisted'
   }
 
   function mf2tojf2(mf2: Mf2): Jf2

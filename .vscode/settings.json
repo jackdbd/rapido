@@ -28,8 +28,10 @@
   "prettier.configPath": "packages/prettier-config/prettier.config.js",
   "prettier.requireConfig": true,
   "search.exclude": {
+    "**/.changeset/": true,
     "**/.devenv/": true,
     "**/.direnv/": true,
+    "**/dist/": true,
     "**/docs/": true,
     "**/CHANGELOG.md": true,
     "**/package-lock.json": true

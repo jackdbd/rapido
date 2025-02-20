@@ -1,7 +1,7 @@
 {
   "$id": "p-category",
-  "description": "category/categories",
-  "title": "category",
+  "title": "Category",
+  "description": "Category or categories.",
   "anyOf": [
     {
       "minLength": 1,

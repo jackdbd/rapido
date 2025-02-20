@@ -15,8 +15,8 @@
   "properties": {
     "category": {
       "$id": "p-category",
-      "description": "category/categories",
-      "title": "category",
+      "title": "Category",
+      "description": "Category or categories.",
       "anyOf": [
         {
           "minLength": 1,
@@ -43,31 +43,39 @@
     },
     "description": {
       "$id": "p-description",
-      "description": "The description (use in h-event, h-product)",
-      "title": "description",
+      "title": "Description",
+      "description": "Description (use in h-event, h-product).",
       "minLength": 1,
       "type": "string"
     },
     "duration": {
       "$id": "dt-duration",
       "title": "Duration",
-      "description": "Duration formatted according to RFC3339",
+      "description": "Duration, formatted according to RFC 3339 (to use in u-audio, u-video).",
       "format": "duration",
       "type": "string"
     },
     "end": {
       "$id": "dt-end",
-      "title": "End at",
-      "description": "Date or date-time when something ends (e.g. an h-event)",
+      "title": "Date",
+      "description": "Date formatted according to ISO 8601 or RFC 3339.",
       "anyOf": [
         {
           "format": "date",
-          "description": "Date formatted according to RFC3339",
+          "title": "Date (RFC 3339)",
+          "description": "Date formatted according to RFC 3339.",
           "type": "string"
         },
         {
           "format": "date-time",
-          "description": "Date-time formatted according to RFC3339 (time-zone is mandatory)",
+          "title": "Date with time zone (RFC 3339)",
+          "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+          "type": "string"
+        },
+        {
+          "format": "iso-date-time",
+          "title": "Full date-time string (ISO 8601)",
+          "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
           "type": "string"
         }
       ]
@@ -93,24 +101,32 @@
     },
     "name": {
       "$id": "p-name",
-      "title": "Name of the entry, event, item, product, etc.",
-      "description": "Name to use in h-entry, h-event, h-item, h-product, h-recipe, h-review, h-review-aggregate.",
+      "title": "Name",
+      "description": "Name of the entry, event, item, product, etc (to use in h-entry, h-event, h-item, h-product, h-recipe, h-review, h-review-aggregate).",
       "minLength": 1,
       "type": "string"
     },
     "start": {
       "$id": "dt-start",
-      "title": "Start at",
-      "description": "Date or date-time when something starts (e.g. an h-event)",
+      "title": "Date",
+      "description": "Date formatted according to ISO 8601 or RFC 3339.",
       "anyOf": [
         {
           "format": "date",
-          "description": "Date formatted according to RFC3339",
+          "title": "Date (RFC 3339)",
+          "description": "Date formatted according to RFC 3339.",
           "type": "string"
         },
         {
           "format": "date-time",
-          "description": "Date-time formatted according to RFC3339 (time-zone is mandatory)",
+          "title": "Date with time zone (RFC 3339)",
+          "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+          "type": "string"
+        },
+        {
+          "format": "iso-date-time",
+          "title": "Full date-time string (ISO 8601)",
+          "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
           "type": "string"
         }
       ]
@@ -118,7 +134,7 @@
     "summary": {
       "$id": "p-summary",
       "title": "Summary",
-      "description": "Summary to use in h-entry, h-recipe, h-resume.",
+      "description": "Summary of an entry (to use in h-entry, h-recipe, h-resume).",
       "minLength": 1,
       "type": "string"
     },
@@ -128,8 +144,8 @@
     },
     "url": {
       "$id": "u-url",
-      "title": "URL of the card, entry, event, etc.",
-      "description": "URL to use in h-card, h-entry, h-event, etc.",
+      "title": "URL",
+      "description": "URL of the card, entry, event, etc.",
       "format": "uri",
       "type": "string"
     }

@@ -1,16 +1,24 @@
 {
   "$id": "dt-end",
-  "title": "End at",
-  "description": "Date or date-time when something ends (e.g. an h-event)",
+  "title": "Date",
+  "description": "Date formatted according to ISO 8601 or RFC 3339.",
   "anyOf": [
     {
       "format": "date",
-      "description": "Date formatted according to RFC3339",
+      "title": "Date (RFC 3339)",
+      "description": "Date formatted according to RFC 3339.",
       "type": "string"
     },
     {
       "format": "date-time",
-      "description": "Date-time formatted according to RFC3339 (time-zone is mandatory)",
+      "title": "Date with time zone (RFC 3339)",
+      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+      "type": "string"
+    },
+    {
+      "format": "iso-date-time",
+      "title": "Full date-time string (ISO 8601)",
+      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
       "type": "string"
     }
   ]

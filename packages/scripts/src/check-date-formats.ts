@@ -1,15 +1,12 @@
 import dayjs from 'dayjs'
-import {
-  date_time as date_time_schema,
-  date_or_date_time as date_or_date_time_schema
-} from '@jackdbd/microformats2/date'
+import { date as date_schema } from '@jackdbd/microformats2'
 import { check, defAjv } from '../../stdlib/lib/test-utils.js'
 
 const ajv = defAjv({ allErrors: true, schemas: [] })
 
 const microformats2 = (date: dayjs.Dayjs) => {
   console.log('\n=== dates for Microformats2 ===')
-  const validate = ajv.compile(date_or_date_time_schema)
+  const validate = ajv.compile(date_schema)
 
   const unix_timestamp_in_seconds = date.unix()
   const unix_timestamp_in_ms = date.valueOf()
@@ -31,7 +28,7 @@ const microformats2 = (date: dayjs.Dayjs) => {
 
 const jf2Feed = (date: dayjs.Dayjs) => {
   console.log('\n=== dates for JF2 Feed ===')
-  const validate = ajv.compile(date_time_schema)
+  const validate = ajv.compile(date_schema)
 
   // JF2 feed requires the `published` and `updated` fields to be formatted
   // according to ISO 8601. However, the spec also mentions that the format of

@@ -13,450 +13,1930 @@
       "type": "Function",
       "parameters": [
         {
-          "type": "object",
-          "properties": {
-            "action": {
-              "type": "string"
-            },
-            "audio": {
-              "anyOf": [
-                {
-                  "title": "URL of the card, entry, event, etc.",
-                  "description": "URL to use in h-card, h-entry, h-event, etc.",
+          "title": "JF2",
+          "description": "Micropub post from requests sent with any one of these values of `Content-Type`: `application/json`, `application/x-www-form-urlencoded`, `multipart/form-data`.",
+          "anyOf": [
+            {
+              "title": "JF2 (json)",
+              "description": "Micropub post from requests sent with `Content-Type: application/json`.",
+              "type": "object",
+              "properties": {
+                "audio": {
+                  "anyOf": [
+                    {
+                      "$id": "u-audio",
+                      "title": "Audio",
+                      "description": "URL of an audio file.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$id": "u-audio",
+                        "title": "Audio",
+                        "description": "URL of an audio file.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "author": {
+                  "anyOf": [
+                    {
+                      "$id": "p-author",
+                      "title": "Author",
+                      "description": "Author of a post (to use in h-entry, h-recipe).",
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "$id": "h-card",
+                      "title": "microformats2 h-card",
+                      "description": "h-card is a simple, open format for publishing people and organisations on the web. h-card is often used on home pages and individual blog posts.",
+                      "type": "object",
+                      "properties": {
+                        "additional-name": {
+                          "description": "other (e.g. middle) name",
+                          "type": "string"
+                        },
+                        "adr": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "$ref": "h-adr"
+                            }
+                          ]
+                        },
+                        "altitude": {
+                          "$id": "p-altitude",
+                          "title": "Altitude",
+                          "description": "Distance in metres from the nominal sea level along the tangent of the earth’s curve, i.e. the geoid height.",
+                          "type": "number"
+                        },
+                        "anniversary": {
+                          "$id": "dt-anniversary",
+                          "title": "Date",
+                          "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                          "anyOf": [
+                            {
+                              "format": "date",
+                              "title": "Date (RFC 3339)",
+                              "description": "Date formatted according to RFC 3339.",
+                              "type": "string"
+                            },
+                            {
+                              "format": "date-time",
+                              "title": "Date with time zone (RFC 3339)",
+                              "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                              "type": "string"
+                            },
+                            {
+                              "format": "iso-date-time",
+                              "title": "Full date-time string (ISO 8601)",
+                              "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "bday": {
+                          "$id": "dt-bday",
+                          "title": "Date",
+                          "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                          "anyOf": [
+                            {
+                              "format": "date",
+                              "title": "Date (RFC 3339)",
+                              "description": "Date formatted according to RFC 3339.",
+                              "type": "string"
+                            },
+                            {
+                              "format": "date-time",
+                              "title": "Date with time zone (RFC 3339)",
+                              "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                              "type": "string"
+                            },
+                            {
+                              "format": "iso-date-time",
+                              "title": "Full date-time string (ISO 8601)",
+                              "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "category": {
+                          "$id": "p-category",
+                          "title": "Category",
+                          "description": "Category or categories.",
+                          "anyOf": [
+                            {
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "minLength": 1,
+                                "type": "string"
+                              }
+                            }
+                          ]
+                        },
+                        "content": {
+                          "$id": "p-content",
+                          "title": "Content",
+                          "description": "Some plain text content.",
+                          "minLength": 0,
+                          "type": "string"
+                        },
+                        "country-name": {
+                          "description": "country name",
+                          "type": "string"
+                        },
+                        "email": {
+                          "format": "email",
+                          "type": "string"
+                        },
+                        "extended-address": {
+                          "description": "apartment/suite/room name/number if any",
+                          "type": "string"
+                        },
+                        "family-name": {
+                          "description": "family (often last) name",
+                          "type": "string"
+                        },
+                        "gender-identity": {
+                          "description": "gender identity, new in vCard4 (RFC 6350)",
+                          "type": "string"
+                        },
+                        "geo": {
+                          "$ref": "h-geo"
+                        },
+                        "given-name": {
+                          "description": "given (often first) name",
+                          "type": "string"
+                        },
+                        "honorific-prefix": {
+                          "examples": [
+                            "Mr.",
+                            "Mrs.",
+                            "Dr."
+                          ],
+                          "type": "string"
+                        },
+                        "honorific-suffix": {
+                          "examples": [
+                            "Ph.D",
+                            "Esq."
+                          ],
+                          "type": "string"
+                        },
+                        "impp": {
+                          "description": "per RFC4770, new in vCard4 (RFC 6350)",
+                          "type": "string"
+                        },
+                        "job-title": {
+                          "type": "string"
+                        },
+                        "key": {
+                          "description": "cryptographic public key e.g. SSH or GPG",
+                          "type": "string"
+                        },
+                        "label": {
+                          "type": "string"
+                        },
+                        "latitude": {
+                          "$id": "p-latitude",
+                          "minimum": -90,
+                          "maximum": 90,
+                          "title": "Latitude",
+                          "description": "Coordinate that specifies the north–south position of a point on the surface of the Earth, in decimal degrees.",
+                          "type": "number"
+                        },
+                        "locality": {
+                          "description": "city/town/village",
+                          "type": "string"
+                        },
+                        "logo": {
+                          "format": "uri",
+                          "description": "a logo representing the person or organization (e.g. a face icon)",
+                          "type": "string"
+                        },
+                        "longitude": {
+                          "$id": "p-longitude",
+                          "title": "Longitude",
+                          "description": "Coordinate that specifies the east–west position of a point on the surface of the Earth, in decimal degrees.",
+                          "minimum": -180,
+                          "maximum": 180,
+                          "type": "number"
+                        },
+                        "name": {
+                          "$id": "p-name",
+                          "title": "Name",
+                          "description": "Name of the entry, event, item, product, etc (to use in h-entry, h-event, h-item, h-product, h-recipe, h-review, h-review-aggregate).",
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "nickname": {
+                          "description": "nickname/alias/handle",
+                          "type": "string"
+                        },
+                        "note": {
+                          "description": "additional notes",
+                          "type": "string"
+                        },
+                        "org": {
+                          "type": "string"
+                        },
+                        "photo": {
+                          "$id": "u-photo",
+                          "title": "Photo",
+                          "description": "URL of a photo file.",
+                          "format": "uri",
+                          "type": "string"
+                        },
+                        "postal-code": {
+                          "description": "postal code, e.g. US ZIP",
+                          "type": "string"
+                        },
+                        "post-office-box": {
+                          "description": "post office box description if any",
+                          "type": "string"
+                        },
+                        "region": {
+                          "description": "state/county/province",
+                          "type": "string"
+                        },
+                        "role": {
+                          "description": "description of role",
+                          "type": "string"
+                        },
+                        "sex": {
+                          "description": "biological sex, new in vCard4 (RFC 6350)",
+                          "type": "string"
+                        },
+                        "sort-string": {
+                          "description": "string to sort by",
+                          "type": "string"
+                        },
+                        "street-address": {
+                          "description": "street number + name",
+                          "type": "string"
+                        },
+                        "tel": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "const": "card",
+                          "type": "string"
+                        },
+                        "uid": {
+                          "$id": "u-uid",
+                          "title": "UID",
+                          "description": "URL/URI that uniquely/canonically identifies the object).",
+                          "format": "uri",
+                          "type": "string"
+                        },
+                        "url": {
+                          "$ref": "u-url"
+                        }
+                      },
+                      "required": [
+                        "type"
+                      ]
+                    }
+                  ]
+                },
+                "bookmark-of": {
+                  "$id": "u-url",
+                  "title": "URL",
+                  "description": "URL of the card, entry, event, etc.",
                   "format": "uri",
                   "type": "string"
                 },
-                {
-                  "type": "array",
-                  "items": {
-                    "title": "URL of the card, entry, event, etc.",
-                    "description": "URL to use in h-card, h-entry, h-event, etc.",
-                    "format": "uri",
-                    "type": "string"
-                  }
-                }
-              ]
-            },
-            "author": {},
-            "bookmark-of": {
-              "title": "URL of the card, entry, event, etc.",
-              "description": "URL to use in h-card, h-entry, h-event, etc.",
-              "format": "uri",
-              "type": "string"
-            },
-            "category": {
-              "anyOf": [
-                {
-                  "minLength": 1,
-                  "type": "string"
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "minLength": 1,
-                    "type": "string"
-                  }
-                }
-              ]
-            },
-            "checkin": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "content": {
-              "anyOf": [
-                {
-                  "$id": "p-content",
-                  "description": "Some plain text content",
-                  "title": "content",
-                  "minLength": 0,
-                  "type": "string"
-                },
-                {
-                  "$id": "e-content",
-                  "title": "content with `html` and optional `text`",
-                  "type": "object",
-                  "properties": {
-                    "html": {
-                      "description": "The text/html version of the containing object. `html` MUST be a single string value only.",
-                      "minLength": 1,
-                      "type": "string"
-                    },
-                    "text": {
-                      "description": "The text/plain version of the containing object. `text` MUST be a single string value only.",
-                      "minLength": 1,
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "html"
-                  ]
-                }
-              ]
-            },
-            "date": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "in-reply-to": {
-              "title": "URL of the card, entry, event, etc.",
-              "description": "URL to use in h-card, h-entry, h-event, etc.",
-              "format": "uri",
-              "type": "string"
-            },
-            "like-of": {
-              "title": "URL of the card, entry, event, etc.",
-              "description": "URL to use in h-card, h-entry, h-event, etc.",
-              "format": "uri",
-              "type": "string"
-            },
-            "location": {
-              "anyOf": [
-                {
-                  "$id": "p-location",
-                  "description": "Location in plain text.",
-                  "minLength": 1,
-                  "type": "string"
-                },
-                {
-                  "$id": "p-geo",
-                  "pattern": "geo:-?[0-9]{1,2}.[0-9]*,-?[0-9]{1,3}.?[0-9]*(;u=[0-9]{1,2})?",
-                  "minLength": 8,
-                  "title": "geo URI",
-                  "description": "The geo URI scheme is a Uniform Resource Identifier (URI) scheme defined by the Internet Engineering Task Force's RFC 5870",
-                  "examples": [
-                    "geo:37.786971,-122.399677",
-                    "geo:37.786971,-122.399677;u=35"
-                  ],
-                  "type": "string"
-                },
-                {
-                  "$id": "h-adr",
-                  "title": "microformats2 h-adr",
-                  "description": "h-adr is a simple, open format for publishing structured locations such as addresses, physical and/or postal.",
-                  "examples": [
+                "category": {
+                  "anyOf": [
                     {
-                      "altitude": 43,
-                      "country-name": "Iceland",
-                      "latitude": 64.128288,
-                      "locality": "Reykjavík",
-                      "longitude": -21.827774,
-                      "postal-code": "107",
-                      "street-address": "17 Austerstræti"
-                    },
-                    {
-                      "geo": {
-                        "latitude": 64.128288,
-                        "locality": "Reykjavík",
-                        "longitude": -21.827774
-                      }
-                    },
-                    {
-                      "geo": "geo:37.786971,-122.399677;u=35"
-                    }
-                  ],
-                  "type": "object",
-                  "properties": {
-                    "altitude": {
-                      "$id": "p-altitude",
-                      "description": "Distance in metres from the nominal sea level along the tangent of the earth’s curve, i.e. the geoid height.",
-                      "title": "Altitude",
-                      "type": "number"
-                    },
-                    "country-name": {
-                      "type": "string"
-                    },
-                    "extended-address": {
-                      "type": "string"
-                    },
-                    "geo": {
+                      "$id": "p-category",
+                      "title": "Category",
+                      "description": "Category or categories.",
                       "anyOf": [
                         {
-                          "$ref": "p-geo"
+                          "minLength": 1,
+                          "type": "string"
                         },
                         {
-                          "$ref": "h-geo"
+                          "type": "array",
+                          "items": {
+                            "minLength": 1,
+                            "type": "string"
+                          }
                         }
                       ]
                     },
-                    "label": {
+                    {
+                      "type": "array",
+                      "items": {
+                        "$id": "p-category",
+                        "title": "Category",
+                        "description": "Category or categories.",
+                        "anyOf": [
+                          {
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "minLength": 1,
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "checkin": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "content": {
+                  "anyOf": [
+                    {
+                      "$id": "p-content",
+                      "title": "Content",
+                      "description": "Some plain text content.",
+                      "minLength": 0,
                       "type": "string"
                     },
-                    "latitude": {
-                      "$id": "p-latitude",
-                      "minimum": -90,
-                      "maximum": 90,
-                      "title": "Latitude",
-                      "description": "Coordinate that specifies the north–south position of a point on the surface of the Earth, in decimal degrees.",
-                      "type": "number"
-                    },
-                    "locality": {
+                    {
+                      "$id": "e-content",
+                      "title": "Content with `html` and optional `text`.",
+                      "type": "object",
+                      "properties": {
+                        "html": {
+                          "title": "Content (HTML)",
+                          "description": "The text/html version of the containing object. `html` MUST be a single string value only.",
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "text": {
+                          "title": "Content (plain text)",
+                          "description": "The text/plain version of the containing object. `text` MUST be a single string value only.",
+                          "minLength": 1,
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "html"
+                      ]
+                    }
+                  ]
+                },
+                "date": {
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
                       "type": "string"
                     },
-                    "longitude": {
-                      "$id": "p-longitude",
-                      "description": "Coordinate that specifies the east–west position of a point on the surface of the Earth, in decimal degrees.",
-                      "title": "Longitude",
-                      "minimum": -180,
-                      "maximum": 180,
-                      "type": "number"
-                    },
-                    "post-office-box": {
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
                       "type": "string"
                     },
-                    "postal-code": {
-                      "type": "string"
-                    },
-                    "region": {
-                      "type": "string"
-                    },
-                    "street-address": {
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
                       "type": "string"
                     }
-                  }
-                }
-              ]
-            },
-            "mp-channel": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "mp-destination": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "mp-limit": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "mp-photo-alt": {
-              "anyOf": [
-                {
-                  "minLength": 1,
-                  "type": "string"
+                  ]
                 },
-                {
-                  "type": "array",
-                  "items": {
-                    "minLength": 1,
-                    "type": "string"
-                  }
-                }
-              ]
-            },
-            "mp-slug": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "mp-syndicate-to": {
-              "anyOf": [
-                {
-                  "minLength": 1,
-                  "type": "string"
+                "end": {
+                  "$id": "dt-end",
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                      "type": "string"
+                    },
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                      "type": "string"
+                    }
+                  ]
                 },
-                {
-                  "type": "array",
-                  "items": {
-                    "minLength": 1,
-                    "type": "string"
-                  }
-                }
-              ]
-            },
-            "name": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "photo": {},
-            "post-status": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "published": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "read-of": {
-              "anyOf": [
-                {
-                  "title": "URL of the card, entry, event, etc.",
-                  "description": "URL to use in h-card, h-entry, h-event, etc.",
+                "in-reply-to": {
+                  "$id": "u-url",
+                  "title": "URL",
+                  "description": "URL of the card, entry, event, etc.",
                   "format": "uri",
                   "type": "string"
                 },
-                {
-                  "$id": "h-cite",
-                  "title": "microformats2 h-cite",
-                  "description": "h-cite is a simple, open format for publishing citations and references to online and other publications.",
-                  "examples": [
+                "like-of": {
+                  "$id": "u-url",
+                  "title": "URL",
+                  "description": "URL of the card, entry, event, etc.",
+                  "format": "uri",
+                  "type": "string"
+                },
+                "location": {
+                  "anyOf": [
                     {
-                      "author": "Isaac Newton",
-                      "name": "The Correspondence of Isaac Newton: Volume 5",
-                      "content": "If I have seen further it is by standing on the shoulders of Giants."
+                      "$id": "p-location",
+                      "description": "Location in plain text.",
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "$id": "p-geo",
+                      "pattern": "geo:-?[0-9]{1,2}.[0-9]*,-?[0-9]{1,3}.?[0-9]*(;u=[0-9]{1,2})?",
+                      "minLength": 8,
+                      "title": "Geo URI",
+                      "description": "The geo URI scheme is a Uniform Resource Identifier (URI) scheme defined by the Internet Engineering Task Force's RFC 5870.",
+                      "examples": [
+                        "geo:37.786971,-122.399677",
+                        "geo:37.786971,-122.399677;u=35"
+                      ],
+                      "type": "string"
+                    },
+                    {
+                      "$id": "h-adr",
+                      "title": "microformats2 h-adr",
+                      "description": "h-adr is a simple, open format for publishing structured locations such as addresses, physical and/or postal.",
+                      "examples": [
+                        {
+                          "altitude": 43,
+                          "country-name": "Iceland",
+                          "latitude": 64.128288,
+                          "locality": "Reykjavík",
+                          "longitude": -21.827774,
+                          "postal-code": "107",
+                          "street-address": "17 Austerstræti"
+                        },
+                        {
+                          "geo": {
+                            "latitude": 64.128288,
+                            "locality": "Reykjavík",
+                            "longitude": -21.827774
+                          }
+                        },
+                        {
+                          "geo": "geo:37.786971,-122.399677;u=35"
+                        }
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "altitude": {
+                          "$id": "p-altitude",
+                          "title": "Altitude",
+                          "description": "Distance in metres from the nominal sea level along the tangent of the earth’s curve, i.e. the geoid height.",
+                          "type": "number"
+                        },
+                        "country-name": {
+                          "type": "string"
+                        },
+                        "extended-address": {
+                          "type": "string"
+                        },
+                        "geo": {
+                          "anyOf": [
+                            {
+                              "$ref": "p-geo"
+                            },
+                            {
+                              "$ref": "h-geo"
+                            }
+                          ]
+                        },
+                        "label": {
+                          "type": "string"
+                        },
+                        "latitude": {
+                          "$id": "p-latitude",
+                          "minimum": -90,
+                          "maximum": 90,
+                          "title": "Latitude",
+                          "description": "Coordinate that specifies the north–south position of a point on the surface of the Earth, in decimal degrees.",
+                          "type": "number"
+                        },
+                        "locality": {
+                          "type": "string"
+                        },
+                        "longitude": {
+                          "$id": "p-longitude",
+                          "title": "Longitude",
+                          "description": "Coordinate that specifies the east–west position of a point on the surface of the Earth, in decimal degrees.",
+                          "minimum": -180,
+                          "maximum": 180,
+                          "type": "number"
+                        },
+                        "post-office-box": {
+                          "type": "string"
+                        },
+                        "postal-code": {
+                          "type": "string"
+                        },
+                        "region": {
+                          "type": "string"
+                        },
+                        "street-address": {
+                          "type": "string"
+                        }
+                      }
                     }
-                  ],
-                  "type": "object",
-                  "properties": {
-                    "accessed": {
-                      "$ref": "dt-accessed"
+                  ]
+                },
+                "name": {
+                  "$id": "p-name",
+                  "title": "Name",
+                  "description": "Name of the entry, event, item, product, etc (to use in h-entry, h-event, h-item, h-product, h-recipe, h-review, h-review-aggregate).",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "photo": {},
+                "read-of": {
+                  "anyOf": [
+                    {
+                      "$id": "p-publication",
+                      "title": "Publication",
+                      "description": "Used for citing articles, books, etc (used in h-cite).",
+                      "minLength": 1,
+                      "type": "string"
                     },
-                    "author": {
-                      "$ref": "p-author"
+                    {
+                      "$id": "u-url",
+                      "title": "URL",
+                      "description": "URL of the card, entry, event, etc.",
+                      "format": "uri",
+                      "type": "string"
                     },
-                    "content": {
-                      "$ref": "p-content"
+                    {
+                      "$id": "h-cite",
+                      "title": "microformats2 h-cite",
+                      "description": "h-cite is a simple, open format for publishing citations and references to online and other publications.",
+                      "examples": [
+                        {
+                          "author": "Isaac Newton",
+                          "name": "The Correspondence of Isaac Newton: Volume 5",
+                          "content": "If I have seen further it is by standing on the shoulders of Giants."
+                        }
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "accessed": {
+                          "$ref": "dt-accessed"
+                        },
+                        "author": {
+                          "$ref": "p-author"
+                        },
+                        "content": {
+                          "$ref": "p-content"
+                        },
+                        "name": {
+                          "$ref": "p-name"
+                        },
+                        "publication": {
+                          "$ref": "p-publication"
+                        },
+                        "published": {
+                          "$ref": "dt-published"
+                        },
+                        "type": {
+                          "const": "cite",
+                          "type": "string"
+                        },
+                        "uid": {
+                          "$ref": "u-uid"
+                        },
+                        "url": {
+                          "$ref": "u-url"
+                        }
+                      },
+                      "required": [
+                        "type"
+                      ]
+                    }
+                  ]
+                },
+                "read-status": {
+                  "anyOf": [
+                    {
+                      "const": "to-read",
+                      "type": "string"
                     },
-                    "name": {
-                      "$ref": "p-name"
+                    {
+                      "const": "reading",
+                      "type": "string"
                     },
-                    "publication": {
-                      "$ref": "p-publication"
+                    {
+                      "const": "finished",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "repost-of": {
+                  "$id": "u-url",
+                  "title": "URL",
+                  "description": "URL of the card, entry, event, etc.",
+                  "format": "uri",
+                  "type": "string"
+                },
+                "rsvp": {
+                  "$id": "p-rsvp",
+                  "title": "RSVP",
+                  "description": "An RSVP is a reply to an event that says whether the sender is attending, is not attending, might attend, or is merely interested.",
+                  "anyOf": [
+                    {
+                      "const": "yes",
+                      "type": "string"
                     },
-                    "published": {
-                      "$ref": "dt-published"
+                    {
+                      "const": "no",
+                      "type": "string"
                     },
-                    "type": {
+                    {
+                      "const": "maybe",
+                      "type": "string"
+                    },
+                    {
+                      "const": "interested",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "start": {
+                  "$id": "dt-start",
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                      "type": "string"
+                    },
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "summary": {
+                  "$id": "p-summary",
+                  "title": "Summary",
+                  "description": "Summary of an entry (to use in h-entry, h-recipe, h-resume).",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "syndication": {
+                  "$id": "u-syndication",
+                  "title": "Syndication",
+                  "description": "URL(s) of syndicated copies of this post. The property equivalent of rel-syndication.",
+                  "anyOf": [
+                    {
+                      "title": "Syndication target",
+                      "description": "URL where the content was syndicated to.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "title": "Syndication target",
+                        "description": "URL where the content was syndicated to.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "url": {
+                  "anyOf": [
+                    {
+                      "$id": "u-url",
+                      "title": "URL",
+                      "description": "URL of the card, entry, event, etc.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$id": "u-url",
+                        "title": "URL",
+                        "description": "URL of the card, entry, event, etc.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "video": {
+                  "anyOf": [
+                    {
+                      "$id": "u-video",
+                      "title": "Video",
+                      "description": "URL of a video file.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$id": "u-video",
+                        "title": "Video",
+                        "description": "URL of a video file.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "access_token": {
+                  "$id": "mp-access-token",
+                  "title": "Access Token",
+                  "description": "The OAuth Bearer token authenticating the request (the access token may be sent in an HTTP Authorization header or this form parameter).",
+                  "type": "string"
+                },
+                "action": {
+                  "$id": "mp-action",
+                  "title": "Action",
+                  "description": "Action to perform on the object (updates are not supported in the form-encoded syntax).",
+                  "default": "create",
+                  "anyOf": [
+                    {
+                      "const": "create",
+                      "type": "string"
+                    },
+                    {
+                      "const": "update",
+                      "type": "string"
+                    },
+                    {
+                      "const": "delete",
+                      "type": "string"
+                    },
+                    {
+                      "const": "undelete",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "mp-channel": {
+                  "type": "string"
+                },
+                "mp-destination": {
+                  "$id": "mp-destination",
+                  "title": "Destination",
+                  "description": "Specify a destination to create a new post on a web site other than the default.",
+                  "type": "string"
+                },
+                "mp-limit": {
+                  "minimum": 0,
+                  "$id": "mp-limit",
+                  "title": "Limit",
+                  "description": "Adds the parameter limit to any query to limit the number of returned results.",
+                  "type": "number"
+                },
+                "mp-photo-alt": {
+                  "anyOf": [
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "minLength": 1,
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "mp-post-status": {
+                  "$id": "mp-post-status",
+                  "title": "Post status",
+                  "description": "Allows a Micropub client to set the status of a post.",
+                  "type": "string"
+                },
+                "mp-slug": {
+                  "$id": "mp-slug",
+                  "title": "Slug",
+                  "description": "Allows a Micropub client to suggest a slug to the Micropub endpoint.",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "mp-syndicate-to": {
+                  "$id": "mp-syndicate-to",
+                  "title": "Syndicate to",
+                  "description": "Syndication target/s.",
+                  "anyOf": [
+                    {
+                      "title": "Syndication target",
+                      "description": "URL where the content will be syndicated to.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "title": "Syndication target",
+                        "description": "URL where the content will be syndicated to.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "post-status": {
+                  "$id": "mp-post-status",
+                  "title": "Post status",
+                  "description": "Allows a Micropub client to set the status of a post.",
+                  "type": "string"
+                },
+                "published": {
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                      "type": "string"
+                    },
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "updated": {
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                      "type": "string"
+                    },
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "visibility": {
+                  "$id": "mp-visibility",
+                  "title": "Visibility",
+                  "description": "Adds a property for use in Micropub requests called visibility that informs a server whether a post should be public, private or unlisted.",
+                  "default": "public",
+                  "anyOf": [
+                    {
+                      "const": "public",
+                      "type": "string"
+                    },
+                    {
+                      "const": "private",
+                      "type": "string"
+                    },
+                    {
+                      "const": "unlisted",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "type": {
+                  "title": "Post type",
+                  "description": "Micropub post type.",
+                  "default": "entry",
+                  "anyOf": [
+                    {
+                      "const": "card",
+                      "type": "string"
+                    },
+                    {
                       "const": "cite",
                       "type": "string"
                     },
-                    "uid": {
-                      "$ref": "u-uid"
+                    {
+                      "const": "entry",
+                      "type": "string"
                     },
-                    "url": {
-                      "$ref": "u-url"
+                    {
+                      "const": "event",
+                      "type": "string"
                     }
-                  },
-                  "required": [
-                    "type"
                   ]
                 }
-              ]
+              }
             },
-            "read-status": {
-              "anyOf": [
-                {
-                  "const": "to-read",
-                  "type": "string"
+            {
+              "title": "JF2 (x-www-form-urlencoded or multipart/form-data)",
+              "description": "Micropub post from requests sent with `Content-Type: application/x-www-form-urlencoded` or `Content-Type: multipart/form-data`.",
+              "type": "object",
+              "properties": {
+                "audio": {
+                  "anyOf": [
+                    {
+                      "$id": "u-audio",
+                      "title": "Audio",
+                      "description": "URL of an audio file.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$id": "u-audio",
+                        "title": "Audio",
+                        "description": "URL of an audio file.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
                 },
-                {
-                  "const": "reading",
-                  "type": "string"
+                "author": {
+                  "anyOf": [
+                    {
+                      "$id": "p-author",
+                      "title": "Author",
+                      "description": "Author of a post (to use in h-entry, h-recipe).",
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "$id": "h-card",
+                      "title": "microformats2 h-card",
+                      "description": "h-card is a simple, open format for publishing people and organisations on the web. h-card is often used on home pages and individual blog posts.",
+                      "type": "object",
+                      "properties": {
+                        "additional-name": {
+                          "description": "other (e.g. middle) name",
+                          "type": "string"
+                        },
+                        "adr": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "$ref": "h-adr"
+                            }
+                          ]
+                        },
+                        "altitude": {
+                          "$id": "p-altitude",
+                          "title": "Altitude",
+                          "description": "Distance in metres from the nominal sea level along the tangent of the earth’s curve, i.e. the geoid height.",
+                          "type": "number"
+                        },
+                        "anniversary": {
+                          "$id": "dt-anniversary",
+                          "title": "Date",
+                          "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                          "anyOf": [
+                            {
+                              "format": "date",
+                              "title": "Date (RFC 3339)",
+                              "description": "Date formatted according to RFC 3339.",
+                              "type": "string"
+                            },
+                            {
+                              "format": "date-time",
+                              "title": "Date with time zone (RFC 3339)",
+                              "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                              "type": "string"
+                            },
+                            {
+                              "format": "iso-date-time",
+                              "title": "Full date-time string (ISO 8601)",
+                              "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "bday": {
+                          "$id": "dt-bday",
+                          "title": "Date",
+                          "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                          "anyOf": [
+                            {
+                              "format": "date",
+                              "title": "Date (RFC 3339)",
+                              "description": "Date formatted according to RFC 3339.",
+                              "type": "string"
+                            },
+                            {
+                              "format": "date-time",
+                              "title": "Date with time zone (RFC 3339)",
+                              "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                              "type": "string"
+                            },
+                            {
+                              "format": "iso-date-time",
+                              "title": "Full date-time string (ISO 8601)",
+                              "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "category": {
+                          "$id": "p-category",
+                          "title": "Category",
+                          "description": "Category or categories.",
+                          "anyOf": [
+                            {
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "minLength": 1,
+                                "type": "string"
+                              }
+                            }
+                          ]
+                        },
+                        "content": {
+                          "$id": "p-content",
+                          "title": "Content",
+                          "description": "Some plain text content.",
+                          "minLength": 0,
+                          "type": "string"
+                        },
+                        "country-name": {
+                          "description": "country name",
+                          "type": "string"
+                        },
+                        "email": {
+                          "format": "email",
+                          "type": "string"
+                        },
+                        "extended-address": {
+                          "description": "apartment/suite/room name/number if any",
+                          "type": "string"
+                        },
+                        "family-name": {
+                          "description": "family (often last) name",
+                          "type": "string"
+                        },
+                        "gender-identity": {
+                          "description": "gender identity, new in vCard4 (RFC 6350)",
+                          "type": "string"
+                        },
+                        "geo": {
+                          "$ref": "h-geo"
+                        },
+                        "given-name": {
+                          "description": "given (often first) name",
+                          "type": "string"
+                        },
+                        "honorific-prefix": {
+                          "examples": [
+                            "Mr.",
+                            "Mrs.",
+                            "Dr."
+                          ],
+                          "type": "string"
+                        },
+                        "honorific-suffix": {
+                          "examples": [
+                            "Ph.D",
+                            "Esq."
+                          ],
+                          "type": "string"
+                        },
+                        "impp": {
+                          "description": "per RFC4770, new in vCard4 (RFC 6350)",
+                          "type": "string"
+                        },
+                        "job-title": {
+                          "type": "string"
+                        },
+                        "key": {
+                          "description": "cryptographic public key e.g. SSH or GPG",
+                          "type": "string"
+                        },
+                        "label": {
+                          "type": "string"
+                        },
+                        "latitude": {
+                          "$id": "p-latitude",
+                          "minimum": -90,
+                          "maximum": 90,
+                          "title": "Latitude",
+                          "description": "Coordinate that specifies the north–south position of a point on the surface of the Earth, in decimal degrees.",
+                          "type": "number"
+                        },
+                        "locality": {
+                          "description": "city/town/village",
+                          "type": "string"
+                        },
+                        "logo": {
+                          "format": "uri",
+                          "description": "a logo representing the person or organization (e.g. a face icon)",
+                          "type": "string"
+                        },
+                        "longitude": {
+                          "$id": "p-longitude",
+                          "title": "Longitude",
+                          "description": "Coordinate that specifies the east–west position of a point on the surface of the Earth, in decimal degrees.",
+                          "minimum": -180,
+                          "maximum": 180,
+                          "type": "number"
+                        },
+                        "name": {
+                          "$id": "p-name",
+                          "title": "Name",
+                          "description": "Name of the entry, event, item, product, etc (to use in h-entry, h-event, h-item, h-product, h-recipe, h-review, h-review-aggregate).",
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "nickname": {
+                          "description": "nickname/alias/handle",
+                          "type": "string"
+                        },
+                        "note": {
+                          "description": "additional notes",
+                          "type": "string"
+                        },
+                        "org": {
+                          "type": "string"
+                        },
+                        "photo": {
+                          "$id": "u-photo",
+                          "title": "Photo",
+                          "description": "URL of a photo file.",
+                          "format": "uri",
+                          "type": "string"
+                        },
+                        "postal-code": {
+                          "description": "postal code, e.g. US ZIP",
+                          "type": "string"
+                        },
+                        "post-office-box": {
+                          "description": "post office box description if any",
+                          "type": "string"
+                        },
+                        "region": {
+                          "description": "state/county/province",
+                          "type": "string"
+                        },
+                        "role": {
+                          "description": "description of role",
+                          "type": "string"
+                        },
+                        "sex": {
+                          "description": "biological sex, new in vCard4 (RFC 6350)",
+                          "type": "string"
+                        },
+                        "sort-string": {
+                          "description": "string to sort by",
+                          "type": "string"
+                        },
+                        "street-address": {
+                          "description": "street number + name",
+                          "type": "string"
+                        },
+                        "tel": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "const": "card",
+                          "type": "string"
+                        },
+                        "uid": {
+                          "$id": "u-uid",
+                          "title": "UID",
+                          "description": "URL/URI that uniquely/canonically identifies the object).",
+                          "format": "uri",
+                          "type": "string"
+                        },
+                        "url": {
+                          "$ref": "u-url"
+                        }
+                      },
+                      "required": [
+                        "type"
+                      ]
+                    }
+                  ]
                 },
-                {
-                  "const": "finished",
-                  "type": "string"
-                }
-              ]
-            },
-            "repost-of": {
-              "title": "URL of the card, entry, event, etc.",
-              "description": "URL to use in h-card, h-entry, h-event, etc.",
-              "format": "uri",
-              "type": "string"
-            },
-            "rsvp": {
-              "anyOf": [
-                {
-                  "const": "yes",
-                  "type": "string"
-                },
-                {
-                  "const": "no",
-                  "type": "string"
-                },
-                {
-                  "const": "maybe",
-                  "type": "string"
-                },
-                {
-                  "const": "interested",
-                  "type": "string"
-                }
-              ]
-            },
-            "summary": {
-              "$id": "p-summary",
-              "title": "Summary",
-              "description": "Summary to use in h-entry, h-recipe, h-resume.",
-              "minLength": 1,
-              "type": "string"
-            },
-            "syndication": {
-              "$id": "u-syndication",
-              "title": "Syndication",
-              "description": "URL(s) of syndicated copies of this post. The property equivalent of rel-syndication.",
-              "anyOf": [
-                {
-                  "description": "syndication target",
+                "bookmark-of": {
+                  "$id": "u-url",
+                  "title": "URL",
+                  "description": "URL of the card, entry, event, etc.",
                   "format": "uri",
                   "type": "string"
                 },
-                {
-                  "type": "array",
-                  "items": {
-                    "description": "syndication target",
-                    "format": "uri",
-                    "type": "string"
-                  }
-                }
-              ]
-            },
-            "updated": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "url": {
-              "title": "URL of the card, entry, event, etc.",
-              "description": "URL to use in h-card, h-entry, h-event, etc.",
-              "format": "uri",
-              "type": "string"
-            },
-            "video": {
-              "anyOf": [
-                {
-                  "title": "URL of the card, entry, event, etc.",
-                  "description": "URL to use in h-card, h-entry, h-event, etc.",
+                "category": {
+                  "anyOf": [
+                    {
+                      "$id": "p-category",
+                      "title": "Category",
+                      "description": "Category or categories.",
+                      "anyOf": [
+                        {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "minLength": 1,
+                            "type": "string"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$id": "p-category",
+                        "title": "Category",
+                        "description": "Category or categories.",
+                        "anyOf": [
+                          {
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "minLength": 1,
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "checkin": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "content": {
+                  "anyOf": [
+                    {
+                      "$id": "p-content",
+                      "title": "Content",
+                      "description": "Some plain text content.",
+                      "minLength": 0,
+                      "type": "string"
+                    },
+                    {
+                      "$id": "e-content",
+                      "title": "Content with `html` and optional `text`.",
+                      "type": "object",
+                      "properties": {
+                        "html": {
+                          "title": "Content (HTML)",
+                          "description": "The text/html version of the containing object. `html` MUST be a single string value only.",
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "text": {
+                          "title": "Content (plain text)",
+                          "description": "The text/plain version of the containing object. `text` MUST be a single string value only.",
+                          "minLength": 1,
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "html"
+                      ]
+                    }
+                  ]
+                },
+                "date": {
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                      "type": "string"
+                    },
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "end": {
+                  "$id": "dt-end",
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                      "type": "string"
+                    },
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "in-reply-to": {
+                  "$id": "u-url",
+                  "title": "URL",
+                  "description": "URL of the card, entry, event, etc.",
                   "format": "uri",
                   "type": "string"
                 },
-                {
-                  "type": "array",
-                  "items": {
-                    "title": "URL of the card, entry, event, etc.",
-                    "description": "URL to use in h-card, h-entry, h-event, etc.",
-                    "format": "uri",
-                    "type": "string"
-                  }
+                "like-of": {
+                  "$id": "u-url",
+                  "title": "URL",
+                  "description": "URL of the card, entry, event, etc.",
+                  "format": "uri",
+                  "type": "string"
+                },
+                "location": {
+                  "anyOf": [
+                    {
+                      "$id": "p-location",
+                      "description": "Location in plain text.",
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "$id": "p-geo",
+                      "pattern": "geo:-?[0-9]{1,2}.[0-9]*,-?[0-9]{1,3}.?[0-9]*(;u=[0-9]{1,2})?",
+                      "minLength": 8,
+                      "title": "Geo URI",
+                      "description": "The geo URI scheme is a Uniform Resource Identifier (URI) scheme defined by the Internet Engineering Task Force's RFC 5870.",
+                      "examples": [
+                        "geo:37.786971,-122.399677",
+                        "geo:37.786971,-122.399677;u=35"
+                      ],
+                      "type": "string"
+                    },
+                    {
+                      "$id": "h-adr",
+                      "title": "microformats2 h-adr",
+                      "description": "h-adr is a simple, open format for publishing structured locations such as addresses, physical and/or postal.",
+                      "examples": [
+                        {
+                          "altitude": 43,
+                          "country-name": "Iceland",
+                          "latitude": 64.128288,
+                          "locality": "Reykjavík",
+                          "longitude": -21.827774,
+                          "postal-code": "107",
+                          "street-address": "17 Austerstræti"
+                        },
+                        {
+                          "geo": {
+                            "latitude": 64.128288,
+                            "locality": "Reykjavík",
+                            "longitude": -21.827774
+                          }
+                        },
+                        {
+                          "geo": "geo:37.786971,-122.399677;u=35"
+                        }
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "altitude": {
+                          "$id": "p-altitude",
+                          "title": "Altitude",
+                          "description": "Distance in metres from the nominal sea level along the tangent of the earth’s curve, i.e. the geoid height.",
+                          "type": "number"
+                        },
+                        "country-name": {
+                          "type": "string"
+                        },
+                        "extended-address": {
+                          "type": "string"
+                        },
+                        "geo": {
+                          "anyOf": [
+                            {
+                              "$ref": "p-geo"
+                            },
+                            {
+                              "$ref": "h-geo"
+                            }
+                          ]
+                        },
+                        "label": {
+                          "type": "string"
+                        },
+                        "latitude": {
+                          "$id": "p-latitude",
+                          "minimum": -90,
+                          "maximum": 90,
+                          "title": "Latitude",
+                          "description": "Coordinate that specifies the north–south position of a point on the surface of the Earth, in decimal degrees.",
+                          "type": "number"
+                        },
+                        "locality": {
+                          "type": "string"
+                        },
+                        "longitude": {
+                          "$id": "p-longitude",
+                          "title": "Longitude",
+                          "description": "Coordinate that specifies the east–west position of a point on the surface of the Earth, in decimal degrees.",
+                          "minimum": -180,
+                          "maximum": 180,
+                          "type": "number"
+                        },
+                        "post-office-box": {
+                          "type": "string"
+                        },
+                        "postal-code": {
+                          "type": "string"
+                        },
+                        "region": {
+                          "type": "string"
+                        },
+                        "street-address": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "name": {
+                  "$id": "p-name",
+                  "title": "Name",
+                  "description": "Name of the entry, event, item, product, etc (to use in h-entry, h-event, h-item, h-product, h-recipe, h-review, h-review-aggregate).",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "photo": {},
+                "read-of": {
+                  "anyOf": [
+                    {
+                      "$id": "p-publication",
+                      "title": "Publication",
+                      "description": "Used for citing articles, books, etc (used in h-cite).",
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "$id": "u-url",
+                      "title": "URL",
+                      "description": "URL of the card, entry, event, etc.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "$id": "h-cite",
+                      "title": "microformats2 h-cite",
+                      "description": "h-cite is a simple, open format for publishing citations and references to online and other publications.",
+                      "examples": [
+                        {
+                          "author": "Isaac Newton",
+                          "name": "The Correspondence of Isaac Newton: Volume 5",
+                          "content": "If I have seen further it is by standing on the shoulders of Giants."
+                        }
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "accessed": {
+                          "$ref": "dt-accessed"
+                        },
+                        "author": {
+                          "$ref": "p-author"
+                        },
+                        "content": {
+                          "$ref": "p-content"
+                        },
+                        "name": {
+                          "$ref": "p-name"
+                        },
+                        "publication": {
+                          "$ref": "p-publication"
+                        },
+                        "published": {
+                          "$ref": "dt-published"
+                        },
+                        "type": {
+                          "const": "cite",
+                          "type": "string"
+                        },
+                        "uid": {
+                          "$ref": "u-uid"
+                        },
+                        "url": {
+                          "$ref": "u-url"
+                        }
+                      },
+                      "required": [
+                        "type"
+                      ]
+                    }
+                  ]
+                },
+                "read-status": {
+                  "anyOf": [
+                    {
+                      "const": "to-read",
+                      "type": "string"
+                    },
+                    {
+                      "const": "reading",
+                      "type": "string"
+                    },
+                    {
+                      "const": "finished",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "repost-of": {
+                  "$id": "u-url",
+                  "title": "URL",
+                  "description": "URL of the card, entry, event, etc.",
+                  "format": "uri",
+                  "type": "string"
+                },
+                "rsvp": {
+                  "$id": "p-rsvp",
+                  "title": "RSVP",
+                  "description": "An RSVP is a reply to an event that says whether the sender is attending, is not attending, might attend, or is merely interested.",
+                  "anyOf": [
+                    {
+                      "const": "yes",
+                      "type": "string"
+                    },
+                    {
+                      "const": "no",
+                      "type": "string"
+                    },
+                    {
+                      "const": "maybe",
+                      "type": "string"
+                    },
+                    {
+                      "const": "interested",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "start": {
+                  "$id": "dt-start",
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                      "type": "string"
+                    },
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "summary": {
+                  "$id": "p-summary",
+                  "title": "Summary",
+                  "description": "Summary of an entry (to use in h-entry, h-recipe, h-resume).",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "syndication": {
+                  "$id": "u-syndication",
+                  "title": "Syndication",
+                  "description": "URL(s) of syndicated copies of this post. The property equivalent of rel-syndication.",
+                  "anyOf": [
+                    {
+                      "title": "Syndication target",
+                      "description": "URL where the content was syndicated to.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "title": "Syndication target",
+                        "description": "URL where the content was syndicated to.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "url": {
+                  "anyOf": [
+                    {
+                      "$id": "u-url",
+                      "title": "URL",
+                      "description": "URL of the card, entry, event, etc.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$id": "u-url",
+                        "title": "URL",
+                        "description": "URL of the card, entry, event, etc.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "video": {
+                  "anyOf": [
+                    {
+                      "$id": "u-video",
+                      "title": "Video",
+                      "description": "URL of a video file.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$id": "u-video",
+                        "title": "Video",
+                        "description": "URL of a video file.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "access_token": {
+                  "$id": "mp-access-token",
+                  "title": "Access Token",
+                  "description": "The OAuth Bearer token authenticating the request (the access token may be sent in an HTTP Authorization header or this form parameter).",
+                  "type": "string"
+                },
+                "action": {
+                  "$id": "mp-action",
+                  "title": "Action",
+                  "description": "Action to perform on the object (updates are not supported in the form-encoded syntax).",
+                  "default": "create",
+                  "anyOf": [
+                    {
+                      "const": "create",
+                      "type": "string"
+                    },
+                    {
+                      "const": "update",
+                      "type": "string"
+                    },
+                    {
+                      "const": "delete",
+                      "type": "string"
+                    },
+                    {
+                      "const": "undelete",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "mp-channel": {
+                  "type": "string"
+                },
+                "mp-destination": {
+                  "$id": "mp-destination",
+                  "title": "Destination",
+                  "description": "Specify a destination to create a new post on a web site other than the default.",
+                  "type": "string"
+                },
+                "mp-limit": {
+                  "minimum": 0,
+                  "$id": "mp-limit",
+                  "title": "Limit",
+                  "description": "Adds the parameter limit to any query to limit the number of returned results.",
+                  "type": "number"
+                },
+                "mp-photo-alt": {
+                  "anyOf": [
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "minLength": 1,
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "mp-post-status": {
+                  "$id": "mp-post-status",
+                  "title": "Post status",
+                  "description": "Allows a Micropub client to set the status of a post.",
+                  "type": "string"
+                },
+                "mp-slug": {
+                  "$id": "mp-slug",
+                  "title": "Slug",
+                  "description": "Allows a Micropub client to suggest a slug to the Micropub endpoint.",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "mp-syndicate-to": {
+                  "$id": "mp-syndicate-to",
+                  "title": "Syndicate to",
+                  "description": "Syndication target/s.",
+                  "anyOf": [
+                    {
+                      "title": "Syndication target",
+                      "description": "URL where the content will be syndicated to.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "title": "Syndication target",
+                        "description": "URL where the content will be syndicated to.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "post-status": {
+                  "$id": "mp-post-status",
+                  "title": "Post status",
+                  "description": "Allows a Micropub client to set the status of a post.",
+                  "type": "string"
+                },
+                "published": {
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                      "type": "string"
+                    },
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "updated": {
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                      "type": "string"
+                    },
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "visibility": {
+                  "$id": "mp-visibility",
+                  "title": "Visibility",
+                  "description": "Adds a property for use in Micropub requests called visibility that informs a server whether a post should be public, private or unlisted.",
+                  "default": "public",
+                  "anyOf": [
+                    {
+                      "const": "public",
+                      "type": "string"
+                    },
+                    {
+                      "const": "private",
+                      "type": "string"
+                    },
+                    {
+                      "const": "unlisted",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "h": {
+                  "title": "Post type",
+                  "description": "Micropub post type.",
+                  "default": "entry",
+                  "anyOf": [
+                    {
+                      "const": "card",
+                      "type": "string"
+                    },
+                    {
+                      "const": "cite",
+                      "type": "string"
+                    },
+                    {
+                      "const": "entry",
+                      "type": "string"
+                    },
+                    {
+                      "const": "event",
+                      "type": "string"
+                    }
+                  ]
                 }
-              ]
-            },
-            "visibility": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "type": {
-              "default": "entry",
-              "title": "JF2 item type",
-              "anyOf": [
-                {
-                  "const": "card",
-                  "type": "string"
-                },
-                {
-                  "const": "cite",
-                  "type": "string"
-                },
-                {
-                  "const": "entry",
-                  "type": "string"
-                },
-                {
-                  "const": "event",
-                  "type": "string"
-                }
-              ]
+              }
             }
-          }
+          ]
         }
       ],
       "returns": {
@@ -550,450 +2030,1930 @@
       "type": "Function",
       "parameters": [
         {
-          "type": "object",
-          "properties": {
-            "action": {
-              "type": "string"
-            },
-            "audio": {
-              "anyOf": [
-                {
-                  "title": "URL of the card, entry, event, etc.",
-                  "description": "URL to use in h-card, h-entry, h-event, etc.",
+          "title": "JF2",
+          "description": "Micropub post from requests sent with any one of these values of `Content-Type`: `application/json`, `application/x-www-form-urlencoded`, `multipart/form-data`.",
+          "anyOf": [
+            {
+              "title": "JF2 (json)",
+              "description": "Micropub post from requests sent with `Content-Type: application/json`.",
+              "type": "object",
+              "properties": {
+                "audio": {
+                  "anyOf": [
+                    {
+                      "$id": "u-audio",
+                      "title": "Audio",
+                      "description": "URL of an audio file.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$id": "u-audio",
+                        "title": "Audio",
+                        "description": "URL of an audio file.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "author": {
+                  "anyOf": [
+                    {
+                      "$id": "p-author",
+                      "title": "Author",
+                      "description": "Author of a post (to use in h-entry, h-recipe).",
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "$id": "h-card",
+                      "title": "microformats2 h-card",
+                      "description": "h-card is a simple, open format for publishing people and organisations on the web. h-card is often used on home pages and individual blog posts.",
+                      "type": "object",
+                      "properties": {
+                        "additional-name": {
+                          "description": "other (e.g. middle) name",
+                          "type": "string"
+                        },
+                        "adr": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "$ref": "h-adr"
+                            }
+                          ]
+                        },
+                        "altitude": {
+                          "$id": "p-altitude",
+                          "title": "Altitude",
+                          "description": "Distance in metres from the nominal sea level along the tangent of the earth’s curve, i.e. the geoid height.",
+                          "type": "number"
+                        },
+                        "anniversary": {
+                          "$id": "dt-anniversary",
+                          "title": "Date",
+                          "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                          "anyOf": [
+                            {
+                              "format": "date",
+                              "title": "Date (RFC 3339)",
+                              "description": "Date formatted according to RFC 3339.",
+                              "type": "string"
+                            },
+                            {
+                              "format": "date-time",
+                              "title": "Date with time zone (RFC 3339)",
+                              "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                              "type": "string"
+                            },
+                            {
+                              "format": "iso-date-time",
+                              "title": "Full date-time string (ISO 8601)",
+                              "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "bday": {
+                          "$id": "dt-bday",
+                          "title": "Date",
+                          "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                          "anyOf": [
+                            {
+                              "format": "date",
+                              "title": "Date (RFC 3339)",
+                              "description": "Date formatted according to RFC 3339.",
+                              "type": "string"
+                            },
+                            {
+                              "format": "date-time",
+                              "title": "Date with time zone (RFC 3339)",
+                              "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                              "type": "string"
+                            },
+                            {
+                              "format": "iso-date-time",
+                              "title": "Full date-time string (ISO 8601)",
+                              "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "category": {
+                          "$id": "p-category",
+                          "title": "Category",
+                          "description": "Category or categories.",
+                          "anyOf": [
+                            {
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "minLength": 1,
+                                "type": "string"
+                              }
+                            }
+                          ]
+                        },
+                        "content": {
+                          "$id": "p-content",
+                          "title": "Content",
+                          "description": "Some plain text content.",
+                          "minLength": 0,
+                          "type": "string"
+                        },
+                        "country-name": {
+                          "description": "country name",
+                          "type": "string"
+                        },
+                        "email": {
+                          "format": "email",
+                          "type": "string"
+                        },
+                        "extended-address": {
+                          "description": "apartment/suite/room name/number if any",
+                          "type": "string"
+                        },
+                        "family-name": {
+                          "description": "family (often last) name",
+                          "type": "string"
+                        },
+                        "gender-identity": {
+                          "description": "gender identity, new in vCard4 (RFC 6350)",
+                          "type": "string"
+                        },
+                        "geo": {
+                          "$ref": "h-geo"
+                        },
+                        "given-name": {
+                          "description": "given (often first) name",
+                          "type": "string"
+                        },
+                        "honorific-prefix": {
+                          "examples": [
+                            "Mr.",
+                            "Mrs.",
+                            "Dr."
+                          ],
+                          "type": "string"
+                        },
+                        "honorific-suffix": {
+                          "examples": [
+                            "Ph.D",
+                            "Esq."
+                          ],
+                          "type": "string"
+                        },
+                        "impp": {
+                          "description": "per RFC4770, new in vCard4 (RFC 6350)",
+                          "type": "string"
+                        },
+                        "job-title": {
+                          "type": "string"
+                        },
+                        "key": {
+                          "description": "cryptographic public key e.g. SSH or GPG",
+                          "type": "string"
+                        },
+                        "label": {
+                          "type": "string"
+                        },
+                        "latitude": {
+                          "$id": "p-latitude",
+                          "minimum": -90,
+                          "maximum": 90,
+                          "title": "Latitude",
+                          "description": "Coordinate that specifies the north–south position of a point on the surface of the Earth, in decimal degrees.",
+                          "type": "number"
+                        },
+                        "locality": {
+                          "description": "city/town/village",
+                          "type": "string"
+                        },
+                        "logo": {
+                          "format": "uri",
+                          "description": "a logo representing the person or organization (e.g. a face icon)",
+                          "type": "string"
+                        },
+                        "longitude": {
+                          "$id": "p-longitude",
+                          "title": "Longitude",
+                          "description": "Coordinate that specifies the east–west position of a point on the surface of the Earth, in decimal degrees.",
+                          "minimum": -180,
+                          "maximum": 180,
+                          "type": "number"
+                        },
+                        "name": {
+                          "$id": "p-name",
+                          "title": "Name",
+                          "description": "Name of the entry, event, item, product, etc (to use in h-entry, h-event, h-item, h-product, h-recipe, h-review, h-review-aggregate).",
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "nickname": {
+                          "description": "nickname/alias/handle",
+                          "type": "string"
+                        },
+                        "note": {
+                          "description": "additional notes",
+                          "type": "string"
+                        },
+                        "org": {
+                          "type": "string"
+                        },
+                        "photo": {
+                          "$id": "u-photo",
+                          "title": "Photo",
+                          "description": "URL of a photo file.",
+                          "format": "uri",
+                          "type": "string"
+                        },
+                        "postal-code": {
+                          "description": "postal code, e.g. US ZIP",
+                          "type": "string"
+                        },
+                        "post-office-box": {
+                          "description": "post office box description if any",
+                          "type": "string"
+                        },
+                        "region": {
+                          "description": "state/county/province",
+                          "type": "string"
+                        },
+                        "role": {
+                          "description": "description of role",
+                          "type": "string"
+                        },
+                        "sex": {
+                          "description": "biological sex, new in vCard4 (RFC 6350)",
+                          "type": "string"
+                        },
+                        "sort-string": {
+                          "description": "string to sort by",
+                          "type": "string"
+                        },
+                        "street-address": {
+                          "description": "street number + name",
+                          "type": "string"
+                        },
+                        "tel": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "const": "card",
+                          "type": "string"
+                        },
+                        "uid": {
+                          "$id": "u-uid",
+                          "title": "UID",
+                          "description": "URL/URI that uniquely/canonically identifies the object).",
+                          "format": "uri",
+                          "type": "string"
+                        },
+                        "url": {
+                          "$ref": "u-url"
+                        }
+                      },
+                      "required": [
+                        "type"
+                      ]
+                    }
+                  ]
+                },
+                "bookmark-of": {
+                  "$id": "u-url",
+                  "title": "URL",
+                  "description": "URL of the card, entry, event, etc.",
                   "format": "uri",
                   "type": "string"
                 },
-                {
-                  "type": "array",
-                  "items": {
-                    "title": "URL of the card, entry, event, etc.",
-                    "description": "URL to use in h-card, h-entry, h-event, etc.",
-                    "format": "uri",
-                    "type": "string"
-                  }
-                }
-              ]
-            },
-            "author": {},
-            "bookmark-of": {
-              "title": "URL of the card, entry, event, etc.",
-              "description": "URL to use in h-card, h-entry, h-event, etc.",
-              "format": "uri",
-              "type": "string"
-            },
-            "category": {
-              "anyOf": [
-                {
-                  "minLength": 1,
-                  "type": "string"
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "minLength": 1,
-                    "type": "string"
-                  }
-                }
-              ]
-            },
-            "checkin": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "content": {
-              "anyOf": [
-                {
-                  "$id": "p-content",
-                  "description": "Some plain text content",
-                  "title": "content",
-                  "minLength": 0,
-                  "type": "string"
-                },
-                {
-                  "$id": "e-content",
-                  "title": "content with `html` and optional `text`",
-                  "type": "object",
-                  "properties": {
-                    "html": {
-                      "description": "The text/html version of the containing object. `html` MUST be a single string value only.",
-                      "minLength": 1,
-                      "type": "string"
-                    },
-                    "text": {
-                      "description": "The text/plain version of the containing object. `text` MUST be a single string value only.",
-                      "minLength": 1,
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "html"
-                  ]
-                }
-              ]
-            },
-            "date": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "in-reply-to": {
-              "title": "URL of the card, entry, event, etc.",
-              "description": "URL to use in h-card, h-entry, h-event, etc.",
-              "format": "uri",
-              "type": "string"
-            },
-            "like-of": {
-              "title": "URL of the card, entry, event, etc.",
-              "description": "URL to use in h-card, h-entry, h-event, etc.",
-              "format": "uri",
-              "type": "string"
-            },
-            "location": {
-              "anyOf": [
-                {
-                  "$id": "p-location",
-                  "description": "Location in plain text.",
-                  "minLength": 1,
-                  "type": "string"
-                },
-                {
-                  "$id": "p-geo",
-                  "pattern": "geo:-?[0-9]{1,2}.[0-9]*,-?[0-9]{1,3}.?[0-9]*(;u=[0-9]{1,2})?",
-                  "minLength": 8,
-                  "title": "geo URI",
-                  "description": "The geo URI scheme is a Uniform Resource Identifier (URI) scheme defined by the Internet Engineering Task Force's RFC 5870",
-                  "examples": [
-                    "geo:37.786971,-122.399677",
-                    "geo:37.786971,-122.399677;u=35"
-                  ],
-                  "type": "string"
-                },
-                {
-                  "$id": "h-adr",
-                  "title": "microformats2 h-adr",
-                  "description": "h-adr is a simple, open format for publishing structured locations such as addresses, physical and/or postal.",
-                  "examples": [
+                "category": {
+                  "anyOf": [
                     {
-                      "altitude": 43,
-                      "country-name": "Iceland",
-                      "latitude": 64.128288,
-                      "locality": "Reykjavík",
-                      "longitude": -21.827774,
-                      "postal-code": "107",
-                      "street-address": "17 Austerstræti"
-                    },
-                    {
-                      "geo": {
-                        "latitude": 64.128288,
-                        "locality": "Reykjavík",
-                        "longitude": -21.827774
-                      }
-                    },
-                    {
-                      "geo": "geo:37.786971,-122.399677;u=35"
-                    }
-                  ],
-                  "type": "object",
-                  "properties": {
-                    "altitude": {
-                      "$id": "p-altitude",
-                      "description": "Distance in metres from the nominal sea level along the tangent of the earth’s curve, i.e. the geoid height.",
-                      "title": "Altitude",
-                      "type": "number"
-                    },
-                    "country-name": {
-                      "type": "string"
-                    },
-                    "extended-address": {
-                      "type": "string"
-                    },
-                    "geo": {
+                      "$id": "p-category",
+                      "title": "Category",
+                      "description": "Category or categories.",
                       "anyOf": [
                         {
-                          "$ref": "p-geo"
+                          "minLength": 1,
+                          "type": "string"
                         },
                         {
-                          "$ref": "h-geo"
+                          "type": "array",
+                          "items": {
+                            "minLength": 1,
+                            "type": "string"
+                          }
                         }
                       ]
                     },
-                    "label": {
+                    {
+                      "type": "array",
+                      "items": {
+                        "$id": "p-category",
+                        "title": "Category",
+                        "description": "Category or categories.",
+                        "anyOf": [
+                          {
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "minLength": 1,
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "checkin": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "content": {
+                  "anyOf": [
+                    {
+                      "$id": "p-content",
+                      "title": "Content",
+                      "description": "Some plain text content.",
+                      "minLength": 0,
                       "type": "string"
                     },
-                    "latitude": {
-                      "$id": "p-latitude",
-                      "minimum": -90,
-                      "maximum": 90,
-                      "title": "Latitude",
-                      "description": "Coordinate that specifies the north–south position of a point on the surface of the Earth, in decimal degrees.",
-                      "type": "number"
-                    },
-                    "locality": {
+                    {
+                      "$id": "e-content",
+                      "title": "Content with `html` and optional `text`.",
+                      "type": "object",
+                      "properties": {
+                        "html": {
+                          "title": "Content (HTML)",
+                          "description": "The text/html version of the containing object. `html` MUST be a single string value only.",
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "text": {
+                          "title": "Content (plain text)",
+                          "description": "The text/plain version of the containing object. `text` MUST be a single string value only.",
+                          "minLength": 1,
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "html"
+                      ]
+                    }
+                  ]
+                },
+                "date": {
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
                       "type": "string"
                     },
-                    "longitude": {
-                      "$id": "p-longitude",
-                      "description": "Coordinate that specifies the east–west position of a point on the surface of the Earth, in decimal degrees.",
-                      "title": "Longitude",
-                      "minimum": -180,
-                      "maximum": 180,
-                      "type": "number"
-                    },
-                    "post-office-box": {
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
                       "type": "string"
                     },
-                    "postal-code": {
-                      "type": "string"
-                    },
-                    "region": {
-                      "type": "string"
-                    },
-                    "street-address": {
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
                       "type": "string"
                     }
-                  }
-                }
-              ]
-            },
-            "mp-channel": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "mp-destination": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "mp-limit": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "mp-photo-alt": {
-              "anyOf": [
-                {
-                  "minLength": 1,
-                  "type": "string"
+                  ]
                 },
-                {
-                  "type": "array",
-                  "items": {
-                    "minLength": 1,
-                    "type": "string"
-                  }
-                }
-              ]
-            },
-            "mp-slug": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "mp-syndicate-to": {
-              "anyOf": [
-                {
-                  "minLength": 1,
-                  "type": "string"
+                "end": {
+                  "$id": "dt-end",
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                      "type": "string"
+                    },
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                      "type": "string"
+                    }
+                  ]
                 },
-                {
-                  "type": "array",
-                  "items": {
-                    "minLength": 1,
-                    "type": "string"
-                  }
-                }
-              ]
-            },
-            "name": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "photo": {},
-            "post-status": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "published": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "read-of": {
-              "anyOf": [
-                {
-                  "title": "URL of the card, entry, event, etc.",
-                  "description": "URL to use in h-card, h-entry, h-event, etc.",
+                "in-reply-to": {
+                  "$id": "u-url",
+                  "title": "URL",
+                  "description": "URL of the card, entry, event, etc.",
                   "format": "uri",
                   "type": "string"
                 },
-                {
-                  "$id": "h-cite",
-                  "title": "microformats2 h-cite",
-                  "description": "h-cite is a simple, open format for publishing citations and references to online and other publications.",
-                  "examples": [
+                "like-of": {
+                  "$id": "u-url",
+                  "title": "URL",
+                  "description": "URL of the card, entry, event, etc.",
+                  "format": "uri",
+                  "type": "string"
+                },
+                "location": {
+                  "anyOf": [
                     {
-                      "author": "Isaac Newton",
-                      "name": "The Correspondence of Isaac Newton: Volume 5",
-                      "content": "If I have seen further it is by standing on the shoulders of Giants."
+                      "$id": "p-location",
+                      "description": "Location in plain text.",
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "$id": "p-geo",
+                      "pattern": "geo:-?[0-9]{1,2}.[0-9]*,-?[0-9]{1,3}.?[0-9]*(;u=[0-9]{1,2})?",
+                      "minLength": 8,
+                      "title": "Geo URI",
+                      "description": "The geo URI scheme is a Uniform Resource Identifier (URI) scheme defined by the Internet Engineering Task Force's RFC 5870.",
+                      "examples": [
+                        "geo:37.786971,-122.399677",
+                        "geo:37.786971,-122.399677;u=35"
+                      ],
+                      "type": "string"
+                    },
+                    {
+                      "$id": "h-adr",
+                      "title": "microformats2 h-adr",
+                      "description": "h-adr is a simple, open format for publishing structured locations such as addresses, physical and/or postal.",
+                      "examples": [
+                        {
+                          "altitude": 43,
+                          "country-name": "Iceland",
+                          "latitude": 64.128288,
+                          "locality": "Reykjavík",
+                          "longitude": -21.827774,
+                          "postal-code": "107",
+                          "street-address": "17 Austerstræti"
+                        },
+                        {
+                          "geo": {
+                            "latitude": 64.128288,
+                            "locality": "Reykjavík",
+                            "longitude": -21.827774
+                          }
+                        },
+                        {
+                          "geo": "geo:37.786971,-122.399677;u=35"
+                        }
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "altitude": {
+                          "$id": "p-altitude",
+                          "title": "Altitude",
+                          "description": "Distance in metres from the nominal sea level along the tangent of the earth’s curve, i.e. the geoid height.",
+                          "type": "number"
+                        },
+                        "country-name": {
+                          "type": "string"
+                        },
+                        "extended-address": {
+                          "type": "string"
+                        },
+                        "geo": {
+                          "anyOf": [
+                            {
+                              "$ref": "p-geo"
+                            },
+                            {
+                              "$ref": "h-geo"
+                            }
+                          ]
+                        },
+                        "label": {
+                          "type": "string"
+                        },
+                        "latitude": {
+                          "$id": "p-latitude",
+                          "minimum": -90,
+                          "maximum": 90,
+                          "title": "Latitude",
+                          "description": "Coordinate that specifies the north–south position of a point on the surface of the Earth, in decimal degrees.",
+                          "type": "number"
+                        },
+                        "locality": {
+                          "type": "string"
+                        },
+                        "longitude": {
+                          "$id": "p-longitude",
+                          "title": "Longitude",
+                          "description": "Coordinate that specifies the east–west position of a point on the surface of the Earth, in decimal degrees.",
+                          "minimum": -180,
+                          "maximum": 180,
+                          "type": "number"
+                        },
+                        "post-office-box": {
+                          "type": "string"
+                        },
+                        "postal-code": {
+                          "type": "string"
+                        },
+                        "region": {
+                          "type": "string"
+                        },
+                        "street-address": {
+                          "type": "string"
+                        }
+                      }
                     }
-                  ],
-                  "type": "object",
-                  "properties": {
-                    "accessed": {
-                      "$ref": "dt-accessed"
+                  ]
+                },
+                "name": {
+                  "$id": "p-name",
+                  "title": "Name",
+                  "description": "Name of the entry, event, item, product, etc (to use in h-entry, h-event, h-item, h-product, h-recipe, h-review, h-review-aggregate).",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "photo": {},
+                "read-of": {
+                  "anyOf": [
+                    {
+                      "$id": "p-publication",
+                      "title": "Publication",
+                      "description": "Used for citing articles, books, etc (used in h-cite).",
+                      "minLength": 1,
+                      "type": "string"
                     },
-                    "author": {
-                      "$ref": "p-author"
+                    {
+                      "$id": "u-url",
+                      "title": "URL",
+                      "description": "URL of the card, entry, event, etc.",
+                      "format": "uri",
+                      "type": "string"
                     },
-                    "content": {
-                      "$ref": "p-content"
+                    {
+                      "$id": "h-cite",
+                      "title": "microformats2 h-cite",
+                      "description": "h-cite is a simple, open format for publishing citations and references to online and other publications.",
+                      "examples": [
+                        {
+                          "author": "Isaac Newton",
+                          "name": "The Correspondence of Isaac Newton: Volume 5",
+                          "content": "If I have seen further it is by standing on the shoulders of Giants."
+                        }
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "accessed": {
+                          "$ref": "dt-accessed"
+                        },
+                        "author": {
+                          "$ref": "p-author"
+                        },
+                        "content": {
+                          "$ref": "p-content"
+                        },
+                        "name": {
+                          "$ref": "p-name"
+                        },
+                        "publication": {
+                          "$ref": "p-publication"
+                        },
+                        "published": {
+                          "$ref": "dt-published"
+                        },
+                        "type": {
+                          "const": "cite",
+                          "type": "string"
+                        },
+                        "uid": {
+                          "$ref": "u-uid"
+                        },
+                        "url": {
+                          "$ref": "u-url"
+                        }
+                      },
+                      "required": [
+                        "type"
+                      ]
+                    }
+                  ]
+                },
+                "read-status": {
+                  "anyOf": [
+                    {
+                      "const": "to-read",
+                      "type": "string"
                     },
-                    "name": {
-                      "$ref": "p-name"
+                    {
+                      "const": "reading",
+                      "type": "string"
                     },
-                    "publication": {
-                      "$ref": "p-publication"
+                    {
+                      "const": "finished",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "repost-of": {
+                  "$id": "u-url",
+                  "title": "URL",
+                  "description": "URL of the card, entry, event, etc.",
+                  "format": "uri",
+                  "type": "string"
+                },
+                "rsvp": {
+                  "$id": "p-rsvp",
+                  "title": "RSVP",
+                  "description": "An RSVP is a reply to an event that says whether the sender is attending, is not attending, might attend, or is merely interested.",
+                  "anyOf": [
+                    {
+                      "const": "yes",
+                      "type": "string"
                     },
-                    "published": {
-                      "$ref": "dt-published"
+                    {
+                      "const": "no",
+                      "type": "string"
                     },
-                    "type": {
+                    {
+                      "const": "maybe",
+                      "type": "string"
+                    },
+                    {
+                      "const": "interested",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "start": {
+                  "$id": "dt-start",
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                      "type": "string"
+                    },
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "summary": {
+                  "$id": "p-summary",
+                  "title": "Summary",
+                  "description": "Summary of an entry (to use in h-entry, h-recipe, h-resume).",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "syndication": {
+                  "$id": "u-syndication",
+                  "title": "Syndication",
+                  "description": "URL(s) of syndicated copies of this post. The property equivalent of rel-syndication.",
+                  "anyOf": [
+                    {
+                      "title": "Syndication target",
+                      "description": "URL where the content was syndicated to.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "title": "Syndication target",
+                        "description": "URL where the content was syndicated to.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "url": {
+                  "anyOf": [
+                    {
+                      "$id": "u-url",
+                      "title": "URL",
+                      "description": "URL of the card, entry, event, etc.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$id": "u-url",
+                        "title": "URL",
+                        "description": "URL of the card, entry, event, etc.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "video": {
+                  "anyOf": [
+                    {
+                      "$id": "u-video",
+                      "title": "Video",
+                      "description": "URL of a video file.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$id": "u-video",
+                        "title": "Video",
+                        "description": "URL of a video file.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "access_token": {
+                  "$id": "mp-access-token",
+                  "title": "Access Token",
+                  "description": "The OAuth Bearer token authenticating the request (the access token may be sent in an HTTP Authorization header or this form parameter).",
+                  "type": "string"
+                },
+                "action": {
+                  "$id": "mp-action",
+                  "title": "Action",
+                  "description": "Action to perform on the object (updates are not supported in the form-encoded syntax).",
+                  "default": "create",
+                  "anyOf": [
+                    {
+                      "const": "create",
+                      "type": "string"
+                    },
+                    {
+                      "const": "update",
+                      "type": "string"
+                    },
+                    {
+                      "const": "delete",
+                      "type": "string"
+                    },
+                    {
+                      "const": "undelete",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "mp-channel": {
+                  "type": "string"
+                },
+                "mp-destination": {
+                  "$id": "mp-destination",
+                  "title": "Destination",
+                  "description": "Specify a destination to create a new post on a web site other than the default.",
+                  "type": "string"
+                },
+                "mp-limit": {
+                  "minimum": 0,
+                  "$id": "mp-limit",
+                  "title": "Limit",
+                  "description": "Adds the parameter limit to any query to limit the number of returned results.",
+                  "type": "number"
+                },
+                "mp-photo-alt": {
+                  "anyOf": [
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "minLength": 1,
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "mp-post-status": {
+                  "$id": "mp-post-status",
+                  "title": "Post status",
+                  "description": "Allows a Micropub client to set the status of a post.",
+                  "type": "string"
+                },
+                "mp-slug": {
+                  "$id": "mp-slug",
+                  "title": "Slug",
+                  "description": "Allows a Micropub client to suggest a slug to the Micropub endpoint.",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "mp-syndicate-to": {
+                  "$id": "mp-syndicate-to",
+                  "title": "Syndicate to",
+                  "description": "Syndication target/s.",
+                  "anyOf": [
+                    {
+                      "title": "Syndication target",
+                      "description": "URL where the content will be syndicated to.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "title": "Syndication target",
+                        "description": "URL where the content will be syndicated to.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "post-status": {
+                  "$id": "mp-post-status",
+                  "title": "Post status",
+                  "description": "Allows a Micropub client to set the status of a post.",
+                  "type": "string"
+                },
+                "published": {
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                      "type": "string"
+                    },
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "updated": {
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                      "type": "string"
+                    },
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "visibility": {
+                  "$id": "mp-visibility",
+                  "title": "Visibility",
+                  "description": "Adds a property for use in Micropub requests called visibility that informs a server whether a post should be public, private or unlisted.",
+                  "default": "public",
+                  "anyOf": [
+                    {
+                      "const": "public",
+                      "type": "string"
+                    },
+                    {
+                      "const": "private",
+                      "type": "string"
+                    },
+                    {
+                      "const": "unlisted",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "type": {
+                  "title": "Post type",
+                  "description": "Micropub post type.",
+                  "default": "entry",
+                  "anyOf": [
+                    {
+                      "const": "card",
+                      "type": "string"
+                    },
+                    {
                       "const": "cite",
                       "type": "string"
                     },
-                    "uid": {
-                      "$ref": "u-uid"
+                    {
+                      "const": "entry",
+                      "type": "string"
                     },
-                    "url": {
-                      "$ref": "u-url"
+                    {
+                      "const": "event",
+                      "type": "string"
                     }
-                  },
-                  "required": [
-                    "type"
                   ]
                 }
-              ]
+              }
             },
-            "read-status": {
-              "anyOf": [
-                {
-                  "const": "to-read",
-                  "type": "string"
+            {
+              "title": "JF2 (x-www-form-urlencoded or multipart/form-data)",
+              "description": "Micropub post from requests sent with `Content-Type: application/x-www-form-urlencoded` or `Content-Type: multipart/form-data`.",
+              "type": "object",
+              "properties": {
+                "audio": {
+                  "anyOf": [
+                    {
+                      "$id": "u-audio",
+                      "title": "Audio",
+                      "description": "URL of an audio file.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$id": "u-audio",
+                        "title": "Audio",
+                        "description": "URL of an audio file.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
                 },
-                {
-                  "const": "reading",
-                  "type": "string"
+                "author": {
+                  "anyOf": [
+                    {
+                      "$id": "p-author",
+                      "title": "Author",
+                      "description": "Author of a post (to use in h-entry, h-recipe).",
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "$id": "h-card",
+                      "title": "microformats2 h-card",
+                      "description": "h-card is a simple, open format for publishing people and organisations on the web. h-card is often used on home pages and individual blog posts.",
+                      "type": "object",
+                      "properties": {
+                        "additional-name": {
+                          "description": "other (e.g. middle) name",
+                          "type": "string"
+                        },
+                        "adr": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "$ref": "h-adr"
+                            }
+                          ]
+                        },
+                        "altitude": {
+                          "$id": "p-altitude",
+                          "title": "Altitude",
+                          "description": "Distance in metres from the nominal sea level along the tangent of the earth’s curve, i.e. the geoid height.",
+                          "type": "number"
+                        },
+                        "anniversary": {
+                          "$id": "dt-anniversary",
+                          "title": "Date",
+                          "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                          "anyOf": [
+                            {
+                              "format": "date",
+                              "title": "Date (RFC 3339)",
+                              "description": "Date formatted according to RFC 3339.",
+                              "type": "string"
+                            },
+                            {
+                              "format": "date-time",
+                              "title": "Date with time zone (RFC 3339)",
+                              "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                              "type": "string"
+                            },
+                            {
+                              "format": "iso-date-time",
+                              "title": "Full date-time string (ISO 8601)",
+                              "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "bday": {
+                          "$id": "dt-bday",
+                          "title": "Date",
+                          "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                          "anyOf": [
+                            {
+                              "format": "date",
+                              "title": "Date (RFC 3339)",
+                              "description": "Date formatted according to RFC 3339.",
+                              "type": "string"
+                            },
+                            {
+                              "format": "date-time",
+                              "title": "Date with time zone (RFC 3339)",
+                              "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                              "type": "string"
+                            },
+                            {
+                              "format": "iso-date-time",
+                              "title": "Full date-time string (ISO 8601)",
+                              "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "category": {
+                          "$id": "p-category",
+                          "title": "Category",
+                          "description": "Category or categories.",
+                          "anyOf": [
+                            {
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "minLength": 1,
+                                "type": "string"
+                              }
+                            }
+                          ]
+                        },
+                        "content": {
+                          "$id": "p-content",
+                          "title": "Content",
+                          "description": "Some plain text content.",
+                          "minLength": 0,
+                          "type": "string"
+                        },
+                        "country-name": {
+                          "description": "country name",
+                          "type": "string"
+                        },
+                        "email": {
+                          "format": "email",
+                          "type": "string"
+                        },
+                        "extended-address": {
+                          "description": "apartment/suite/room name/number if any",
+                          "type": "string"
+                        },
+                        "family-name": {
+                          "description": "family (often last) name",
+                          "type": "string"
+                        },
+                        "gender-identity": {
+                          "description": "gender identity, new in vCard4 (RFC 6350)",
+                          "type": "string"
+                        },
+                        "geo": {
+                          "$ref": "h-geo"
+                        },
+                        "given-name": {
+                          "description": "given (often first) name",
+                          "type": "string"
+                        },
+                        "honorific-prefix": {
+                          "examples": [
+                            "Mr.",
+                            "Mrs.",
+                            "Dr."
+                          ],
+                          "type": "string"
+                        },
+                        "honorific-suffix": {
+                          "examples": [
+                            "Ph.D",
+                            "Esq."
+                          ],
+                          "type": "string"
+                        },
+                        "impp": {
+                          "description": "per RFC4770, new in vCard4 (RFC 6350)",
+                          "type": "string"
+                        },
+                        "job-title": {
+                          "type": "string"
+                        },
+                        "key": {
+                          "description": "cryptographic public key e.g. SSH or GPG",
+                          "type": "string"
+                        },
+                        "label": {
+                          "type": "string"
+                        },
+                        "latitude": {
+                          "$id": "p-latitude",
+                          "minimum": -90,
+                          "maximum": 90,
+                          "title": "Latitude",
+                          "description": "Coordinate that specifies the north–south position of a point on the surface of the Earth, in decimal degrees.",
+                          "type": "number"
+                        },
+                        "locality": {
+                          "description": "city/town/village",
+                          "type": "string"
+                        },
+                        "logo": {
+                          "format": "uri",
+                          "description": "a logo representing the person or organization (e.g. a face icon)",
+                          "type": "string"
+                        },
+                        "longitude": {
+                          "$id": "p-longitude",
+                          "title": "Longitude",
+                          "description": "Coordinate that specifies the east–west position of a point on the surface of the Earth, in decimal degrees.",
+                          "minimum": -180,
+                          "maximum": 180,
+                          "type": "number"
+                        },
+                        "name": {
+                          "$id": "p-name",
+                          "title": "Name",
+                          "description": "Name of the entry, event, item, product, etc (to use in h-entry, h-event, h-item, h-product, h-recipe, h-review, h-review-aggregate).",
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "nickname": {
+                          "description": "nickname/alias/handle",
+                          "type": "string"
+                        },
+                        "note": {
+                          "description": "additional notes",
+                          "type": "string"
+                        },
+                        "org": {
+                          "type": "string"
+                        },
+                        "photo": {
+                          "$id": "u-photo",
+                          "title": "Photo",
+                          "description": "URL of a photo file.",
+                          "format": "uri",
+                          "type": "string"
+                        },
+                        "postal-code": {
+                          "description": "postal code, e.g. US ZIP",
+                          "type": "string"
+                        },
+                        "post-office-box": {
+                          "description": "post office box description if any",
+                          "type": "string"
+                        },
+                        "region": {
+                          "description": "state/county/province",
+                          "type": "string"
+                        },
+                        "role": {
+                          "description": "description of role",
+                          "type": "string"
+                        },
+                        "sex": {
+                          "description": "biological sex, new in vCard4 (RFC 6350)",
+                          "type": "string"
+                        },
+                        "sort-string": {
+                          "description": "string to sort by",
+                          "type": "string"
+                        },
+                        "street-address": {
+                          "description": "street number + name",
+                          "type": "string"
+                        },
+                        "tel": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "const": "card",
+                          "type": "string"
+                        },
+                        "uid": {
+                          "$id": "u-uid",
+                          "title": "UID",
+                          "description": "URL/URI that uniquely/canonically identifies the object).",
+                          "format": "uri",
+                          "type": "string"
+                        },
+                        "url": {
+                          "$ref": "u-url"
+                        }
+                      },
+                      "required": [
+                        "type"
+                      ]
+                    }
+                  ]
                 },
-                {
-                  "const": "finished",
-                  "type": "string"
-                }
-              ]
-            },
-            "repost-of": {
-              "title": "URL of the card, entry, event, etc.",
-              "description": "URL to use in h-card, h-entry, h-event, etc.",
-              "format": "uri",
-              "type": "string"
-            },
-            "rsvp": {
-              "anyOf": [
-                {
-                  "const": "yes",
-                  "type": "string"
-                },
-                {
-                  "const": "no",
-                  "type": "string"
-                },
-                {
-                  "const": "maybe",
-                  "type": "string"
-                },
-                {
-                  "const": "interested",
-                  "type": "string"
-                }
-              ]
-            },
-            "summary": {
-              "$id": "p-summary",
-              "title": "Summary",
-              "description": "Summary to use in h-entry, h-recipe, h-resume.",
-              "minLength": 1,
-              "type": "string"
-            },
-            "syndication": {
-              "$id": "u-syndication",
-              "title": "Syndication",
-              "description": "URL(s) of syndicated copies of this post. The property equivalent of rel-syndication.",
-              "anyOf": [
-                {
-                  "description": "syndication target",
+                "bookmark-of": {
+                  "$id": "u-url",
+                  "title": "URL",
+                  "description": "URL of the card, entry, event, etc.",
                   "format": "uri",
                   "type": "string"
                 },
-                {
-                  "type": "array",
-                  "items": {
-                    "description": "syndication target",
-                    "format": "uri",
-                    "type": "string"
-                  }
-                }
-              ]
-            },
-            "updated": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "url": {
-              "title": "URL of the card, entry, event, etc.",
-              "description": "URL to use in h-card, h-entry, h-event, etc.",
-              "format": "uri",
-              "type": "string"
-            },
-            "video": {
-              "anyOf": [
-                {
-                  "title": "URL of the card, entry, event, etc.",
-                  "description": "URL to use in h-card, h-entry, h-event, etc.",
+                "category": {
+                  "anyOf": [
+                    {
+                      "$id": "p-category",
+                      "title": "Category",
+                      "description": "Category or categories.",
+                      "anyOf": [
+                        {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "minLength": 1,
+                            "type": "string"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$id": "p-category",
+                        "title": "Category",
+                        "description": "Category or categories.",
+                        "anyOf": [
+                          {
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "minLength": 1,
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "checkin": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "content": {
+                  "anyOf": [
+                    {
+                      "$id": "p-content",
+                      "title": "Content",
+                      "description": "Some plain text content.",
+                      "minLength": 0,
+                      "type": "string"
+                    },
+                    {
+                      "$id": "e-content",
+                      "title": "Content with `html` and optional `text`.",
+                      "type": "object",
+                      "properties": {
+                        "html": {
+                          "title": "Content (HTML)",
+                          "description": "The text/html version of the containing object. `html` MUST be a single string value only.",
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "text": {
+                          "title": "Content (plain text)",
+                          "description": "The text/plain version of the containing object. `text` MUST be a single string value only.",
+                          "minLength": 1,
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "html"
+                      ]
+                    }
+                  ]
+                },
+                "date": {
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                      "type": "string"
+                    },
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "end": {
+                  "$id": "dt-end",
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                      "type": "string"
+                    },
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "in-reply-to": {
+                  "$id": "u-url",
+                  "title": "URL",
+                  "description": "URL of the card, entry, event, etc.",
                   "format": "uri",
                   "type": "string"
                 },
-                {
-                  "type": "array",
-                  "items": {
-                    "title": "URL of the card, entry, event, etc.",
-                    "description": "URL to use in h-card, h-entry, h-event, etc.",
-                    "format": "uri",
-                    "type": "string"
-                  }
+                "like-of": {
+                  "$id": "u-url",
+                  "title": "URL",
+                  "description": "URL of the card, entry, event, etc.",
+                  "format": "uri",
+                  "type": "string"
+                },
+                "location": {
+                  "anyOf": [
+                    {
+                      "$id": "p-location",
+                      "description": "Location in plain text.",
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "$id": "p-geo",
+                      "pattern": "geo:-?[0-9]{1,2}.[0-9]*,-?[0-9]{1,3}.?[0-9]*(;u=[0-9]{1,2})?",
+                      "minLength": 8,
+                      "title": "Geo URI",
+                      "description": "The geo URI scheme is a Uniform Resource Identifier (URI) scheme defined by the Internet Engineering Task Force's RFC 5870.",
+                      "examples": [
+                        "geo:37.786971,-122.399677",
+                        "geo:37.786971,-122.399677;u=35"
+                      ],
+                      "type": "string"
+                    },
+                    {
+                      "$id": "h-adr",
+                      "title": "microformats2 h-adr",
+                      "description": "h-adr is a simple, open format for publishing structured locations such as addresses, physical and/or postal.",
+                      "examples": [
+                        {
+                          "altitude": 43,
+                          "country-name": "Iceland",
+                          "latitude": 64.128288,
+                          "locality": "Reykjavík",
+                          "longitude": -21.827774,
+                          "postal-code": "107",
+                          "street-address": "17 Austerstræti"
+                        },
+                        {
+                          "geo": {
+                            "latitude": 64.128288,
+                            "locality": "Reykjavík",
+                            "longitude": -21.827774
+                          }
+                        },
+                        {
+                          "geo": "geo:37.786971,-122.399677;u=35"
+                        }
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "altitude": {
+                          "$id": "p-altitude",
+                          "title": "Altitude",
+                          "description": "Distance in metres from the nominal sea level along the tangent of the earth’s curve, i.e. the geoid height.",
+                          "type": "number"
+                        },
+                        "country-name": {
+                          "type": "string"
+                        },
+                        "extended-address": {
+                          "type": "string"
+                        },
+                        "geo": {
+                          "anyOf": [
+                            {
+                              "$ref": "p-geo"
+                            },
+                            {
+                              "$ref": "h-geo"
+                            }
+                          ]
+                        },
+                        "label": {
+                          "type": "string"
+                        },
+                        "latitude": {
+                          "$id": "p-latitude",
+                          "minimum": -90,
+                          "maximum": 90,
+                          "title": "Latitude",
+                          "description": "Coordinate that specifies the north–south position of a point on the surface of the Earth, in decimal degrees.",
+                          "type": "number"
+                        },
+                        "locality": {
+                          "type": "string"
+                        },
+                        "longitude": {
+                          "$id": "p-longitude",
+                          "title": "Longitude",
+                          "description": "Coordinate that specifies the east–west position of a point on the surface of the Earth, in decimal degrees.",
+                          "minimum": -180,
+                          "maximum": 180,
+                          "type": "number"
+                        },
+                        "post-office-box": {
+                          "type": "string"
+                        },
+                        "postal-code": {
+                          "type": "string"
+                        },
+                        "region": {
+                          "type": "string"
+                        },
+                        "street-address": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "name": {
+                  "$id": "p-name",
+                  "title": "Name",
+                  "description": "Name of the entry, event, item, product, etc (to use in h-entry, h-event, h-item, h-product, h-recipe, h-review, h-review-aggregate).",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "photo": {},
+                "read-of": {
+                  "anyOf": [
+                    {
+                      "$id": "p-publication",
+                      "title": "Publication",
+                      "description": "Used for citing articles, books, etc (used in h-cite).",
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "$id": "u-url",
+                      "title": "URL",
+                      "description": "URL of the card, entry, event, etc.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "$id": "h-cite",
+                      "title": "microformats2 h-cite",
+                      "description": "h-cite is a simple, open format for publishing citations and references to online and other publications.",
+                      "examples": [
+                        {
+                          "author": "Isaac Newton",
+                          "name": "The Correspondence of Isaac Newton: Volume 5",
+                          "content": "If I have seen further it is by standing on the shoulders of Giants."
+                        }
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "accessed": {
+                          "$ref": "dt-accessed"
+                        },
+                        "author": {
+                          "$ref": "p-author"
+                        },
+                        "content": {
+                          "$ref": "p-content"
+                        },
+                        "name": {
+                          "$ref": "p-name"
+                        },
+                        "publication": {
+                          "$ref": "p-publication"
+                        },
+                        "published": {
+                          "$ref": "dt-published"
+                        },
+                        "type": {
+                          "const": "cite",
+                          "type": "string"
+                        },
+                        "uid": {
+                          "$ref": "u-uid"
+                        },
+                        "url": {
+                          "$ref": "u-url"
+                        }
+                      },
+                      "required": [
+                        "type"
+                      ]
+                    }
+                  ]
+                },
+                "read-status": {
+                  "anyOf": [
+                    {
+                      "const": "to-read",
+                      "type": "string"
+                    },
+                    {
+                      "const": "reading",
+                      "type": "string"
+                    },
+                    {
+                      "const": "finished",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "repost-of": {
+                  "$id": "u-url",
+                  "title": "URL",
+                  "description": "URL of the card, entry, event, etc.",
+                  "format": "uri",
+                  "type": "string"
+                },
+                "rsvp": {
+                  "$id": "p-rsvp",
+                  "title": "RSVP",
+                  "description": "An RSVP is a reply to an event that says whether the sender is attending, is not attending, might attend, or is merely interested.",
+                  "anyOf": [
+                    {
+                      "const": "yes",
+                      "type": "string"
+                    },
+                    {
+                      "const": "no",
+                      "type": "string"
+                    },
+                    {
+                      "const": "maybe",
+                      "type": "string"
+                    },
+                    {
+                      "const": "interested",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "start": {
+                  "$id": "dt-start",
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                      "type": "string"
+                    },
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "summary": {
+                  "$id": "p-summary",
+                  "title": "Summary",
+                  "description": "Summary of an entry (to use in h-entry, h-recipe, h-resume).",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "syndication": {
+                  "$id": "u-syndication",
+                  "title": "Syndication",
+                  "description": "URL(s) of syndicated copies of this post. The property equivalent of rel-syndication.",
+                  "anyOf": [
+                    {
+                      "title": "Syndication target",
+                      "description": "URL where the content was syndicated to.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "title": "Syndication target",
+                        "description": "URL where the content was syndicated to.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "url": {
+                  "anyOf": [
+                    {
+                      "$id": "u-url",
+                      "title": "URL",
+                      "description": "URL of the card, entry, event, etc.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$id": "u-url",
+                        "title": "URL",
+                        "description": "URL of the card, entry, event, etc.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "video": {
+                  "anyOf": [
+                    {
+                      "$id": "u-video",
+                      "title": "Video",
+                      "description": "URL of a video file.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$id": "u-video",
+                        "title": "Video",
+                        "description": "URL of a video file.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "access_token": {
+                  "$id": "mp-access-token",
+                  "title": "Access Token",
+                  "description": "The OAuth Bearer token authenticating the request (the access token may be sent in an HTTP Authorization header or this form parameter).",
+                  "type": "string"
+                },
+                "action": {
+                  "$id": "mp-action",
+                  "title": "Action",
+                  "description": "Action to perform on the object (updates are not supported in the form-encoded syntax).",
+                  "default": "create",
+                  "anyOf": [
+                    {
+                      "const": "create",
+                      "type": "string"
+                    },
+                    {
+                      "const": "update",
+                      "type": "string"
+                    },
+                    {
+                      "const": "delete",
+                      "type": "string"
+                    },
+                    {
+                      "const": "undelete",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "mp-channel": {
+                  "type": "string"
+                },
+                "mp-destination": {
+                  "$id": "mp-destination",
+                  "title": "Destination",
+                  "description": "Specify a destination to create a new post on a web site other than the default.",
+                  "type": "string"
+                },
+                "mp-limit": {
+                  "minimum": 0,
+                  "$id": "mp-limit",
+                  "title": "Limit",
+                  "description": "Adds the parameter limit to any query to limit the number of returned results.",
+                  "type": "number"
+                },
+                "mp-photo-alt": {
+                  "anyOf": [
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "minLength": 1,
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "mp-post-status": {
+                  "$id": "mp-post-status",
+                  "title": "Post status",
+                  "description": "Allows a Micropub client to set the status of a post.",
+                  "type": "string"
+                },
+                "mp-slug": {
+                  "$id": "mp-slug",
+                  "title": "Slug",
+                  "description": "Allows a Micropub client to suggest a slug to the Micropub endpoint.",
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "mp-syndicate-to": {
+                  "$id": "mp-syndicate-to",
+                  "title": "Syndicate to",
+                  "description": "Syndication target/s.",
+                  "anyOf": [
+                    {
+                      "title": "Syndication target",
+                      "description": "URL where the content will be syndicated to.",
+                      "format": "uri",
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "title": "Syndication target",
+                        "description": "URL where the content will be syndicated to.",
+                        "format": "uri",
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "post-status": {
+                  "$id": "mp-post-status",
+                  "title": "Post status",
+                  "description": "Allows a Micropub client to set the status of a post.",
+                  "type": "string"
+                },
+                "published": {
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                      "type": "string"
+                    },
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "updated": {
+                  "title": "Date",
+                  "description": "Date formatted according to ISO 8601 or RFC 3339.",
+                  "anyOf": [
+                    {
+                      "format": "date",
+                      "title": "Date (RFC 3339)",
+                      "description": "Date formatted according to RFC 3339.",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "title": "Date with time zone (RFC 3339)",
+                      "description": "Date-time formatted according to RFC 3339 (time-zone is mandatory).",
+                      "type": "string"
+                    },
+                    {
+                      "format": "iso-date-time",
+                      "title": "Full date-time string (ISO 8601)",
+                      "description": "Represents a full date-time string in the ISO 8601 format (time zone is optional).",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "visibility": {
+                  "$id": "mp-visibility",
+                  "title": "Visibility",
+                  "description": "Adds a property for use in Micropub requests called visibility that informs a server whether a post should be public, private or unlisted.",
+                  "default": "public",
+                  "anyOf": [
+                    {
+                      "const": "public",
+                      "type": "string"
+                    },
+                    {
+                      "const": "private",
+                      "type": "string"
+                    },
+                    {
+                      "const": "unlisted",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "h": {
+                  "title": "Post type",
+                  "description": "Micropub post type.",
+                  "default": "entry",
+                  "anyOf": [
+                    {
+                      "const": "card",
+                      "type": "string"
+                    },
+                    {
+                      "const": "cite",
+                      "type": "string"
+                    },
+                    {
+                      "const": "entry",
+                      "type": "string"
+                    },
+                    {
+                      "const": "event",
+                      "type": "string"
+                    }
+                  ]
                 }
-              ]
-            },
-            "visibility": {
-              "minLength": 1,
-              "type": "string"
-            },
-            "type": {
-              "default": "entry",
-              "title": "JF2 item type",
-              "anyOf": [
-                {
-                  "const": "card",
-                  "type": "string"
-                },
-                {
-                  "const": "cite",
-                  "type": "string"
-                },
-                {
-                  "const": "entry",
-                  "type": "string"
-                },
-                {
-                  "const": "event",
-                  "type": "string"
-                }
-              ]
+              }
             }
-          }
+          ]
         }
       ],
       "returns": {
@@ -1176,7 +4136,27 @@
       "returns": {
         "type": "Promise",
         "item": {
-          "type": "void"
+          "type": "object",
+          "properties": {
+            "details": {
+              "type": "array",
+              "items": {
+                "minLength": 1,
+                "description": "Some detail of the operation.",
+                "type": "string"
+              }
+            },
+            "summary": {
+              "minLength": 1,
+              "title": "Summary",
+              "description": "Summary of the operation.",
+              "type": "string"
+            },
+            "other_details": {}
+          },
+          "required": [
+            "summary"
+          ]
         }
       }
     }
