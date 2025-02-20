@@ -33,6 +33,7 @@
     "@jackdbd/fastify-authorization-endpoint": "*",
     "@jackdbd/fastify-micropub-endpoint": "*",
     "@jackdbd/fastify-token-endpoint": "*",
+    "@jackdbd/fastify-syndicate-endpoint": "*",
     "@jackdbd/indieauth": "*",
     "@jackdbd/micropub": "*",
     "close-with-grace": "^2.2.0",

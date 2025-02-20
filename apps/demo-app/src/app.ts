@@ -7,14 +7,16 @@ import introspectionEndpoint from '@jackdbd/fastify-introspection-endpoint'
 import mediaEndpoint from '@jackdbd/fastify-media-endpoint'
 import micropubEndpoint from '@jackdbd/fastify-micropub-endpoint'
 import revocationEndpoint from '@jackdbd/fastify-revocation-endpoint'
-// import syndicateEndpoint from '@jackdbd/fastify-syndicate-endpoint'
+import syndicateEndpoint from '@jackdbd/fastify-syndicate-endpoint'
 import tokenEndpoint from '@jackdbd/fastify-token-endpoint'
 import userinfoEndpoint from '@jackdbd/fastify-userinfo-endpoint'
+import { defErrorHandler } from '@repo/error-handlers'
 import Fastify from 'fastify'
 import nunjucks from 'nunjucks'
 import type { Environment } from 'nunjucks'
 import { tap } from './nunjucks/filters.js'
 import { defJf2ToLocation } from '@jackdbd/github-content-store'
+import { defTelegramSyndicator } from './syndicators/index.js'
 import {
   createPost,
   deleteMedia,
@@ -29,13 +31,16 @@ import {
   onUserApprovedRequest,
   retrieveAccessToken,
   retrieveAuthorizationCode,
+  retrievePost,
   retrieveRefreshToken,
   retrieveUserProfile,
   revokeAccessToken,
   revokeRefreshToken,
   undeletePost,
-  updatePost,
-  uploadMedia
+  // updatePost,
+  updatePostAlternative as updatePost,
+  uploadMedia,
+  urlToLocation
 } from './user-provided-functions.js'
 import {
   jwks,
@@ -149,6 +154,31 @@ export const defFastify = (config: Config) => {
     uploadMedia
   })
 
+  console.log('=== syndicate_to ===', syndicate_to)
+  const { uid } = syndicate_to.filter((d) => d.uid.includes('t.me'))[0]!
+
+  const telegram_syndicator = defTelegramSyndicator({
+    // chat_id: process.env.TELEGRAM_CHAT_ID!,
+    log: {
+      debug: fastify.log.debug.bind(fastify.log),
+      info: fastify.log.info.bind(fastify.log),
+      warn: fastify.log.warn.bind(fastify.log),
+      error: fastify.log.error.bind(fastify.log)
+    },
+    // token: process.env.TELEGRAM_TOKEN!,
+    uid
+  })
+
+  fastify.register(syndicateEndpoint, {
+    includeErrorDescription,
+    isAccessTokenRevoked,
+    me,
+    retrievePost,
+    syndicators: [telegram_syndicator],
+    updatePost,
+    urlToLocation
+  })
+
   fastify.register(revocationEndpoint, {
     includeErrorDescription,
     isAccessTokenRevoked,
@@ -247,6 +277,13 @@ export const defFastify = (config: Config) => {
       payload
     })
   })
+
+  fastify.setErrorHandler(
+    defErrorHandler({
+      includeErrorDescription,
+      logPrefix: `[app/error-handler] `
+    })
+  )
 
   return fastify
 }

@@ -1,7 +1,9 @@
 import {
   defDefaultPublication,
   defJf2ToLocation,
-  defWebsiteUrlToStoreLocation
+  defRetrieveContent,
+  defUpdate,
+  defUrlToLocation
 } from '@jackdbd/github-content-store'
 import { unixTimestampInSeconds } from '@jackdbd/indieauth'
 import type {
@@ -16,15 +18,17 @@ import type {
   RetrieveUserProfile,
   RevokeAccessToken,
   RevokeRefreshToken
-} from '@jackdbd/indieauth/schemas/user-provided-functions'
+} from '@jackdbd/indieauth/schemas/index'
 import type {
   CreatePost,
   DeletePost,
-  Jf2ToLocation,
+  JF2ToLocation,
+  RetrievePost,
   UndeletePost,
   UpdatePost,
-  UploadMedia
-} from '@jackdbd/micropub/schemas/user-provided-functions'
+  UploadMedia,
+  WebsiteUrlToStoreLocation
+} from '@jackdbd/micropub/schemas/index'
 import { codeChallenge } from '@jackdbd/pkce'
 import { nanoid } from 'nanoid'
 import {
@@ -35,11 +39,19 @@ import {
   SCOPE
 } from '../../../packages/stdlib/lib/test-utils.js'
 import { defConfig } from './config.js'
+import { isMpUrlencodedRequestBody, MP_Post_Type } from '@jackdbd/micropub'
 
 export const store_name = 'Fake GitHub repository'
 const domain = 'giacomodebidda.com'
 const subdomain = 'www'
 export const publication = defDefaultPublication({ domain, subdomain })
+const owner = 'jackdbd' // github username
+const committer = {
+  name: 'Giacomo Debidda',
+  email: 'giacomo@giacomodebidda.com'
+}
+const repo = 'giacomodebidda-content' // github repository that I use as my content store
+// const repo = 'nonexistent-repository'
 
 const logPrefix = 'user-fx ' // user-provided side effect
 const { client_id, me, issuer, redirect_uri } = defConfig(3001)
@@ -50,22 +62,49 @@ export const jf2ToLocation = defJf2ToLocation({
   publication
 })
 
-export const websiteUrlToStoreLocation = defWebsiteUrlToStoreLocation({
+export const retrievePost = defRetrieveContent({
+  log: console,
+  name: store_name,
+  owner,
+  repo,
+  // token: 'wrong-token'
+  token: process.env.CONTENTS_API_GITHUB_TOKEN
+})
+
+export const urlToLocation = defUrlToLocation({
   log: console,
   name: store_name,
   publication
 })
 
-export const createPost: CreatePost = async (jf2) => {
-  console.log(`[${logPrefix}create] JF2`)
-  console.log(JSON.stringify(jf2, null, 2))
+export const updatePost = defUpdate({
+  committer,
+  log: console,
+  owner,
+  repo,
+  // token: 'wrong-token',
+  token: process.env.CONTENTS_API_GITHUB_TOKEN,
+  urlToLocation
+})
+
+export const createPost: CreatePost = async (input) => {
+  console.log(`[${logPrefix}create] input`)
+  console.log(JSON.stringify(input, null, 2))
+
+  let post_type: MP_Post_Type
+  if (isMpUrlencodedRequestBody(input)) {
+    post_type = input.h || 'entry'
+  } else {
+    post_type = input.type || 'entry'
+  }
+
   // throw new Error(`Simulate runtime exception in createPost.`)
-  return { summary: `Created post of type ${jf2.type}` }
+  return { summary: `Fake created post of type ${post_type}` }
 }
 
 export const deletePost: DeletePost = async (url) => {
   console.log(`[${logPrefix}deletePost] ${url} => location`)
-  const loc = websiteUrlToStoreLocation(url)
+  const loc = urlToLocation(url)
   console.log(JSON.stringify(loc, null, 2))
   // throw new Error(`Simulate runtime exception in deletePost.`)
   return { summary: `Deleted ${url}` }
@@ -73,7 +112,7 @@ export const deletePost: DeletePost = async (url) => {
 
 export const deleteMedia: DeletePost = async (url) => {
   console.log(`[${logPrefix}deleteMedia] ${url} => location`)
-  const loc = websiteUrlToStoreLocation(url)
+  const loc = urlToLocation(url)
   console.log(JSON.stringify(loc, null, 2))
   // throw new Error(`Simulate runtime exception in deleteMedia.`)
   return { summary: `Deleted ${url}` }
@@ -193,6 +232,18 @@ export const retrieveAuthorizationCode: RetrieveAuthorizationCode = async (
   }
 }
 
+export const retrievePostAlternative: RetrievePost = async (loc) => {
+  console.log(`[${logPrefix}retrievePost] location`, loc)
+  throw new Error(`Simulate runtime exception in retrievePost.`)
+  return {
+    summary: `Fake retrieved post done.`,
+    jf2: { type: 'entry', content: 'Hello world' },
+    metadata: {
+      sha: '123abc'
+    }
+  }
+}
+
 export const retrieveRefreshToken: RetrieveRefreshToken = async (
   refresh_token
 ) => {
@@ -241,12 +292,35 @@ export const revokeRefreshToken: RevokeRefreshToken = async (props) => {
   // throw new Error(`Simulate runtime exception in revokeRefreshToken.`)
 }
 
-export const jf2ToLocationAlternative: Jf2ToLocation = (jf2) => {
-  console.log(`[${logPrefix}jf2ToLocation] jf2`, jf2)
+export const websiteUrlToStoreLocationAlternative: WebsiteUrlToStoreLocation = (
+  url
+) => {
+  console.log(`[${logPrefix}websiteUrlToStoreLocationAlternative] url: ${url}`)
+  // throw new Error(`Simulate runtime exception in websiteUrlToStoreLocation.`)
+
+  const str = 'default'
+  const slug = nanoid().toLocaleLowerCase().replaceAll('-', '')
+
+  return {
+    store: `${str}/${slug}.md`,
+    store_deleted: `deleted/${str}/${slug}.md`,
+    website: `https://${subdomain}.${domain}/${str}/${slug}/`
+  }
+}
+
+export const jf2ToLocationAlternative: JF2ToLocation = (input) => {
+  console.log(`[${logPrefix}jf2ToLocation] input`, input)
   // throw new Error(`Simulate runtime exception in jf2ToWebsiteUrl2.`)
 
+  let post_type: MP_Post_Type
+  if (isMpUrlencodedRequestBody(input)) {
+    post_type = input.h || 'entry'
+  } else {
+    post_type = input.type || 'entry'
+  }
+
   let str = ''
-  switch (jf2.type) {
+  switch (post_type) {
     case 'card': {
       str = 'cards'
       break
@@ -264,7 +338,7 @@ export const jf2ToLocationAlternative: Jf2ToLocation = (jf2) => {
       break
     }
     default: {
-      throw new Error(`Unsupported type: ${jf2.type}`)
+      throw new Error(`Unsupported type: ${post_type}`)
     }
   }
 
@@ -279,16 +353,17 @@ export const jf2ToLocationAlternative: Jf2ToLocation = (jf2) => {
 
 export const undeletePost: UndeletePost = async (url) => {
   console.log(`[${logPrefix}undeletePost] ${url} => location`)
-  const loc = websiteUrlToStoreLocation(url)
+  const loc = urlToLocation(url)
   console.log(JSON.stringify(loc, null, 2))
   // throw new Error(`Simulate runtime exception in undeletePost.`)
   return { summary: `Undeleted ${url}` }
 }
 
-export const updatePost: UpdatePost = async (url, patch) => {
+export const updatePostAlternative: UpdatePost = async (url, patch) => {
   console.log(`[${logPrefix}updatePost] apply this update patch to ${url}`)
   console.log(JSON.stringify(patch, null, 2))
   // throw new Error(`Simulate runtime exception in updatePost.`)
+  return { summary: `Fake update post done.` }
 }
 
 export const uploadMedia: UploadMedia = async (props) => {
