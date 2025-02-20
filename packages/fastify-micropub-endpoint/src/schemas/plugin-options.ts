@@ -1,7 +1,7 @@
 import {
   me_before_url_canonicalization,
   me_after_url_canonicalization
-} from '@jackdbd/indieauth/schemas'
+} from '@jackdbd/indieauth/schemas/index'
 import { isAccessTokenRevoked } from '@jackdbd/indieauth/schemas/user-provided-functions'
 import type { IsAccessTokenRevoked } from '@jackdbd/indieauth/schemas/user-provided-functions'
 import {
@@ -14,7 +14,7 @@ import {
 import type {
   CreatePost,
   DeletePost,
-  Jf2ToLocation,
+  JF2ToLocation,
   UndeletePost,
   UpdatePost
 } from '@jackdbd/micropub/schemas/user-provided-functions'
@@ -87,7 +87,7 @@ export interface Options extends Static<typeof options> {
   createPost: CreatePost
   deletePost: DeletePost
   isAccessTokenRevoked: IsAccessTokenRevoked
-  jf2ToLocation: Jf2ToLocation
+  jf2ToLocation: JF2ToLocation
   undeletePost?: UndeletePost
   updatePost: UpdatePost
 }

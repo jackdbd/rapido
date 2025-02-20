@@ -1,23 +1,21 @@
 import { requestContext } from '@fastify/request-context'
 import { rfc3339 } from '@jackdbd/indieauth'
+import { isMF2, isParsedMF2, type ParsedMF2 } from '@jackdbd/microformats2'
 import { InvalidRequestError } from '@jackdbd/oauth2-error-responses'
 import type { RouteHandler, RouteGenericInterface } from 'fastify'
 import {
   mf2tTojf2,
   normalizeJf2,
-  isMF2,
   isMpUrlencodedRequestBody,
-  isParsedMF2,
   jf2WithNoSensitiveProps,
   jf2WithNoUselessProps
 } from '@jackdbd/micropub'
 import { jf2 as jf2_schema } from '@jackdbd/micropub/schemas'
 import type {
   Action,
-  JF2,
-  MP_UrlencodedRequestBody,
-  UpdatePatch,
-  ParsedMF2
+  JF2_JSON,
+  JF2_Urlencoded_Or_Multipart,
+  UpdatePatch
 } from '@jackdbd/micropub/schemas'
 import { conformResult } from '@jackdbd/schema-validators'
 import type { MicropubPostConfig, PostRequestBody } from '../schemas/index.js'
@@ -29,7 +27,7 @@ import {
 declare module '@fastify/request-context' {
   interface RequestContextData {
     action?: string
-    jf2?: JF2
+    jf2?: JF2_JSON
     post_type?: string
   }
 }
@@ -93,7 +91,7 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
     // console.log(JSON.stringify(request.body, null, 2))
 
     let uploaded_media: UploadedMedia[] = []
-    let jf2: JF2
+    let jf2: JF2_JSON
     let request_body: PostRequestBody
     if (request.isMultipart()) {
       const result = await processMultipartRequest(request)
@@ -127,12 +125,12 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
       // For example, this occurs when uploading more than one file to the Media
       // endpoint. In that case we might have audio[], video[], and photo[].
       request.log.debug(`${logPrefix}convert urlencoded request => JF2`)
-      const h = (request_body as MP_UrlencodedRequestBody).h || 'entry'
+      const h = (request_body as JF2_Urlencoded_Or_Multipart).h || 'entry'
       jf2 = normalizeJf2({ ...request_body, h })
     } else {
       // Even when request_body is empty, it's still a valid JF2. See here:
       // https://validator.jf2.rocks/
-      jf2 = request_body as JF2
+      jf2 = request_body as JF2_JSON
 
       // I think that for the following defaults using a logical OR is more
       // appropriate than using the nullish coalescing operator, because
@@ -193,6 +191,11 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
     // much value. It seems better to just handle them in ther error handler.
 
     if (jf2.url) {
+      if (typeof jf2.url !== 'string') {
+        const error_description = `JF2 object has an invalid 'url' property: ${jf2.url}`
+        throw new InvalidRequestError({ error_description })
+      }
+
       switch (action) {
         case 'delete': {
           // The server MUST respond to successful delete and undelete requests

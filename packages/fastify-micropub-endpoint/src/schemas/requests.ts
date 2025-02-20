@@ -1,6 +1,5 @@
-import { h_card, h_cite, h_entry, h_event } from '@jackdbd/microformats2'
-// import { mp_card, mp_cite, mp_entry, mp_event } from "@jackdbd/micropub";
-import type { MF2, ParsedMF2 } from '@jackdbd/micropub/schemas'
+import type { MF2, ParsedMF2 } from '@jackdbd/microformats2'
+import { card, cite, entry, event } from '@jackdbd/micropub'
 import { Static, Type } from '@sinclair/typebox'
 
 // https://micropub.spec.indieweb.org/#querying
@@ -23,10 +22,10 @@ export type MicropubGetRequestQuerystring = Static<
 
 export const micropub_post_request_body_jf2 = Type.Union(
   [
-    Type.Unsafe<Static<typeof h_card>>(Type.Ref(h_card.$id!)),
-    Type.Unsafe<Static<typeof h_cite>>(Type.Ref(h_cite.$id!)),
-    Type.Unsafe<Static<typeof h_entry>>(Type.Ref(h_entry.$id!)),
-    Type.Unsafe<Static<typeof h_event>>(Type.Ref(h_event.$id!))
+    Type.Unsafe<Static<typeof card>>(Type.Ref(card.$id!)),
+    Type.Unsafe<Static<typeof cite>>(Type.Ref(cite.$id!)),
+    Type.Unsafe<Static<typeof entry>>(Type.Ref(entry.$id!)),
+    Type.Unsafe<Static<typeof event>>(Type.Ref(event.$id!))
   ],
   {
     title: 'Micropub Request Body (JF2)',

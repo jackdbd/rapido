@@ -12,7 +12,7 @@ import {
 import type {
   CreatePost,
   DeletePost,
-  Jf2ToLocation,
+  JF2ToLocation,
   UndeletePost,
   UpdatePost
 } from '@jackdbd/micropub/schemas/user-provided-functions'
@@ -45,7 +45,7 @@ export interface MicropubPostConfig
   createPost: CreatePost
   deletePost: DeletePost
   isAccessTokenRevoked: IsAccessTokenRevoked
-  jf2ToLocation: Jf2ToLocation
+  jf2ToLocation: JF2ToLocation
   undeletePost?: UndeletePost
   updatePost: UpdatePost
 }
