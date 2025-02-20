@@ -1,5 +1,12 @@
 # @jackdbd/indieauth
 
+## 0.2.0-canary.14
+
+### Patch Changes
+
+- Updated dependencies [8ec47a3]
+  - @jackdbd/schema-validators@0.2.0-canary.12
+
 ## 0.2.0-canary.13
 
 ### Minor Changes

@@ -1,5 +1,24 @@
 # @jackdbd/github-content-store
 
+## 0.2.0-canary.15
+
+### Minor Changes
+
+- 6833251: Several improvements:
+
+  - Make sure to create a new object in `websiteUrlToStoreLocation`.
+  - Check that all required properties are set in github-content-store factory functions.
+  - Better error message in `update` function of github-content-store.
+
+### Patch Changes
+
+- 5177560: General cleanup.
+- Updated dependencies [dda3be7]
+- Updated dependencies [36f0a2e]
+- Updated dependencies [5177560]
+  - @jackdbd/micropub@0.2.0-canary.13
+  - @jackdbd/github-contents-api@0.2.0-canary.12
+
 ## 0.2.0-canary.14
 
 ### Minor Changes

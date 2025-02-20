@@ -1,5 +1,23 @@
 # @jackdbd/fastify-micropub-endpoint
 
+## 0.2.0-canary.25
+
+### Minor Changes
+
+- 34198f9: Update to newest micropub package and cleanup.
+
+### Patch Changes
+
+- Updated dependencies [247ac46]
+- Updated dependencies [8ec47a3]
+- Updated dependencies [dda3be7]
+- Updated dependencies [36f0a2e]
+  - @jackdbd/microformats2@0.2.0-canary.9
+  - @jackdbd/schema-validators@0.2.0-canary.12
+  - @jackdbd/micropub@0.2.0-canary.13
+  - @jackdbd/indieauth@0.2.0-canary.14
+  - @jackdbd/fastify-hooks@0.2.0-canary.16
+
 ## 0.2.0-canary.24
 
 ### Minor Changes
