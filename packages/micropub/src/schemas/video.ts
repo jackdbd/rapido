@@ -1,4 +1,4 @@
-import { u_url } from '@jackdbd/microformats2'
+import { u_video } from '@jackdbd/microformats2'
 import { Static, Type } from '@sinclair/typebox'
 
 // To upload one or more video files, clients must make a multipart request.
@@ -7,8 +7,8 @@ import { Static, Type } from '@sinclair/typebox'
 
 export const video = Type.Union(
   [
-    Type.Unsafe<Static<typeof u_url>>(Type.Ref(u_url.$id!)),
-    Type.Array(Type.Unsafe<Static<typeof u_url>>(Type.Ref(u_url.$id!)))
+    Type.Unsafe<Static<typeof u_video>>(Type.Ref(u_video.$id!)),
+    Type.Array(Type.Unsafe<Static<typeof u_video>>(Type.Ref(u_video.$id!)))
   ],
   {
     $id: 'micropub-video',

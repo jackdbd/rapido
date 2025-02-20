@@ -14,7 +14,7 @@ import { audio } from './audio.js'
 import { photo } from './photo.js'
 import { video } from './video.js'
 
-export const mp_entry = Type.Object(
+export const entry = Type.Object(
   {
     ...h_entry.properties,
 
@@ -71,4 +71,4 @@ export const mp_entry = Type.Object(
   { $id: 'micropub-entry', title: 'Micropub h=entry' }
 )
 
-export type MP_Entry = Static<typeof mp_entry>
+export type MP_Entry = Static<typeof entry>

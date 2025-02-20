@@ -1,155 +1,143 @@
 import { Static, Type } from '@sinclair/typebox'
+import { date, jf2_without_type } from '@jackdbd/microformats2'
 import {
-  p_content,
-  e_content,
-  h_adr,
-  h_cite,
-  p_geo,
-  p_location,
-  p_summary,
-  u_syndication
-  // u_url
-} from '@jackdbd/microformats2'
-
-export const u_url = Type.String({
-  title: 'URL of the card, entry, event, etc.',
-  description: 'URL to use in h-card, h-entry, h-event, etc.',
-  format: 'uri'
-})
-
-const string_or_strings = Type.Union([
-  Type.String({ minLength: 1 }),
-  Type.Array(Type.String({ minLength: 1 }))
-])
-
-// const url_or_urls = Type.Union([
-//   Type.String({ format: 'uri' }),
-//   Type.Array(Type.String({ format: 'uri' }))
-// ])
-
-const url_or_urls = Type.Union([u_url, Type.Array(u_url)])
-
-const updated = Type.String({ minLength: 1 })
-
-const jf2_item_type = Type.Union(
-  [
-    Type.Literal('card'),
-    Type.Literal('cite'),
-    Type.Literal('entry'),
-    Type.Literal('event')
-  ],
-  { default: 'entry', title: 'JF2 item type' }
-)
-
-export type Jf2ItemType = Static<typeof jf2_item_type>
+  access_token,
+  action,
+  h as post_type,
+  mp_channel,
+  mp_destination,
+  mp_limit,
+  mp_post_status,
+  mp_slug,
+  mp_syndicate_to,
+  mp_visibility
+} from './micropub-reserved-properties.js'
 
 /**
  * @see [Simplified JSON - JF2 specification](https://jf2.spec.indieweb.org/#simplified-json)
  */
-const shared = Type.Object(
+const shared = Type.Object({
+  ...jf2_without_type.properties,
+
+  access_token: Type.Optional(access_token),
+
+  action: Type.Optional(action),
+
+  'mp-channel': Type.Optional(mp_channel),
+
+  'mp-destination': Type.Optional(mp_destination),
+
+  'mp-limit': Type.Optional(mp_limit),
+
+  /**
+   * Command to instruct the Micropub server to set the alt text for a photo.
+   *
+   * I have seen it used in [this article](https://book.micro.blog/micropub/).
+   *
+   */
+  'mp-photo-alt': Type.Optional(
+    Type.Union([
+      Type.String({ minLength: 1 }),
+      Type.Array(Type.String({ minLength: 1 }))
+    ])
+  ),
+
+  'mp-post-status': Type.Optional(mp_post_status),
+
+  'mp-slug': Type.Optional(mp_slug),
+
+  'mp-syndicate-to': Type.Optional(mp_syndicate_to),
+
+  'post-status': Type.Optional(mp_post_status),
+
+  published: Type.Optional(date),
+
+  // 'read-of': Type.Optional(Type.Union([u_url, h_cite])),
+
+  // 'read-status': Type.Optional(
+  //   Type.Union([
+  //     Type.Literal('to-read'),
+  //     Type.Literal('reading'),
+  //     Type.Literal('finished')
+  //   ])
+  // ),
+
+  updated: Type.Optional(date),
+
+  visibility: Type.Optional(mp_visibility)
+})
+
+/**
+ * Micropub post from a request sent with `Content-Type: application/json`.
+ *
+ * The body parsed from a request sent with `Content-Type: application/json`
+ * should have the property `type`, and not the property `h`.
+ */
+export const jf2_json = Type.Object(
   {
-    action: Type.Optional(Type.String()),
-
-    audio: Type.Optional(url_or_urls),
-
-    author: Type.Optional(Type.Any()),
-
-    'bookmark-of': Type.Optional(u_url),
-
-    category: Type.Optional(string_or_strings),
-
-    checkin: Type.Optional(Type.String({ minLength: 1 })),
-
-    content: Type.Optional(Type.Union([p_content, e_content])),
-
-    date: Type.Optional(Type.String({ minLength: 1 })),
-
-    'in-reply-to': Type.Optional(u_url),
-
-    'like-of': Type.Optional(u_url),
-
-    location: Type.Optional(Type.Union([p_location, p_geo, h_adr])),
-
-    'mp-channel': Type.Optional(Type.String({ minLength: 1 })),
-
-    'mp-destination': Type.Optional(Type.String({ minLength: 1 })),
-
-    'mp-limit': Type.Optional(Type.String({ minLength: 1 })),
-
-    'mp-photo-alt': Type.Optional(string_or_strings),
-
-    'mp-slug': Type.Optional(Type.String({ minLength: 1 })),
-
-    'mp-syndicate-to': Type.Optional(string_or_strings),
-
-    name: Type.Optional(Type.String({ minLength: 1 })),
-
-    photo: Type.Optional(Type.Any()),
-
-    'post-status': Type.Optional(Type.String({ minLength: 1 })),
-
-    published: Type.Optional(Type.String({ minLength: 1 })),
-
-    'read-of': Type.Optional(Type.Union([u_url, h_cite])),
-
-    'read-status': Type.Optional(
-      Type.Union([
-        Type.Literal('to-read'),
-        Type.Literal('reading'),
-        Type.Literal('finished')
-      ])
-    ),
-
-    'repost-of': Type.Optional(u_url),
-
-    rsvp: Type.Optional(
-      Type.Union([
-        Type.Literal('yes'),
-        Type.Literal('no'),
-        Type.Literal('maybe'),
-        Type.Literal('interested')
-      ])
-    ),
-
-    summary: Type.Optional(p_summary),
-
-    syndication: Type.Optional(u_syndication),
-
-    updated: Type.Optional(updated),
-
-    url: Type.Optional(u_url),
-
-    video: Type.Optional(url_or_urls),
-
-    visibility: Type.Optional(Type.String({ minLength: 1 }))
+    ...shared.properties,
+    type: Type.Optional(post_type)
   },
   {
-    additionalProperties: true,
-    title: 'JF2 (Simplified Microformats JSON)'
+    title: 'JF2 (json)',
+    description:
+      'Micropub post from requests sent with `Content-Type: application/json`.'
   }
 )
 
-export const jf2 = Type.Object({
-  ...shared.properties,
-  type: Type.Optional(jf2_item_type)
-})
-
-export type JF2 = Static<typeof jf2>
+export type JF2_JSON = Static<typeof jf2_json>
 
 /**
- * Micropub request body (parsed) when the `Content-Type` is
- * `application/x-www-form-urlencoded`.
+ * Micropub post from a request sent with either one of these values for the
+ * `Content-Type` request header:
+ *
+ * - `application/x-www-form-urlencoded`
+ * - `multipart/form-data`
+ *
+ * The object parsed from a request sent with either one these values of
+ * `Content-Type` should have a property `h`, and not a property `type`.
  */
-export const mp_urlencoded_request_body = Type.Object(
+export const jf2_urlencoded_or_multipart = Type.Object(
   {
     ...shared.properties,
-    h: Type.Optional(jf2_item_type)
+    h: Type.Optional(post_type)
   },
-  { additionalProperties: true }
+  {
+    title: 'JF2 (x-www-form-urlencoded or multipart/form-data)',
+    description:
+      'Micropub post from requests sent with `Content-Type: application/x-www-form-urlencoded` or `Content-Type: multipart/form-data`.'
+  }
 )
 
 /**
- * Micropub request body (parsed) when the `Content-Type` is
- * `application/x-www-form-urlencoded`.
+ * A Micropub post object created after parsing the body of a request sent with
+ * when the `Content-Type: application/x-www-form-urlencoded` should have the
+ * property `h`, and not the property `type`.
  */
-export type MP_UrlencodedRequestBody = Static<typeof mp_urlencoded_request_body>
+export type JF2_Urlencoded_Or_Multipart = Static<
+  typeof jf2_urlencoded_or_multipart
+>
+
+/**
+ * Micropub post from requests sent with any one of these values of the
+ * `Content-Type` request header:
+ *
+ * - `application/json`
+ * - `application/x-www-form-urlencoded`
+ * - `multipart/form-data`
+ */
+export const jf2 = Type.Union([jf2_json, jf2_urlencoded_or_multipart], {
+  title: 'JF2',
+  description:
+    'Micropub post from requests sent with any one of these values of `Content-Type`: `application/json`, `application/x-www-form-urlencoded`, `multipart/form-data`.'
+})
+
+/**
+ * Micropub post from requests sent with any one of these values of the
+ * `Content-Type` request header:
+ *
+ * - `application/json`
+ * - `application/x-www-form-urlencoded`
+ * - `multipart/form-data`
+ */
+export type JF2 = Static<typeof jf2>

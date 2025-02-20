@@ -20,15 +20,13 @@ export type {
   Action,
   Audio,
   JF2,
+  JF2_JSON,
+  JF2_Urlencoded_Or_Multipart,
   Location,
-  MF2,
-  MF2ItemType,
-  ParsedMF2,
   MP_Card,
   MP_Cite,
   MP_Entry,
   MP_Event,
-  MP_UrlencodedRequestBody,
   Photo,
   Video
 } from './schemas/index.js'
@@ -37,6 +35,7 @@ export {
   createPost,
   deleteMedia,
   deletePost,
+  jf2ToContent,
   jf2ToLocation,
   outcome_create,
   outcome_delete,
@@ -52,7 +51,8 @@ export type {
   CreatePost,
   DeleteMedia,
   DeletePost,
-  Jf2ToLocation,
+  JF2ToContent,
+  JF2ToLocation,
   OutcomeCreate,
   OutcomeDelete,
   OutcomeUpload,
@@ -66,13 +66,6 @@ export type {
 
 export type { SyndicateToItem } from './syndicate-to.js'
 
-export type { BaseValueSyndicate, Syndicator } from './syndicator.js'
-
-export {
-  isJF2,
-  isMF2,
-  isMpUrlencodedRequestBody,
-  isParsedMF2
-} from './type-guards.js'
+export { isJF2, isMpUrlencodedRequestBody } from './type-guards.js'
 
 export * as url_predicates from './url-predicates.js'

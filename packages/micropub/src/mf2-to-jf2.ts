@@ -1,11 +1,11 @@
+import type { MF2 } from '@jackdbd/microformats2'
 import { mf2tojf2referenced } from '@paulrobertlloyd/mf2tojf2'
 import type { JF2 } from './schemas/jf2.js'
-import type { MF2 } from './schemas/mf2.js'
 
 interface Payload {
   message: string
   mf2: MF2
-  jf2: JF2
+  jf2: JF2 // can this be only JF2_JSON or also JF2_Urlencoded_Or_Multipart?
 }
 
 interface Options {

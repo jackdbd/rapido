@@ -20,7 +20,7 @@ import {
   p_summary,
   u_url
 } from '@jackdbd/microformats2'
-import { mp_event, mp_slug, mp_syndicate_to } from '../lib/index.js'
+import { event, mp_slug, mp_syndicate_to } from '../lib/index.js'
 
 const ajv = defAjv({
   schemas: [
@@ -46,9 +46,9 @@ const ajv = defAjv({
   ]
 })
 
-const validate = ajv.compile(mp_event)
+const validate = ajv.compile(event)
 
-describe('mp-event', () => {
+describe('Micropub event', () => {
   it('can have start/end, location, a suggested slug and two syndication targets', () => {
     const valid = validate({
       type: 'event',

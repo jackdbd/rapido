@@ -2,7 +2,6 @@ import assert from 'node:assert'
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, it } from 'node:test'
-import { nanoid } from 'nanoid'
 import { ASSETS_ROOT } from '@repo/stdlib'
 import { jf2_predicates, jf2ToSlug, mf2tTojf2 } from '../lib/index.js'
 
@@ -10,20 +9,9 @@ const { isBookmark, isLike, isNote, isRead, isRepost, isRsvp } = jf2_predicates
 
 const mp_root = path.join(ASSETS_ROOT, 'micropub-requests')
 const indiebookclub_root = path.join(mp_root, 'indiebookclub')
-const jf2_spec_root = path.join(mp_root, 'jf2-spec')
 
 const indiebookclub_read = JSON.parse(
   fs.readFileSync(path.join(indiebookclub_root, 'read.json'), 'utf-8')
-)
-
-const note_jf2 = JSON.parse(
-  fs.readFileSync(
-    path.join(
-      jf2_spec_root,
-      'note-jf2-with-content-html-and-content-text.json'
-    ),
-    'utf-8'
-  )
 )
 
 describe('jf2ToSlug', () => {
@@ -62,7 +50,7 @@ describe('jf2ToSlug', () => {
   })
 
   it('uses `name` in a note that has the `name` property', () => {
-    const name = nanoid()
+    const name = 'excerpt-from-lorem-ipsum'
     const jf2 = {
       type: 'entry',
       name,
@@ -77,7 +65,7 @@ describe('jf2ToSlug', () => {
 
     const slug = jf2ToSlug(jf2)
 
-    assert.strictEqual(slug, name.toLowerCase())
+    assert.strictEqual(slug, name)
   })
 
   it('uses `bookmark-of` in a bookmark', () => {

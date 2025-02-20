@@ -2,7 +2,7 @@ import { type Static, Type } from '@sinclair/typebox'
 import { h_event } from '@jackdbd/microformats2'
 import { mp_slug, mp_syndicate_to } from './micropub-reserved-properties.js'
 
-export const mp_event = Type.Object(
+export const event = Type.Object(
   {
     ...h_event.properties,
 
@@ -36,4 +36,4 @@ export const mp_event = Type.Object(
   }
 )
 
-export type MP_Event = Static<typeof mp_event>
+export type MP_Event = Static<typeof event>

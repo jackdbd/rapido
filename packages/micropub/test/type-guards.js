@@ -2,12 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { describe, it } from 'node:test'
 import { ASSETS_ROOT } from '@repo/stdlib'
-import {
-  isJF2,
-  isMF2,
-  isMpUrlencodedRequestBody,
-  isParsedMF2
-} from '../lib/type-guards.js'
+import { isJF2, isMpUrlencodedRequestBody } from '../lib/type-guards.js'
 
 const mp_root = path.join(ASSETS_ROOT, 'micropub-requests')
 const indiebookclub_root = path.join(mp_root, 'indiebookclub')
@@ -59,42 +54,6 @@ describe('isJF2', () => {
 
   it('is false for indiebookclub read.json ("type": ["h-entry"])', (t) => {
     t.assert.strictEqual(isJF2(indiebookclub_read), false)
-  })
-})
-
-describe('isMF2', () => {
-  it('is false for an urlencoded note (h: entry)', (t) => {
-    t.assert.strictEqual(isJF2(urlencoded_note), false)
-  })
-
-  it('is true for note-mf2.json (items: [])', (t) => {
-    t.assert.strictEqual(isMF2(note_mf2), true)
-  })
-
-  it('is false for note-jf2-with-content-html-and-content-text (type: entry)', (t) => {
-    t.assert.strictEqual(isMF2(note_jf2), false)
-  })
-
-  it('is false for indiebookclub read.json ("type": ["h-entry"])', (t) => {
-    t.assert.strictEqual(isMF2(indiebookclub_read), false)
-  })
-})
-
-describe('isParsedMF2', () => {
-  it('is false for an urlencoded note (h: entry)', (t) => {
-    t.assert.strictEqual(isJF2(urlencoded_note), false)
-  })
-
-  it('is false for note-mf2.json (items: [])', (t) => {
-    t.assert.strictEqual(isParsedMF2(note_mf2), false)
-  })
-
-  it('is false for note-jf2-with-content-html-and-content-text (type: entry)', (t) => {
-    t.assert.strictEqual(isParsedMF2(note_jf2), false)
-  })
-
-  it('is true for indiebookclub read.json ("type": ["h-entry"])', (t) => {
-    t.assert.strictEqual(isParsedMF2(indiebookclub_read), true)
   })
 })
 

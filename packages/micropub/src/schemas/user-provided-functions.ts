@@ -6,6 +6,12 @@ export const sha = Type.String({ minLength: 1 })
 
 export const url = Type.String({ format: 'uri' })
 
+export const content = Type.String({
+  title: 'Content',
+  description: 'Content of the Micropub post.',
+  minLength: 1
+})
+
 const summary = Type.String({
   minLength: 1,
   title: 'Summary',
@@ -17,12 +23,15 @@ const detail = Type.String({
   description: 'Some detail of the operation.'
 })
 
-const details = Type.Optional(Type.Array(detail))
+const details = Type.Array(detail)
 
 /**
  * Outcome of a create operation at the Micropub/Media endpoint.
  */
-export const outcome_create = Type.Object({ details, summary })
+export const outcome_create = Type.Object({
+  details: Type.Optional(details),
+  summary
+})
 
 export type OutcomeCreate = Static<typeof outcome_create>
 
@@ -42,7 +51,10 @@ export type CreatePost = Static<typeof createPost>
 /**
  * Outcome of a delete/undelete operation at the Micropub/Media endpoint.
  */
-export const outcome_delete = Type.Object({ details, summary })
+export const outcome_delete = Type.Object({
+  details: Type.Optional(details),
+  summary
+})
 
 export type OutcomeDelete = Static<typeof outcome_delete>
 
@@ -66,14 +78,25 @@ export const deleteMedia = Type.Function([url], Type.Promise(outcome_delete), {
 
 export type DeleteMedia = Static<typeof deleteMedia>
 
+export const metadata = Type.Object({
+  sha: Type.Optional(sha)
+})
+
+/**
+ * Outcome of a retrieve operation at the Micropub endpoint.
+ */
+export const outcome_retrieve_post = Type.Object({
+  details: Type.Optional(details),
+  jf2,
+  metadata: Type.Optional(metadata),
+  summary
+})
+
+export type OutcomeRetrievePost = Static<typeof outcome_retrieve_post>
+
 export const retrievePost = Type.Function(
   [location],
-  Type.Promise(
-    Type.Object({
-      jf2,
-      sha: Type.Optional(sha)
-    })
-  ),
+  Type.Promise(outcome_retrieve_post),
   {
     title: 'retrieveContent',
     description: 'Retrieves a post from the Micropub server.'
@@ -81,6 +104,41 @@ export const retrievePost = Type.Function(
 )
 
 export type RetrievePost = Static<typeof retrievePost>
+
+export const syndicate_props = Type.Object({ canonicalUrl: url, content })
+
+export type SyndicateProps = Static<typeof syndicate_props>
+
+/**
+ * Outcome of a syndicate operation at the syndicate endpoint.
+ */
+export const outcome_syndicate = Type.Any()
+// export const outcome_syndicate = Type.Object({
+//   details: Type.Optional(details),
+//   summary
+// })
+
+export type OutcomeSyndicate = Static<typeof outcome_syndicate>
+
+/**
+ * Syndicate the content published at a canonical URL (i.e. content published on
+ * your `me` domain) to another target (e.g. a social network).
+ */
+export const syndicate = Type.Function(
+  [syndicate_props],
+  Type.Promise(outcome_syndicate),
+  {
+    title: 'Syndicate',
+    description:
+      'Syndicate the content published at a canonical URL (i.e. content published on your `me` domain) to another target (e.g. a social network).'
+  }
+)
+
+/**
+ * Syndicate the content published at a canonical URL (i.e. content published on
+ * your `me` domain) to another target (e.g. a social network).
+ */
+export type Syndicate = Static<typeof syndicate>
 
 export const undeletePost = Type.Function([url], Type.Promise(outcome_delete), {
   title: 'Undelete post',
@@ -103,9 +161,20 @@ export const update_patch = Type.Object({
 
 export type UpdatePatch = Static<typeof update_patch>
 
+/**
+ * Outcome of an update operation at the Micropub endpoint.
+ */
+export const outcome_update = Type.Object({
+  details: Type.Optional(details),
+  summary,
+  other_details: Type.Optional(Type.Any()) // TODO: define this
+})
+
+export type OutcomeUpdate = Static<typeof outcome_update>
+
 export const updatePost = Type.Function(
   [url, update_patch],
-  Type.Promise(Type.Void()),
+  Type.Promise(outcome_update),
   {
     title: 'Update post',
     description:
@@ -139,7 +208,11 @@ export interface UploadConfig extends Static<typeof upload_config> {
 /**
  * Outcome of an upload operation at the Media endpoint.
  */
-export const outcome_upload = Type.Object({ details, summary, url })
+export const outcome_upload = Type.Object({
+  details: Type.Optional(details),
+  summary,
+  url
+})
 
 export type OutcomeUpload = Static<typeof outcome_upload>
 
@@ -152,6 +225,13 @@ export const uploadMedia = Type.Function(
       '[Uploads a file](https://micropub.spec.indieweb.org/#uploading-files) to the Micropub server.'
   }
 )
+
+export const jf2ToContent = Type.Function([jf2], content, {
+  title: 'JF2 to content',
+  description: 'Generates some content from a JF2 object.'
+})
+
+export type JF2ToContent = Static<typeof jf2ToContent>
 
 /**
  * Uploads a file to the Micropub server.
@@ -170,10 +250,10 @@ export const jf2ToLocation = Type.Function([jf2], location, {
  * Maps a JF2 object to a location in the store and a URL published on (or that
  * it will be published to) the user's website.
  */
-export type Jf2ToLocation = Static<typeof jf2ToLocation>
+export type JF2ToLocation = Static<typeof jf2ToLocation>
 
 export const websiteUrlToStoreLocation = Type.Function([url], location, {
-  title: 'Website URL to store location',
+  title: 'URL to location',
   description:
     "Maps a URL published on the user's website to a location on the user's store (e.g. a table in a database, a path in a git repository, a URL in a public bucket of an object storage service like AWS S3)."
 })

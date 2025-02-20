@@ -2,7 +2,7 @@ import { type Static, Type } from '@sinclair/typebox'
 import { h_card } from '@jackdbd/microformats2'
 import { mp_slug, mp_syndicate_to } from './micropub-reserved-properties.js'
 
-export const mp_card = Type.Object(
+export const card = Type.Object(
   {
     ...h_card.properties,
 
@@ -18,4 +18,4 @@ export const mp_card = Type.Object(
   { $id: 'micropub-card', title: 'Micropub h=card' }
 )
 
-export type MP_Card = Static<typeof mp_card>
+export type MP_Card = Static<typeof card>

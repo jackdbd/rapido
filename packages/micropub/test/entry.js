@@ -14,16 +14,18 @@ import {
   p_location,
   p_publication,
   p_rsvp,
+  u_audio,
   p_summary,
   u_syndication,
-  u_url
+  u_url,
+  u_video
 } from '@jackdbd/microformats2'
 import {
   access_token,
   action,
   audio,
   date_time,
-  mp_entry,
+  entry,
   mp_limit,
   mp_post_status,
   mp_slug,
@@ -58,15 +60,17 @@ const ajv = defAjv({
     p_rsvp,
     p_summary,
     photo,
+    u_audio,
     u_url,
     u_syndication,
+    u_video,
     video
   ]
 })
 
-const validate = ajv.compile(mp_entry)
+const validate = ajv.compile(entry)
 
-describe('mp-entry', () => {
+describe('Micropub entry', () => {
   it('can be an empty objects, since all properties are optional', () => {
     const valid = validate({})
 

@@ -1,4 +1,9 @@
-import type { JF2 } from './schemas/jf2.js'
+import type {
+  JF2,
+  JF2_JSON,
+  JF2_Urlencoded_Or_Multipart
+} from './schemas/jf2.js'
+import { isMpUrlencodedRequestBody } from './type-guards.js'
 
 /**
  * Predicate to check whether a JF2 object has an `h` property.
@@ -28,11 +33,19 @@ export const isBookmark = (jf2: JF2) => {
   }
 }
 
-export const isCard = (jf2: JF2) => {
-  if (jf2.type === 'card') {
-    return true
+export const isCard = (jf2: JF2_JSON | JF2_Urlencoded_Or_Multipart) => {
+  if (isMpUrlencodedRequestBody(jf2)) {
+    if (jf2.h === 'card') {
+      return true
+    } else {
+      return false
+    }
   } else {
-    return false
+    if (jf2.type === 'card') {
+      return true
+    } else {
+      return false
+    }
   }
 }
 
@@ -47,32 +60,62 @@ export const isCheckin = (jf2: JF2) => {
   }
 }
 
-export const isCite = (jf2: JF2) => {
-  if (jf2.type === 'cite') {
-    return true
+export const isCite = (jf2: JF2_JSON | JF2_Urlencoded_Or_Multipart) => {
+  if (isMpUrlencodedRequestBody(jf2)) {
+    if (jf2.h === 'cite') {
+      return true
+    } else {
+      return false
+    }
   } else {
-    return false
+    if (jf2.type === 'cite') {
+      return true
+    } else {
+      return false
+    }
   }
 }
 
 /**
- * Whether a `jf2` object has a `type` property set to `entry`.
+ * Whether a `jf2` object has either `"type": "entry"` or `"h": "entry"`
  *
  * **NOTE**: It's better to name this predicate `hasEntry` instead of `isEntry`
- * because the default type of a JF2 object is `entry`.
+ * because the default type of a Micropub post is `entry`.
  * This means that if other predicates check for the presence of the `type`
- * property, should treat its absence` as the `jf2` object having `type: entry`.
+ * property, should treat its absence as the `jf2` object having:
+ *
+ * - `"type": "entry"` when `Content-Type` is `application/json`
+ * - `"h": "entry"` when `Content-Type` is either
+ *   `application/x-www-form-urlencoded` or `multipart/form-data`
  */
-export const hasEntry = (jf2: JF2) => {
-  if (jf2.type === 'entry') {
-    return true
+export const hasEntry = (jf2: JF2_JSON | JF2_Urlencoded_Or_Multipart) => {
+  if (isMpUrlencodedRequestBody(jf2)) {
+    if (jf2.h === 'entry') {
+      return true
+    } else {
+      return false
+    }
   } else {
-    return false
+    if (jf2.type === 'entry') {
+      return true
+    } else {
+      return false
+    }
   }
 }
 
 export const isEvent = (jf2: JF2) => {
-  if (jf2.type === 'event') {
+  if (isMpUrlencodedRequestBody(jf2)) {
+    if (jf2.h === 'event') {
+      return true
+    }
+  } else {
+    if (jf2.type === 'event') {
+      return true
+    }
+  }
+
+  if (jf2.name && jf2.start && jf2.location) {
     return true
   } else {
     return false
