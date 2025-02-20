@@ -15,33 +15,35 @@ import type {
   WebsiteUrlToStoreLocation
 } from '@jackdbd/micropub/schemas/user-provided-functions'
 import { Static, Type } from '@sinclair/typebox'
-import type { Ajv } from 'ajv'
-
-import { DEFAULT } from '../constants.js'
 import {
-  ajv,
   include_error_description,
+  log_prefix,
   report_all_ajv_errors
 } from './common.js'
-
-// import type { Syndicator } from '../../lib/micropub/index.js'
-// syndicators: { [uid: string]: Syndicator }
+import { syndicator } from './syndicator.js'
 
 export const options = Type.Object(
   {
-    ajv: Type.Optional(ajv),
     includeErrorDescription: Type.Optional(include_error_description),
+
     isAccessTokenRevoked,
-    logPrefix: Type.Optional(Type.String({ default: DEFAULT.LOG_PREFIX })),
+
+    logPrefix: Type.Optional(log_prefix),
+
     me: Type.Union([
       me_before_url_canonicalization,
       me_after_url_canonicalization
     ]),
-    websiteUrlToStoreLocation,
+
     reportAllAjvErrors: Type.Optional(report_all_ajv_errors),
+
     retrievePost,
-    syndicators: Type.Any(),
-    updatePost
+
+    syndicators: Type.Array(syndicator),
+
+    updatePost,
+
+    urlToLocation: websiteUrlToStoreLocation
   },
   {
     $id: 'fastify-syndicate-endpoint-options',
@@ -51,9 +53,8 @@ export const options = Type.Object(
 )
 
 export interface Options extends Static<typeof options> {
-  ajv?: Ajv
   isAccessTokenRevoked: IsAccessTokenRevoked
   retrievePost: RetrievePost
   updatePost: UpdatePost
-  websiteUrlToStoreLocation: WebsiteUrlToStoreLocation
+  urlToLocation: WebsiteUrlToStoreLocation
 }

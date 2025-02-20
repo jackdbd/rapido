@@ -11,6 +11,7 @@ This endpoint manages the [syndication (aka cross-posting)](https://indieweb.org
 
 - [Installation](#installation)
 - [Syndicate Endpoint Options](#syndicate-endpoint-options)
+  - [syndicators\[\]: array](#syndicators-array)
 - [Dependencies](#dependencies)
 - [References](#references)
 - [License](#license)
@@ -29,16 +30,15 @@ Options for the Fastify syndicate-endpoint plugin
 
 |Name|Type|Description|Required|
 |----|----|-----------|--------|
-|**ajv**||Instance of Ajv<br/>|no|
 |**includeErrorDescription**|`boolean`|Whether to include an `error_description` property in all error responses. This is meant to assist the client developer in understanding the error. This is NOT meant to be shown to the end user.<br/>Default: `false`<br/>|no|
 |**isAccessTokenRevoked**|`Function`|Predicate function that returns true if a jti (JSON Web Token ID) is revoked.<br/>|yes|
 |**logPrefix**|`string`|Default: `"[syndicate-endpoint] "`<br/>|no|
 |**me**|||yes|
-|**websiteUrlToStoreLocation**<br/>(Website URL to store location)|`Function`|Maps a URL published on the user's website to a location on the user's store (e.g. a table in a database, a path in a git repository, a URL in a public bucket of an object storage service like AWS S3).<br/>|yes|
 |**reportAllAjvErrors**<br/>(report all AJV errors)|`boolean`|Whether to report all AJV validation errors.<br/>Default: `false`<br/>|no|
 |**retrievePost**<br/>(retrieveContent)|`Function`|Retrieves a post from the Micropub server.<br/>|yes|
-|**syndicators**|||yes|
+|[**syndicators**](#syndicators)|`object[]`||yes|
 |**updatePost**<br/>(Update post)|`Function`|[Updates](https://micropub.spec.indieweb.org/#update) a post published at a URL.<br/>|yes|
+|**urlToLocation**<br/>(URL to location)|`Function`|Maps a URL published on the user's website to a location on the user's store (e.g. a table in a database, a path in a git repository, a URL in a public bucket of an object storage service like AWS S3).<br/>|yes|
 
 **Example**
 
@@ -46,8 +46,33 @@ Options for the Fastify syndicate-endpoint plugin
 {
     "includeErrorDescription": false,
     "logPrefix": "[syndicate-endpoint] ",
-    "reportAllAjvErrors": false
+    "reportAllAjvErrors": false,
+    "syndicators": [
+        {}
+    ]
 }
+```
+
+<a name="syndicators"></a>
+### syndicators\[\]: array
+
+**Items**
+
+**Item Properties**
+
+|Name|Type|Description|Required|
+|----|----|-----------|--------|
+|**name**|`string`|The human readable name of the syndicator.<br/>Minimal Length: `1`<br/>|yes|
+|**jf2ToContent**<br/>(JF2 to content)|`Function`|Generates some content from a JF2 object.<br/>|yes|
+|**syndicate**|`Function`|Syndicate the content published at a canonical URL (i.e. content published on your `me` domain) to another target (e.g. a social network).<br/>|yes|
+|**uid**|`string`|Unique identifier for the syndicator<br/>Minimal Length: `1`<br/>|yes|
+
+**Example**
+
+```json
+[
+    {}
+]
 ```
 
 ## Dependencies

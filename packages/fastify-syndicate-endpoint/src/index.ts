@@ -9,8 +9,9 @@ import {
 } from '@jackdbd/fastify-hooks'
 import { unixTimestampInSeconds } from '@jackdbd/indieauth'
 import { error_response } from '@jackdbd/indieauth/schemas'
+// import * as jf2 from '@jackdbd/microformats2'
 import { conformResult } from '@jackdbd/schema-validators'
-import { defErrorHandler } from '@repo/error-handlers'
+// import { defErrorHandler } from '@repo/error-handlers'
 import { Ajv, type Plugin as AjvPlugin } from 'ajv'
 import addFormats from 'ajv-formats'
 import type { FastifyPluginCallback } from 'fastify'
@@ -22,16 +23,25 @@ import {
   // syndicate_post_request_body,
   options as options_schema
 } from './schemas/index.js'
-import type { Options } from './schemas/index.js'
+import type { Options, Syndicator } from './schemas/index.js'
 
-export { options as plugin_options } from './schemas/index.js'
-export type { Options as PluginOptions } from './schemas/index.js'
+export { options as plugin_options, syndicator } from './schemas/index.js'
+export type { Options as PluginOptions, Syndicator } from './schemas/index.js'
 
 const defaults = {
   includeErrorDescription: DEFAULT.INCLUDE_ERROR_DESCRIPTION,
   logPrefix: DEFAULT.LOG_PREFIX,
   reportAllAjvErrors: DEFAULT.REPORT_ALL_AJV_ERRORS
 }
+
+const REQUIRED = [
+  'isAccessTokenRevoked',
+  'me',
+  'retrievePost',
+  'syndicators',
+  'updatePost',
+  'urlToLocation'
+] as const
 
 const syndicateEndpoint: FastifyPluginCallback<Options> = (
   fastify,
@@ -40,22 +50,36 @@ const syndicateEndpoint: FastifyPluginCallback<Options> = (
 ) => {
   const config = Object.assign({}, defaults, options)
 
-  let ajv: Ajv
-  if (config.ajv) {
-    ajv = config.ajv
-  } else {
-    // I have no idea why I have to do this to make TypeScript happy.
-    // In JavaScript, Ajv and addFormats can be imported without any of this mess.
-    const addFormatsPlugin = addFormats as any as AjvPlugin<string[]>
-    ajv = addFormatsPlugin(
-      new Ajv({ allErrors: config.reportAllAjvErrors, schemas: [] }),
-      ['date', 'date-time', 'duration', 'email', 'uri']
-    )
-  }
+  REQUIRED.forEach((k) => {
+    if (!config[k]) {
+      return done(new Error(`${config.logPrefix}option ${k} is required`))
+    }
+  })
+
+  // I have no idea why I have to do this to make TypeScript happy.
+  // In JavaScript, Ajv and addFormats can be imported without any of this mess.
+  const addFormatsPlugin = addFormats as any as AjvPlugin<string[]>
+  const ajv = addFormatsPlugin(
+    new Ajv({
+      allErrors: config.reportAllAjvErrors,
+      schemas: []
+      // schemas: [jf2.u_audio]
+    }),
+    ['date', 'date-time', 'duration', 'email', 'uri']
+  )
+
+  // fastify.addSchema(jf2.u_audio)
 
   const { error, value } = conformResult(
     { ajv, schema: options_schema, data: config },
-    { basePath: 'syndicate-endpoint-options' }
+    {
+      basePath: 'syndicate-endpoint-options',
+      // ignoreKeys: ['syndicators'],
+      log: {
+        debug: fastify.log.debug.bind(fastify.log),
+        warn: fastify.log.warn.bind(fastify.log)
+      }
+    }
   )
 
   if (error) {
@@ -70,7 +94,7 @@ const syndicateEndpoint: FastifyPluginCallback<Options> = (
     retrievePost,
     syndicators,
     updatePost,
-    websiteUrlToStoreLocation
+    urlToLocation
   } = value.validated as Required<Options>
 
   // === PLUGINS ============================================================ //
@@ -134,6 +158,17 @@ const syndicateEndpoint: FastifyPluginCallback<Options> = (
   })
 
   // === ROUTES ============================================================= //
+
+  const syndicatorMap = syndicators.reduce(
+    (acc, syndicator) => {
+      // const { jf2ToContent, syndicate } = syndicator
+      return { ...acc, [syndicator.uid]: syndicator }
+    },
+    {} as { [uid: string]: Syndicator }
+  )
+
+  fastify.log.debug(syndicatorMap, `${logPrefix}syndicators (as hash map)`)
+
   fastify.post(
     '/syndicate',
     {
@@ -154,20 +189,21 @@ const syndicateEndpoint: FastifyPluginCallback<Options> = (
       }
     },
     defSyndicatePost({
-      logPrefix,
+      logPrefix: `[${SHORT_NAME}/post] `,
+      me,
       retrievePost,
-      syndicators,
+      syndicatorMap,
       updatePost,
-      websiteUrlToStoreLocation
+      urlToLocation
     })
   )
 
-  fastify.setErrorHandler(
-    defErrorHandler({
-      includeErrorDescription,
-      logPrefix: `[${SHORT_NAME}/error-handler] `
-    })
-  )
+  // fastify.setErrorHandler(
+  //   defErrorHandler({
+  //     includeErrorDescription,
+  //     logPrefix: `[${SHORT_NAME}/error-handler] `
+  //   })
+  // )
 
   done()
 }

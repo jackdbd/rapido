@@ -1,27 +1,54 @@
-import { normalizeJf2 } from '@jackdbd/micropub'
-import type { JF2, Syndicator } from '@jackdbd/micropub'
+import canonicalUrl from '@jackdbd/canonical-url'
+// import type { Location } from '@jackdbd/micropub'
 import type {
   RetrievePost,
   UpdatePost,
-  UpdatePatch,
   WebsiteUrlToStoreLocation
 } from '@jackdbd/micropub/schemas/user-provided-functions'
 import { InvalidRequestError } from '@jackdbd/oauth2-error-responses'
 import type { RouteHandler } from 'fastify'
 import { XMLParser } from 'fast-xml-parser'
+import type { Syndicator } from '../schemas/syndicator.js'
+// import { processPost } from './process-one-post.js'
+import { processFeedEntry, type FeedEntry } from './process-feed-entry.js'
 
-export interface Config {
+export interface Options {
   logPrefix: string
+  me: string
   retrievePost: RetrievePost
-  syndicators: { [uid: string]: Syndicator }
+  syndicatorMap: { [uid: string]: Syndicator }
   updatePost: UpdatePost
-  websiteUrlToStoreLocation: WebsiteUrlToStoreLocation
+  urlToLocation: WebsiteUrlToStoreLocation
 }
 
-const parser = new XMLParser()
+const defaults: Partial<Options> = {
+  syndicatorMap: {}
+}
 
-export const defSyndicatePost = (config: Config) => {
-  const { logPrefix, retrievePost, syndicators, updatePost } = config
+const REQUIRED = ['me', 'retrievePost', 'updatePost', 'urlToLocation'] as const
+
+export const defSyndicatePost = (options: Options) => {
+  const config = Object.assign({}, defaults, options) as Required<Options>
+
+  const {
+    logPrefix,
+    me,
+    retrievePost,
+    syndicatorMap,
+    updatePost,
+    urlToLocation
+  } = config
+
+  REQUIRED.forEach((k) => {
+    if (!config[k]) {
+      throw new Error(`parameter '${k}' is not set`)
+    }
+  })
+
+  const canonical_me = new URL(canonicalUrl(me))
+  console.log(`=== canonical me ===`, canonical_me)
+
+  const parser = new XMLParser()
 
   const syndicatePost: RouteHandler = async (request, reply) => {
     // TODO: decide what request body to expect. For example:
@@ -32,18 +59,85 @@ export const defSyndicatePost = (config: Config) => {
     // can simply check it exists using method: 'HEAD' (and then retrieve it
     // from the store).
 
-    const response = await fetch(feed, { method: 'GET' })
+    const canonical_url_feed = canonicalUrl(feed)
 
-    const xml = await response.text()
+    if (!canonical_url_feed.includes(canonical_me.hostname)) {
+      const reason = `The canonical URL of the feed is ${canonical_url_feed}, while the \`me\` hostname is ${canonical_me.hostname}.`
+      throw new InvalidRequestError({ error_description: reason })
+    }
 
-    const obj = parser.parse(xml)
+    let response: Response
+    try {
+      response = await fetch(feed, { method: 'GET' })
+    } catch (ex: any) {
+      const error_description = `Cannot fetch feed at ${feed}: ${ex.message}`
+      // what to throw? ServerError? InvalidRequestError?
+      throw new InvalidRequestError({ error_description })
+    }
+
+    let xml: string
+    try {
+      xml = await response.text()
+    } catch (ex: any) {
+      const error_description = `Cannot generate XML feed from response: ${ex.message}`
+      // what to throw? ServerError? InvalidRequestError?
+      throw new InvalidRequestError({ error_description })
+    }
+
+    let obj: any
+    try {
+      obj = parser.parse(xml)
+    } catch (ex: any) {
+      const error_description = `Cannot parse XML feed: ${ex.message}`
+      // what to throw? ServerError? InvalidRequestError?
+      throw new InvalidRequestError({ error_description })
+    }
 
     const feed_title = obj.feed.title
-    request.log.debug(`${logPrefix}Feed title: ${feed_title}`)
-    // const me_url = obj.feed.entry.id
+    if (feed_title) {
+      request.log.debug(
+        `${logPrefix}start processing feed ${feed_title} (${obj.feed.entry.length} entries)`
+      )
+    } else {
+      request.log.warn(
+        `${logPrefix}start processing feed that has no title (${obj.feed.entry.length} entries)`
+      )
+    }
 
-    // TODO: do this for each post in the feed
-    // const loc = publishedUrlToStorageLocation(me_url)
+    const log = {
+      debug: request.log.debug.bind(request.log),
+      info: request.log.info.bind(request.log),
+      warn: request.log.warn.bind(request.log),
+      error: request.log.error.bind(request.log)
+    }
+
+    const failures: string[] = []
+    const successes: string[] = []
+
+    const promises = obj.feed.entry.map((entry: FeedEntry) => {
+      return processFeedEntry({
+        entry,
+        log,
+        logPrefix: '[process-feed-entry] ',
+        me,
+        retrievePost,
+        syndicatorMap,
+        // always syndicate to Telegram chat, no matter the mp-syndicate-to in the
+        // Micropub post.
+        targets: ['https://t.me/+rQSrJsu5RtgzNjM0'],
+        updatePost,
+        urlToLocation
+      })
+    })
+
+    const results = await Promise.all(promises)
+    // console.log('=== results ===')
+    // console.log(JSON.stringify(results, null, 2))
+
+    results.forEach((result) => {
+      failures.push(...result.failures)
+      successes.push(...result.successes)
+    })
 
     // ====================================================================== //
     // Testing a bookmark-of
@@ -60,129 +154,38 @@ export const defSyndicatePost = (config: Config) => {
     // }
 
     // Testing a note
-    const loc = {
-      // store: 'notes/test-note.md',
-      store: 'notes/kitesurfing-at-el-medano.md',
-      // website: 'https://www.giacomodebidda.com/notes/test-note/',
-      website: 'https://www.giacomodebidda.com/notes/kitesurfing-at-el-medano/'
-    }
+    // const loc = {
+    //   // store: 'notes/test-note.md',
+    //   store: 'notes/kitesurfing-at-el-medano.md',
+    //   // website: 'https://www.giacomodebidda.com/notes/test-note/',
+    //   website: 'https://www.giacomodebidda.com/notes/kitesurfing-at-el-medano/'
+    // }
     // ====================================================================== //
 
-    let jf2: JF2
-    try {
-      const value = await retrievePost(loc)
-      jf2 = value.jf2
-    } catch (ex: any) {
-      const error_description = `The post published at ${loc.website} is not stored at ${loc.store}.`
-      throw new InvalidRequestError({ error_description })
-    }
+    // const result = await processPost({
+    //   location: loc,
+    //   log,
+    //   me,
+    //   logPrefix: '[syndication] ',
+    //   retrievePost,
+    //   syndicatorMap,
+    //   // always syndicate to Telegram chat, no matter the mp-syndicate-to in the
+    //   // Micropub post.
+    //   targets: ['https://t.me/+rQSrJsu5RtgzNjM0'],
+    //   updatePost
+    // })
 
-    // We assume all content retrieved from the store to be untrusted data, so
-    // we normalize it and sanitize it.
-    request.log.debug(jf2, '=== jf2 (pre normalization) ===')
-    jf2 = normalizeJf2(jf2)
-    request.log.debug(jf2, '=== jf2 (after normalization) ===')
-
-    const targets = jf2['mp-syndicate-to']
-      ? (jf2['mp-syndicate-to'] as string[])
-      : []
-
-    // Testing the Telegram syndicator
-    // targets.push('https://t.me/+rQSrJsu5RtgzNjM0')
-
-    // request.log.warn(`=== syndication targets: ${targets} ===`)
-
-    // TODO: put these calls in a queue, do not call a 3rd party service directly!
-    // Also, if I enqueue the requests, I probably can't, nor need, to process
-    // the results of the syndication. It's basically a set and forget operation.
-    // BUT...
-    // I do need to update the Micropub post from `mp-syndicate-to` to
-    // `syndication`. And MAYBE also use a lock when writing on each post? Or
-    // maybe wait for all syndication results, and update the post only once.
-    const results = await Promise.allSettled(
-      targets.map((target) => {
-        const syndicator = syndicators[target]
-        if (syndicator) {
-          request.log.debug(
-            `Try syndicating ${loc.website} to ${target} using syndicator ${syndicator.uid}`
-          )
-          return syndicator.syndicate(loc.website, jf2)
-        } else {
-          const tip = `Please provide a syndicator that can syndicate to ${target}.`
-          return Promise.reject(
-            `Could not syndicate ${loc.website} to target ${target} because no syndicator for that target was provided. ${tip}`
-          )
-        }
-      })
-    )
-
-    const failures: string[] = []
-    const successes: string[] = []
-
-    const mp_syndicate_to = new Set(jf2['mp-syndicate-to'])
-    const syndication = new Set(jf2.syndication)
-
-    request.log.debug(
-      {
-        'mp-syndicate-to': jf2['mp-syndicate-to'],
-        syndication: jf2.syndication
-      },
-      '=== before syndication ==='
-    )
-
-    for (const res of results) {
-      if (res.status === 'rejected') {
-        request.log.error(`Syndication exception: ${res.reason}`)
-        failures.push(res.reason)
-      } else {
-        if (res.value.error) {
-          const message =
-            res.value.error.message ||
-            'The error returned from the syndicator had no message'
-          failures.push(message)
-        } else {
-          // console.log('=== res.value.value ===', res.value.value)
-          const v = res.value.value
-
-          let message: string
-          if (v.syndication) {
-            syndication.add(v.syndication)
-            mp_syndicate_to.delete(v.uid)
-            message = `${loc.website} syndicated to target ${v.syndication}`
-          } else {
-            syndication.add(v.uid)
-            mp_syndicate_to.delete(v.uid)
-            message = `${loc.website} syndicated to target ${v.uid}`
-          }
-          successes.push(message)
-        }
-      }
-    }
-
-    const patch: UpdatePatch = {
-      delete: 'mp-syndicated-to',
-      replace: {
-        'mp-syndicate-to': Array.from(mp_syndicate_to),
-        syndication: Array.from(syndication)
-      }
-    }
-    // request.log.warn(patch, `=== update patch ===`)
-
-    await updatePost(loc.website, patch)
-
-    // request.log.warn(result_update, `=== syndication update ===`)
+    // result.failures.forEach((f) => failures.push(f))
+    // result.successes.forEach((s) => successes.push(s))
 
     const summary = [
-      `${successes.length} Successes: ${successes.join('\n')}`,
-      `${failures.length} Failures: ${failures.join('\n')}`
-    ].join('\n\n')
+      `Syndication of feed ${canonical_url_feed} completed.`,
+      `The feed had ${promises.length} entries.`,
+      `${successes.length} successes.`,
+      `${failures.length} failures.`
+    ].join(' ')
 
-    return reply.code(200).send({
-      successes,
-      failures,
-      store_update_patch: patch,
-      summary
-    })
+    return reply.code(200).send({ successes, failures, summary })
   }
 
   return syndicatePost
