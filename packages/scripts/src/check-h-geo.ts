@@ -4,7 +4,7 @@ import {
   p_longitude,
   h_geo
 } from '@jackdbd/microformats2'
-import { check, defAjv } from '../../stdlib/lib/test-utils.js'
+import { check, defAjv } from '@repo/stdlib'
 
 const run = () => {
   const ajv = defAjv({

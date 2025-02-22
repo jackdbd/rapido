@@ -20,7 +20,7 @@ export type {
   Action,
   Audio,
   JF2,
-  JF2_JSON,
+  JF2_Application_JSON,
   JF2_Urlencoded_Or_Multipart,
   Location,
   MP_Card,

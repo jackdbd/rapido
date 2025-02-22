@@ -23,7 +23,7 @@ import {
   u_syndication,
   u_url
 } from '@jackdbd/microformats2'
-import { check, defAjv } from '../../stdlib/lib/test-utils.js'
+import { check, defAjv } from '../../stdlib/lib/index.js'
 
 const run = async () => {
   const ajv = defAjv({

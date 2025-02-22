@@ -39,7 +39,7 @@ import {
   SCOPE
 } from '../../../packages/stdlib/lib/test-utils.js'
 import { defConfig } from './config.js'
-import { isMpUrlencodedRequestBody, MP_Post_Type } from '@jackdbd/micropub'
+import { isMpUrlencodedRequestBody, PostType } from '@jackdbd/micropub'
 
 export const store_name = 'Fake GitHub repository'
 const domain = 'giacomodebidda.com'
@@ -91,7 +91,7 @@ export const createPost: CreatePost = async (input) => {
   console.log(`[${logPrefix}create] input`)
   console.log(JSON.stringify(input, null, 2))
 
-  let post_type: MP_Post_Type
+  let post_type: PostType
   if (isMpUrlencodedRequestBody(input)) {
     post_type = input.h || 'entry'
   } else {
@@ -312,7 +312,7 @@ export const jf2ToLocationAlternative: JF2ToLocation = (input) => {
   console.log(`[${logPrefix}jf2ToLocation] input`, input)
   // throw new Error(`Simulate runtime exception in jf2ToWebsiteUrl2.`)
 
-  let post_type: MP_Post_Type
+  let post_type: PostType
   if (isMpUrlencodedRequestBody(input)) {
     post_type = input.h || 'entry'
   } else {

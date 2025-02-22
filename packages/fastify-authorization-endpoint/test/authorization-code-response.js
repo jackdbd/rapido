@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test'
 import canonicalUrl from '@jackdbd/canonical-url'
-import { defAjv } from '@repo/stdlib/test-utils'
+import { defAjv } from '@repo/stdlib'
 import { nanoid } from 'nanoid'
 import { authorization_response_querystring } from '../lib/schemas/responses.js'
 

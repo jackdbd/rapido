@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test'
 import canonicalUrl from '@jackdbd/canonical-url'
-import { defAjv } from '@repo/stdlib/test-utils'
+import { defAjv } from '@repo/stdlib'
 import { profile_url_response_body_success } from '../lib/schemas/responses.js'
 
 const ajv = defAjv({ allErrors: true, schemas: [] })

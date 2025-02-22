@@ -17,17 +17,21 @@ export type MF2ItemType = Static<typeof mf2_item_type>
  */
 export const parsed_mf2_json = Type.Object(
   {
-    type: Type.Array(mf2_item_type),
+    type: Type.Array(mf2_item_type, { readOnly: true }),
     properties: Type.Record(
       Type.String({ description: 'Name of the property' }),
-      Type.Any({ description: 'Value of the property' })
+      Type.Any({ description: 'Value of the property' }),
+      { readOnly: true }
     )
   },
-  { title: 'Parsed Microformats JSON' }
+  { readOnly: true, title: 'Parsed Microformats JSON' }
 )
 
-export type ParsedMF2 = Static<typeof parsed_mf2_json>
+export type ParsedMF2 = Readonly<Static<typeof parsed_mf2_json>>
 
-export const mf2 = Type.Object({ items: Type.Array(parsed_mf2_json) })
+export const mf2 = Type.Object(
+  { items: Type.Array(parsed_mf2_json, { readOnly: true }) },
+  { readOnly: true }
+)
 
-export type MF2 = Static<typeof mf2>
+export type MF2 = Readonly<Static<typeof mf2>>

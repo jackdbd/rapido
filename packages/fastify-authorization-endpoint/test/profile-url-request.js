@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test'
 import canonicalUrl from '@jackdbd/canonical-url'
 import { codeVerifier } from '@jackdbd/pkce'
-import { defAjv } from '@repo/stdlib/test-utils'
+import { defAjv } from '@repo/stdlib'
 import { nanoid } from 'nanoid'
 import { profile_url_request_body } from '../lib/schemas/requests.js'
 

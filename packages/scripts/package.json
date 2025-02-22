@@ -27,9 +27,10 @@
     "demo:jf2-h-cite": "node ./dist/check-h-cite.js",
     "demo:jf2-h-geo": "node ./dist/check-h-geo.js",
     "demo:relmeauth-discovery": "node ./dist/relmeauth-discovery.js --me giacomodebidda.com",
-    "dev": "tsc -p tsconfig.json --watch",
+    "dev": "run-p build:ts:watch",
     "lint": "eslint --config ../../eslint.config.mjs --fix",
-    "pub": "echo '@repo/scripts is a private package. Skip publishing it.'"
+    "pub": "echo '@repo/scripts is a private package. Skip publishing it.'",
+    "syndicate": "node ./dist/syndicate.js"
   },
   "dependencies": {
     "@apideck/better-ajv-errors": "^0.3.6",

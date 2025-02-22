@@ -6,7 +6,7 @@ import {
   codeChallenge,
   codeVerifier
 } from '@jackdbd/pkce'
-import { defAjv } from '@repo/stdlib/test-utils'
+import { defAjv } from '@repo/stdlib'
 import { nanoid } from 'nanoid'
 import { authorization_request_querystring } from '../lib/schemas/requests.js'
 

@@ -1,6 +1,6 @@
 import { Syndicator } from '@jackdbd/fastify-syndicate-endpoint'
 import { isMpUrlencodedRequestBody } from '@jackdbd/micropub'
-import type { JF2ToContent, MP_Post_Type, Syndicate } from '@jackdbd/micropub'
+import type { JF2ToContent, PostType, Syndicate } from '@jackdbd/micropub'
 import { send } from '@jackdbd/notifications/telegram'
 import { DEFAULT } from './defaults.js'
 import { Log } from './log.js'
@@ -69,7 +69,7 @@ export const defSyndicator = (options: Options): Syndicator => {
   const name = config.name || `Telegram chat ${chat_id}`
 
   const jf2ToContent: JF2ToContent = (input) => {
-    let post_type: MP_Post_Type
+    let post_type: PostType
     if (isMpUrlencodedRequestBody(input)) {
       post_type = input.h || 'entry'
     } else {
@@ -189,7 +189,6 @@ export const defSyndicator = (options: Options): Syndicator => {
       }
     }
 
-    // TODO: remove any when @jackdbd/micropub is updated
     if (jf2.location) {
       log.debug(`adding location of JF2 object to Telegram message`)
       if (typeof jf2.location === 'string') {

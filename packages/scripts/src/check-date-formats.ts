@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { date as date_schema } from '@jackdbd/microformats2'
-import { check, defAjv } from '../../stdlib/lib/test-utils.js'
+import { check, defAjv } from '@repo/stdlib'
 
 const ajv = defAjv({ allErrors: true, schemas: [] })
 

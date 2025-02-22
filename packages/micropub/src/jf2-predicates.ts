@@ -1,8 +1,4 @@
-import type {
-  JF2,
-  JF2_JSON,
-  JF2_Urlencoded_Or_Multipart
-} from './schemas/jf2.js'
+import type { JF2 } from './schemas/jf2.js'
 import { isMpUrlencodedRequestBody } from './type-guards.js'
 
 /**
@@ -33,7 +29,7 @@ export const isBookmark = (jf2: JF2) => {
   }
 }
 
-export const isCard = (jf2: JF2_JSON | JF2_Urlencoded_Or_Multipart) => {
+export const isCard = (jf2: JF2) => {
   if (isMpUrlencodedRequestBody(jf2)) {
     if (jf2.h === 'card') {
       return true
@@ -60,7 +56,7 @@ export const isCheckin = (jf2: JF2) => {
   }
 }
 
-export const isCite = (jf2: JF2_JSON | JF2_Urlencoded_Or_Multipart) => {
+export const isCite = (jf2: JF2) => {
   if (isMpUrlencodedRequestBody(jf2)) {
     if (jf2.h === 'cite') {
       return true
@@ -88,7 +84,7 @@ export const isCite = (jf2: JF2_JSON | JF2_Urlencoded_Or_Multipart) => {
  * - `"h": "entry"` when `Content-Type` is either
  *   `application/x-www-form-urlencoded` or `multipart/form-data`
  */
-export const hasEntry = (jf2: JF2_JSON | JF2_Urlencoded_Or_Multipart) => {
+export const hasEntry = (jf2: JF2) => {
   if (isMpUrlencodedRequestBody(jf2)) {
     if (jf2.h === 'entry') {
       return true

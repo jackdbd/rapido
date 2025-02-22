@@ -13,11 +13,13 @@
       "type": "Function",
       "parameters": [
         {
+          "additionalProperties": true,
           "title": "JF2",
           "description": "Micropub post from requests sent with any one of these values of `Content-Type`: `application/json`, `application/x-www-form-urlencoded`, `multipart/form-data`.",
           "anyOf": [
             {
-              "title": "JF2 (json)",
+              "additionalProperties": true,
+              "title": "JF2 (application/json)",
               "description": "Micropub post from requests sent with `Content-Type: application/json`.",
               "type": "object",
               "properties": {
@@ -952,32 +954,193 @@
                   ]
                 },
                 "type": {
-                  "title": "Post type",
-                  "description": "Micropub post type.",
+                  "title": "JF2 type",
+                  "description": "Type of a JF2 object used in the context of the Micropub protocol.",
                   "default": "entry",
                   "anyOf": [
                     {
-                      "const": "card",
-                      "type": "string"
+                      "title": "JF2 type",
+                      "description": "Type of the JF2 object.",
+                      "anyOf": [
+                        {
+                          "const": "card",
+                          "type": "string"
+                        },
+                        {
+                          "const": "cite",
+                          "type": "string"
+                        },
+                        {
+                          "const": "entry",
+                          "type": "string"
+                        },
+                        {
+                          "const": "event",
+                          "type": "string"
+                        }
+                      ]
                     },
                     {
-                      "const": "cite",
-                      "type": "string"
-                    },
-                    {
-                      "const": "entry",
-                      "type": "string"
-                    },
-                    {
-                      "const": "event",
-                      "type": "string"
+                      "title": "Post type",
+                      "description": "Type of the Micropub post.",
+                      "anyOf": [
+                        {
+                          "const": "acquisition",
+                          "type": "string"
+                        },
+                        {
+                          "const": "article",
+                          "type": "string"
+                        },
+                        {
+                          "const": "audio",
+                          "type": "string"
+                        },
+                        {
+                          "const": "bookmark",
+                          "type": "string"
+                        },
+                        {
+                          "const": "bucketlist",
+                          "type": "string"
+                        },
+                        {
+                          "const": "checkin",
+                          "type": "string"
+                        },
+                        {
+                          "const": "chicken",
+                          "type": "string"
+                        },
+                        {
+                          "const": "collection",
+                          "type": "string"
+                        },
+                        {
+                          "const": "comics",
+                          "type": "string"
+                        },
+                        {
+                          "const": "donation",
+                          "type": "string"
+                        },
+                        {
+                          "const": "edit",
+                          "type": "string"
+                        },
+                        {
+                          "const": "event",
+                          "type": "string"
+                        },
+                        {
+                          "const": "exercise",
+                          "type": "string"
+                        },
+                        {
+                          "const": "food",
+                          "type": "string"
+                        },
+                        {
+                          "const": "issue",
+                          "type": "string"
+                        },
+                        {
+                          "const": "jam",
+                          "type": "string"
+                        },
+                        {
+                          "const": "like",
+                          "type": "string"
+                        },
+                        {
+                          "const": "note",
+                          "type": "string"
+                        },
+                        {
+                          "const": "performance",
+                          "type": "string"
+                        },
+                        {
+                          "const": "photo",
+                          "type": "string"
+                        },
+                        {
+                          "const": "presentation",
+                          "type": "string"
+                        },
+                        {
+                          "const": "quotation",
+                          "type": "string"
+                        },
+                        {
+                          "const": "read",
+                          "type": "string"
+                        },
+                        {
+                          "const": "recipe",
+                          "type": "string"
+                        },
+                        {
+                          "const": "reply",
+                          "type": "string"
+                        },
+                        {
+                          "const": "repost",
+                          "type": "string"
+                        },
+                        {
+                          "const": "rsvp",
+                          "type": "string"
+                        },
+                        {
+                          "const": "scrobble",
+                          "type": "string"
+                        },
+                        {
+                          "const": "session",
+                          "type": "string"
+                        },
+                        {
+                          "const": "sleep",
+                          "type": "string"
+                        },
+                        {
+                          "const": "snark",
+                          "type": "string"
+                        },
+                        {
+                          "const": "study",
+                          "type": "string"
+                        },
+                        {
+                          "const": "task",
+                          "type": "string"
+                        },
+                        {
+                          "const": "venue",
+                          "type": "string"
+                        },
+                        {
+                          "const": "video",
+                          "type": "string"
+                        },
+                        {
+                          "const": "want",
+                          "type": "string"
+                        },
+                        {
+                          "const": "wish",
+                          "type": "string"
+                        }
+                      ]
                     }
                   ]
                 }
               }
             },
             {
-              "title": "JF2 (x-www-form-urlencoded or multipart/form-data)",
+              "additionalProperties": true,
+              "title": "JF2 (application/x-www-form-urlencoded or multipart/form-data)",
               "description": "Micropub post from requests sent with `Content-Type: application/x-www-form-urlencoded` or `Content-Type: multipart/form-data`.",
               "type": "object",
               "properties": {
@@ -1912,25 +2075,185 @@
                   ]
                 },
                 "h": {
-                  "title": "Post type",
-                  "description": "Micropub post type.",
+                  "title": "JF2 type",
+                  "description": "Type of a JF2 object used in the context of the Micropub protocol.",
                   "default": "entry",
                   "anyOf": [
                     {
-                      "const": "card",
-                      "type": "string"
+                      "title": "JF2 type",
+                      "description": "Type of the JF2 object.",
+                      "anyOf": [
+                        {
+                          "const": "card",
+                          "type": "string"
+                        },
+                        {
+                          "const": "cite",
+                          "type": "string"
+                        },
+                        {
+                          "const": "entry",
+                          "type": "string"
+                        },
+                        {
+                          "const": "event",
+                          "type": "string"
+                        }
+                      ]
                     },
                     {
-                      "const": "cite",
-                      "type": "string"
-                    },
-                    {
-                      "const": "entry",
-                      "type": "string"
-                    },
-                    {
-                      "const": "event",
-                      "type": "string"
+                      "title": "Post type",
+                      "description": "Type of the Micropub post.",
+                      "anyOf": [
+                        {
+                          "const": "acquisition",
+                          "type": "string"
+                        },
+                        {
+                          "const": "article",
+                          "type": "string"
+                        },
+                        {
+                          "const": "audio",
+                          "type": "string"
+                        },
+                        {
+                          "const": "bookmark",
+                          "type": "string"
+                        },
+                        {
+                          "const": "bucketlist",
+                          "type": "string"
+                        },
+                        {
+                          "const": "checkin",
+                          "type": "string"
+                        },
+                        {
+                          "const": "chicken",
+                          "type": "string"
+                        },
+                        {
+                          "const": "collection",
+                          "type": "string"
+                        },
+                        {
+                          "const": "comics",
+                          "type": "string"
+                        },
+                        {
+                          "const": "donation",
+                          "type": "string"
+                        },
+                        {
+                          "const": "edit",
+                          "type": "string"
+                        },
+                        {
+                          "const": "event",
+                          "type": "string"
+                        },
+                        {
+                          "const": "exercise",
+                          "type": "string"
+                        },
+                        {
+                          "const": "food",
+                          "type": "string"
+                        },
+                        {
+                          "const": "issue",
+                          "type": "string"
+                        },
+                        {
+                          "const": "jam",
+                          "type": "string"
+                        },
+                        {
+                          "const": "like",
+                          "type": "string"
+                        },
+                        {
+                          "const": "note",
+                          "type": "string"
+                        },
+                        {
+                          "const": "performance",
+                          "type": "string"
+                        },
+                        {
+                          "const": "photo",
+                          "type": "string"
+                        },
+                        {
+                          "const": "presentation",
+                          "type": "string"
+                        },
+                        {
+                          "const": "quotation",
+                          "type": "string"
+                        },
+                        {
+                          "const": "read",
+                          "type": "string"
+                        },
+                        {
+                          "const": "recipe",
+                          "type": "string"
+                        },
+                        {
+                          "const": "reply",
+                          "type": "string"
+                        },
+                        {
+                          "const": "repost",
+                          "type": "string"
+                        },
+                        {
+                          "const": "rsvp",
+                          "type": "string"
+                        },
+                        {
+                          "const": "scrobble",
+                          "type": "string"
+                        },
+                        {
+                          "const": "session",
+                          "type": "string"
+                        },
+                        {
+                          "const": "sleep",
+                          "type": "string"
+                        },
+                        {
+                          "const": "snark",
+                          "type": "string"
+                        },
+                        {
+                          "const": "study",
+                          "type": "string"
+                        },
+                        {
+                          "const": "task",
+                          "type": "string"
+                        },
+                        {
+                          "const": "venue",
+                          "type": "string"
+                        },
+                        {
+                          "const": "video",
+                          "type": "string"
+                        },
+                        {
+                          "const": "want",
+                          "type": "string"
+                        },
+                        {
+                          "const": "wish",
+                          "type": "string"
+                        }
+                      ]
                     }
                   ]
                 }
@@ -2030,11 +2353,13 @@
       "type": "Function",
       "parameters": [
         {
+          "additionalProperties": true,
           "title": "JF2",
           "description": "Micropub post from requests sent with any one of these values of `Content-Type`: `application/json`, `application/x-www-form-urlencoded`, `multipart/form-data`.",
           "anyOf": [
             {
-              "title": "JF2 (json)",
+              "additionalProperties": true,
+              "title": "JF2 (application/json)",
               "description": "Micropub post from requests sent with `Content-Type: application/json`.",
               "type": "object",
               "properties": {
@@ -2969,32 +3294,193 @@
                   ]
                 },
                 "type": {
-                  "title": "Post type",
-                  "description": "Micropub post type.",
+                  "title": "JF2 type",
+                  "description": "Type of a JF2 object used in the context of the Micropub protocol.",
                   "default": "entry",
                   "anyOf": [
                     {
-                      "const": "card",
-                      "type": "string"
+                      "title": "JF2 type",
+                      "description": "Type of the JF2 object.",
+                      "anyOf": [
+                        {
+                          "const": "card",
+                          "type": "string"
+                        },
+                        {
+                          "const": "cite",
+                          "type": "string"
+                        },
+                        {
+                          "const": "entry",
+                          "type": "string"
+                        },
+                        {
+                          "const": "event",
+                          "type": "string"
+                        }
+                      ]
                     },
                     {
-                      "const": "cite",
-                      "type": "string"
-                    },
-                    {
-                      "const": "entry",
-                      "type": "string"
-                    },
-                    {
-                      "const": "event",
-                      "type": "string"
+                      "title": "Post type",
+                      "description": "Type of the Micropub post.",
+                      "anyOf": [
+                        {
+                          "const": "acquisition",
+                          "type": "string"
+                        },
+                        {
+                          "const": "article",
+                          "type": "string"
+                        },
+                        {
+                          "const": "audio",
+                          "type": "string"
+                        },
+                        {
+                          "const": "bookmark",
+                          "type": "string"
+                        },
+                        {
+                          "const": "bucketlist",
+                          "type": "string"
+                        },
+                        {
+                          "const": "checkin",
+                          "type": "string"
+                        },
+                        {
+                          "const": "chicken",
+                          "type": "string"
+                        },
+                        {
+                          "const": "collection",
+                          "type": "string"
+                        },
+                        {
+                          "const": "comics",
+                          "type": "string"
+                        },
+                        {
+                          "const": "donation",
+                          "type": "string"
+                        },
+                        {
+                          "const": "edit",
+                          "type": "string"
+                        },
+                        {
+                          "const": "event",
+                          "type": "string"
+                        },
+                        {
+                          "const": "exercise",
+                          "type": "string"
+                        },
+                        {
+                          "const": "food",
+                          "type": "string"
+                        },
+                        {
+                          "const": "issue",
+                          "type": "string"
+                        },
+                        {
+                          "const": "jam",
+                          "type": "string"
+                        },
+                        {
+                          "const": "like",
+                          "type": "string"
+                        },
+                        {
+                          "const": "note",
+                          "type": "string"
+                        },
+                        {
+                          "const": "performance",
+                          "type": "string"
+                        },
+                        {
+                          "const": "photo",
+                          "type": "string"
+                        },
+                        {
+                          "const": "presentation",
+                          "type": "string"
+                        },
+                        {
+                          "const": "quotation",
+                          "type": "string"
+                        },
+                        {
+                          "const": "read",
+                          "type": "string"
+                        },
+                        {
+                          "const": "recipe",
+                          "type": "string"
+                        },
+                        {
+                          "const": "reply",
+                          "type": "string"
+                        },
+                        {
+                          "const": "repost",
+                          "type": "string"
+                        },
+                        {
+                          "const": "rsvp",
+                          "type": "string"
+                        },
+                        {
+                          "const": "scrobble",
+                          "type": "string"
+                        },
+                        {
+                          "const": "session",
+                          "type": "string"
+                        },
+                        {
+                          "const": "sleep",
+                          "type": "string"
+                        },
+                        {
+                          "const": "snark",
+                          "type": "string"
+                        },
+                        {
+                          "const": "study",
+                          "type": "string"
+                        },
+                        {
+                          "const": "task",
+                          "type": "string"
+                        },
+                        {
+                          "const": "venue",
+                          "type": "string"
+                        },
+                        {
+                          "const": "video",
+                          "type": "string"
+                        },
+                        {
+                          "const": "want",
+                          "type": "string"
+                        },
+                        {
+                          "const": "wish",
+                          "type": "string"
+                        }
+                      ]
                     }
                   ]
                 }
               }
             },
             {
-              "title": "JF2 (x-www-form-urlencoded or multipart/form-data)",
+              "additionalProperties": true,
+              "title": "JF2 (application/x-www-form-urlencoded or multipart/form-data)",
               "description": "Micropub post from requests sent with `Content-Type: application/x-www-form-urlencoded` or `Content-Type: multipart/form-data`.",
               "type": "object",
               "properties": {
@@ -3929,25 +4415,185 @@
                   ]
                 },
                 "h": {
-                  "title": "Post type",
-                  "description": "Micropub post type.",
+                  "title": "JF2 type",
+                  "description": "Type of a JF2 object used in the context of the Micropub protocol.",
                   "default": "entry",
                   "anyOf": [
                     {
-                      "const": "card",
-                      "type": "string"
+                      "title": "JF2 type",
+                      "description": "Type of the JF2 object.",
+                      "anyOf": [
+                        {
+                          "const": "card",
+                          "type": "string"
+                        },
+                        {
+                          "const": "cite",
+                          "type": "string"
+                        },
+                        {
+                          "const": "entry",
+                          "type": "string"
+                        },
+                        {
+                          "const": "event",
+                          "type": "string"
+                        }
+                      ]
                     },
                     {
-                      "const": "cite",
-                      "type": "string"
-                    },
-                    {
-                      "const": "entry",
-                      "type": "string"
-                    },
-                    {
-                      "const": "event",
-                      "type": "string"
+                      "title": "Post type",
+                      "description": "Type of the Micropub post.",
+                      "anyOf": [
+                        {
+                          "const": "acquisition",
+                          "type": "string"
+                        },
+                        {
+                          "const": "article",
+                          "type": "string"
+                        },
+                        {
+                          "const": "audio",
+                          "type": "string"
+                        },
+                        {
+                          "const": "bookmark",
+                          "type": "string"
+                        },
+                        {
+                          "const": "bucketlist",
+                          "type": "string"
+                        },
+                        {
+                          "const": "checkin",
+                          "type": "string"
+                        },
+                        {
+                          "const": "chicken",
+                          "type": "string"
+                        },
+                        {
+                          "const": "collection",
+                          "type": "string"
+                        },
+                        {
+                          "const": "comics",
+                          "type": "string"
+                        },
+                        {
+                          "const": "donation",
+                          "type": "string"
+                        },
+                        {
+                          "const": "edit",
+                          "type": "string"
+                        },
+                        {
+                          "const": "event",
+                          "type": "string"
+                        },
+                        {
+                          "const": "exercise",
+                          "type": "string"
+                        },
+                        {
+                          "const": "food",
+                          "type": "string"
+                        },
+                        {
+                          "const": "issue",
+                          "type": "string"
+                        },
+                        {
+                          "const": "jam",
+                          "type": "string"
+                        },
+                        {
+                          "const": "like",
+                          "type": "string"
+                        },
+                        {
+                          "const": "note",
+                          "type": "string"
+                        },
+                        {
+                          "const": "performance",
+                          "type": "string"
+                        },
+                        {
+                          "const": "photo",
+                          "type": "string"
+                        },
+                        {
+                          "const": "presentation",
+                          "type": "string"
+                        },
+                        {
+                          "const": "quotation",
+                          "type": "string"
+                        },
+                        {
+                          "const": "read",
+                          "type": "string"
+                        },
+                        {
+                          "const": "recipe",
+                          "type": "string"
+                        },
+                        {
+                          "const": "reply",
+                          "type": "string"
+                        },
+                        {
+                          "const": "repost",
+                          "type": "string"
+                        },
+                        {
+                          "const": "rsvp",
+                          "type": "string"
+                        },
+                        {
+                          "const": "scrobble",
+                          "type": "string"
+                        },
+                        {
+                          "const": "session",
+                          "type": "string"
+                        },
+                        {
+                          "const": "sleep",
+                          "type": "string"
+                        },
+                        {
+                          "const": "snark",
+                          "type": "string"
+                        },
+                        {
+                          "const": "study",
+                          "type": "string"
+                        },
+                        {
+                          "const": "task",
+                          "type": "string"
+                        },
+                        {
+                          "const": "venue",
+                          "type": "string"
+                        },
+                        {
+                          "const": "video",
+                          "type": "string"
+                        },
+                        {
+                          "const": "want",
+                          "type": "string"
+                        },
+                        {
+                          "const": "wish",
+                          "type": "string"
+                        }
+                      ]
                     }
                   ]
                 }

@@ -8,6 +8,7 @@
   cloudflare_r2 = builtins.fromJSON (builtins.readFile /run/secrets/cloudflare/r2);
   semantic_release_bot_github_token = builtins.readFile /run/secrets/github-tokens/semantic_release_bot;
   telegram = builtins.fromJSON (builtins.readFile /run/secrets/telegram/jackdbd_github_bot);
+  telegram_personal = builtins.fromJSON (builtins.readFile /run/secrets/telegram/personal_bot);
   telegram_token_splits = builtins.split ":" telegram.token;
   turso = builtins.fromJSON (builtins.readFile /run/secrets/turso/micropub);
 in {
@@ -44,7 +45,12 @@ in {
     # NPM_TOKEN = builtins.readFile /run/secrets/npm-tokens/semantic_release_bot;
     PINO_LOG_LEVEL = "debug";
     PORT = "3001";
+    # PROGRAM_TO_DEBUG = "packages/scripts/dist/syndicate.js --jf2 rsvp --target telegram-chat --target telegram-chat-personal";
+    # PROGRAM_TO_DEBUG = "packages/scripts/dist/syndicate.js --html note --all";
+    PROGRAM_TO_DEBUG = "packages/scripts/dist/syndicate.js --url article --all";
+    # PROGRAM_TO_DEBUG = "packages/scripts/dist/syndicate.js --jf2 rsvp --all";
     TELEGRAM_CHAT_ID = telegram.chat_id;
+    TELEGRAM_CHAT_ID_PERSONAL = telegram_personal.chat_id;
     TELEGRAM_TOKEN = telegram.token;
     TEST_FILE_TO_DEBUG = "packages/micropub/test/jf2-predicates.js";
     TURSO_DATABASE_TOKEN = turso.database_token;
@@ -96,6 +102,11 @@ in {
       npm run copy:webc
       NODE_ENV=development NODE_OPTIONS='--inspect' PINO_LOG_LEVEL=debug node apps/demo-app/dist/server.js --port 3001 --print-plugins --print-routes | npx pino-pretty
     '';
+    "debug:program".exec = ''
+      echo "debug $PROGRAM_TO_DEBUG"
+      echo "Don't forget to set some breakpoints and attach to the Node.js process using the configuration that has \"request\": \"attach\" in launch.json"
+      NODE_ENV=development NODE_OPTIONS='--inspect-brk' PINO_LOG_LEVEL=debug node $PROGRAM_TO_DEBUG
+    '';
     "debug:test".exec = ''
       echo "debug test file $TEST_FILE_TO_DEBUG"
       echo "Don't forget to set some breakpoints and attach to the Node.js process using the configuration that has \"request\": \"attach\" in launch.json"
@@ -125,6 +136,9 @@ in {
     serve.exec = ''
       echo "serve directory $1"
       npx http-server $1 --port 8090
+    '';
+    syndicate.exec = ''
+      npm run syndicate -w packages/scripts -- "$@"
     '';
     "test:ci".exec = ''
       echo "test package $1"

@@ -9,7 +9,7 @@ import {
   u_uid,
   u_url
 } from '@jackdbd/microformats2'
-import { check, defAjv } from '../../stdlib/lib/test-utils.js'
+import { check, defAjv } from '@repo/stdlib'
 
 const run = () => {
   const ajv = defAjv({

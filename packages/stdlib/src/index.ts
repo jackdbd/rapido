@@ -1,6 +1,16 @@
+export { defAjv, check } from './ajv.js'
+
 export * from './constants.js'
 
+export { apply, type Effect } from './effects.js'
+
 export { EMOJI, toEmoji } from './emojis.js'
+
+export { exitOne, exitZero } from './exit.js'
+
+export { fetchWithManualRedirects } from './fetch.js'
+
+export { log } from './log.js'
 
 export {
   calloutEmoji,
@@ -11,6 +21,15 @@ export {
   calloutWarning
 } from './markdown.js'
 
+export {
+  SAMPLE_HTML,
+  SAMPLE_JF2,
+  SAMPLE_URL,
+  SAMPLE_FEED_URL
+} from './samples.js'
+
 export { schemaToMarkdown, safeSchemaToMarkdown } from './schema-to-markdown.js'
+
+export { defTexts } from './telegram-texts.js'
 
 export { writeJsonSchema } from './write-json-schema.js'

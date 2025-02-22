@@ -12,14 +12,23 @@ export { entry, type MP_Entry } from './entry.js'
 
 export { event, type MP_Event } from './event.js'
 
-export { jf2, jf2_json, jf2_urlencoded_or_multipart } from './jf2.js'
-export type { JF2, JF2_JSON, JF2_Urlencoded_Or_Multipart } from './jf2.js'
+export {
+  jf2,
+  jf2_application_json,
+  jf2_urlencoded_or_multipart
+} from './jf2.js'
+export type {
+  JF2,
+  JF2_Application_JSON,
+  JF2_Urlencoded_Or_Multipart
+} from './jf2.js'
 
 export { location, type Location } from './location.js'
 
 export {
   access_token,
   action,
+  entry_post_type,
   h,
   mp_channel,
   mp_destination,
@@ -28,14 +37,16 @@ export {
   mp_slug,
   mp_syndicate_to,
   mp_visibility,
+  post_type,
   url
 } from './micropub-reserved-properties.js'
 export type {
   Action,
+  EntryPostType,
   H,
-  MP_Post_Type,
   MP_Syndicate_To,
-  MP_Visibility
+  MP_Visibility,
+  PostType
 } from './micropub-reserved-properties.js'
 
 export { photo, type Photo } from './photo.js'

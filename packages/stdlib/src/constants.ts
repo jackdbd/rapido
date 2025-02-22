@@ -8,3 +8,5 @@ export const APPS_ROOT = path.join(REPO_ROOT, 'apps')
 export const ASSETS_ROOT = path.join(REPO_ROOT, 'assets')
 export const PACKAGES_ROOT = path.join(REPO_ROOT, 'packages')
 export const SCHEMAS_ROOT = path.join(REPO_ROOT, 'schemas')
+
+export const LINK_BUGS = 'https://github.com/jackdbd/rapido/labels/bug'

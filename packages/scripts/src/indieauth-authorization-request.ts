@@ -7,13 +7,13 @@ import {
   metadataEndpoint,
   serverMetadata
 } from '@jackdbd/indieauth'
+import { exitOne } from '@repo/stdlib'
 import {
   CLIENT_ID_NONEXISTENT,
   CODE_VERIFIER_LENGTH,
-  exitOne,
   ME,
   REDIRECT_URI_NONEXISTENT
-} from '../../stdlib/lib/test-utils.js'
+} from '@repo/stdlib/test-utils'
 
 const __filename = fileURLToPath(import.meta.url)
 const prefix = `[${__filename}] `

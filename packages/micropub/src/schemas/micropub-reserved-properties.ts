@@ -59,6 +59,24 @@ export const action = Type.Union(
 
 export type Action = Static<typeof action>
 
+export const jf2_type = Type.Union(
+  [
+    Type.Literal('card'),
+    Type.Literal('cite'),
+    Type.Literal('entry'),
+    Type.Literal('event')
+  ],
+  {
+    title: 'JF2 type',
+    description: 'Type of the JF2 object.'
+  }
+)
+
+/**
+ * The type of a JF2 object used in the Micropub protocol.
+ */
+export type JF2_Type = Static<typeof jf2_type>
+
 /**
  * Micropub post type.
  *
@@ -68,26 +86,90 @@ export type Action = Static<typeof action>
  * A few POST body property names are reserved when requests are sent as
  * `x-www-form-urlencoded` or `multipart/form-data`.
  *
+ * @see [post - indieweb.org](https://indieweb.org/post)
+ * @see [post type - indieweb.org](https://indieweb.org/Category:PostType)
  * @see [Reserved Properties - Micropub spec](https://micropub.spec.indieweb.org/#reserved-properties)
  */
-export const h = Type.Union(
+export const entry_post_type = Type.Union(
   [
-    Type.Literal('card'),
-    Type.Literal('cite'),
-    Type.Literal('entry'),
-    Type.Literal('event')
+    Type.Literal('acquisition'),
+    Type.Literal('article'),
+    Type.Literal('audio'),
+    Type.Literal('bookmark'),
+    Type.Literal('bucketlist'),
+    Type.Literal('checkin'),
+    Type.Literal('chicken'),
+    Type.Literal('collection'),
+    Type.Literal('comics'),
+    Type.Literal('donation'),
+    Type.Literal('edit'),
+    Type.Literal('event'),
+    Type.Literal('exercise'),
+    Type.Literal('food'),
+    Type.Literal('issue'),
+    Type.Literal('jam'),
+    Type.Literal('like'),
+    // Type.Literal('multi-photo'), // should this be its own type?
+    Type.Literal('note'),
+    Type.Literal('performance'),
+    Type.Literal('photo'),
+    Type.Literal('presentation'),
+    Type.Literal('quotation'),
+    Type.Literal('read'),
+    Type.Literal('recipe'),
+    Type.Literal('reply'),
+    Type.Literal('repost'),
+    Type.Literal('rsvp'),
+    Type.Literal('scrobble'),
+    Type.Literal('session'),
+    Type.Literal('sleep'),
+    Type.Literal('snark'),
+    Type.Literal('study'),
+    Type.Literal('task'),
+    Type.Literal('venue'),
+    Type.Literal('video'),
+    Type.Literal('want'),
+    Type.Literal('wish')
   ],
   {
     title: 'Post type',
-    description: 'Micropub post type.',
-    default: 'entry'
+    description: 'Type of the Micropub post.'
   }
 )
 
+/**
+ * Micropub post type.
+ *
+ * Use `h` for an `x-www-form-urlencoded` or `multipart/form-data` requests.
+ * Use `type` for an `application/json` requests.
+ *
+ * A few POST body property names are reserved when requests are sent as
+ * `x-www-form-urlencoded` or `multipart/form-data`.
+ *
+ * @see [post - indieweb.org](https://indieweb.org/post)
+ * @see [post type - indieweb.org](https://indieweb.org/Category:PostType)
+ * @see [Reserved Properties - Micropub spec](https://micropub.spec.indieweb.org/#reserved-properties)
+ */
+export type EntryPostType = Static<typeof entry_post_type>
+
+/**
+ * JF2 object in the context of the Micropub protocol. If no type is specified,
+ * the default type `entry` SHOULD be used.
+ *
+ * @see [Create - Micropub spec](https://micropub.spec.indieweb.org/#create)
+ */
+export const h = Type.Union([jf2_type, entry_post_type], {
+  title: 'JF2 type',
+  description:
+    'Type of a JF2 object used in the context of the Micropub protocol.',
+  default: 'entry'
+})
+
 export type H = Static<typeof h>
 
-// alias
-export type MP_Post_Type = Static<typeof h>
+// aliases
+export const post_type = h
+export type PostType = H
 
 export const mp_channel = Type.String()
 

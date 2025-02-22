@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'node:url'
 import { parseArgs } from 'node:util'
 import { clientMetadata } from '@jackdbd/indieauth'
-import { exitOne } from '@repo/stdlib/test-utils'
+import { exitOne } from '@repo/stdlib'
 
 const __filename = fileURLToPath(import.meta.url)
 const prefix = `[${__filename}] `

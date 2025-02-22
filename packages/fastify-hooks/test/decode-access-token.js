@@ -1,8 +1,8 @@
 import assert from 'node:assert'
 import { before, describe, it } from 'node:test'
 import { accessToken } from '@jackdbd/indieauth'
+import { defAjv } from '@repos/stdlib'
 import {
-  defAjv,
   ACCESS_TOKEN_EXPIRATION,
   ISSUER,
   jwks,
