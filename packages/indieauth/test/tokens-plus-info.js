@@ -1,7 +1,8 @@
 import assert from 'node:assert'
 import { describe, it } from 'node:test'
+import { defAjv } from '@repo/stdlib'
+import { ISSUER, jwks } from '@repo/stdlib/test-utils'
 import { tokensPlusInfo } from '../lib/index.js'
-import { defAjv, ISSUER, jwks } from '../../stdlib/lib/test-utils.js'
 
 const ajv = defAjv()
 const issuer = ISSUER

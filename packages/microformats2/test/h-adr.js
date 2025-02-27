@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert'
-import { defAjv } from '@repo/stdlib/test-utils'
+import { defAjv } from '@repo/stdlib'
 import {
   h_adr,
   h_geo,

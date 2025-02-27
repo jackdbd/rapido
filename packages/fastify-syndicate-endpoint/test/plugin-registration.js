@@ -13,7 +13,6 @@ describe('syndicate-endpoint plugin register', () => {
       t.assert.fail('Plugin should have failed to register without options')
     } catch (err) {
       t.assert.ok(err, 'Expected an error to be thrown')
-      console.log('🚀 ~ it ~ err:', err)
       // t.assert.match(err.message, /.+onSuccess is required/i)
     } finally {
       await fastify.close()

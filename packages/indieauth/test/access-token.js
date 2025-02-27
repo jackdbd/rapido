@@ -1,15 +1,15 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert'
 import { accessToken } from '../lib/index.js'
+import { defAjv } from '@repo/stdlib'
 import {
   ACCESS_TOKEN_EXPIRATION,
   ACCESS_TOKEN_EXPIRATION_IN_SECONDS,
-  defAjv,
   ISSUER,
-  jwks,
   ME,
-  REQUIRED_CLAIMS
-} from '../../stdlib/lib/test-utils.js'
+  REQUIRED_CLAIMS,
+  jwks
+} from '@repo/stdlib/test-utils'
 import { assertTokenHasExpectedClaims } from './test-utils.js'
 
 const ajv = defAjv()

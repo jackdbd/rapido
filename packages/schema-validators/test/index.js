@@ -1,7 +1,7 @@
 import assert from 'node:assert'
 import { describe, it } from 'node:test'
 import { Type } from '@sinclair/typebox'
-import { defAjv } from '../../stdlib/lib/test-utils.js'
+import { defAjv } from '@repo/stdlib'
 import { code_challenge } from '../../pkce/lib/index.js'
 import { conformResult, throwWhenNotConform } from '../lib/index.js'
 

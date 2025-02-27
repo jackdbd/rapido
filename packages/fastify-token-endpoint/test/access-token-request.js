@@ -5,7 +5,7 @@ import {
   code_challenge_method as code_challenge_method_schema,
   codeVerifier
 } from '@jackdbd/pkce'
-import { defAjv } from '@repo/stdlib/test-utils'
+import { defAjv } from '@repo/stdlib'
 import { nanoid } from 'nanoid'
 import { access_token_request_body } from '../lib/schemas/requests.js'
 

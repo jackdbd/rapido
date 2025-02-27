@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert'
+import { ISSUER, jwks } from '@repo/stdlib/test-utils'
 import { randomKid, sign } from '../lib/index.js'
-import { ISSUER, jwks } from '../../stdlib/lib/test-utils.js'
 
 describe('sign', () => {
   it('can issue a JWT', async () => {

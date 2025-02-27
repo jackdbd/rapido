@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test'
 import canonicalUrl from '@jackdbd/canonical-url'
 import { unixTimestampInSeconds } from '@jackdbd/indieauth'
-import { defAjv } from '@repo/stdlib/test-utils'
+import { defAjv } from '@repo/stdlib'
 import { nanoid } from 'nanoid'
 import {
   introspection_response_body_when_token_is_not_retrieved,

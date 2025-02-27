@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert'
-import { defAjv } from '@repo/stdlib/test-utils'
+import { defAjv } from '@repo/stdlib'
 import { p_altitude, p_latitude, p_longitude, p_geo } from '../lib/index.js'
 
 const ajv = defAjv()

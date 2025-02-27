@@ -2,9 +2,9 @@ import { describe, it } from 'node:test'
 import Fastify from 'fastify'
 import fastifyRequestContext from '@fastify/request-context'
 import { accessToken } from '@jackdbd/indieauth'
+import { defAjv } from '@repo/stdlib'
 import {
   CLIENT_ID_NONEXISTENT as client_id,
-  defAjv,
   ISSUER as issuer,
   jwks,
   jwks_url as jwksUrl,

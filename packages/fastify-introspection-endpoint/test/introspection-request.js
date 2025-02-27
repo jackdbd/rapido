@@ -1,5 +1,5 @@
 import { describe, it } from 'node:test'
-import { defAjv } from '@repo/stdlib/test-utils'
+import { defAjv } from '@repo/stdlib'
 import { nanoid } from 'nanoid'
 import { introspection_request_body } from '../lib/schemas/requests.js'
 

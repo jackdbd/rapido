@@ -2,11 +2,7 @@ import { describe, it } from 'node:test'
 import assert from 'node:assert'
 import { nanoid } from 'nanoid'
 import { randomKid, safeDecode, sign } from '../lib/index.js'
-import {
-  ACCESS_TOKEN_EXPIRATION,
-  ISSUER,
-  jwks
-} from '../../stdlib/lib/test-utils.js'
+import { ACCESS_TOKEN_EXPIRATION, ISSUER, jwks } from '@repo/stdlib/test-utils'
 
 describe('safeDecode', () => {
   it('does not throw when trying to decode an invalid JWT', () => {

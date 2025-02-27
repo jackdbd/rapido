@@ -6,7 +6,8 @@ import {
   safeDecode,
   unixTimestampInSeconds
 } from '@jackdbd/indieauth'
-import { defAjv, jwks, jwks_url as jwksUrl } from '@repo/stdlib/test-utils'
+import { defAjv } from '@repo/stdlib'
+import { jwks, jwks_url as jwksUrl } from '@repo/stdlib/test-utils'
 import Fastify from 'fastify'
 import { nanoid } from 'nanoid'
 import introspectionEndpoint from '../lib/index.js'

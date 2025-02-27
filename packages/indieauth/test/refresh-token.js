@@ -1,10 +1,8 @@
 import assert from 'node:assert'
 import { describe, it } from 'node:test'
 import { unixTimestampInSeconds, refreshToken } from '../lib/index.js'
-import {
-  defAjv,
-  REFRESH_TOKEN_EXPIRATION_IN_SECONDS
-} from '../../stdlib/lib/test-utils.js'
+import { defAjv } from '@repo/stdlib'
+import { REFRESH_TOKEN_EXPIRATION_IN_SECONDS } from '@repo/stdlib/test-utils'
 
 const ajv = defAjv()
 const expiration = `${REFRESH_TOKEN_EXPIRATION_IN_SECONDS} seconds`
