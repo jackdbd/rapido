@@ -2,8 +2,7 @@ import {
   send,
   type Options as SendMessageOptions
 } from '@jackdbd/notifications/telegram'
-import { EMOJI } from '../emojis.js'
-import { log } from '../log.js'
+import { log, EMOJI } from '@repo/stdlib'
 import { defTexts } from '../telegram-texts.js'
 import type {
   Failure,

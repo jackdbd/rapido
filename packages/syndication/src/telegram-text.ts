@@ -6,8 +6,7 @@ import {
   isRepost,
   isRsvp
 } from '@jackdbd/micropub/jf2-predicates'
-import { EMOJI } from './emojis.js'
-import { nop_log, type Log } from './log.js'
+import { EMOJI, nop_log, type Log } from '@repo/stdlib'
 
 export interface Config {
   canonicalUrl: URL

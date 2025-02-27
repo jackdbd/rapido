@@ -1,5 +1,5 @@
 import type { JF2_Application_JSON } from '@jackdbd/micropub'
-import type { Log } from '../log.js'
+import type { Log } from '@repo/stdlib'
 
 export interface Success<V = any> {
   uid: string

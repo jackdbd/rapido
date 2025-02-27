@@ -2,14 +2,14 @@ import {
   isMpUrlencodedRequestBody,
   jf2ToContentWithFrontmatter
 } from '@jackdbd/micropub'
-import type { JF2ToContent, MP_Post_Type } from '@jackdbd/micropub'
+import type { JF2ToContent, PostType } from '@jackdbd/micropub'
 import { utf8ToBase64 } from './encoding.js'
 
 /**
  * The GitHub Contents API requires content to be Base64-encoded.
  */
 export const jf2ToContent: JF2ToContent = (input) => {
-  let post_type: MP_Post_Type
+  let post_type: PostType
   if (isMpUrlencodedRequestBody(input)) {
     post_type = input.h || 'entry'
   } else {

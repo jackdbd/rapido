@@ -13,7 +13,7 @@ import {
 import { jf2 as jf2_schema } from '@jackdbd/micropub/schemas'
 import type {
   Action,
-  JF2_JSON,
+  JF2_Application_JSON,
   JF2_Urlencoded_Or_Multipart,
   UpdatePatch
 } from '@jackdbd/micropub/schemas'
@@ -27,7 +27,7 @@ import {
 declare module '@fastify/request-context' {
   interface RequestContextData {
     action?: string
-    jf2?: JF2_JSON
+    jf2?: JF2_Application_JSON
     post_type?: string
   }
 }
@@ -91,7 +91,7 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
     // console.log(JSON.stringify(request.body, null, 2))
 
     let uploaded_media: UploadedMedia[] = []
-    let jf2: JF2_JSON
+    let jf2: JF2_Application_JSON
     let request_body: PostRequestBody
     if (request.isMultipart()) {
       const result = await processMultipartRequest(request)
@@ -130,7 +130,7 @@ export const defMicropubPost = (config: MicropubPostConfig) => {
     } else {
       // Even when request_body is empty, it's still a valid JF2. See here:
       // https://validator.jf2.rocks/
-      jf2 = request_body as JF2_JSON
+      jf2 = request_body as JF2_Application_JSON
 
       // I think that for the following defaults using a logical OR is more
       // appropriate than using the nullish coalescing operator, because

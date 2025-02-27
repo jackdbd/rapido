@@ -2,7 +2,7 @@ import { jf2ToSlug, isMpUrlencodedRequestBody } from '@jackdbd/micropub'
 import type {
   JF2ToLocation,
   Location,
-  MP_Post_Type,
+  PostType,
   Publication
 } from '@jackdbd/micropub'
 import { DEFAULT } from './defaults.js'
@@ -46,7 +46,7 @@ export const defJf2ToLocation = (options?: Options) => {
   }
 
   const jf2ToLocation: JF2ToLocation = (input) => {
-    let post_type: MP_Post_Type
+    let post_type: PostType
     if (isMpUrlencodedRequestBody(input)) {
       post_type = input.h || 'entry'
     } else {

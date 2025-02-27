@@ -1,6 +1,6 @@
 import { mf2tTojf2, type JF2_Application_JSON } from '@jackdbd/micropub'
 import { mf2 } from 'microformats-parser'
-import { log, Log } from './log.js'
+import { log, type Log } from '@repo/stdlib'
 import type { SyndicationTarget } from './syndication-targets/api.js'
 import { syndicateJF2 } from './syndicate-jf2.js'
 

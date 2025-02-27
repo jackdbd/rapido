@@ -1,7 +1,6 @@
 import type { JF2_Application_JSON } from '@jackdbd/micropub'
-import { log, Log } from './log.js'
+import { fetchWithManualRedirects, log, type Log } from '@repo/stdlib'
 import type { SyndicationTarget } from './syndication-targets/api.js'
-import { fetchWithManualRedirects } from './fetch.js'
 import { syndicateJF2 } from './syndicate-jf2.js'
 import { syndicateHTML } from './syndicate-html.js'
 

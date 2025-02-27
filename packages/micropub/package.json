@@ -40,10 +40,6 @@
       "types": "./lib/syndicate-to.d.ts",
       "import": "./lib/syndicate-to.js"
     },
-    "./syndicator": {
-      "types": "./lib/syndicator.d.ts",
-      "import": "./lib/syndicator.js"
-    },
     "./url-predicates": {
       "types": "./lib/url-predicates.d.ts",
       "import": "./lib/url-predicates.js"

@@ -3,9 +3,9 @@ import { before, describe, it } from 'node:test'
 import Fastify from 'fastify'
 import fastifyRequestContext from '@fastify/request-context'
 import { accessToken } from '@jackdbd/indieauth'
+import { defAjv } from '@repo/stdlib'
 import {
   ACCESS_TOKEN_EXPIRATION,
-  defAjv,
   ISSUER as issuer,
   jwks,
   ME as me

@@ -4,7 +4,7 @@ import { isMpUrlencodedRequestBody } from '@jackdbd/micropub'
 import type {
   CreatePost,
   JF2ToLocation,
-  MP_Post_Type
+  PostType
 } from '@jackdbd/micropub/schemas/index'
 import { DEFAULT } from './defaults.js'
 import { jf2ToContent } from './jf2-to-content.js'
@@ -58,7 +58,7 @@ export const defCreate = (options?: Options) => {
   })
 
   const create: CreatePost = async (input) => {
-    let post_type: MP_Post_Type
+    let post_type: PostType
     if (isMpUrlencodedRequestBody(input)) {
       post_type = input.h || 'entry'
     } else {

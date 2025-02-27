@@ -10,7 +10,7 @@ export { exitOne, exitZero } from './exit.js'
 
 export { fetchWithManualRedirects } from './fetch.js'
 
-export { log } from './log.js'
+export { log, nop_log, type Log } from './log.js'
 
 export {
   calloutEmoji,
@@ -29,7 +29,5 @@ export {
 } from './samples.js'
 
 export { schemaToMarkdown, safeSchemaToMarkdown } from './schema-to-markdown.js'
-
-export { defTexts } from './telegram-texts.js'
 
 export { writeJsonSchema } from './write-json-schema.js'

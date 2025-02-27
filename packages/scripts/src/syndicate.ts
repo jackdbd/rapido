@@ -16,8 +16,8 @@ import {
   defTelegramChat,
   defFilesystem,
   SyndicationTarget
-} from '@repo/stdlib/syndication-targets/index'
-import { syndicate } from '@repo/stdlib/syndicate'
+} from '@repo/syndication/syndication-targets/index'
+import { syndicate } from '@repo/syndication'
 
 const USAGE = `Syndicate a single URL, all entries of a feed, an HTML string or a JF2 to the specified syndication targets`
 

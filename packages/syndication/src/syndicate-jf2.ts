@@ -1,12 +1,21 @@
 import type { JF2_Application_JSON, UpdatePatch } from '@jackdbd/micropub'
-import { apply, type Failure, type Success } from './effects.js'
-import { log, Log } from './log.js'
+import { apply, log, type Log } from '@repo/stdlib'
 import type { BaseProps, SyndicationTarget } from './syndication-targets/api.js'
 
 export interface Config {
   canonicalUrl: URL
   jf2: JF2_Application_JSON
   targets: SyndicationTarget[]
+}
+
+export interface Success<V = any> {
+  uid: string
+  value?: V
+}
+
+export interface Failure<E extends Error = Error> {
+  uid: string
+  error: E
 }
 
 const REQUIRED = ['canonicalUrl', 'jf2', 'targets'] as const

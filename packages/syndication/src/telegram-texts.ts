@@ -1,6 +1,5 @@
 import type { JF2_Application_JSON } from '@jackdbd/micropub'
-import { EMOJI } from './emojis.js'
-import { nop_log, type Log } from './log.js'
+import { EMOJI, nop_log, type Log } from '@repo/stdlib'
 import { defText } from './telegram-text.js'
 
 // https://core.telegram.org/bots/api#sendmessage

@@ -1,7 +1,7 @@
 import { writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { nanoid } from 'nanoid'
-import { log } from '../log.js'
+import { log } from '@repo/stdlib'
 import { defTexts } from '../telegram-texts.js'
 import type {
   Failure,

@@ -11,6 +11,7 @@
     "@repo/prettier-config",
     "@repo/scripts",
     "@repo/stdlib",
+    "@repo/syndication",
     "@repo/typescript-config"
   ],
   "linked": [],

@@ -43,6 +43,9 @@
       "path": "./packages/micropub/tsconfig.json"
     },
     {
+      "path": "./packages/syndication/tsconfig.json"
+    },
+    {
       "path": "./packages/github-contents-api/tsconfig.json"
     },
     {

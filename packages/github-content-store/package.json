@@ -28,9 +28,9 @@
       "types": "./lib/jf2-to-location.d.ts",
       "import": "./lib/jf2-to-location.js"
     },
-    "./website-url-to-store-location": {
-      "types": "./lib/website-url-to-store-location.d.ts",
-      "import": "./lib/website-url-to-store-location.js"
+    "./url-to-location": {
+      "types": "./lib/url-to-location.d.ts",
+      "import": "./lib/url-to-location.js"
     },
     "./package.json": "./package.json"
   },
