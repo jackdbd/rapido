@@ -1,6 +1,6 @@
 import type {
   DeletePost,
-  WebsiteUrlToStoreLocation
+  UrlToLocation
 } from '@jackdbd/micropub/schemas/user-provided-functions'
 import { move } from '@jackdbd/github-contents-api'
 import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
@@ -15,7 +15,7 @@ export interface Options {
   owner: string
   repo: string
   token?: string
-  urlToLocation: WebsiteUrlToStoreLocation
+  urlToLocation: UrlToLocation
 }
 
 const defaults: Partial<Options> = {

@@ -58,6 +58,7 @@
     "@fastify/csrf-protection": "^7.0.2",
     "@jackdbd/notifications": "^1.0.3",
     "@reporters/github": "^1.7.2",
+    "@thi.ng/atom": "^5.3.24",
     "@types/html-to-text": "^9.0.4",
     "@types/markdown-it": "^14.1.2",
     "@types/nunjucks": "^3.2.6",

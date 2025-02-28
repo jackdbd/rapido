@@ -20,14 +20,16 @@ import type {
   RevokeRefreshToken
 } from '@jackdbd/indieauth/schemas/index'
 import type {
+  CreateContentToSyndicate,
   CreatePost,
   DeletePost,
   JF2ToLocation,
+  RetrieveContentsToSyndicate,
   RetrievePost,
   UndeletePost,
   UpdatePost,
   UploadMedia,
-  WebsiteUrlToStoreLocation
+  UrlToLocation
 } from '@jackdbd/micropub/schemas/index'
 import { codeChallenge } from '@jackdbd/pkce'
 import { nanoid } from 'nanoid'
@@ -292,11 +294,9 @@ export const revokeRefreshToken: RevokeRefreshToken = async (props) => {
   // throw new Error(`Simulate runtime exception in revokeRefreshToken.`)
 }
 
-export const websiteUrlToStoreLocationAlternative: WebsiteUrlToStoreLocation = (
-  url
-) => {
-  console.log(`[${logPrefix}websiteUrlToStoreLocationAlternative] url: ${url}`)
-  // throw new Error(`Simulate runtime exception in websiteUrlToStoreLocation.`)
+export const urlToLocationAlternative: UrlToLocation = (url) => {
+  console.log(`[${logPrefix}urlToLocationAlternative] url: ${url}`)
+  // throw new Error(`Simulate runtime exception in urlToLocationAlternative.`)
 
   const str = 'default'
   const slug = nanoid().toLocaleLowerCase().replaceAll('-', '')
@@ -372,7 +372,22 @@ export const uploadMedia: UploadMedia = async (props) => {
   console.log(
     `[${logPrefix}uploadMedia] uploading ${filename} (content-type: ${contentType}) to ${url}`
   )
-  // const loc = websiteUrlToStoreLocation(url)
+  // const loc = urlToLocation(url)
   // throw new Error(`Simulate runtime exception in uploadMedia.`)
   return { summary: `File ${filename} is now hosted at ${url}`, url }
+}
+
+export const retrieveContentsToSyndicate: RetrieveContentsToSyndicate = async (
+  uid
+) => {
+  console.log(`[${logPrefix}retrieveContentsToSyndicate] uid ${uid}`)
+  const records = [{ text: 'Hello world', idempotency_key: 'foo123' }]
+  return records
+}
+
+export const createContentToSyndicate: CreateContentToSyndicate = async (
+  props
+) => {
+  console.log(`[${logPrefix}createContentToSyndicate]`)
+  console.log(props)
 }

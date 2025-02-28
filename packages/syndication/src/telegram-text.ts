@@ -9,7 +9,7 @@ import {
 import { EMOJI, nop_log, type Log } from '@repo/stdlib'
 
 export interface Config {
-  canonicalUrl: URL
+  canonicalUrl: URL | string
   emoji?: Record<string, string>
   jf2: JF2_Application_JSON
   log?: Log
@@ -36,12 +36,18 @@ export const defText = (config: Config) => {
 
   REQUIRED.forEach((key) => {
     if (!cfg[key]) {
-      throw new Error(`${key} not set.`)
+      throw new Error(`${key} is required.`)
     }
   })
 
   const { emoji, log } = cfg
-  const canonicalUrl = cfg.canonicalUrl.href
+
+  let href: string
+  if (typeof cfg.canonicalUrl === 'string') {
+    href = cfg.canonicalUrl
+  } else {
+    href = cfg.canonicalUrl.href
+  }
 
   let jf2: JF2_Application_JSON
   const jf2_type = config.jf2.type
@@ -212,7 +218,7 @@ export const defText = (config: Config) => {
 
   // Include other fields in the Telegram text? author, date, etc...
 
-  lines.push(`Syndicated from <a href="${canonicalUrl}">${canonicalUrl}</a>`)
+  lines.push(`Syndicated from <a href="${href}">${href}</a>`)
 
   const text = lines.join('\n\n')
   return text

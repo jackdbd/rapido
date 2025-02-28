@@ -35,17 +35,25 @@
   },
   "scripts": {
     "build": "run-s 'build:ts' 'build:readme' --print-label",
+    "build:docs": "node ../scripts/dist/docs.js --package syndication",
     "build:readme": "node ../scripts/dist/readme.js --package syndication",
     "build:ts": "tsc -p tsconfig.json",
     "build:ts:watch": "tsc -p tsconfig.json --watch",
     "clean": "rimraf lib/ tsconfig.tsbuildinfo",
-    "dev": "tsc -p tsconfig.json --watch",
+    "dev": "run-p build:ts:watch test:watch",
     "lint": "eslint --config ../../eslint.config.mjs --fix",
-    "pub": "echo '@repo/syndication is a private package. Skip publishing it.'"
+    "publint": "publint run .",
+    "size": "pkg-size ./lib --sort-by=brotli --ignore-files {*.d.ts,*.map}",
+    "test": "node --test --test-reporter=spec --test-reporter-destination=stdout",
+    "test:ci": "node --test --test-reporter=@reporters/github --test-reporter-destination=stdout --test-reporter=spec --test-reporter-destination=stdout",
+    "test:coverage": "node --test --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=lcov.info --test-reporter=spec --test-reporter-destination=stdout",
+    "test:watch": "node --test --watch"
   },
   "dependencies": {
+    "@jackdbd/micropub": "0.2.0-canary.13",
     "@sinclair/typebox": "^0.34.14",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1"
-  }
+  },
+  "devDependencies": {}
 }

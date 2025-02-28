@@ -1,5 +1,5 @@
 import type { Publication } from '@jackdbd/micropub'
-import type { WebsiteUrlToStoreLocation } from '@jackdbd/micropub/schemas/user-provided-functions'
+import type { UrlToLocation } from '@jackdbd/micropub/schemas/user-provided-functions'
 import { DEFAULT } from './defaults.js'
 import type { Log } from './log.js'
 
@@ -40,7 +40,7 @@ export const defUrlToLocation = (options?: Options) => {
     )
   }
 
-  const urlToLocation: WebsiteUrlToStoreLocation = (url) => {
+  const urlToLocation: UrlToLocation = (url) => {
     const [_domain, ...splits] = url.split('/').slice(2)
     const slug = splits.filter((s) => s !== '').at(-1)
 

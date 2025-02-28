@@ -2371,6 +2371,17 @@
       "items": {
         "type": "object",
         "properties": {
+          "createContentToSyndicate": {
+            "title": "Create content to syndicate",
+            "type": "Function",
+            "parameters": [
+              {}
+            ],
+            "returns": {
+              "type": "Promise",
+              "item": {}
+            }
+          },
           "name": {
             "title": "Name",
             "description": "The human readable name of the syndicator.",
@@ -4639,6 +4650,21 @@
               "type": "string"
             }
           },
+          "retrieveContentsToSyndicate": {
+            "title": "retrieveContentsToSyndicate",
+            "description": "Retrieves all the contents to syndicate.",
+            "type": "Function",
+            "parameters": [
+              {
+                "format": "uri",
+                "type": "string"
+              }
+            ],
+            "returns": {
+              "type": "Promise",
+              "item": {}
+            }
+          },
           "syndicate": {
             "title": "Syndicate",
             "description": "Syndicate the content published at a canonical URL (i.e. content published on your `me` domain) to another target (e.g. a social network).",
@@ -4677,8 +4703,10 @@
           }
         },
         "required": [
+          "createContentToSyndicate",
           "name",
           "jf2ToContent",
+          "retrieveContentsToSyndicate",
           "syndicate",
           "uid"
         ]

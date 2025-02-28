@@ -1,42 +1,30 @@
 import { writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { nanoid } from 'nanoid'
-import { log } from '@repo/stdlib'
+import { nop_log, EMOJI, type Log } from '@repo/stdlib'
+import { contentHash } from '../content-hash.js'
 import { defTexts } from '../telegram-texts.js'
-import type {
-  Failure,
-  PublishArgs,
-  Success,
-  SyndicationTarget,
-  Config as SyndicationTargetConfig,
-  Options as SyndicationTargetOptions
-} from './api.js'
+import type { SyndicationTarget } from './api.js'
 
-export interface Config extends SyndicationTargetConfig {
-  root_path: string
-}
-
-export interface Options extends SyndicationTargetOptions {
+export interface Config {
+  emoji?: Record<string, string>
+  log?: Log
   name?: string
+  root_path: string
+  uid?: string
 }
 
-const defaults = { log, name: 'Filesystem' }
+const defaults = {
+  emoji: EMOJI,
+  log: nop_log,
+  name: 'Filesystem'
+}
 
 // required config+options after all defaults have been applied
-const REQUIRED = ['log', 'name', 'root_path'] as const
+const REQUIRED = ['emoji', 'log', 'name', 'root_path'] as const
 
-interface Props {
-  filepath: string
-  data: string
-}
-
-export const defFilesystem = (
-  config: Config,
-  options?: Options
-): SyndicationTarget<Props> => {
-  const cfg = Object.assign({}, config, defaults, options) as Required<
-    Config & Options
-  >
+export const defFilesystem = (config: Config): SyndicationTarget => {
+  const cfg = Object.assign({}, defaults, config) as Required<Config>
 
   const { log, name, root_path, uid } = cfg
 
@@ -48,32 +36,16 @@ export const defFilesystem = (
     }
   })
 
-  const publishArgs: PublishArgs<Props> = (canonicalUrl, jf2) => {
+  const syndicateContent = async (text: string) => {
+    const idempotencyKey = contentHash(text)
     const filename = `${nanoid()}.txt`
     const filepath = path.join(root_path, filename)
-    const texts = defTexts({ canonicalUrl, jf2 })
-    const data = texts.join('\n') + '\n'
-    log.debug(`syndication to ${name} (uid: ${uid}) will write ${filepath}`)
-    return [{ filepath, data }]
-  }
-
-  const publish = async (props: Props) => {
-    const { filepath, data } = props
+    // const texts = defTexts({ canonicalUrl, jf2 })
+    const data = text + '\n'
     log.debug(`write ${filepath}`)
     await writeFile(filepath, data, { encoding: 'utf-8' })
-
-    const failures: Failure[] = []
-    const successes: Success[] = []
-    successes.push({ uid, value: filepath })
-
-    const summary = [
-      `Syndication to target ${uid} completed:`,
-      `${successes.length} effects succeeded,`,
-      `${failures.length} effects failed.`
-    ].join(' ')
-
-    return { summary, successes, failures }
+    return { idempotencyKey, message: `wrote ${filepath}` }
   }
 
-  return { uid, publishArgs, publish }
+  return { jf2ToContents: defTexts, name, syndicateContent, uid }
 }

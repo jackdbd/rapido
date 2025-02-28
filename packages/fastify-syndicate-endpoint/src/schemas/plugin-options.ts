@@ -7,12 +7,12 @@ import type { IsAccessTokenRevoked } from '@jackdbd/indieauth/schemas/user-provi
 import {
   retrievePost,
   updatePost,
-  websiteUrlToStoreLocation
+  urlToLocation
 } from '@jackdbd/micropub/schemas/user-provided-functions'
 import type {
   RetrievePost,
   UpdatePost,
-  WebsiteUrlToStoreLocation
+  UrlToLocation
 } from '@jackdbd/micropub/schemas/user-provided-functions'
 import { Static, Type } from '@sinclair/typebox'
 import {
@@ -43,7 +43,7 @@ export const options = Type.Object(
 
     updatePost,
 
-    urlToLocation: websiteUrlToStoreLocation
+    urlToLocation
   },
   {
     $id: 'fastify-syndicate-endpoint-options',
@@ -56,5 +56,5 @@ export interface Options extends Static<typeof options> {
   isAccessTokenRevoked: IsAccessTokenRevoked
   retrievePost: RetrievePost
   updatePost: UpdatePost
-  urlToLocation: WebsiteUrlToStoreLocation
+  urlToLocation: UrlToLocation
 }

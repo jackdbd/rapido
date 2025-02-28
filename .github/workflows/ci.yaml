@@ -14,6 +14,8 @@ jobs:
     env:
       CONTENTS_API_GITHUB_TOKEN: ${{ secrets.CONTENTS_API_GITHUB_TOKEN }}
       JWKS: ${{ secrets.JWKS }}
+      TELEGRAM_CHAT_ID: ${{ fromJSON(secrets.TELEGRAM).chat_id }}
+      TELEGRAM_TOKEN: ${{ fromJSON(secrets.TELEGRAM).token }}
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -62,6 +64,7 @@ jobs:
       - run: npm run test:ci -w @jackdbd/microformats2
       - run: npm run test:ci -w @jackdbd/fastify-hooks
       - run: npm run test:ci -w @jackdbd/micropub
+      - run: npm run test:ci -w ./packages/syndication
       - run: npm run test:ci -w @jackdbd/github-contents-api
       - run: npm run test:ci -w @jackdbd/fastify-webc
       - run: npm run test:ci -w @jackdbd/fastify-authorization-endpoint

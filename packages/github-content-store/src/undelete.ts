@@ -2,7 +2,7 @@ import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
 import { move } from '@jackdbd/github-contents-api'
 import type {
   UndeletePost,
-  WebsiteUrlToStoreLocation
+  UrlToLocation
 } from '@jackdbd/micropub/schemas/index'
 import { DEFAULT } from './defaults.js'
 import type { Log } from './log.js'
@@ -15,7 +15,7 @@ export interface Options {
   owner: string
   repo: string
   token?: string
-  urlToLocation: WebsiteUrlToStoreLocation
+  urlToLocation: UrlToLocation
 }
 
 const defaults: Partial<Options> = {

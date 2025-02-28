@@ -1,6 +1,12 @@
 import { Syndicator } from '@jackdbd/fastify-syndicate-endpoint'
 import { isMpUrlencodedRequestBody } from '@jackdbd/micropub'
-import type { JF2ToContent, PostType, Syndicate } from '@jackdbd/micropub'
+import type {
+  CreateContentToSyndicate,
+  JF2ToContent,
+  PostType,
+  RetrieveContentsToSyndicate,
+  Syndicate
+} from '@jackdbd/micropub'
 import { send } from '@jackdbd/notifications/telegram'
 import { DEFAULT } from './defaults.js'
 import { Log } from './log.js'
@@ -271,5 +277,31 @@ export const defSyndicator = (options: Options): Syndicator => {
     }
   }
 
-  return { jf2ToContent, name, uid, syndicate }
+  const createContentToSyndicate: CreateContentToSyndicate = async (props) => {
+    log.debug(
+      props,
+      `create content to syndicate to Telegram chat ID ${chat_id}`
+    )
+    return {}
+  }
+
+  const retrieveContentsToSyndicate: RetrieveContentsToSyndicate = async (
+    props
+  ) => {
+    log.debug(
+      props,
+      `retrieve content to syndicate to Telegram chat ID ${chat_id}`
+    )
+
+    return {}
+  }
+
+  return {
+    createContentToSyndicate,
+    jf2ToContent,
+    name,
+    retrieveContentsToSyndicate,
+    uid,
+    syndicate
+  }
 }

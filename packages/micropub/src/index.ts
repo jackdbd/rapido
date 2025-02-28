@@ -45,7 +45,7 @@ export {
   updatePost,
   upload_config,
   uploadMedia,
-  websiteUrlToStoreLocation
+  urlToLocation
 } from './schemas/user-provided-functions.js'
 export type {
   CreatePost,
@@ -61,7 +61,7 @@ export type {
   UpdatePost,
   UploadConfig,
   UploadMedia,
-  WebsiteUrlToStoreLocation
+  UrlToLocation
 } from './schemas/user-provided-functions.js'
 
 export type { SyndicateToItem } from './syndicate-to.js'

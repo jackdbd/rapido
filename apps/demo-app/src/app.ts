@@ -18,6 +18,7 @@ import { tap } from './nunjucks/filters.js'
 import { defJf2ToLocation } from '@jackdbd/github-content-store'
 import { defTelegramSyndicator } from './syndicators/index.js'
 import {
+  // createContentToSyndicate,
   createPost,
   deleteMedia,
   deletePost,
@@ -31,6 +32,7 @@ import {
   onUserApprovedRequest,
   retrieveAccessToken,
   retrieveAuthorizationCode,
+  // retrieveContentsToSyndicate,
   retrievePost,
   retrieveRefreshToken,
   retrieveUserProfile,
@@ -158,6 +160,8 @@ export const defFastify = (config: Config) => {
   const { uid } = syndicate_to.filter((d) => d.uid.includes('t.me'))[0]!
 
   const telegram_syndicator = defTelegramSyndicator({
+    // createContentToSyndicate,
+    // retrieveContentsToSyndicate,
     // chat_id: process.env.TELEGRAM_CHAT_ID!,
     log: {
       debug: fastify.log.debug.bind(fastify.log),

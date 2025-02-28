@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { JF2 } from '@jackdbd/micropub'
+import { defAtom } from '@thi.ng/atom'
 import yargs from 'yargs/yargs'
 import {
   ASSETS_ROOT,
@@ -28,15 +29,25 @@ const uid_fs_syndication = 'fs-syndication'
 
 const FAKE_CANONICAL_URL = new URL('https://example.com/')
 
+const state = defAtom({} as Record<string, any>)
+
+const telegram_chat = defTelegramChat({
+  chat_id: process.env.TELEGRAM_CHAT_ID!,
+  bot_token: process.env.TELEGRAM_TOKEN!,
+  retrieveSyndicateResponse: async (idempotencyKey) => {
+    return state.deref()[idempotencyKey]
+  },
+  storeSyndicateResponse: async (response) => {
+    const { idempotencyKey } = response
+    state.swap((m) => {
+      return { ...m, [idempotencyKey]: response }
+    })
+  },
+  uid: uid_telegram
+})
+
 const SYNDICATION_TARGET = {
-  [uid_telegram]: defTelegramChat(
-    {
-      uid: uid_telegram,
-      chat_id: process.env.TELEGRAM_CHAT_ID!,
-      bot_token: process.env.TELEGRAM_TOKEN!
-    },
-    { disable_notification: true }
-  ),
+  [uid_telegram]: telegram_chat,
   [uid_telegram_personal]: defTelegramChat({
     chat_id: process.env.TELEGRAM_CHAT_ID_PERSONAL!,
     bot_token: process.env.TELEGRAM_TOKEN!,
@@ -225,7 +236,7 @@ const run = async () => {
     throw new Error(`No syndication target specified. ${details.join(' ')}`)
   }
 
-  const targets: SyndicationTarget<any>[] = syndication_targets
+  const targets: SyndicationTarget[] = syndication_targets
     .map((uid) => {
       const target = SYNDICATION_TARGET[uid as keyof typeof SYNDICATION_TARGET]
 

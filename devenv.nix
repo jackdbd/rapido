@@ -47,7 +47,7 @@ in {
     PORT = "3001";
     # PROGRAM_TO_DEBUG = "packages/scripts/dist/syndicate.js --jf2 rsvp --target telegram-chat --target telegram-chat-personal";
     # PROGRAM_TO_DEBUG = "packages/scripts/dist/syndicate.js --html note --all";
-    PROGRAM_TO_DEBUG = "packages/scripts/dist/syndicate.js --url article --all";
+    PROGRAM_TO_DEBUG = "packages/scripts/dist/syndicate.js --url article --target telegram-chat";
     # PROGRAM_TO_DEBUG = "packages/scripts/dist/syndicate.js --jf2 rsvp --all";
     TELEGRAM_CHAT_ID = telegram.chat_id;
     TELEGRAM_CHAT_ID_PERSONAL = telegram_personal.chat_id;

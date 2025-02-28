@@ -52,6 +52,7 @@ export type {
 export { photo, type Photo } from './photo.js'
 
 export {
+  createContentToSyndicate,
   createPost,
   deleteMedia,
   deletePost,
@@ -63,6 +64,7 @@ export {
   outcome_syndicate,
   outcome_update,
   outcome_upload,
+  retrieveContentsToSyndicate,
   retrievePost,
   syndicate,
   syndicate_props,
@@ -71,9 +73,10 @@ export {
   updatePost,
   upload_config,
   uploadMedia,
-  websiteUrlToStoreLocation
+  urlToLocation
 } from './user-provided-functions.js'
 export type {
+  CreateContentToSyndicate,
   CreatePost,
   DeleteMedia,
   DeletePost,
@@ -85,6 +88,7 @@ export type {
   OutcomeSyndicate,
   OutcomeUpdate,
   OutcomeUpload,
+  RetrieveContentsToSyndicate,
   RetrievePost,
   Syndicate,
   SyndicateProps,
@@ -93,7 +97,7 @@ export type {
   UpdatePost,
   UploadConfig,
   UploadMedia,
-  WebsiteUrlToStoreLocation
+  UrlToLocation
 } from './user-provided-functions.js'
 
 export { video, type Video } from './video.js'

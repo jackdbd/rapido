@@ -1,9 +1,6 @@
 import { createOrUpdate } from '@jackdbd/github-contents-api'
 import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
-import type {
-  UpdatePost,
-  WebsiteUrlToStoreLocation
-} from '@jackdbd/micropub/schemas/index'
+import type { UpdatePost, UrlToLocation } from '@jackdbd/micropub/schemas/index'
 import { rfc3339 } from './date.js'
 import { DEFAULT } from './defaults.js'
 import { jf2ToContent } from './jf2-to-content.js'
@@ -20,7 +17,7 @@ export interface Options {
   owner: string
   repo: string
   token?: string
-  urlToLocation: WebsiteUrlToStoreLocation
+  urlToLocation: UrlToLocation
 }
 
 const defaults: Partial<Options> = {

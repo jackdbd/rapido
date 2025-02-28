@@ -252,7 +252,7 @@ export const jf2ToLocation = Type.Function([jf2], location, {
  */
 export type JF2ToLocation = Static<typeof jf2ToLocation>
 
-export const websiteUrlToStoreLocation = Type.Function([url], location, {
+export const urlToLocation = Type.Function([url], location, {
   title: 'URL to location',
   description:
     "Maps a URL published on the user's website to a location on the user's store (e.g. a table in a database, a path in a git repository, a URL in a public bucket of an object storage service like AWS S3)."
@@ -267,4 +267,44 @@ export const websiteUrlToStoreLocation = Type.Function([url], location, {
  * - a git repository (URL -> path)
  * - a public bucket of an object storage service like AWS S3 (URL -> URL)
  */
-export type WebsiteUrlToStoreLocation = Static<typeof websiteUrlToStoreLocation>
+export type UrlToLocation = Static<typeof urlToLocation>
+
+// https://news.indieweb.org/en
+// https://fosstodon.org/@jackdbd
+// https://t.me/+rQSrJsu5RtgzNjM0
+export const syndicator_uid = Type.String({ format: 'uri' })
+
+export const outcome_contents_to_syndicate = Type.Any()
+
+export type OutcomeContentsToSyndicate = Static<
+  typeof outcome_contents_to_syndicate
+>
+
+export const retrieveContentsToSyndicate = Type.Function(
+  [syndicator_uid],
+  Type.Promise(outcome_contents_to_syndicate),
+  {
+    title: 'retrieveContentsToSyndicate',
+    description: 'Retrieves all the contents to syndicate.'
+  }
+)
+
+export type RetrieveContentsToSyndicate = Static<
+  typeof retrieveContentsToSyndicate
+>
+
+//  export const create_content_to_syndicate_props = Type.Object({ canonicalUrl: url, content })
+
+// export type CreateContentToSyndicateProps = Static<typeof create_content_to_syndicate_props>
+
+export const createContentToSyndicate = Type.Function(
+  [Type.Any()],
+  Type.Promise(Type.Any()),
+  {
+    title: 'Create content to syndicate'
+  }
+)
+
+export type CreateContentToSyndicate = Static<typeof createContentToSyndicate>
+
+// TODO: set content as syndicated (update)

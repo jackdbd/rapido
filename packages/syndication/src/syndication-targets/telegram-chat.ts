@@ -2,58 +2,56 @@ import {
   send,
   type Options as SendMessageOptions
 } from '@jackdbd/notifications/telegram'
-import { log, EMOJI } from '@repo/stdlib'
-import { defTexts } from '../telegram-texts.js'
+import { nop_log, EMOJI, type Log } from '@repo/stdlib'
+import { contentHash } from '../content-hash.js'
+import { defTexts, TEXT_MAX_LENGTH } from '../telegram-texts.js'
 import type {
-  Failure,
-  PublishArgs,
-  Success,
-  SyndicationTarget,
-  Config as SyndicationTargetConfig,
-  Options as SyndicationTargetOptions
+  RetrieveSyndicateResponse,
+  StoreSyndicateResponse,
+  SyndicationTarget
 } from './api.js'
 
-export interface Config extends SyndicationTargetConfig {
+export interface Config {
   bot_token: string
   chat_id: string
-}
-
-export interface Options extends SyndicationTargetOptions, SendMessageOptions {
   emoji?: Record<string, string>
+  log?: Log
   name?: string
+  retrieveSyndicateResponse?: RetrieveSyndicateResponse
+  storeSyndicateResponse?: StoreSyndicateResponse
+  textThreshold?: number
+  uid?: string
 }
 
 const defaults = {
   emoji: EMOJI,
-  log,
-  name: 'Telegram Chat'
+  log: nop_log,
+  name: 'Telegram Chat',
+  textThreshold: Math.floor(TEXT_MAX_LENGTH / 2)
 }
 
 // required config+options after all defaults have been applied
-const REQUIRED = ['bot_token', 'chat_id', 'log', 'name'] as const
+const REQUIRED = [
+  'bot_token',
+  'chat_id',
+  'emoji',
+  'log',
+  'name',
+  'textThreshold',
+  'uid'
+] as const
 
-interface Props extends SendMessageOptions {
-  chat_id: string
-  text: string
-  token: string
-}
-
-export const defTelegramChat = (
-  config: Config,
-  options?: Options
-): SyndicationTarget<Props> => {
-  const cfg = Object.assign({}, config, defaults, options) as Required<
-    Config & Options
-  >
+export const defTelegramChat = (config: Config): SyndicationTarget => {
+  const cfg = Object.assign({}, defaults, config) as Required<Config>
 
   const {
     bot_token: token,
     chat_id,
-    emoji,
     log,
     name,
-    uid,
-    ...sendOptions
+    retrieveSyndicateResponse,
+    storeSyndicateResponse,
+    uid
   } = cfg
 
   REQUIRED.forEach((key) => {
@@ -64,49 +62,44 @@ export const defTelegramChat = (
     }
   })
 
-  const publishArgs: PublishArgs<Props> = (canonicalUrl, jf2) => {
-    const texts = defTexts({ canonicalUrl, emoji, jf2, log })
-    log.debug(
-      `syndication to ${name} (uid: ${uid}) will send ${texts.length} texts to Telegram chat ID ${chat_id}`
-    )
-    return texts.map((text) => {
-      return { ...sendOptions, chat_id, text, token }
-    })
-  }
+  const syndicateContent = async (
+    text: string,
+    options: SendMessageOptions
+  ) => {
+    const idempotencyKey = contentHash(text)
 
-  const failures: Failure[] = []
-  const successes: Success[] = []
-
-  const publish = async (props: Props) => {
-    const { chat_id, text, token, ...sendOptions } = props
-    log.debug(sendOptions, `send text to Telegram chat ID ${chat_id}`)
-
-    try {
-      const value = await send({ chat_id, text, token }, sendOptions)
-      if (value.delivered) {
-        successes.push({ uid, value })
-      } else {
-        const reason =
-          value.message || `Text not delivered to Telegram chat ID ${chat_id}`
-        failures.push({ uid, error: new Error(reason) })
-      }
-    } catch (ex: any) {
-      if (ex instanceof Error) {
-        failures.push({ uid, error: ex })
-      } else {
-        const reason = ex && ex.message ? ex.message : 'Unknown error'
-        failures.push({ uid, error: new Error(reason) })
-      }
+    let res: any // (Record<string, any> & { idempotencyKey: string }) | undefined
+    if (retrieveSyndicateResponse) {
+      res = await retrieveSyndicateResponse(idempotencyKey)
     }
 
-    const summary = [
-      `Syndication to target ${uid} completed:`,
-      `${successes.length} effects succeeded,`,
-      `${failures.length} effects failed.`
-    ].join(' ')
+    if (res) {
+      log.warn(
+        `retrieved content previously syndicated to Telegram chat ID ${chat_id}`
+      )
+    } else {
+      log.debug(options, `send text to Telegram chat ID ${chat_id}`)
+      res = await send({ chat_id, text, token }, options)
+      res = { ...res, idempotencyKey }
+    }
 
-    return { summary, successes, failures }
+    if (res && storeSyndicateResponse) {
+      await storeSyndicateResponse(res)
+      log.debug(
+        res,
+        `stored response from syndication target ${uid}, together with idempotency key`
+      )
+    }
+
+    return res
   }
 
-  return { uid, publishArgs, publish }
+  return {
+    jf2ToContents: defTexts,
+    name,
+    retrieveSyndicateResponse,
+    storeSyndicateResponse,
+    syndicateContent,
+    uid
+  }
 }

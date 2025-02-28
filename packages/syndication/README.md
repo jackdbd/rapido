@@ -11,6 +11,7 @@ Syndication library (internal use for now).
 
 | Package | Version |
 |---|---|
+| [@jackdbd/micropub](https://www.npmjs.com/package/@jackdbd/micropub) | `0.2.0-canary.13` |
 | [@sinclair/typebox](https://www.npmjs.com/package/@sinclair/typebox) | `^0.34.14` |
 | [ajv](https://www.npmjs.com/package/ajv) | `^8.17.1` |
 | [ajv-formats](https://www.npmjs.com/package/ajv-formats) | `^3.0.1` |

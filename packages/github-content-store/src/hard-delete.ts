@@ -1,9 +1,6 @@
 import type { AuthorOrCommitter } from '@jackdbd/github-contents-api'
 import { hardDelete } from '@jackdbd/github-contents-api'
-import type {
-  DeletePost,
-  WebsiteUrlToStoreLocation
-} from '@jackdbd/micropub/schemas/index'
+import type { DeletePost, UrlToLocation } from '@jackdbd/micropub/schemas/index'
 import { DEFAULT } from './defaults.js'
 import type { Log } from './log.js'
 import { defRetrieveContent } from './retrieve-content.js'
@@ -17,7 +14,7 @@ export interface Options {
   owner: string
   repo: string
   token?: string
-  urlToLocation: WebsiteUrlToStoreLocation
+  urlToLocation: UrlToLocation
 }
 
 const defaults: Partial<Options> = {

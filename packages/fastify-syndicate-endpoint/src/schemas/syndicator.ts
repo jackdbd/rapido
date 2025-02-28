@@ -1,5 +1,15 @@
-import { jf2ToContent, syndicate } from '@jackdbd/micropub/schemas'
-import type { JF2ToContent, Syndicate } from '@jackdbd/micropub/schemas'
+import {
+  createContentToSyndicate,
+  jf2ToContent,
+  retrieveContentsToSyndicate,
+  syndicate
+} from '@jackdbd/micropub/schemas'
+import type {
+  CreateContentToSyndicate,
+  JF2ToContent,
+  RetrieveContentsToSyndicate,
+  Syndicate
+} from '@jackdbd/micropub/schemas'
 import { Type, type Static } from '@sinclair/typebox'
 
 export const name = Type.String({
@@ -14,9 +24,18 @@ export const uid = Type.String({
   minLength: 1
 })
 
-export const syndicator = Type.Object({ name, jf2ToContent, syndicate, uid })
+export const syndicator = Type.Object({
+  createContentToSyndicate,
+  name,
+  jf2ToContent,
+  retrieveContentsToSyndicate,
+  syndicate,
+  uid
+})
 
 export interface Syndicator extends Static<typeof syndicator> {
+  createContentToSyndicate: CreateContentToSyndicate
   jf2ToContent: JF2ToContent
+  retrieveContentsToSyndicate: RetrieveContentsToSyndicate
   syndicate: Syndicate
 }

@@ -3,7 +3,7 @@ import canonicalUrl from '@jackdbd/canonical-url'
 import type {
   RetrievePost,
   UpdatePost,
-  WebsiteUrlToStoreLocation
+  UrlToLocation
 } from '@jackdbd/micropub/schemas/user-provided-functions'
 import { InvalidRequestError } from '@jackdbd/oauth2-error-responses'
 import type { RouteHandler } from 'fastify'
@@ -18,7 +18,7 @@ export interface Options {
   retrievePost: RetrievePost
   syndicatorMap: { [uid: string]: Syndicator }
   updatePost: UpdatePost
-  urlToLocation: WebsiteUrlToStoreLocation
+  urlToLocation: UrlToLocation
 }
 
 const defaults: Partial<Options> = {

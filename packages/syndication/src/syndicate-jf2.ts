@@ -1,6 +1,6 @@
 import type { JF2_Application_JSON, UpdatePatch } from '@jackdbd/micropub'
-import { apply, log, type Log } from '@repo/stdlib'
-import type { BaseProps, SyndicationTarget } from './syndication-targets/api.js'
+import { log, type Log } from '@repo/stdlib'
+import type { SyndicationTarget } from './syndication-targets/api.js'
 
 export interface Config {
   canonicalUrl: URL
@@ -34,22 +34,45 @@ const syndicateToTarget = async (
   jf2: JF2_Application_JSON,
   target: SyndicationTarget
 ) => {
-  const { uid, publish, publishArgs } = target
+  const {
+    uid,
+    syndicateContent,
+    jf2ToContents,
+    //  retrieveSyndicateResponse,
+    storeSyndicateResponse
+  } = target
 
-  const xs_props = publishArgs(canonicalUrl, jf2)
+  const contents = jf2ToContents({ canonicalUrl: canonicalUrl.href, jf2 })
 
-  const effects = xs_props.map((props, i) => {
-    const args = [props] as [BaseProps]
-    const detail = `application ${i + 1}/${xs_props.length}`
-    const message = `will apply ${args.length} arguments to syndication target ${uid} (${detail})`
-    log.debug(message)
-    // log.debug(args, message)
-    return { apply: publish, uid, args }
+  const promises = contents.map(async (content, i) => {
+    const res = await syndicateContent(content)
+    log.debug(res, `syndicated content ${i + 1}/${contents.length}`)
+
+    if (storeSyndicateResponse) {
+      await storeSyndicateResponse(res)
+      log.debug(res, `stored syndicate response`)
+    }
   })
 
-  const { summary, failures, successes } = await apply(effects)
+  const results = await Promise.all(promises)
 
-  return { summary, failures, successes, uid: target.uid }
+  // const effects = xs_props.map((props, i) => {
+  //   const args = [props] as any as [BaseProps]
+  //   const detail = `application ${i + 1}/${xs_props.length}`
+  //   const message = `will apply ${args.length} arguments to syndication target ${uid} (${detail})`
+  //   log.debug(message)
+  //   // log.debug(args, message)
+  //   return { apply: syndicateContent, uid, args }
+  // })
+
+  // const { summary, failures, successes } = await apply(effects)
+
+  return {
+    summary: `syndicated ${results.length} pieces of content to syndication target ${uid}`,
+    failures: [],
+    successes: [],
+    uid
+  }
 }
 
 export const syndicateJF2 = async (config: Config, options?: Options) => {
@@ -103,7 +126,8 @@ export const syndicateJF2 = async (config: Config, options?: Options) => {
       replace_syndication.delete(syn.uid)
       replace_mp_syndicate_to.add(syn.uid)
       const { error } = failure
-      log.error(`${prefix}${error.message}`)
+      // log.error(`${prefix}${error.message}`)
+      log.error(`${prefix}${error}`)
     })
 
     syn.successes.forEach((_success, j) => {

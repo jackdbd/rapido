@@ -28,7 +28,7 @@
     },
     "dev": {
       "cache": false,
-      "env": ["CONTENTS_API_GITHUB_TOKEN", "JWKS"],
+      "env": ["CONTENTS_API_GITHUB_TOKEN", "JWKS","TELEGRAM_CHAT_ID", "TELEGRAM_CHAT_ID_PERSONAL", "TELEGRAM_TOKEN"],
       "persistent": true
     },
     "lint": {

@@ -62,8 +62,10 @@ Options for the Fastify syndicate-endpoint plugin
 
 |Name|Type|Description|Required|
 |----|----|-----------|--------|
+|**createContentToSyndicate**<br/>(Create content to syndicate)|`Function`||yes|
 |**name**|`string`|The human readable name of the syndicator.<br/>Minimal Length: `1`<br/>|yes|
 |**jf2ToContent**<br/>(JF2 to content)|`Function`|Generates some content from a JF2 object.<br/>|yes|
+|**retrieveContentsToSyndicate**|`Function`|Retrieves all the contents to syndicate.<br/>|yes|
 |**syndicate**|`Function`|Syndicate the content published at a canonical URL (i.e. content published on your `me` domain) to another target (e.g. a social network).<br/>|yes|
 |**uid**|`string`|Unique identifier for the syndicator<br/>Minimal Length: `1`<br/>|yes|
 

@@ -3,10 +3,10 @@ import { EMOJI, nop_log, type Log } from '@repo/stdlib'
 import { defText } from './telegram-text.js'
 
 // https://core.telegram.org/bots/api#sendmessage
-const TEXT_MAX_LENGTH = 4096
+export const TEXT_MAX_LENGTH = 4096
 
 interface Config {
-  canonicalUrl: URL
+  canonicalUrl: URL | string
   emoji?: Record<string, string>
   jf2: JF2_Application_JSON
   log?: Log
@@ -71,20 +71,25 @@ export const defTexts = (config: Config) => {
 
   const msg = {
     count: 0,
+    // length of the remaining content to process
     len: contentLens(jf2).length,
     start: 0,
     stop: textThreshold
   }
 
-  while (msg.len > textThreshold) {
+  while (msg.len > 0) {
     const content = contentLens(jf2).slice(msg.start, msg.stop) + `\n...`
     texts.push(defText({ ...config, jf2: { ...jf2, content } }))
     msg.count++
     msg.start = msg.stop
     msg.stop = Math.min(msg.stop + textThreshold, contentLens(jf2).length)
-    msg.len -= textThreshold
+    msg.len = Math.max(0, msg.len - textThreshold)
     log.debug(
-      msg,
+      {
+        msg
+        // textThreshold
+        // remainder: contentLens(jf2).slice(msg.start, msg.stop)
+      },
       `Content after Telegram text ${msg.count} (${msg.len} characters left)`
     )
   }

@@ -1,9 +1,5 @@
 import canonicalUrl from '@jackdbd/canonical-url'
-import type {
-  RetrievePost,
-  UpdatePost,
-  WebsiteUrlToStoreLocation
-} from '@jackdbd/micropub'
+import type { RetrievePost, UpdatePost, UrlToLocation } from '@jackdbd/micropub'
 import type { Syndicator } from '../schemas/syndicator.js'
 import type { Log } from './log.js'
 import { processPost } from './process-one-post.js'
@@ -28,7 +24,7 @@ export interface Options {
    */
   targets?: string[]
   updatePost: UpdatePost
-  urlToLocation: WebsiteUrlToStoreLocation
+  urlToLocation: UrlToLocation
 }
 
 const defaults = {
